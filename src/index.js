@@ -21,13 +21,11 @@ function pluralize (value, str) {
 const combineProps = (source) => {
   const propStreams = Object.keys(source)
     .filter((key) => isObservable(source[key]))
-    .map((key) => {
-      const propKey = key.replace(/\$$/, '')
-      const prop$ = source[key].pipe(
-        map((prop) => ({ [propKey]: prop }))
+    .map((key) =>
+      source[key].pipe(
+        map((prop) => ({ [key]: prop }))
       )
-      return prop$
-    })
+    )
   const propData = Object.keys(source)
     .filter((key) => !isObservable(source[key]))
     .map((key) => ({ [key]: source[key] }))
@@ -48,8 +46,8 @@ whenAdded('#app', (el) => {
     map(({ members }) => Object.keys(members).length)
   )
   const sub = combineProps({
-    org$,
-    memberCount$,
+    org: org$,
+    memberCount: memberCount$,
     foo: 'bar'
   }).pipe(
     renderComponent(el, render)
