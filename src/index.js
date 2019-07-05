@@ -11,21 +11,21 @@ Gun.chain.$ = function rxjs () {
 }
 
 const combineProps = (source) => {
-  const propStreams = Object.keys(source)
+  const streams = Object.keys(source)
     .filter((key) => isObservable(source[key]))
     .map((key) =>
       source[key].pipe(
-        map((prop) => ({ [key]: prop }))
+        map((value) => ({ [key]: value }))
       )
     )
-  const propData = Object.keys(source)
+  const data = Object.keys(source)
     .filter((key) => !isObservable(source[key]))
     .map((key) => ({ [key]: source[key] }))
     .reduce((prev, curr) => ({ ...prev, ...curr }), {})
-  return combineLatest(propStreams).pipe(
+  return combineLatest(streams).pipe(
     map((props) =>
       props
-        .reduce((prev, curr) => ({ ...prev, ...curr }), propData)
+        .reduce((prev, curr) => ({ ...prev, ...curr }), data)
     )
   )
 }
