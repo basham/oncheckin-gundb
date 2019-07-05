@@ -10,14 +10,6 @@ Gun.chain.$ = function rxjs () {
   return stream
 }
 
-const renderComponent = (element, renderer) => (source$) => source$.pipe(
-  tap((props) => render(element, () => renderer(props)))
-)
-
-function pluralize (value, str) {
-  return `${str}${value === 1 ? '' : 's'}`
-}
-
 const combineProps = (source) => {
   const propStreams = Object.keys(source)
     .filter((key) => isObservable(source[key]))
@@ -37,6 +29,14 @@ const combineProps = (source) => {
     )
   )
 }
+
+function pluralize (value, str) {
+  return `${str}${value === 1 ? '' : 's'}`
+}
+
+const renderComponent = (element, renderer) => (source$) => source$.pipe(
+  tap((props) => render(element, () => renderer(props)))
+)
 
 const db = Gun()
 
