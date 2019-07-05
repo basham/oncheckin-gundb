@@ -1,0 +1,19 @@
+{
+  "name": "oncheckin-gundb",
+  "version": "1.0.0",
+  "description": "OnCheckIn that is offline friendly.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basham/oncheckin-gundb.git"
+  },
+  "author": "Chris Basham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basham/oncheckin-gundb/issues"
+  },
+  "homepage": "https://github.com/basham/oncheckin-gundb#readme"
+}
