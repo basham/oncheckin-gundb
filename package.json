@@ -31,6 +31,9 @@
     "mount": {
       "src": "/"
     },
+    "optimize": {
+      "minify": true
+    },
     "plugins": [
       "@snowpack/plugin-svelte"
     ]

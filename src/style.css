@@ -1,0 +1,49 @@
+:root {
+  --color-black-1: #ccc;
+  --fs-1: 1rem;
+  --lh-1: 1.5rem;
+  --lh-2: 2rem;
+  --px-1: calc(1rem/16);
+  --size-1: 0.25rem;
+  --size-2: 0.5rem;
+  --size-3: 0.75rem;
+  --size-4: 1rem;
+  --border: var(--px-1) solid var(--color-black-1);
+}
+
+body {
+  font-family: system, sans-serif;
+  margin: 0;
+}
+
+button {
+  border: var(--border);
+  border-radius: var(--size-1);
+  font-size: var(--fs-1);
+  font-weight: bold;
+  line-height: var(--lh-2);
+  padding: 0 var(--size-2);
+}
+
+input[type=text] {
+  border: var(--border);
+  border-radius: var(--size-1);
+  font-size: var(--fs-1);
+  padding: var(--size-2);
+}
+
+h1 {
+  margin: 0;
+}
+
+label {
+  display: block;
+  font-size: var(--fs-1);
+  font-weight: bold;
+  line-height: var(--lh-1);
+  margin-bottom: var(--size-2);
+}
+
+.u-m-top-4 {
+  margin-top: var(--size-4);
+}
