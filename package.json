@@ -4,16 +4,35 @@
   "description": "OnCheckIn that is offline friendly.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "snowpack build",
+    "start": "snowpack dev",
+    "test": "standard"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/basham/oncheckin-gundb.git"
   },
-  "author": "Chris Basham",
+  "author": "Chris Basham <chris@bash.am>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/basham/oncheckin-gundb/issues"
   },
-  "homepage": "https://github.com/basham/oncheckin-gundb#readme"
+  "homepage": "https://github.com/basham/oncheckin-gundb#readme",
+  "devDependencies": {
+    "@snowpack/plugin-svelte": "3.7.0",
+    "snowpack": "3.8.6",
+    "standard": "16.0.3"
+  },
+  "dependencies": {
+    "gun": "0.2020.1232",
+    "svelte": "3.42.2"
+  },
+  "snowpack": {
+    "mount": {
+      "src": "/"
+    },
+    "plugins": [
+      "@snowpack/plugin-svelte"
+    ]
+  }
 }
