@@ -1,13 +1,17 @@
 <script>
   import { gun } from '../gun.js'
   import App from '../components/App.svelte'
+  import Breadcrumbs from '../components/Breadcrumbs.svelte'
+  import BreadcrumbsItem from '../components/BreadcrumbsItem.svelte'
 
   const title = 'Edit organization'
   let loading = true
+  let orgName = ''
   let name = ''
 
   gun.get('org').once((data) => {
     if (data) {
+      orgName = data.name
       name = data.name
     }
     loading = false
@@ -23,9 +27,10 @@
 <App
   loading={loading}
   title={title}>
-  <p>
-    <a href="../">Cancel</a>
-  </p>
+  <Breadcrumbs>
+    <BreadcrumbsItem href="../">{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
+  </Breadcrumbs>
   <h1>{title}</h1>
   <form
     autocomplete="off"

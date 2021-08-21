@@ -1,6 +1,8 @@
 <script>
   import { gun } from '../../gun.js'
   import App from '../../components/App.svelte'
+  import Breadcrumbs from '../../components/Breadcrumbs.svelte'
+  import BreadcrumbsItem from '../../components/BreadcrumbsItem.svelte'
 
   let title = 'New event'
   let loading = true
@@ -25,12 +27,10 @@
   depth={2}
   loading={loading}
   title={title}>
-  <nav>
-    <ol>
-      <li><a href="../../">{orgName}</a></li>
-      <li aria-current="page">{title}</li>
-    </ol>
-  </nav>
+  <Breadcrumbs>
+    <BreadcrumbsItem href="../../">{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
+  </Breadcrumbs>
   <h1>{title}</h1>
   <form
     autocomplete="off"
