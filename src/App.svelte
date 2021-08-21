@@ -1,5 +1,24 @@
 <script>
+  import { gun } from './gun.js'
 
+  let catName = ''
+  let store = {}
+
+  gun.get('cats').map().on((data, key) => {
+    if (data) {
+      store[key] = data
+    } else {
+      delete store[key]
+      store = store
+    }
+  })
+  $: cats = Object.entries(store)
+
+  function submit (event) {
+    event.preventDefault()
+    gun.get('cats').set({ name: catName })
+    catName = ''
+  }
 </script>
 
 <style>
@@ -28,4 +47,11 @@
 
 <main>
   <h1>OnCheckIn</h1>
+  {#each cats as [key, cat]}
+    <div key={key} id={key}>{cat.name}</div>
+  {/each}
+  <form on:submit={submit}>
+    <input bind:value={catName} />
+    <button type="submit">Save</button>
+  </form>
 </main>
