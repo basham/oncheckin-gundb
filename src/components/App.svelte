@@ -4,7 +4,7 @@
   export let title = ''
 
   const appName = 'OnCheckIn'
-  const fullTitle = [title, appName].filter((v) => v).join(' - ')
+  $: fullTitle = [title, appName].filter((v) => v).join(' - ')
   const styleHref = `${root}style.css`
 </script>
 
