@@ -14,8 +14,10 @@
 
   let events = []
   gun.get('events').map().once((data, key) => {
-    events.push({ ...data, key })
-    events = events
+    if (data) {
+      events.push({ ...data, key })
+      events = events
+    }
   })
   $: events = events.sort((a, b) => {
     const keyA = new Date(a.date)
@@ -23,10 +25,6 @@
     return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
   })
 </script>
-
-<style>
-
-</style>
 
 <App loading={loading}>
   {#if name}
