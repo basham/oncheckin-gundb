@@ -1,31 +1,36 @@
 <script>
-  import { gun } from '../gun.js'
-  import App from '../components/App.svelte'
+  import { gun } from '../../gun.js'
+  import App from '../../components/App.svelte'
 
-  const title = 'Edit organization'
+  let title = 'New event'
   let loading = true
+  let orgName = ''
   let name = ''
 
   gun.get('org').once((data) => {
     if (data) {
-      name = data.name
+      orgName = data.name
     }
     loading = false
   })
 
   function submit (event) {
     event.preventDefault()
-    gun.get('org').put({ name })
-    window.location = '../'
+    gun.get('org').get('events').put({ name })
+    window.location = '../../'
   }
 </script>
 
 <App
+  depth={2}
   loading={loading}
   title={title}>
-  <p>
-    <a href="../">Cancel</a>
-  </p>
+  <nav>
+    <ol>
+      <li><a href="../../">{orgName}</a></li>
+      <li aria-current="page">{title}</li>
+    </ol>
+  </nav>
   <h1>{title}</h1>
   <form
     autocomplete="off"

@@ -1,5 +1,12 @@
 <script>
+  export let depth = 1
   export let loading = true
+  export let title = ''
+
+  const appName = 'OnCheckIn'
+  const fullTitle = [title, appName].filter((v) => v).join(' - ')
+  const rootPath = Array.from({ length: depth }, () => '../').join('')
+  const styleHref = `${rootPath}style.css`
 </script>
 
 <style>
@@ -17,8 +24,15 @@
   }
 </style>
 
+<svelte:head>
+  <title>{fullTitle}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href={styleHref}>
+</svelte:head>
+
 <header>
-  <div>OnCheckIn</div>
+  <div>{appName}</div>
 </header>
 
 <main class:loading={loading}>

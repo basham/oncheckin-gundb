@@ -23,7 +23,8 @@
   {:else}
     <h1><em>Organization</em></h1>
   {/if}
-  <p>
-    <a href="./edit/">Edit</a>
-  </p>
+  <ul>
+    <li><a href="./edit/">Edit</a></li>
+    <li><a href="./events/new/">New event</a></li>
+  </ul>
 </App>
