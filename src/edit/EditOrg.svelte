@@ -5,6 +5,7 @@
   import BreadcrumbsItem from '../components/BreadcrumbsItem.svelte'
 
   const title = 'Edit organization'
+  const root = '../'
   let loading = true
   let orgName = ''
   let name = ''
@@ -20,7 +21,7 @@
   function submit (event) {
     event.preventDefault()
     gun.get('org').put({ name })
-    window.location = '../'
+    window.location = root
   }
 </script>
 
@@ -28,7 +29,7 @@
   loading={loading}
   title={title}>
   <Breadcrumbs>
-    <BreadcrumbsItem href="../">{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem href={root}>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>
