@@ -1,5 +1,6 @@
 :root {
   --color-black-1: #ccc;
+  --font: system, sans-serif;
   --fs-1: 1rem;
   --lh-1: 1.5rem;
   --lh-2: 2rem;
@@ -12,7 +13,7 @@
 }
 
 body {
-  font-family: system, sans-serif;
+  font-family: var(--font);
   margin: 0;
 }
 
@@ -25,9 +26,11 @@ button {
   padding: 0 var(--size-2);
 }
 
+input[type=date],
 input[type=text] {
   border: var(--border);
   border-radius: var(--size-1);
+  font-family: var(--font);
   font-size: var(--fs-1);
   padding: var(--size-2);
 }

@@ -1,12 +1,11 @@
 <script>
-  export let depth = 1
   export let loading = true
+  export let root = '../'
   export let title = ''
 
   const appName = 'OnCheckIn'
   const fullTitle = [title, appName].filter((v) => v).join(' - ')
-  const rootPath = Array.from({ length: depth }, () => '../').join('')
-  const styleHref = `${rootPath}style.css`
+  const styleHref = `${root}style.css`
 </script>
 
 <style>

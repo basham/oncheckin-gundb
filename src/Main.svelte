@@ -11,6 +11,17 @@
     }
     loading = false
   })
+
+  let events = []
+  gun.get('events').map().once((data, key) => {
+    events.push({ ...data, key })
+    events = events
+  })
+  $: events = events.sort((a, b) => {
+    const keyA = new Date(a.date)
+    const keyB = new Date(b.date)
+    return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
+  })
 </script>
 
 <style>
@@ -27,4 +38,10 @@
     <li><a href="./edit/">Edit</a></li>
     <li><a href="./events/new/">New event</a></li>
   </ul>
+  <h2>Events ({events.length})</h2>
+  <ol>
+    {#each events as event}
+      <li><a href={`./events/?id=${event.key}`}>{event.name}</a> ({event.date})</li>
+    {/each}
+  </ol>
 </App>
