@@ -15,7 +15,11 @@
   let Page = null
 
   onMount(async () => {
-    Page = (await import(`./${component}.svelte.js`)).default
+    try {
+      Page = (await import(`./${component}.svelte.js`)).default
+    } catch (e) {
+      console.error(e)
+    }
   })
 </script>
 
