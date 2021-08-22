@@ -1,11 +1,10 @@
 <script>
   import { gun } from '../gun.js'
-  import App from '../components/App.svelte'
-  import Breadcrumbs from '../components/Breadcrumbs.svelte'
-  import BreadcrumbsItem from '../components/BreadcrumbsItem.svelte'
+  import Breadcrumbs from './Breadcrumbs.svelte'
+  import BreadcrumbsItem from './BreadcrumbsItem.svelte'
+  import Page from './Page.svelte'
 
   const title = 'Edit organization'
-  const root = '../'
   let loading = true
   let orgName = ''
   let name = ''
@@ -21,15 +20,15 @@
   function submit (event) {
     event.preventDefault()
     gun.get('org').put({ name })
-    window.location = root
+    window.location = './'
   }
 </script>
 
-<App
+<Page
   loading={loading}
   title={title}>
   <Breadcrumbs>
-    <BreadcrumbsItem href={root}>{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>
@@ -47,4 +46,4 @@
       <button type="submit">Save</button>
     </div>
   </form>
-</App>
+</Page>

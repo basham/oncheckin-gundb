@@ -1,6 +1,6 @@
 <script>
-  import { gun } from './gun.js'
-  import App from './components/App.svelte'
+  import { gun } from '../gun.js'
+  import Page from './Page.svelte'
 
   let loading = true
   let name = ''
@@ -26,20 +26,20 @@
   })
 </script>
 
-<App loading={loading}>
+<Page loading={loading}>
   {#if name}
     <h1>{name}</h1>
   {:else}
     <h1><em>Organization</em></h1>
   {/if}
   <ul>
-    <li><a href="./edit/">Edit</a></li>
-    <li><a href="./events/new/">New event</a></li>
+    <li><a href="?p=edit-org">Edit</a></li>
+    <li><a href="?p=new-event">New event</a></li>
   </ul>
   <h2>Events ({events.length})</h2>
   <ol>
     {#each events as event}
-      <li><a href={`./events/?id=${event.key}`}>{event.name}</a> ({event.date})</li>
+      <li><a href={`?p=event&id=${event.key}`}>{event.name}</a> ({event.date})</li>
     {/each}
   </ol>
-</App>
+</Page>

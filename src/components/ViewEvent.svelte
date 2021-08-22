@@ -1,14 +1,13 @@
 <script>
   import { gun } from '../gun.js'
-  import App from '../components/App.svelte'
-  import Breadcrumbs from '../components/Breadcrumbs.svelte'
-  import BreadcrumbsItem from '../components/BreadcrumbsItem.svelte'
+  import Breadcrumbs from './Breadcrumbs.svelte'
+  import BreadcrumbsItem from './BreadcrumbsItem.svelte'
+  import Page from './Page.svelte'
 
   let title = ''
   let loading = true
   let orgName = ''
 
-  const root = '../'
   const params = (new URL(document.location)).searchParams
   const eventId = params.get('id')
 
@@ -30,12 +29,12 @@
   })
 </script>
 
-<App
+<Page
   loading={loading}
   title={title}>
   <Breadcrumbs>
-    <BreadcrumbsItem href={root}>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem href={`${root}events/`}>Events</BreadcrumbsItem>
+    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   {#if title}
@@ -44,5 +43,5 @@
     <h1><em>Event</em></h1>
   {/if}
   <p>{date}</p>
-  <p><a href={`${root}events/edit/?id=${eventId}`}>Edit</a></p>
-</App>
+  <p><a href={`?p=edit-event&id=${eventId}`}>Edit</a></p>
+</Page>

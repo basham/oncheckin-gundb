@@ -1,11 +1,10 @@
 <script>
-  import { gun } from '../../gun.js'
-  import App from '../../components/App.svelte'
-  import Breadcrumbs from '../../components/Breadcrumbs.svelte'
-  import BreadcrumbsItem from '../../components/BreadcrumbsItem.svelte'
+  import { gun } from '../gun.js'
+  import Breadcrumbs from './Breadcrumbs.svelte'
+  import BreadcrumbsItem from './BreadcrumbsItem.svelte'
+  import Page from './Page.svelte'
 
   const title = 'New event'
-  const root = '../../'
   let loading = true
   let orgName = ''
   let name = ''
@@ -24,16 +23,15 @@
       name,
       date
     })
-    window.location = root
+    window.location = './'
   }
 </script>
 
-<App
+<Page
   loading={loading}
-  root={root}
   title={title}>
   <Breadcrumbs>
-    <BreadcrumbsItem href={root}>{orgName}</BreadcrumbsItem>
+    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>
@@ -58,4 +56,4 @@
       <button type="submit">Save</button>
     </div>
   </form>
-</App>
+</Page>

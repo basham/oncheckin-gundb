@@ -1,39 +1,22 @@
 <script>
-  export let loading = true
-  export let root = '../'
-  export let title = ''
+  import { onMount } from 'svelte'
 
-  const appName = 'OnCheckIn'
-  $: fullTitle = [title, appName].filter((v) => v).join(' - ')
-  const styleHref = `${root}style.css`
+  const pageMap = {
+    'edit-org': 'EditOrg',
+    event: 'ViewEvent',
+    'new-event': 'NewEvent'
+  }
+  const notFoundPage = 'NotFound'
+  const defaultPage = 'Main'
+  const params = (new URL(document.location)).searchParams
+  const page = params.get('p')
+  const component = params.has('p') ? (pageMap[page] || notFoundPage) : defaultPage
+
+  let Page = null
+
+  onMount(async () => {
+    Page = (await import(`./${component}.svelte.js`)).default
+  })
 </script>
 
-<style>
-  header {
-    border-bottom: var(--border);
-    padding: var(--size-2);
-  }
-
-  main {
-    padding: var(--size-4);
-  }
-
-  .loading {
-    display: none;
-  }
-</style>
-
-<svelte:head>
-  <title>{fullTitle}</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href={styleHref}>
-</svelte:head>
-
-<header>
-  <div>{appName}</div>
-</header>
-
-<main class:loading={loading}>
-  <slot></slot>
-</main>
+<svelte:component this={Page}></svelte:component>
