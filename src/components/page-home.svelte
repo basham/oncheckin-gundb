@@ -1,6 +1,6 @@
 <script>
   import { gun } from '../gun.js'
-  import Page from './Page.svelte'
+  import Page from './page.svelte'
 
   let loading = true
   let name = ''

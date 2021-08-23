@@ -1,5 +1,5 @@
 <script>
-  import Page from './Page.svelte'
+  import Page from './page.svelte'
 
   const title = 'Page not found'
 </script>

@@ -2,12 +2,12 @@
   import { onMount } from 'svelte'
 
   const pageMap = {
-    'edit-org': 'EditOrg',
-    event: 'ViewEvent',
-    'new-event': 'NewEvent'
+    'edit-org': 'page-org-edit',
+    event: 'page-event-view',
+    'new-event': 'page-event-new'
   }
-  const notFoundPage = 'NotFound'
-  const defaultPage = 'Main'
+  const notFoundPage = 'page-not-found'
+  const defaultPage = 'page-home'
   const params = (new URL(document.location)).searchParams
   const page = params.get('p')
   const component = params.has('p') ? (pageMap[page] || notFoundPage) : defaultPage

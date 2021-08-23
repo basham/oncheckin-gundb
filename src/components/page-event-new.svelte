@@ -1,8 +1,8 @@
 <script>
   import { gun } from '../gun.js'
-  import Breadcrumbs from './Breadcrumbs.svelte'
-  import BreadcrumbsItem from './BreadcrumbsItem.svelte'
-  import Page from './Page.svelte'
+  import Breadcrumbs from './breadcrumbs.svelte'
+  import BreadcrumbsItem from './breadcrumbs-item.svelte'
+  import Page from './page.svelte'
 
   const title = 'New event'
   let loading = true
