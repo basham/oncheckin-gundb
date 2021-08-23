@@ -37,11 +37,13 @@
     <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
-  {#if title}
-    <h1>{title}</h1>
-  {:else}
-    <h1><em>Event</em></h1>
-  {/if}
+  <h1>
+    {#if title}
+      {title}
+    {:else}
+      <em>Event</em>
+    {/if}
+  </h1>
   <p>{date}</p>
   <p><a href={`?p=edit-event&id=${eventId}`}>Edit</a></p>
 </Page>

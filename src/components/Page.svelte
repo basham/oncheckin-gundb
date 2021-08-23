@@ -4,6 +4,20 @@
 
   const appName = 'OnCheckIn'
   $: fullTitle = [title, appName].filter((v) => v).join(' - ')
+  // $: focusOnHeading(loading)
+
+  function focusOnHeading (loading) {
+    const heading = document.querySelector('h1')
+    if (heading && !loading) {
+      window.requestAnimationFrame(() => {
+        heading.setAttribute('tabindex', '-1')
+        heading.focus()
+        heading.removeAttribute('tabindex')
+      })
+    }
+  }
+
+  setTimeout(() => focusOnHeading(loading), 100)
 </script>
 
 <style>

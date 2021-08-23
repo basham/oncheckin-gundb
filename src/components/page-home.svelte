@@ -27,11 +27,13 @@
 </script>
 
 <Page loading={loading}>
-  {#if name}
-    <h1>{name}</h1>
-  {:else}
-    <h1><em>Organization</em></h1>
-  {/if}
+  <h1>
+    {#if name}
+      {name}
+    {:else}
+      <em>Organization</em>
+    {/if}
+  </h1>
   <ul>
     <li><a href="?p=edit-org">Edit</a></li>
     <li><a href="?p=new-event">New event</a></li>
