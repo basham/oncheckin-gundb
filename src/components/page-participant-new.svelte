@@ -4,12 +4,12 @@
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
-  const title = 'New event'
+  const title = 'New participant'
 
   let loading = true
   let orgName = ''
-  let name = ''
-  let date = (new Date()).toJSON().split('T')[0]
+  let firstName = ''
+  let lastName = ''
 
   load()
 
@@ -22,7 +22,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    await gun.get('events').set({ name, date }).then()
+    await gun.get('participants').set({ firstName, lastName }).then()
     window.location = './'
   }
 </script>
@@ -39,18 +39,18 @@
     autocomplete="off"
     on:submit={submit}>
     <div class="u-m-top-4">
-      <label for="nameInput">Name</label>
+      <label for="firstNameInput">First name</label>
       <input
-        bind:value={name}
-        id="nameInput"
+        bind:value={firstName}
+        id="firstNameInput"
         type="text">
     </div>
     <div class="u-m-top-4">
-      <label for="dateInput">Date</label>
+      <label for="lastNameInput">Last name</label>
       <input
-        bind:value={date}
-        id="dateInput"
-        type="date">
+        bind:value={lastName}
+        id="lastNameInput"
+        type="text">
     </div>
     <div class="u-m-top-4">
       <button type="submit">Save</button>

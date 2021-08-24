@@ -4,7 +4,9 @@
   const pageMap = {
     'edit-org': 'page-org-edit',
     event: 'page-event-view',
-    'new-event': 'page-event-new'
+    'new-event': 'page-event-new',
+    'new-participant': 'page-participant-new',
+    participant: 'page-participant-view'
   }
   const notFoundPage = 'page-not-found'
   const defaultPage = 'page-home'
