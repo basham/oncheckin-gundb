@@ -5,21 +5,24 @@
   import Page from './page.svelte'
 
   const title = 'Edit organization'
+
   let loading = true
   let orgName = ''
   let name = ''
 
-  gun.get('org').once((data) => {
-    if (data) {
-      orgName = data.name
-      name = data.name
-    }
-    loading = false
-  })
+  load()
 
-  function submit (event) {
+  async function load () {
+    const org = await gun.get('org').then()
+    orgName = org?.name
+    name = org?.name
+
+    loading = false
+  }
+
+  async function submit (event) {
     event.preventDefault()
-    gun.get('org').put({ name })
+    await gun.get('org').put({ name }).then()
     window.location = './'
   }
 </script>

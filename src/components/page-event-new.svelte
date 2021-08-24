@@ -5,24 +5,24 @@
   import Page from './page.svelte'
 
   const title = 'New event'
+
   let loading = true
   let orgName = ''
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
 
-  gun.get('org').once((data) => {
-    if (data) {
-      orgName = data.name
-    }
-    loading = false
-  })
+  load()
 
-  function submit (event) {
+  async function load () {
+    const org = await gun.get('org').then()
+    orgName = org?.name
+
+    loading = false
+  }
+
+  async function submit (event) {
     event.preventDefault()
-    gun.get('events').set({
-      name,
-      date
-    })
+    await gun.get('events').set({ name, date }).then()
     window.location = './'
   }
 </script>

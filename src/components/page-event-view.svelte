@@ -4,29 +4,30 @@
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
-  let title = ''
-  let loading = true
-  let orgName = ''
-
   const params = (new URL(document.location)).searchParams
   const eventId = params.get('id')
 
-  gun.get('org').once((data) => {
-    if (data) {
-      orgName = data.name
-    }
-  })
-
+  let title = ''
+  let loading = true
+  let orgName = ''
   let date = ''
-  gun.get('events').get(eventId).once((data) => {
-    if (data) {
-      title = data.name
-      date = data.date
+
+  load()
+
+  async function load () {
+    const org = await gun.get('org').then()
+    orgName = org?.name
+
+    const event = await gun.get('events').get(eventId).then()
+    if (event) {
+      title = event.name
+      date = event.date
     } else {
       title = 'Event not found'
     }
+
     loading = false
-  })
+  }
 </script>
 
 <Page

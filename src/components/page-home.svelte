@@ -6,6 +6,8 @@
   let name = ''
   let events = []
 
+  load()
+
   async function load () {
     const org = await gun.get('org').then()
     name = org?.name
@@ -20,8 +22,6 @@
 
     loading = false
   }
-
-  load()
 </script>
 
 <Page loading={loading}>
