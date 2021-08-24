@@ -7,14 +7,14 @@
   // $: focusOnHeading(loading)
 
   function focusOnHeading (loading) {
-    const heading = document.querySelector('h1')
-    if (heading && !loading) {
-      window.requestAnimationFrame(() => {
-        heading.setAttribute('tabindex', '-1')
-        heading.focus()
-        heading.removeAttribute('tabindex')
-      })
-    }
+    if (loading) return
+    window.requestAnimationFrame(() => {
+      const heading = document.querySelector('h1')
+      if (!heading) return
+      heading.setAttribute('tabindex', '-1')
+      heading.focus()
+      heading.removeAttribute('tabindex')
+    })
   }
 
   setTimeout(() => focusOnHeading(loading), 100)
