@@ -1,29 +1,27 @@
 <script>
-  import { gun } from '../gun.js'
+  import { gun, map } from '../gun.js'
   import Page from './page.svelte'
 
   let loading = true
   let name = ''
-
-  gun.get('org').once((data) => {
-    if (data) {
-      name = data.name
-    }
-    loading = false
-  })
-
   let events = []
-  gun.get('events').map().once((data, key) => {
-    if (data) {
-      events.push({ ...data, key })
-      events = events
-    }
-  })
-  $: events = events.sort((a, b) => {
-    const keyA = new Date(a.date)
-    const keyB = new Date(b.date)
-    return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
-  })
+
+  async function load () {
+    const org = await gun.get('org').then()
+    name = org?.name
+
+    const eventsMap = await map(gun.get('events'))
+    events = eventsMap
+      .sort((a, b) => {
+        const [keyA, keyB] = [a, b]
+          .map(({ date }) => new Date(date))
+        return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
+      })
+
+    loading = false
+  }
+
+  load()
 </script>
 
 <Page loading={loading}>
