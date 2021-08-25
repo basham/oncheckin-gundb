@@ -37,7 +37,6 @@
         const fullName = `${p.firstName} ${p.lastName}`
         return { ...p, fullName }
       })
-    optionsCount = participants.length
 
     loading = false
   }
