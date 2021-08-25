@@ -46,5 +46,8 @@
     {/if}
   </h1>
   <p>{date}</p>
-  <p><a href={`?p=edit-event&id=${eventId}`}>Edit</a></p>
+  <ul>
+    <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
+    <li><a href={`?p=edit-attendance&id=${eventId}`}>Edit attendance</a></li>
+  </ul>
 </Page>

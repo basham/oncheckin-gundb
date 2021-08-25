@@ -6,7 +6,7 @@ export default Gun
 
 export async function map (g) {
   const a = await g.then()
-  const b = Object.keys(a)
+  const b = Object.keys(a || {})
     .filter((key) => key !== '_')
     .map((key) => g.get(key).promise())
   const c = await Promise.all(b)

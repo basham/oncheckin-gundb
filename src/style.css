@@ -1,5 +1,7 @@
 :root {
   --color-black-1: #ccc;
+  --color-black-9: #333;
+  --color-white: #fff;
   --font: system, sans-serif;
   --fs-1: 1rem;
   --lh-1: 1.5rem;
@@ -27,6 +29,7 @@ button {
 }
 
 input[type=date],
+input[type=search],
 input[type=text] {
   border: var(--border);
   border-radius: var(--size-1);

@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
 
   const pageMap = {
+    'edit-attendance': 'page-event-attendance',
     'edit-org': 'page-org-edit',
     event: 'page-event-view',
     'new-event': 'page-event-new',
