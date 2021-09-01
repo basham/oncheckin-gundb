@@ -1,5 +1,5 @@
 <script>
-  import { gun } from '../gun.js'
+  import { gun, map } from '../gun.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -11,20 +11,32 @@
   let loading = true
   let orgName = ''
   let date = ''
+  let _attendances = []
 
   load()
 
   async function load () {
-    const org = await gun.get('org').then()
+    const org = await gun.get('org')
     orgName = org?.name
 
-    const event = await gun.get('events').get(eventId).then()
+    const eventRef = gun.get('events').get(eventId)
+    const event = await eventRef
     if (event) {
       title = event.name
       date = event.date
     } else {
       title = 'Event not found'
     }
+
+    const attendances = await map(eventRef.get('attendances'))
+    const attendancesRich = attendances.map(async (attendance) => {
+      const participant = await gun.get(attendance.participant)
+      return { ...attendance, participant }
+    })
+    const att = await Promise.all(attendancesRich)
+    _attendances = att
+
+    console.log('##', att)
 
     loading = false
   }
@@ -49,5 +61,11 @@
   <ul>
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
     <li><a href={`?p=edit-attendance&id=${eventId}`}>Edit attendance</a></li>
+  </ul>
+  <h2>Participants</h2>
+  <ul>
+    {#each _attendances as attendance}
+      <li>{attendance.participant.firstName} {attendance.participant.lastName}</li>
+    {/each}
   </ul>
 </Page>

@@ -66,31 +66,39 @@
         selectedIndex = i === 0 ? lastIndex : i - 1
         return
       case 'Escape':
-        if (event.target.value.length === 0) {
-          // Cancel
-          return
-        } else {
-          query = ''
-          return
-        }
+        query = ''
+        return
     }
   }
 
-  function handleOptionClick () {
-    addParticipant()
+  async function handleOptionClick () {
+    await addParticipant()
   }
 
   function handleOptionMouseOver (event) {
     selectedIndex = parseInt(event.target.dataset.index)
   }
 
-  function handleSubmit (event) {
+  async function handleSubmit (event) {
     event.preventDefault()
-    addParticipant()
+    if (options.length > 0) {
+      await addParticipant()
+    }
   }
 
-  function addParticipant () {
-    console.log('Add participant', selectedIndex)
+  async function addParticipant () {
+    const participantId = options[selectedIndex].key
+    const eventRef = gun.get('events').get(eventId)
+    const participantRef = gun.get('participants').get(participantId)
+    const attendance = {
+      event: eventRef,
+      participant: participantRef,
+      host: false
+    }
+    const attendanceRef = gun.get('attendances').set(attendance)
+    eventRef.get('attendances').set(attendanceRef)
+    participantRef.get('attendances').set(attendanceRef)
+    window.location = `./?p=event&id=${eventId}`
   }
 </script>
 
