@@ -1,5 +1,6 @@
 <script>
-  import { gun, map } from '../gun.js'
+  import { loadStores } from '../orbit.js'
+  // import { gun, map } from '../gun.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -10,6 +11,11 @@
   load()
 
   async function load () {
+    const stores = await loadStores()
+    name = stores.settings.get('name')
+
+    loading = false
+    /*
     const org = await gun.get('org').then()
     name = org?.name
 
@@ -29,6 +35,7 @@
       })
 
     loading = false
+    */
   }
 </script>
 

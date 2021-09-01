@@ -1,5 +1,6 @@
 *.log
 .DS_Store
+.snowpack
 build
 npm-debug.log*
 node_modules
