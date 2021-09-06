@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "snowpack build",
-    "start": "snowpack dev",
+    "start": "star-signal & snowpack dev",
     "test": "standard"
   },
   "repository": {
