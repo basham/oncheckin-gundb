@@ -4,8 +4,8 @@
   "description": "OnCheckIn that is offline friendly.",
   "main": "index.js",
   "scripts": {
-    "build": "snowpack build",
-    "start": "snowpack dev & node server/server.js",
+    "build": "snowpack build --polyfill-node",
+    "start": "snowpack dev --polyfill-node & node server/server.js",
     "test": "standard"
   },
   "repository": {
@@ -24,7 +24,9 @@
     "standard": "16.0.3"
   },
   "dependencies": {
+    "co-hyperdrive": "1.0.2",
     "gun": "0.2020.1234",
+    "hyper-sdk": "3.0.9",
     "svelte": "3.42.3"
   },
   "snowpack": {
@@ -33,6 +35,14 @@
     },
     "optimize": {
       "minify": true
+    },
+    "packageOptions": {
+      "knownEntrypoints": [
+        "sodium-universal",
+        "readable-stream",
+        "debug",
+        "varint"
+      ]
     },
     "plugins": [
       "@snowpack/plugin-svelte"

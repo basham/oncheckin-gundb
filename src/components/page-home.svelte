@@ -1,5 +1,6 @@
 <script>
-  import { loadStores } from '../orbit.js'
+  import '../dat.js'
+  // import { loadStores } from '../orbit.js'
   // import { gun, map } from '../gun.js'
   import Page from './page.svelte'
 
@@ -11,8 +12,8 @@
   load()
 
   async function load () {
-    const stores = await loadStores()
-    name = stores.settings.get('name')
+    // const stores = await loadStores()
+    // name = stores.settings.get('name')
 
     loading = false
     /*
