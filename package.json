@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "snowpack build",
-    "start": "snowpack dev & node server/server.js",
+    "start": "snowpack dev",
     "test": "standard"
   },
   "repository": {
