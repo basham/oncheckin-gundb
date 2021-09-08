@@ -1,5 +1,5 @@
 <script>
-  import { gun, map } from '../gun.js'
+  import { map, store } from '../store.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -10,10 +10,10 @@
   load()
 
   async function load () {
-    const org = await gun.get('org').then()
+    const org = await store.get('org')
     name = org?.name
 
-    const eventsMap = await map(gun.get('events'))
+    const eventsMap = await map(store.get('events'))
     events = eventsMap
       .sort((a, b) => {
         const [keyA, keyB] = [a, b]
@@ -21,7 +21,7 @@
         return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
       })
 
-    const participantsMap = await map(gun.get('participants'))
+    const participantsMap = await map(store.get('participants'))
     participants = participantsMap
       .map((p) => {
         const fullName = `${p.firstName} ${p.lastName}`
