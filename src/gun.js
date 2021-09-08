@@ -4,7 +4,6 @@ import 'gun/lib/radisk.js'
 import 'gun/lib/radix.js'
 import 'gun/lib/store.js'
 import 'gun/lib/rindexed.js'
-
 import 'gun/lib/then.js'
 
 export const gun = Gun({
