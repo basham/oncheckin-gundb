@@ -1,5 +1,5 @@
 <script>
-  import { gun } from '../gun.js'
+  import { store } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -15,10 +15,10 @@
   load()
 
   async function load () {
-    const org = await gun.get('org').then()
+    const org = await store.get('org').then()
     orgName = org?.name
 
-    const participant = await gun.get('participants').get(participantId).then()
+    const participant = await store.get('participants').get(participantId).then()
     if (participant) {
       fullName = `${participant.firstName} ${participant.lastName}`
       title = fullName

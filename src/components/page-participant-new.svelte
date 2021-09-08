@@ -1,5 +1,5 @@
 <script>
-  import { gun } from '../gun.js'
+  import { store } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -14,7 +14,7 @@
   load()
 
   async function load () {
-    const org = await gun.get('org').then()
+    const org = await store.get('org').then()
     orgName = org?.name
 
     loading = false
@@ -22,7 +22,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    await gun.get('participants').set({ firstName, lastName }).then()
+    await store.get('participants').set({ firstName, lastName }).then()
     window.location = './'
   }
 </script>

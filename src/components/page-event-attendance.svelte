@@ -1,5 +1,5 @@
 <script>
-  import { gun, map } from '../gun.js'
+  import { map, store } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -21,17 +21,17 @@
   load()
 
   async function load () {
-    const org = await gun.get('org').then()
+    const org = await store.get('org').then()
     orgName = org?.name
 
-    const event = await gun.get('events').get(eventId).then()
+    const event = await store.get('events').get(eventId).then()
     if (event) {
       eventName = event.name
     } else {
       title = 'Event not found'
     }
 
-    const participantsMap = await map(gun.get('participants'))
+    const participantsMap = await map(store.get('participants'))
     participants = participantsMap
       .map((p) => {
         const fullName = `${p.firstName} ${p.lastName}`
@@ -88,14 +88,14 @@
 
   async function addParticipant () {
     const participantId = options[selectedIndex].key
-    const eventRef = gun.get('events').get(eventId)
-    const participantRef = gun.get('participants').get(participantId)
+    const eventRef = store.get('events').get(eventId)
+    const participantRef = store.get('participants').get(participantId)
     const attendance = {
       event: eventRef,
       participant: participantRef,
       host: false
     }
-    const attendanceRef = gun.get('attendances').set(attendance)
+    const attendanceRef = store.get('attendances').set(attendance)
     eventRef.get('attendances').set(attendanceRef)
     participantRef.get('attendances').set(attendanceRef)
     window.location = `./?p=event&id=${eventId}`

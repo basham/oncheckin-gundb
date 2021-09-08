@@ -1,5 +1,5 @@
 <script>
-  import { gun, map } from '../gun.js'
+  import { map, store } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -16,10 +16,10 @@
   load()
 
   async function load () {
-    const org = await gun.get('org')
+    const org = await store.get('org')
     orgName = org?.name
 
-    const eventRef = gun.get('events').get(eventId)
+    const eventRef = store.get('events').get(eventId)
     const event = await eventRef
     if (event) {
       title = event.name
@@ -30,7 +30,7 @@
 
     const attendances = await map(eventRef.get('attendances'))
     const attendancesRich = attendances.map(async (attendance) => {
-      const participant = await gun.get(attendance.participant)
+      const participant = await store.get(attendance.participant)
       return { ...attendance, participant }
     })
     const att = await Promise.all(attendancesRich)
