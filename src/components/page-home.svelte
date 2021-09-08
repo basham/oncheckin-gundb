@@ -1,5 +1,5 @@
 <script>
-  import { map, store } from '../store.js'
+  import { loginAsNewUser, map, store } from '../store.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -10,6 +10,8 @@
   load()
 
   async function load () {
+    await loginAsNewUser()
+
     const org = await store.get('org')
     name = org?.name
 
