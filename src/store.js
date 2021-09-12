@@ -1,8 +1,9 @@
 import Gun from 'gun/gun.js'
-import 'gun/sea.js'
-import 'gun/lib/store.js'
-import 'gun/lib/rindexed.js'
-import 'gun/lib/then.js'
+import 'gun/nts.js' // Sync clocks across peers.
+import 'gun/sea.js' // Use users and encryption.
+import 'gun/lib/store.js' // Allow alternative storage options.
+import 'gun/lib/rindexed.js' // Use IndexedDB for storage.
+import 'gun/lib/then.js' // Use promises (async, await).
 
 const { indexedDB, localStorage } = window
 const sea = Gun.SEA
@@ -18,27 +19,46 @@ export const store = Gun({
   ]
 })
 
+const mesh = store.back('opt.mesh')
+const peers = store.back('opt.peers')
+console.log('Peers', peers)
+const dam = 'oncheckin'
+
+setInterval(() => {
+  mesh.say({ dam, d: Math.random() })
+}, 5000)
+
+mesh.hear[dam] = (msg, peer) => {
+  console.log('HEAR', msg, peer)
+}
+
 export async function init () {
   const key = localStorage.getItem(LOGIN_KEY)
   if (key) {
-    login(JSON.parse(key))
+    await login(JSON.parse(key))
   } else {
-    loginAsNewUser()
+    await loginAsNewUser()
   }
 }
 
 export async function login (key) {
   localStorage.setItem(LOGIN_KEY, JSON.stringify(key))
-  store.user().auth(key)
+  const auth = await authenticate(store.user(), key)
+  console.log('LOGGED IN', auth)
+  return auth
 }
 
 export async function loginAsNewUser () {
   const key = await sea.pair()
-  const user = store.user()
-  const auth = user.auth(key)
-  // user.get('profile').get('name').put('test name')
-  // const name = await user.get('profile').get('name')
-  console.log('sea', auth)
+  await login(key)
+}
+
+export function authenticate (user, ...args) {
+  return new Promise((resolve) => {
+    user.auth(...args, (data) => {
+      resolve(data)
+    })
+  })
 }
 
 export async function logout () {
