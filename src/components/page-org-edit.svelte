@@ -13,16 +13,17 @@
   load()
 
   async function load () {
-    const org = await store.get('org').then()
-    orgName = org?.name
-    name = org?.name
+    store.get('org').once((org) => {
+      orgName = org?.name
+      name = org?.name
+    })
 
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await store.get('org').put({ name }).then()
+    store.get('org').put({ name })
     window.location = './'
   }
 </script>

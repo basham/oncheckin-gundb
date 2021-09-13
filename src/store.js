@@ -1,11 +1,12 @@
 import Gun from 'gun/gun.js'
 import 'gun/nts.js' // Sync clocks across peers.
 import 'gun/sea.js' // Use users and encryption.
-import 'gun/axe.js' // Improve p2p communication.
+// import 'gun/axe.js' // Improve p2p communication.
 import 'gun/lib/radix.js' // Use in-memory Radix tree.
 import 'gun/lib/radisk.js' // Use storage adapter.
 import 'gun/lib/store.js' // Allow alternative storage options.
 import 'gun/lib/rindexed.js' // Use IndexedDB for storage.
+import 'gun/lib/promise.js' // Use promises (async, await).
 import 'gun/lib/then.js' // Use promises (async, await).
 // import 'gun/lib/webrtc.js'
 
@@ -16,10 +17,9 @@ const DB_NAME = 'oncheckin-store'
 
 export const store = Gun({
   file: DB_NAME,
-  localStorage: false,
+  localStorage: true,
   peers: [
-    'http://localhost:8765/gun',
-    'http://192.168.7.99:8765/gun'
+    'http://localhost:8765/gun'
   ]
 })
 

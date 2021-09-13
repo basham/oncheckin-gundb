@@ -10,10 +10,19 @@
   load()
 
   async function load () {
-    await init()
+    // await init()
 
-    const org = await store.get('org')
-    name = org?.name
+    store.get('org').once((org) => {
+      console.log('##', org)
+      name = org?.name
+    })
+
+    /*
+    const eventsMap = store.get('events').once().map().once((d, a) => {
+      console.log('%', d, a)
+    })
+    console.log('#', eventsMap)
+    */
 
     const eventsMap = await map(store.get('events'))
     events = eventsMap
