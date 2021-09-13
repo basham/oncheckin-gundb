@@ -10,7 +10,7 @@
   load()
 
   async function load () {
-    // await init()
+    await init()
 
     store.get('org').once((org) => {
       console.log('##', org)
