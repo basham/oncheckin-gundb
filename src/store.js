@@ -1,9 +1,13 @@
 import Gun from 'gun/gun.js'
 import 'gun/nts.js' // Sync clocks across peers.
 import 'gun/sea.js' // Use users and encryption.
+import 'gun/axe.js' // Improve p2p communication.
+import 'gun/lib/radix.js' // Use in-memory Radix tree.
+import 'gun/lib/radisk.js' // Use storage adapter.
 import 'gun/lib/store.js' // Allow alternative storage options.
 import 'gun/lib/rindexed.js' // Use IndexedDB for storage.
 import 'gun/lib/then.js' // Use promises (async, await).
+// import 'gun/lib/webrtc.js'
 
 const { indexedDB, localStorage } = window
 const sea = Gun.SEA
@@ -14,11 +18,15 @@ export const store = Gun({
   file: DB_NAME,
   localStorage: false,
   peers: [
-    'http://127.0.0.1:8765/gun',
+    'http://localhost:8765/gun',
     'http://192.168.7.99:8765/gun'
   ]
 })
 
+const pubKey = Math.random().toString(36).substr(2, 9)
+console.log('Pub key', pubKey)
+
+/*
 const mesh = store.back('opt.mesh')
 const peers = store.back('opt.peers')
 console.log('Peers', peers)
@@ -31,6 +39,7 @@ setInterval(() => {
 mesh.hear[dam] = (msg, peer) => {
   console.log('HEAR', msg, peer)
 }
+*/
 
 export async function init () {
   const key = localStorage.getItem(LOGIN_KEY)
