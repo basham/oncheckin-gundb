@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "snowpack build --polyfill-node",
-    "start": "snowpack dev --polyfill-node & node server/server.js",
+    "start": "snowpack dev --polyfill-node",
     "test": "standard"
   },
   "repository": {
@@ -26,8 +26,7 @@
   "dependencies": {
     "co-hyperdrive": "1.0.2",
     "gun": "0.2020.1234",
-    "hyper-sdk": "3.0.9",
-    "svelte": "3.42.3"
+    "svelte": "3.42.5"
   },
   "snowpack": {
     "mount": {
@@ -35,14 +34,6 @@
     },
     "optimize": {
       "minify": true
-    },
-    "packageOptions": {
-      "knownEntrypoints": [
-        "sodium-universal",
-        "readable-stream",
-        "debug",
-        "varint"
-      ]
     },
     "plugins": [
       "@snowpack/plugin-svelte"
