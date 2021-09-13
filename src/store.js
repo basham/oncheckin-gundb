@@ -1,8 +1,8 @@
 import Gun from 'gun/gun.js'
 import 'gun/sea.js' // Use users and encryption.
 // import 'gun/axe.js' // Improve p2p communication.
-import 'gun/lib/radix.js' // Use in-memory Radix tree.
-import 'gun/lib/radisk.js' // Use storage adapter.
+// import 'gun/lib/radix.js' // Use in-memory Radix tree.
+// import 'gun/lib/radisk.js' // Use storage adapter.
 import 'gun/lib/store.js' // Allow alternative storage options.
 import 'gun/lib/rindexed.js' // Use IndexedDB for storage.
 import 'gun/lib/promise.js' // Use promises (async, await).
