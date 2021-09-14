@@ -82,7 +82,7 @@ export async function get (g, type) {
     ref.once(async (data, key) => {
       const upgradedData = await upgrade(data, type)
       resolve({ data: upgradedData, key, ref })
-    })
+    }, { wait: 1 })
   })
 }
 
