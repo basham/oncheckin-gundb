@@ -1,13 +1,9 @@
 import Gun from 'gun/gun.js'
 import 'gun/sea.js' // Use users and encryption.
-// import 'gun/axe.js' // Improve p2p communication.
-// import 'gun/lib/radix.js' // Use in-memory Radix tree.
-// import 'gun/lib/radisk.js' // Use storage adapter.
+import 'gun/lib/radix.js' // Use Radix tree to speed up data lookups.
+import 'gun/lib/radisk.js' // Use storage adapter.
 import 'gun/lib/store.js' // Allow alternative storage options.
 import 'gun/lib/rindexed.js' // Use IndexedDB for storage.
-import 'gun/lib/promise.js' // Use promises (async, await).
-import 'gun/lib/then.js' // Use promises (async, await).
-// import 'gun/lib/webrtc.js'
 
 const { indexedDB, localStorage } = window
 const sea = Gun.SEA
@@ -21,24 +17,6 @@ export const store = Gun({
     'http://localhost:8765/gun'
   ]
 })
-
-const pubKey = Math.random().toString(36).substr(2, 9)
-console.log('Pub key', pubKey)
-
-/*
-const mesh = store.back('opt.mesh')
-const peers = store.back('opt.peers')
-console.log('Peers', peers)
-const dam = 'oncheckin'
-
-setInterval(() => {
-  mesh.say({ dam, d: Math.random() })
-}, 5000)
-
-mesh.hear[dam] = (msg, peer) => {
-  console.log('HEAR', msg, peer)
-}
-*/
 
 export async function init () {
   const key = localStorage.getItem(LOGIN_KEY)
@@ -84,16 +62,49 @@ function clearIndexedDB () {
   })
 }
 
-export async function map (g) {
-  const a = await g.then()
-  const b = Object.keys(a || {})
-    .filter((key) => key !== '_')
-    .map((key) => g.get(key).promise())
-  const c = await Promise.all(b)
-  const d = c
-    .map(({ get, put }) => {
-      const { _, ...data } = put
-      return { ...data, key: get }
+export async function createKey () {
+  return Math.random().toString(36).substr(2, 9)
+}
+
+export async function append (g, value) {
+  return new Promise((resolve) => {
+    let ref = null
+    ref = resolveChain(g).set(value, () => {
+      resolve(ref)
     })
-  return d
+  })
+}
+
+export async function get (g) {
+  return new Promise((resolve) => {
+    const ref = resolveChain(g)
+    ref.once((data, key) => {
+      resolve({ data, key, ref })
+    })
+  })
+}
+
+export async function getAll (g) {
+  const a = await get(g)
+  const b = Object.keys(a.data || {})
+    .filter((key) => key !== '_')
+    .map((key) => get([g, key]))
+  return await Promise.all(b)
+}
+
+export async function set (g, value) {
+  return new Promise((resolve) => {
+    resolveChain(g).put(value, () => {
+      resolve(g)
+    })
+  })
+}
+
+function resolveChain (g) {
+  if (Array.isArray(g)) {
+    return g
+      .reduce((acc, val) => Array.isArray(val) ? [...acc, ...val] : [...acc, val], [])
+      .reduce((acc, val) => acc.get(val), store)
+  }
+  return typeof g === 'string' ? store.get(g) : g
 }

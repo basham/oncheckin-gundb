@@ -1,5 +1,5 @@
 <script>
-  import { map, store } from '../store.js'
+  import { get, getAll } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -16,27 +16,25 @@
   load()
 
   async function load () {
-    const org = await store.get('org')
-    orgName = org?.name
+    const org = await get('org')
+    orgName = org.data?.name
 
-    const eventRef = store.get('events').get(eventId)
-    const event = await eventRef
-    if (event) {
-      title = event.name
-      date = event.date
+    const event = await get(['events', eventId])
+    if (event.data) {
+      title = event.data.name
+      date = event.data.date
     } else {
       title = 'Event not found'
     }
 
-    const attendances = await map(eventRef.get('attendances'))
+    const attendances = await getAll(['events', eventId, 'attendances'])
     const attendancesRich = attendances.map(async (attendance) => {
-      const participant = await store.get(attendance.participant)
-      return { ...attendance, participant }
+      const participant = await get(attendance.data.participant['#'])
+      const data = { ...attendance.data, participant }
+      return { ...attendance, data }
     })
     const att = await Promise.all(attendancesRich)
     _attendances = att
-
-    console.log('##', att)
 
     loading = false
   }
@@ -65,7 +63,7 @@
   <h2>Participants</h2>
   <ul>
     {#each _attendances as attendance}
-      <li>{attendance.participant.firstName} {attendance.participant.lastName}</li>
+      <li><a href={`?p=participant&id=${attendance.data.participant.key}`}>{attendance.data.participant.data.firstName} {attendance.data.participant.data.lastName}</a></li>
     {/each}
   </ul>
 </Page>

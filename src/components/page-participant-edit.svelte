@@ -1,5 +1,5 @@
 <script>
-  import { store } from '../store.js'
+  import { get, set } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -17,14 +17,14 @@
   load()
 
   async function load () {
-    const org = await store.get('org').then()
-    orgName = org?.name
+    const org = await get('org')
+    orgName = org.data?.name
 
-    const participant = await store.get('participants').get(participantId).then()
-    if (participant) {
-      firstName = participant.firstName
-      lastName = participant.lastName
-      fullName = `${participant.firstName} ${participant.lastName}`
+    const participant = await get(['participants', participantId])
+    if (participant.data) {
+      firstName = participant.data.firstName
+      lastName = participant.data.lastName
+      fullName = `${participant.data.firstName} ${participant.data.lastName}`
     }
 
     loading = false
@@ -32,8 +32,8 @@
 
   async function submit (event) {
     event.preventDefault()
-    await store.get('participants').get(participantId).put({ firstName, lastName }).then()
-    window.location = `./?=participant&id=${participantId}`
+    await set(['participants', participantId], { firstName, lastName })
+    window.location = `./?p=participant&id=${participantId}`
   }
 </script>
 

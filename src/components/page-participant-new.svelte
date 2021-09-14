@@ -1,5 +1,5 @@
 <script>
-  import { store } from '../store.js'
+  import { append, get } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -14,15 +14,15 @@
   load()
 
   async function load () {
-    const org = await store.get('org').then()
-    orgName = org?.name
+    const org = await get('org')
+    orgName = org.data?.name
 
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await store.get('participants').set({ firstName, lastName }).then()
+    await append('participants', { firstName, lastName })
     window.location = './'
   }
 </script>

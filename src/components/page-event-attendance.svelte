@@ -1,5 +1,5 @@
 <script>
-  import { map, store } from '../store.js'
+  import { append, get, getAll } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -21,21 +21,21 @@
   load()
 
   async function load () {
-    const org = await store.get('org').then()
-    orgName = org?.name
+    const org = await get('org')
+    orgName = org.data?.name
 
-    const event = await store.get('events').get(eventId).then()
-    if (event) {
-      eventName = event.name
+    const event = await get(['events', eventId])
+    if (event.data) {
+      eventName = event.data.name
     } else {
       title = 'Event not found'
     }
 
-    const participantsMap = await map(store.get('participants'))
-    participants = participantsMap
+    participants = (await getAll('participants'))
       .map((p) => {
-        const fullName = `${p.firstName} ${p.lastName}`
-        return { ...p, fullName }
+        const fullName = `${p.data.firstName} ${p.data.lastName}`
+        const data = { ...p.data, fullName }
+        return { ...p, data }
       })
 
     loading = false
@@ -44,8 +44,8 @@
   function handleInput (event) {
     const { value } = event.target
     options = participants
-      .filter(({ fullName }) =>
-        fullName.toLowerCase().indexOf(value.trim().toLowerCase()) !== -1
+      .filter(({ data }) =>
+        data.fullName.toLowerCase().indexOf(value.trim().toLowerCase()) !== -1
       )
       .slice(0, maxResults)
     query = value
@@ -88,16 +88,16 @@
 
   async function addParticipant () {
     const participantId = options[selectedIndex].key
-    const eventRef = store.get('events').get(eventId)
-    const participantRef = store.get('participants').get(participantId)
+    const { ref: eventRef } = await get(['events', eventId])
+    const { ref: participantRef } = await get(['participants', participantId])
     const attendance = {
       event: eventRef,
       participant: participantRef,
       host: false
     }
-    const attendanceRef = store.get('attendances').set(attendance)
-    eventRef.get('attendances').set(attendanceRef)
-    participantRef.get('attendances').set(attendanceRef)
+    const attendanceRef = await append('attendances', attendance)
+    await append(['events', eventId, 'attendances'], attendanceRef)
+    await append(['participants', participantId, 'attendances'], attendanceRef)
     window.location = `./?p=event&id=${eventId}`
   }
 </script>
@@ -182,7 +182,7 @@
             on:click={handleOptionClick}
             on:mouseover={handleOptionMouseOver}
             role="option">
-            {option.fullName}
+            {option.data.fullName}
           </li>
         {/each}
       </ul>

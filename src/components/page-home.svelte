@@ -1,5 +1,5 @@
 <script>
-  import { init, map, store } from '../store.js'
+  import { get, getAll, init } from '../store.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -12,31 +12,22 @@
   async function load () {
     await init()
 
-    store.get('org').once((org) => {
-      console.log('##', org)
-      name = org?.name
-    })
+    const org = await get('org')
+    name = org.data?.name
 
-    /*
-    const eventsMap = store.get('events').once().map().once((d, a) => {
-      console.log('%', d, a)
-    })
-    console.log('#', eventsMap)
-    */
-
-    const eventsMap = await map(store.get('events'))
-    events = eventsMap
+    events = (await getAll('events'))
       .sort((a, b) => {
         const [keyA, keyB] = [a, b]
-          .map(({ date }) => new Date(date))
+          .map(({ data }) => new Date(data.date))
         return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
       })
 
-    const participantsMap = await map(store.get('participants'))
-    participants = participantsMap
+    participants = (await getAll('participants'))
       .map((p) => {
-        const fullName = `${p.firstName} ${p.lastName}`
-        return { ...p, fullName }
+        const { firstName, lastName } = p.data
+        const fullName = `${firstName} ${lastName}`
+        const data = { ...p.data, fullName }
+        return { ...p, data }
       })
 
     loading = false
@@ -59,13 +50,13 @@
   <h2>Events ({events.length})</h2>
   <ol>
     {#each events as event}
-      <li><a href={`?p=event&id=${event.key}`}>{event.name}</a> ({event.date})</li>
+      <li><a href={`?p=event&id=${event.key}`}>{event.data.name}</a> ({event.data.date})</li>
     {/each}
   </ol>
   <h2>Participants ({participants.length})</h2>
   <ol>
     {#each participants as p}
-      <li><a href={`?p=participant&id=${p.key}`}>{p.fullName}</a></li>
+      <li><a href={`?p=participant&id=${p.key}`}>{p.data.fullName}</a></li>
     {/each}
   </ol>
 </Page>

@@ -1,5 +1,5 @@
 <script>
-  import { store } from '../store.js'
+  import { get } from '../store.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -15,12 +15,12 @@
   load()
 
   async function load () {
-    const org = await store.get('org').then()
-    orgName = org?.name
+    const org = await get('org')
+    orgName = org.data?.name
 
-    const participant = await store.get('participants').get(participantId).then()
-    if (participant) {
-      fullName = `${participant.firstName} ${participant.lastName}`
+    const participant = await get(['participants', participantId])
+    if (participant.data) {
+      fullName = `${participant.data.firstName} ${participant.data.lastName}`
       title = fullName
     } else {
       title = 'Participant not found'
