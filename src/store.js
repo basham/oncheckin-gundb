@@ -75,20 +75,20 @@ export async function append (g, value) {
   })
 }
 
-export async function get (g) {
+export async function get (g, type) {
   return new Promise((resolve) => {
     const ref = resolveChain(g)
     ref.once((data, key) => {
-      resolve({ data, key, ref })
+      resolve({ data: upgrade(data, type), key, ref })
     })
   })
 }
 
-export async function getAll (g) {
+export async function getAll (g, type) {
   const a = await get(g)
   const b = Object.keys(a.data || {})
     .filter((key) => key !== '_')
-    .map((key) => get([g, key]))
+    .map((key) => get([g, key], type))
   return await Promise.all(b)
 }
 
@@ -98,6 +98,21 @@ export async function set (g, value) {
       resolve(g)
     })
   })
+}
+
+const typeMap = {
+  Participant: upgradeParticipant
+}
+
+function upgrade (data, type) {
+  const upgrader = typeMap[type] ?? ((d) => d)
+  return upgrader(data)
+}
+
+function upgradeParticipant (data) {
+  const { firstName, lastName } = data
+  const fullName = `${firstName} ${lastName}`
+  return { ...data, fullName }
 }
 
 function resolveChain (g) {

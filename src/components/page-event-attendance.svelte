@@ -31,12 +31,7 @@
       title = 'Event not found'
     }
 
-    participants = (await getAll('participants'))
-      .map((p) => {
-        const fullName = `${p.data.firstName} ${p.data.lastName}`
-        const data = { ...p.data, fullName }
-        return { ...p, data }
-      })
+    participants = await getAll('participants', 'Participant')
 
     loading = false
   }

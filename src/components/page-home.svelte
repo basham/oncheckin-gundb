@@ -22,13 +22,7 @@
         return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
       })
 
-    participants = (await getAll('participants'))
-      .map((p) => {
-        const { firstName, lastName } = p.data
-        const fullName = `${firstName} ${lastName}`
-        const data = { ...p.data, fullName }
-        return { ...p, data }
-      })
+    participants = await getAll('participants', 'Participant')
 
     loading = false
   }

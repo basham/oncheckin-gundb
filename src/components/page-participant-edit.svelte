@@ -20,11 +20,11 @@
     const org = await get('org')
     orgName = org.data?.name
 
-    const participant = await get(['participants', participantId])
+    const participant = await get(['participants', participantId], 'Participant')
     if (participant.data) {
       firstName = participant.data.firstName
       lastName = participant.data.lastName
-      fullName = `${participant.data.firstName} ${participant.data.lastName}`
+      fullName = participant.data.fullName
     }
 
     loading = false
