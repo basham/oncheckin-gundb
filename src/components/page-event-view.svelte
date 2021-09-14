@@ -11,7 +11,7 @@
   let loading = true
   let orgName = ''
   let date = ''
-  let _attendances = []
+  let attendances = []
 
   load()
 
@@ -27,14 +27,7 @@
       title = 'Event not found'
     }
 
-    const attendances = await getAll(['events', eventId, 'attendances'])
-    const attendancesRich = attendances.map(async (attendance) => {
-      const participant = await get(attendance.data.participant['#'])
-      const data = { ...attendance.data, participant }
-      return { ...attendance, data }
-    })
-    const att = await Promise.all(attendancesRich)
-    _attendances = att
+    attendances = await getAll(['events', eventId, 'attendances'], 'Attendance')
 
     loading = false
   }
@@ -62,8 +55,8 @@
   </ul>
   <h2>Participants</h2>
   <ul>
-    {#each _attendances as attendance}
-      <li><a href={`?p=participant&id=${attendance.data.participant.key}`}>{attendance.data.participant.data.firstName} {attendance.data.participant.data.lastName}</a></li>
+    {#each attendances as attendance}
+      <li><a href={`?p=participant&id=${attendance.data.participant.key}`}>{attendance.data.participant.data.fullName}</a></li>
     {/each}
   </ul>
 </Page>

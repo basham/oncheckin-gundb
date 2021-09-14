@@ -78,8 +78,9 @@ export async function append (g, value) {
 export async function get (g, type) {
   return new Promise((resolve) => {
     const ref = resolveChain(g)
-    ref.once((data, key) => {
-      resolve({ data: upgrade(data, type), key, ref })
+    ref.once(async (data, key) => {
+      const upgradedData = await upgrade(data, type)
+      resolve({ data: upgradedData, key, ref })
     })
   })
 }
@@ -101,12 +102,18 @@ export async function set (g, value) {
 }
 
 const typeMap = {
+  Attendance: upgradeAttendance,
   Participant: upgradeParticipant
 }
 
-function upgrade (data, type) {
+async function upgrade (data, type) {
   const upgrader = typeMap[type] ?? ((d) => d)
-  return upgrader(data)
+  return await upgrader(data)
+}
+
+async function upgradeAttendance (data) {
+  const participant = await get(data.participant['#'], 'Participant')
+  return { ...data, participant }
 }
 
 function upgradeParticipant (data) {
