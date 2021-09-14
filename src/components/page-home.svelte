@@ -15,7 +15,7 @@
     const org = await get('org')
     name = org.data?.name
 
-    events = (await getAll('events'))
+    events = (await getAll('events', 'Event'))
       .sort((a, b) => {
         const [keyA, keyB] = [a, b]
           .map(({ data }) => new Date(data.date))
@@ -44,7 +44,7 @@
   <h2>Events ({events.length})</h2>
   <ol>
     {#each events as event}
-      <li><a href={`?p=event&id=${event.key}`}>{event.data.name}</a> ({event.data.date})</li>
+      <li><a href={`?p=event&id=${event.key}`}>{event.data.name}</a> ({event.data.displayDate})</li>
     {/each}
   </ol>
   <h2>Participants ({participants.length})</h2>

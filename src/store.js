@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import Gun from 'gun/gun.js'
 import 'gun/sea.js' // Use users and encryption.
 import 'gun/lib/radix.js' // Use Radix tree to speed up data lookups.
@@ -103,6 +104,7 @@ export async function set (g, value) {
 
 const typeMap = {
   Attendance: upgradeAttendance,
+  Event: upgradeEvent,
   Participant: upgradeParticipant
 }
 
@@ -114,6 +116,11 @@ async function upgrade (data, type) {
 async function upgradeAttendance (data) {
   const participant = await get(data.participant['#'], 'Participant')
   return { ...data, participant }
+}
+
+function upgradeEvent (data) {
+  const displayDate = format(Date.parse(data.date), 'PP')
+  return { ...data, displayDate }
 }
 
 function upgradeParticipant (data) {

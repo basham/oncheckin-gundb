@@ -19,10 +19,10 @@
     const org = await get('org')
     orgName = org.data?.name
 
-    const event = await get(['events', eventId])
+    const event = await get(['events', eventId], 'Event')
     if (event.data) {
       title = event.data.name
-      date = event.data.date
+      date = event.data.displayDate
     } else {
       title = 'Event not found'
     }
