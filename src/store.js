@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import Gun from 'gun/gun.js'
 import 'gun/sea.js' // Use users and encryption.
 import 'gun/lib/radix.js' // Use Radix tree to speed up data lookups.
@@ -80,18 +80,19 @@ export async function get (g, type) {
   return new Promise((resolve) => {
     const ref = resolveChain(g)
     ref.once(async (data, key) => {
-      const upgradedData = await upgrade(data, type)
-      resolve({ data: upgradedData, key, ref })
+      const upgraded = await upgrade(data, type)
+      resolve({ data: upgraded, key, ref })
     }, { wait: 1 })
   })
 }
 
 export async function getAll (g, type) {
-  const a = await get(g)
-  const b = Object.keys(a.data || {})
+  const source = await get(g)
+  const items = Object.keys(source.data || {})
     .filter((key) => key !== '_')
     .map((key) => get([g, key], type))
-  return await Promise.all(b)
+  const all = await Promise.all(items)
+  return await upgrade(all, `${type}All`)
 }
 
 export async function set (g, value) {
@@ -105,6 +106,7 @@ export async function set (g, value) {
 const typeMap = {
   Attendance: upgradeAttendance,
   Event: upgradeEvent,
+  EventAll: upgradeEventAll,
   Participant: upgradeParticipant
 }
 
@@ -119,8 +121,17 @@ async function upgradeAttendance (data) {
 }
 
 function upgradeEvent (data) {
-  const displayDate = format(Date.parse(data.date), 'PP')
-  return { ...data, displayDate }
+  const dateObj = parseISO(data.date)
+  const displayDate = format(dateObj, 'PP')
+  return { ...data, dateObj, displayDate }
+}
+
+function upgradeEventAll (data) {
+  return data.sort((a, b) => {
+    const [keyA, keyB] = [a, b]
+      .map(({ data }) => data.dateObj)
+    return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
+  })
 }
 
 function upgradeParticipant (data) {

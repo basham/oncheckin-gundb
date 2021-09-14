@@ -15,12 +15,7 @@
     const org = await get('org')
     name = org.data?.name
 
-    events = (await getAll('events', 'Event'))
-      .sort((a, b) => {
-        const [keyA, keyB] = [a, b]
-          .map(({ data }) => new Date(data.date))
-        return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
-      })
+    events = await getAll('events', 'Event')
 
     participants = await getAll('participants', 'Participant')
 
