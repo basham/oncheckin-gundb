@@ -1,5 +1,6 @@
 <script>
-  import { get, getAll } from '../store.js'
+  // import { get, getAll } from '../store.js'
+  import { get, getEvent } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -12,22 +13,19 @@
   let orgName = ''
   let date = ''
   let attendances = []
+  let notFound = false
 
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
+    orgName = get('org/name.txt')
 
-    const event = await get(['events', eventId], 'Event')
-    if (event.data) {
-      title = event.data.name
-      date = event.data.displayDate
-    } else {
-      title = 'Event not found'
-    }
+    const event = getEvent(eventId)
+    title = event?.name
+    date = event?.displayDate
+    notFound = !event
 
-    attendances = await getAll(['events', eventId, 'attendances'], 'Attendance')
+    // attendances = await getAll(['events', eventId, 'attendances'], 'Attendance')
 
     loading = false
   }
@@ -35,6 +33,7 @@
 
 <Page
   loading={loading}
+  notFound={notFound}
   title={title}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>

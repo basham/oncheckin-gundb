@@ -1,5 +1,6 @@
 <script>
-  import { append, get } from '../store.js'
+  import cuid from 'cuid'
+  import { delay, get, set } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -14,15 +15,16 @@
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
-
+    orgName = get('org/name.txt')
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await append('events', { name, date })
+    const id = cuid()
+    set(`events/${id}/name.txt`, name)
+    set(`events/${id}/date.txt`, date)
+    await delay(100)
     window.location = './'
   }
 </script>

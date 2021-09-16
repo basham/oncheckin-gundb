@@ -1,8 +1,10 @@
 <script>
   export let loading = false
+  export let notFound = false
   export let title = ''
 
   const appName = 'OnCheckIn'
+  $: title = notFound ? 'Page not found' : title
   $: fullTitle = [title, appName].filter((v) => v).join(' - ')
   // $: focusOnHeading(loading)
 
@@ -44,5 +46,9 @@
 </header>
 
 <main class:loading={loading}>
-  <slot></slot>
+  {#if notFound}
+    <h1>{title}</h1>
+  {:else}
+    <slot></slot>
+  {/if}
 </main>

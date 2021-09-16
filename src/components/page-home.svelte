@@ -1,6 +1,5 @@
 <script>
-  // import { get, getAll, init } from '../store.js'
-  import { get } from '../earthstar.js'
+  import { get, getEvents } from '../earthstar.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -12,9 +11,7 @@
 
   async function load () {
     name = get('org/name.txt')
-
-    // events = await getAll('events', 'Event')
-
+    events = getEvents()
     // participants = await getAll('participants', 'Participant')
     loading = false
   }
@@ -36,7 +33,7 @@
   <h2>Events ({events.length})</h2>
   <ol>
     {#each events as event}
-      <li><a href={`?p=event&id=${event.key}`}>{event.data.name}</a> ({event.data.displayDate})</li>
+      <li><a href={`?p=event&id=${event.id}`}>{event.name}</a> ({event.displayDate})</li>
     {/each}
   </ol>
   <h2>Participants ({participants.length})</h2>
