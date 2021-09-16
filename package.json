@@ -29,6 +29,7 @@
     "cuid": "2.1.8",
     "date-fns": "2.23.0",
     "earthstar": "6.8.5",
+    "gun": "0.2020.1235",
     "svelte": "3.42.6"
   },
   "snowpack": {
