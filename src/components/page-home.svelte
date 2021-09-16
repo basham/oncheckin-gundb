@@ -1,5 +1,6 @@
 <script>
-  import { get, getAll, init } from '../store.js'
+  // import { get, getAll, init } from '../store.js'
+  import '../earthstar.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -10,6 +11,7 @@
   load()
 
   async function load () {
+    /*
     await init()
 
     const org = await get('org')
@@ -18,7 +20,7 @@
     events = await getAll('events', 'Event')
 
     participants = await getAll('participants', 'Participant')
-
+    */
     loading = false
   }
 </script>

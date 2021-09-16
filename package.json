@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "snowpack build",
-    "start": "snowpack dev & node server/server.js",
+    "start": "snowpack dev & npm run start-pub",
+    "start-pub": "earthstar-pub --discoverable --sqlite --dataFolder ./data --title OnCheckIn --notes 'Blooming Fools H3'",
     "test": "standard"
   },
   "repository": {
@@ -20,11 +21,13 @@
   "homepage": "https://github.com/basham/oncheckin-gundb#readme",
   "devDependencies": {
     "@snowpack/plugin-svelte": "3.7.0",
+    "earthstar-pub": "6.0.5",
     "snowpack": "3.8.8",
     "standard": "16.0.3"
   },
   "dependencies": {
     "date-fns": "2.23.0",
+    "earthstar": "6.8.5",
     "gun": "0.2020.1234",
     "svelte": "3.42.5"
   },

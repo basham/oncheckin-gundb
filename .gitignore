@@ -2,6 +2,7 @@
 .DS_Store
 .snowpack
 build
+data
 npm-debug.log*
 node_modules
 package-lock.json
