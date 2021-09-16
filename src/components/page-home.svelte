@@ -1,6 +1,6 @@
 <script>
   // import { get, getAll, init } from '../store.js'
-  import '../earthstar.js'
+  import { get } from '../earthstar.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -11,16 +11,11 @@
   load()
 
   async function load () {
-    /*
-    await init()
+    name = get('org/name.txt')
 
-    const org = await get('org')
-    name = org.data?.name
+    // events = await getAll('events', 'Event')
 
-    events = await getAll('events', 'Event')
-
-    participants = await getAll('participants', 'Participant')
-    */
+    // participants = await getAll('participants', 'Participant')
     loading = false
   }
 </script>

@@ -1,5 +1,5 @@
 <script>
-  import { get, set } from '../store.js'
+  import { delay, get, set } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -13,16 +13,15 @@
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name || 'Home'
-    name = org.data?.name
-
+    name = get('org/name.txt')
+    orgName = name || 'Home'
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await set('org', { name })
+    set('org/name.txt', name)
+    await delay(100)
     window.location = './'
   }
 </script>

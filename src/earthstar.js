@@ -1,3 +1,4 @@
+import cuid from 'cuid'
 import earthstar, {
   OnePubOneWorkspaceSyncer,
   StorageLocalStorage,
@@ -13,19 +14,20 @@ const USER_KEYPAIR = `${APP}-keypair`
 const workspace = '+bfh3.hhh1997'
 const pub = 'http://localhost:3333'
 
-const storage = new StorageLocalStorage([ValidatorEs4], workspace)
+export const storage = new StorageLocalStorage([ValidatorEs4], workspace)
 const syncer = new OnePubOneWorkspaceSyncer(storage, pub)
 syncer.syncOnceAndContinueLive()
 
-const path = 'test.txt'
-const write = set(path, 'Hello worlder')
-const content = get(path)
-
-console.log('ES', earthstar)
-console.log(write, content)
+console.log('ES', earthstar, cuid())
 
 export function createRandomString (length) {
   return Math.random().toString(36).substr(2, length)
+}
+
+export function delay (ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ms)
+  })
 }
 
 export function get (path) {
