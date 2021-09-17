@@ -1,5 +1,5 @@
 <script>
-  import { get, getEvent } from '../earthstar.js'
+  import { eventStore, orgStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -17,9 +17,9 @@
   load()
 
   async function load () {
-    orgName = get('org/name.txt')
+    orgName = orgStore.get()?.name
 
-    const event = getEvent(eventId)
+    const event = eventStore.get(eventId)
     title = event?.name
     date = event?.displayDate
     notFound = !event

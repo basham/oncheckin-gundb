@@ -1,5 +1,5 @@
 <script>
-  import { get, getParticipant, setParticipant } from '../earthstar.js'
+  import { orgStore, participantStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -18,9 +18,9 @@
   load()
 
   async function load () {
-    orgName = get('org/name.txt')
+    orgName = orgStore.get()?.name
 
-    const participant = getParticipant(participantId)
+    const participant = participantStore.get(participantId)
     firstName = participant?.firstName
     lastName = participant?.lastName
     fullName = participant?.fullName
@@ -31,7 +31,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    await setParticipant(participantId, { firstName, lastName })
+    await participantStore.set(participantId, { firstName, lastName })
     window.location = `./?p=participant&id=${participantId}`
   }
 </script>

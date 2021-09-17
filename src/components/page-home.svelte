@@ -1,5 +1,5 @@
 <script>
-  import { get, getEvents, getParticipants } from '../earthstar.js'
+  import { eventStore, orgStore, participantStore } from '../stores.js'
   import Page from './page.svelte'
 
   let loading = true
@@ -10,9 +10,9 @@
   load()
 
   async function load () {
-    name = get('org/name.txt')
-    events = getEvents()
-    participants = getParticipants()
+    name = orgStore.get()?.name
+    events = eventStore.getAll()
+    participants = participantStore.getAll()
     loading = false
   }
 </script>

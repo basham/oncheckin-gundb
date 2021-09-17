@@ -1,5 +1,5 @@
 <script>
-  import { get, getParticipant } from '../earthstar.js'
+  import { participantStore, orgStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -15,10 +15,9 @@
   load()
 
   async function load () {
-    orgName = get('org/name.txt')
+    orgName = orgStore.get()?.name
 
-    const participant = getParticipant(participantId)
-    console.log(participant)
+    const participant = participantStore.get(participantId)
     title = participant?.fullName
     notFound = !participant
 

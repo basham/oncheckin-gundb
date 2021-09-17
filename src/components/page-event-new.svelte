@@ -1,5 +1,5 @@
 <script>
-  import { createEvent, get } from '../earthstar.js'
+  import { eventStore, orgStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -14,13 +14,13 @@
   load()
 
   async function load () {
-    orgName = get('org/name.txt')
+    orgName = orgStore.get()?.name
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await createEvent({ name, date })
+    await eventStore.create({ name, date })
     window.location = './'
   }
 </script>
