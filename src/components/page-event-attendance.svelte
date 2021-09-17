@@ -29,7 +29,6 @@
     notFound = !event
 
     participants = participantStore.getAll()
-    console.log('P', participants)
 
     loading = false
   }
