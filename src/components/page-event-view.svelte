@@ -1,5 +1,4 @@
 <script>
-  // import { get, getAll } from '../store.js'
   import { get, getEvent } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
