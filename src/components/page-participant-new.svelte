@@ -1,5 +1,5 @@
 <script>
-  import { append, get } from '../store.js'
+  import { createParticipant, get } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -14,15 +14,13 @@
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
-
+    orgName = get('org/name.txt')
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await append('participants', { firstName, lastName })
+    await createParticipant({ firstName, lastName })
     window.location = './'
   }
 </script>

@@ -1,6 +1,5 @@
 <script>
-  import cuid from 'cuid'
-  import { delay, get, set } from '../earthstar.js'
+  import { createEvent, get } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -21,10 +20,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    const id = cuid()
-    set(`events/${id}/name.txt`, name)
-    set(`events/${id}/date.txt`, date)
-    await delay(100)
+    await createEvent({ name, date })
     window.location = './'
   }
 </script>

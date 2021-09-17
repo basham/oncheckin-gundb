@@ -1,5 +1,5 @@
 <script>
-  import { get, set } from '../store.js'
+  import { get, getParticipant, setParticipant } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -9,6 +9,7 @@
   const participantId = params.get('id')
 
   let loading = true
+  let notFound = false
   let orgName = ''
   let firstName = ''
   let lastName = ''
@@ -17,28 +18,27 @@
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
+    orgName = get('org/name.txt')
 
-    const participant = await get(['participants', participantId], 'Participant')
-    if (participant.data) {
-      firstName = participant.data.firstName
-      lastName = participant.data.lastName
-      fullName = participant.data.fullName
-    }
+    const participant = getParticipant(participantId)
+    firstName = participant?.firstName
+    lastName = participant?.lastName
+    fullName = participant?.fullName
+    notFound = !participant
 
     loading = false
   }
 
   async function submit (event) {
     event.preventDefault()
-    await set(['participants', participantId], { firstName, lastName })
+    await setParticipant(participantId, { firstName, lastName })
     window.location = `./?p=participant&id=${participantId}`
   }
 </script>
 
 <Page
   loading={loading}
+  notFound={notFound}
   title={title}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>

@@ -1,3 +1,4 @@
+import cuid from 'cuid'
 import { format, parseISO } from 'date-fns'
 import earthstar, {
   OnePubOneWorkspaceSyncer,
@@ -24,6 +25,14 @@ export function createRandomString (length) {
   return Math.random().toString(36).substr(2, length)
 }
 
+export async function createEvent (values) {
+  return setEvent(cuid(), values)
+}
+
+export async function createParticipant (values) {
+  return setParticipant(cuid(), values)
+}
+
 export function delay (ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms)
@@ -35,20 +44,19 @@ export function get (path) {
 }
 
 export function getEvent (id) {
-  try {
-    const name = get(`events/${id}/name.txt`)
-    const date = get(`events/${id}/date.txt`)
-    const dateObj = parseISO(date)
-    const displayDate = format(dateObj, 'PP')
-    return {
-      id,
-      name,
-      date,
-      dateObj,
-      displayDate
-    }
-  } catch (e) {
-    return null
+  const name = get(`events/${id}/name.txt`)
+  const date = get(`events/${id}/date.txt`)
+  if ([name, date].some((item) => item === undefined)) {
+    return undefined
+  }
+  const dateObj = parseISO(date)
+  const displayDate = format(dateObj, 'PP')
+  return {
+    id,
+    name,
+    date,
+    dateObj,
+    displayDate
   }
 }
 
@@ -64,6 +72,37 @@ export function getEvents () {
       const [keyA, keyB] = [a, b]
         .map(({ dateObj }) => dateObj)
       return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
+    })
+}
+
+export function getParticipant (id) {
+  const values = ['firstName', 'lastName']
+    .map((key) => get(`participants/${id}/${key}.txt`))
+  if (values.some((item) => item === undefined)) {
+    return undefined
+  }
+  const [firstName, lastName] = values
+  const fullName = `${firstName} ${lastName}`.trim()
+  return {
+    id,
+    firstName,
+    lastName,
+    fullName
+  }
+}
+
+export function getParticipants () {
+  const ids = storage
+    .paths({ pathStartsWith: resolvePath('participants') })
+    .map((path) => path.split('/')[3])
+  const uniqueIds = Array.from(new Set(ids))
+  return uniqueIds
+    .map(getParticipant)
+    .filter((item) => item)
+    .sort((a, b) => {
+      const [keyA, keyB] = [a, b]
+        .map(({ fullName }) => fullName)
+      return keyA < keyB ? -1 : keyA > keyB ? 1 : 0
     })
 }
 
@@ -96,4 +135,20 @@ export function set (path, content) {
     path: resolvePath(path),
     content
   })
+}
+
+export async function setEvent (id, values) {
+  ['name', 'date']
+    .map((key) => [`events/${id}/${key}.txt`, values[key]])
+    .filter((item) => item[1] !== undefined)
+    .forEach(([path, value]) => set(path, value))
+  await delay(100)
+}
+
+export async function setParticipant (id, values) {
+  ['firstName', 'lastName']
+    .map((key) => [`participants/${id}/${key}.txt`, values[key]])
+    .filter((item) => item[1] !== undefined)
+    .forEach(([path, value]) => set(path, value))
+  await delay(100)
 }

@@ -10,10 +10,10 @@
 
   let title = ''
   let loading = true
+  let notFound = false
   let orgName = ''
   let date = ''
   let attendances = []
-  let notFound = false
 
   load()
 

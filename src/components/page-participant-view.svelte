@@ -1,5 +1,5 @@
 <script>
-  import { get } from '../store.js'
+  import { get, getParticipant } from '../earthstar.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -8,23 +8,19 @@
   const participantId = params.get('id')
 
   let title = ''
-  let fullName = ''
   let loading = true
+  let notFound = false
   let orgName = ''
 
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
+    orgName = get('org/name.txt')
 
-    const participant = await get(['participants', participantId], 'Participant')
-    if (participant.data) {
-      fullName = participant.data.fullName
-      title = fullName
-    } else {
-      title = 'Participant not found'
-    }
+    const participant = getParticipant(participantId)
+    console.log(participant)
+    title = participant?.fullName
+    notFound = !participant
 
     loading = false
   }
@@ -32,6 +28,7 @@
 
 <Page
   loading={loading}
+  notFound={notFound}
   title={title}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
