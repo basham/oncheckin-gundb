@@ -1,5 +1,5 @@
 <script>
-  import { append, get, getAll } from '../store.js'
+  import { eventStore, orgStore, participantStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -10,6 +10,7 @@
   const title = 'Edit attendance'
   const maxResults = 10
   let loading = true
+  let notFound = false
   let eventName = ''
   let orgName = ''
   let participants = []
@@ -21,17 +22,14 @@
   load()
 
   async function load () {
-    const org = await get('org')
-    orgName = org.data?.name
+    orgName = orgStore.get()?.name
 
-    const event = await get(['events', eventId])
-    if (event.data) {
-      eventName = event.data.name
-    } else {
-      title = 'Event not found'
-    }
+    const event = eventStore.get(eventId)
+    eventName = event?.name
+    notFound = !event
 
-    participants = await getAll('participants', 'Participant')
+    participants = participantStore.getAll()
+    console.log('P', participants)
 
     loading = false
   }
@@ -39,8 +37,8 @@
   function handleInput (event) {
     const { value } = event.target
     options = participants
-      .filter(({ data }) =>
-        data.fullName.toLowerCase().indexOf(value.trim().toLowerCase()) !== -1
+      .filter(({ fullName }) =>
+        fullName.toLowerCase().indexOf(value.trim().toLowerCase()) !== -1
       )
       .slice(0, maxResults)
     query = value
@@ -82,6 +80,9 @@
   }
 
   async function addParticipant () {
+    const participantId = options[selectedIndex].id
+    console.log('Add participant', participantId)
+    /*
     const participantId = options[selectedIndex].key
     const { ref: eventRef } = await get(['events', eventId])
     const { ref: participantRef } = await get(['participants', participantId])
@@ -94,6 +95,7 @@
     await append(['events', eventId, 'attendances'], attendanceRef)
     await append(['participants', participantId, 'attendances'], attendanceRef)
     window.location = `./?p=event&id=${eventId}`
+    */
   }
 </script>
 
@@ -129,6 +131,7 @@
 
 <Page
   loading={loading}
+  notFound={notFound}
   title={title}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
@@ -177,7 +180,7 @@
             on:click={handleOptionClick}
             on:mouseover={handleOptionMouseOver}
             role="option">
-            {option.data.fullName}
+            {option.fullName}
           </li>
         {/each}
       </ul>
