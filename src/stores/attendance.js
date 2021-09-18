@@ -1,5 +1,6 @@
+import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
-import { get, resolvePath, set, sortAsc, storage } from './util.js'
+import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
 
 const fileName = 'event-participant.txt'
 
@@ -11,13 +12,13 @@ export async function addHost (eventId, participantId) {
   return await setAttendee(eventId, participantId, 'host')
 }
 
-export function getAttendees (id) {
+export function getAttendees (eventId) {
   return storage
     .paths({
       pathStartsWith: resolvePath(),
       pathEndsWith: fileName
     })
-    .filter((path) => path.includes(id))
+    .filter((path) => path.includes(eventId))
     .map((path) => {
       const participantId = path.split('/')[2].split('-')[1]
       const participant = getParticipant(participantId)
@@ -33,6 +34,28 @@ export function getAttendees (id) {
     .sort(sortAsc('fullName'))
 }
 
+export function getEvents (participantId) {
+  return storage
+    .paths({
+      pathStartsWith: resolvePath(),
+      pathEndsWith: fileName
+    })
+    .filter((path) => path.includes(participantId))
+    .map((path) => {
+      const eventId = path.split('/')[2].split('-')[0]
+      const event = getEvent(eventId)
+      const attendee = get(path)
+      const isHost = attendee === 'host'
+      return {
+        ...event,
+        attendee,
+        isHost
+      }
+    })
+    .filter(({ attendee }) => attendee)
+    .sort(sortDesc('dateObj'))
+}
+
 export async function removeAttendee (eventId, participantId) {
   return await setAttendee(eventId, participantId, '')
 }
@@ -45,6 +68,7 @@ const attendance = {
   addAttendee,
   addHost,
   getAttendees,
+  getEvents,
   removeAttendee
 }
 

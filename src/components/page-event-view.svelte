@@ -57,7 +57,7 @@
       <li>
         <a href={`?p=participant&id=${participant.id}`}>{participant.fullName}</a>
         {#if participant.isHost}
-          Hare
+          Host
         {/if}
       </li>
     {/each}
