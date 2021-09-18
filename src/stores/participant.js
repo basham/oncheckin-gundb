@@ -3,9 +3,7 @@ import { createId, get, resolvePath, set, sortAsc, storage } from './util.js'
 const fileName = 'participant.json'
 
 export async function createParticipant (values) {
-  const id = createId()
-  await setParticipant(id, values)
-  return getParticipant(id)
+  return await setParticipant(createId(), values)
 }
 
 export function getParticipant (id) {
@@ -38,7 +36,8 @@ export function getParticipants () {
 }
 
 export async function setParticipant (id, values) {
-  return await set(`${id}/${fileName}`, values)
+  await set(`${id}/${fileName}`, values)
+  return getParticipant(id)
 }
 
 const participant = {

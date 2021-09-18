@@ -4,7 +4,7 @@ import { createId, get, resolvePath, set, sortDesc, storage } from './util.js'
 const fileName = 'event.json'
 
 export async function createEvent (values) {
-  return setEvent(createId(), values)
+  return await setEvent(createId(), values)
 }
 
 export function getEvent (id) {
@@ -15,12 +15,14 @@ export function getEvent (id) {
   const dateObj = parseISO(data.date)
   const displayDate = format(dateObj, 'PP')
   const name = data.name || '(Event)'
+  const url = `?p=event&id=${id}`
   return {
     ...data,
     id,
     dateObj,
     displayDate,
-    name
+    name,
+    url
   }
 }
 
@@ -39,7 +41,8 @@ export function getEvents () {
 }
 
 export async function setEvent (id, values) {
-  return await set(`${id}/${fileName}`, values)
+  await set(`${id}/${fileName}`, values)
+  return getEvent(id)
 }
 
 const event = {

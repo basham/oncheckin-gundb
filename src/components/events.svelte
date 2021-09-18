@@ -23,7 +23,7 @@
   {#each events as event}
     <li>
       <span class="date">{event.displayDate}</span>
-      <a href={`?p=event&id=${event.id}`}>
+      <a href={event.url}>
         <span class="name">{event.name}</span>
       </a>
     </li>
