@@ -1,14 +1,11 @@
 <script>
-  import { eventStore, orgStore } from '../stores.js'
-  import Breadcrumbs from './breadcrumbs.svelte'
-  import BreadcrumbsItem from './breadcrumbs-item.svelte'
+  import { eventStore } from '../stores.js'
   import Events from './events.svelte'
   import Page from './page.svelte'
 
   const title = 'Events'
 
   let loading = true
-  let orgName = ''
   let events = []
   let upcomingEvents = []
   let pastEvents = []
@@ -16,7 +13,6 @@
   load()
 
   async function load () {
-    orgName = orgStore.get()?.name
     events = eventStore.getAll()
     upcomingEvents = eventStore.getUpcoming()
     pastEvents = eventStore.getPast()
@@ -38,10 +34,6 @@
 <Page
   loading={loading}
   title={title}>
-  <Breadcrumbs>
-    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
-  </Breadcrumbs>
   <h1>{title}</h1>
   <ul class="toolbar">
     <li><a href="?p=new-event">New event</a></li>

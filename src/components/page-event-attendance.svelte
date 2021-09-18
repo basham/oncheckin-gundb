@@ -1,5 +1,5 @@
 <script>
-  import { attendanceStore, eventStore, orgStore, participantStore } from '../stores.js'
+  import { attendanceStore, eventStore, participantStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Lookup from './lookup.svelte'
@@ -14,15 +14,12 @@
   let eventName = ''
   let eventDate = ''
   let eventUrl = ''
-  let orgName = ''
   let attendees = []
   let participants = []
 
   load()
 
   async function load () {
-    orgName = orgStore.get()?.name
-
     const event = eventStore.get(eventId)
     eventName = event?.name
     eventDate = event?.displayDate
@@ -84,8 +81,6 @@
   notFound={notFound}
   title={[title, `${eventName} (${eventDate})`]}>
   <Breadcrumbs>
-    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
     <BreadcrumbsItem href={eventUrl}>{eventName} ({eventDate})</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>

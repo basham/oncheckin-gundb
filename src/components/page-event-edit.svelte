@@ -1,5 +1,5 @@
 <script>
-  import { eventStore, orgStore } from '../stores.js'
+  import { eventStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -10,7 +10,6 @@
 
   let loading = true
   let notFound = false
-  let orgName = ''
   let eventName = ''
   let eventDate = ''
   let eventUrl = ''
@@ -20,7 +19,6 @@
   load()
 
   async function load () {
-    orgName = orgStore.get()?.name
     const event = eventStore.get(eventId)
     name = event?.name
     date = event?.date
@@ -43,8 +41,6 @@
   notFound={notFound}
   title={[title, `${eventName} (${eventDate})`]}>
   <Breadcrumbs>
-    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
     <BreadcrumbsItem href={eventUrl}>{eventName} ({eventDate})</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>

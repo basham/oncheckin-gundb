@@ -1,5 +1,5 @@
 <script>
-  import { orgStore, participantStore } from '../stores.js'
+  import { participantStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -10,7 +10,6 @@
 
   let loading = true
   let notFound = false
-  let orgName = ''
   let firstName = ''
   let lastName = ''
   let fullName = ''
@@ -19,8 +18,6 @@
   load()
 
   async function load () {
-    orgName = orgStore.get()?.name
-
     const participant = participantStore.get(participantId)
     firstName = participant?.firstName
     lastName = participant?.lastName
@@ -43,8 +40,6 @@
   notFound={notFound}
   title={[title, fullName]}>
   <Breadcrumbs>
-    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem href="?p=participants">Participants</BreadcrumbsItem>
     <BreadcrumbsItem href={url}>{fullName}</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>

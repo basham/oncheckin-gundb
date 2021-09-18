@@ -1,8 +1,6 @@
 <script>
-  import { participantStore, orgStore, attendanceStore } from '../stores.js'
+  import { participantStore, attendanceStore } from '../stores.js'
   import { pluralize } from '../util.js'
-  import Breadcrumbs from './breadcrumbs.svelte'
-  import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
   const params = (new URL(document.location)).searchParams
@@ -11,7 +9,6 @@
   let title = ''
   let loading = true
   let notFound = false
-  let orgName = ''
   let events = []
   let eventCount = 0
   let hostCount = 0
@@ -19,8 +16,6 @@
   load()
 
   async function load () {
-    orgName = orgStore.get()?.name
-
     const participant = participantStore.get(participantId)
     title = participant?.fullName
     notFound = !participant
@@ -39,11 +34,6 @@
   loading={loading}
   notFound={notFound}
   title={title}>
-  <Breadcrumbs>
-    <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
-    <BreadcrumbsItem href="?p=participants">Participants</BreadcrumbsItem>
-    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
-  </Breadcrumbs>
   <h1>{title}</h1>
   <p>{eventCount} {pluralize(eventCount, 'event')}, {hostCount} {pluralize(hostCount, 'host')}</p>
   <p><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></p>
