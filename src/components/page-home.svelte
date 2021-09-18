@@ -1,5 +1,6 @@
 <script>
   import { eventStore, orgStore, participantStore } from '../stores.js'
+  import Events from './events.svelte'
   import Page from './page.svelte'
 
   let loading = true
@@ -26,28 +27,6 @@
     margin: var(--size-2) 0;
     padding: 0;
   }
-  .event-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--size-3);
-    list-style-type: '';
-    margin: 0;
-    padding: 0;
-  }
-  .event-list__link {
-    display: block;
-    text-decoration: none;
-  }
-  .event-list__link:hover {
-    text-decoration: underline;
-  }
-  .event-list__date {
-    display: block;
-    color: var(--color-black-1);
-  }
-  .event-list__name {
-    font-size: var(--fs-2);
-  }
   .participant-list {
     display: flex;
     flex-direction: column;
@@ -73,16 +52,8 @@
     <li><a href="?p=new-participant">New participant</a></li>
   </ul>
   <h2>Events ({events.length})</h2>
-  <ol class="event-list">
-    {#each events as event}
-      <li class="event-list__item">
-        <a class="event-list__link" href={`?p=event&id=${event.id}`}>
-          <span class="event-list__name">{event.name}</span>
-          <span class="event-list__date">{event.displayDate}</span>
-        </a>
-      </li>
-    {/each}
-  </ol>
+  <p><a href="?p=events">All events</a></p>
+  <Events events={events} />
   <h2>Participants ({participants.length})</h2>
   <ol class="participant-list">
     {#each participants as p}
