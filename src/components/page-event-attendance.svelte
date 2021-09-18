@@ -1,5 +1,5 @@
 <script>
-  import { eventStore, orgStore, participantStore } from '../stores.js'
+  import { attendanceStore, eventStore, orgStore, participantStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -80,21 +80,8 @@
 
   async function addParticipant () {
     const participantId = options[selectedIndex].id
-    console.log('Add participant', participantId)
-    /*
-    const participantId = options[selectedIndex].key
-    const { ref: eventRef } = await get(['events', eventId])
-    const { ref: participantRef } = await get(['participants', participantId])
-    const attendance = {
-      event: eventRef,
-      participant: participantRef,
-      host: false
-    }
-    const attendanceRef = await append('attendances', attendance)
-    await append(['events', eventId, 'attendances'], attendanceRef)
-    await append(['participants', participantId, 'attendances'], attendanceRef)
+    await attendanceStore.addAttendee(eventId, participantId)
     window.location = `./?p=event&id=${eventId}`
-    */
   }
 </script>
 

@@ -1,12 +1,14 @@
 import { format, parseISO } from 'date-fns'
-import { createId, get, resolvePath, setJSON, storage } from './util.js'
+import { createId, get, resolvePath, set, storage } from './util.js'
+
+const fileName = 'event.json'
 
 export async function createEvent (values) {
   return setEvent(createId(), values)
 }
 
 export function getEvent (id) {
-  const data = get(`${id}/event.json`)
+  const data = get(`${id}/${fileName}`)
   if (!data) {
     return undefined
   }
@@ -24,7 +26,7 @@ export function getEvents () {
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
-      pathEndsWith: 'event.json'
+      pathEndsWith: fileName
     })
     .map((path) => path.split('/')[2])
   const uniqueIds = Array.from(new Set(ids))
@@ -39,7 +41,7 @@ export function getEvents () {
 }
 
 export async function setEvent (id, values) {
-  return await setJSON(`${id}/event`, values)
+  return await set(`${id}/${fileName}`, values)
 }
 
 const event = {

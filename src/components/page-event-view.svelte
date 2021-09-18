@@ -1,5 +1,5 @@
 <script>
-  import { eventStore, orgStore } from '../stores.js'
+  import { attendanceStore, eventStore, orgStore } from '../stores.js'
   import Breadcrumbs from './breadcrumbs.svelte'
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
@@ -12,7 +12,7 @@
   let notFound = false
   let orgName = ''
   let date = ''
-  let attendances = []
+  let participants = []
 
   load()
 
@@ -24,7 +24,7 @@
     date = event?.displayDate
     notFound = !event
 
-    // attendances = await getAll(['events', eventId, 'attendances'], 'Attendance')
+    participants = attendanceStore.getAttendees(eventId)
 
     loading = false
   }
@@ -53,8 +53,8 @@
   </ul>
   <h2>Participants</h2>
   <ul>
-    {#each attendances as attendance}
-      <li><a href={`?p=participant&id=${attendance.data.participant.key}`}>{attendance.data.participant.data.fullName}</a></li>
+    {#each participants as participant}
+      <li><a href={`?p=participant&id=${participant.id}`}>{participant.fullName}</a></li>
     {/each}
   </ul>
 </Page>

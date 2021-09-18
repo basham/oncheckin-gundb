@@ -21,13 +21,16 @@ syncer.syncOnceAndContinueLive()
 console.log('ES', earthstar)
 
 const extDecodeMap = {
-  json: (d) => JSON.parse(d),
-  txt: (d) => d
+  json: (content) => JSON.parse(content),
+  txt: (content) => content
 }
 
 const extEncodeMap = {
-  json: (d) => JSON.stringify(d),
-  txt: (d) => d
+  json: (path, content) => JSON.stringify({
+    ...(get(path) || {}),
+    ...content
+  }),
+  txt: (path, content) => content
 }
 
 export function createId () {
@@ -70,7 +73,8 @@ function parseExtension (path, defaultExtension = 'txt') {
 }
 
 export function resolvePath (path = '') {
-  return `/${APP}/${path}`
+  const prefix = `/${APP}/`
+  return path.startsWith(prefix) ? path : `${prefix}${path}`
 }
 
 export async function set (path, content) {
@@ -80,16 +84,8 @@ export async function set (path, content) {
   const write = storage.set(keypair, {
     format: 'es.4',
     path: resolvePath(path),
-    content: encode(content)
+    content: encode(path, content)
   })
   await delay(100)
   return write
-}
-
-export async function setJSON (path, values) {
-  const fullPath = `${path}.json`
-  return await set(fullPath, {
-    ...(get(fullPath) || {}),
-    ...values
-  })
 }

@@ -1,11 +1,13 @@
-import { createId, get, resolvePath, setJSON, storage } from './util.js'
+import { createId, get, resolvePath, set, storage } from './util.js'
+
+const fileName = 'participant.json'
 
 export async function createParticipant (values) {
   return setParticipant(createId(), values)
 }
 
 export function getParticipant (id) {
-  const data = get(`${id}/participant.json`)
+  const data = get(`${id}/${fileName}`)
   if (!data) {
     return undefined
   }
@@ -21,7 +23,7 @@ export function getParticipants () {
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
-      pathEndsWith: 'participant.json'
+      pathEndsWith: fileName
     })
     .map((path) => path.split('/')[2])
   const uniqueIds = Array.from(new Set(ids))
@@ -36,7 +38,7 @@ export function getParticipants () {
 }
 
 export async function setParticipant (id, values) {
-  return await setJSON(`${id}/participant`, values)
+  return await set(`${id}/${fileName}`, values)
 }
 
 const participant = {
