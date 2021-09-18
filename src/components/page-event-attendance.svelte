@@ -13,6 +13,7 @@
   let notFound = false
   let eventName = ''
   let orgName = ''
+  let attendees = []
   let participants = []
 
   load()
@@ -24,7 +25,18 @@
     eventName = event?.name
     notFound = !event
 
+    attendees = attendanceStore.getAttendees(eventId)
+      .map((p) => {
+        const nameId = `${p.id}-name`
+        return { ...p, nameId }
+      })
+
+    const attendeeIds = attendees
+      .map((p) => p.id)
+      .join('-')
+
     participants = participantStore.getAll()
+      .filter((p) => !attendeeIds.includes(p.id))
 
     loading = false
   }
@@ -35,9 +47,33 @@
 
   async function addParticipant (participant) {
     await attendanceStore.addAttendee(eventId, participant.id)
-    window.location = `./?p=event&id=${eventId}`
+    await load()
+  }
+
+  async function makeAttendee (event) {
+    const { id } = event.target.dataset
+    await attendanceStore.addAttendee(eventId, id)
+    await load()
+  }
+
+  async function makeHost (event) {
+    const { id } = event.target.dataset
+    await attendanceStore.addHost(eventId, id)
+    await load()
+  }
+
+  async function removeAttendee (event) {
+    const { id } = event.target.dataset
+    await attendanceStore.removeAttendee(eventId, id)
+    await load()
   }
 </script>
+
+<style>
+  .attendee {
+    text-transform: capitalize;
+  }
+</style>
 
 <Page
   loading={loading}
@@ -56,4 +92,38 @@
     onSelected={addParticipant}
     options={participants}
     render={({ fullName }) => fullName} />
+  <h2>Participants</h2>
+  <ul>
+    {#each attendees as attendee}
+      <li>
+        <a
+          href={`?p=participant&id=${attendee.id}`}
+          id={attendee.nameId}>
+          {attendee.fullName}
+        </a>
+        <span class="attendee">{attendee.attendee}</span>
+        {#if attendee.isHost}
+          <button
+            aria-describedby={attendee.nameId}
+            data-id={attendee.id}
+            on:click={makeAttendee}>
+            Make attendee
+          </button>
+        {:else}
+          <button
+            aria-describedby={attendee.nameId}
+            data-id={attendee.id}
+            on:click={makeHost}>
+            Make host
+          </button>
+        {/if}
+        <button
+          aria-describedby={attendee.nameId}
+          data-id={attendee.id}
+          on:click={removeAttendee}>
+          Remove
+        </button>
+      </li>
+    {/each}
+  </ul>
 </Page>

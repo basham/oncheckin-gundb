@@ -21,12 +21,15 @@ export function getAttendees (id) {
     .map((path) => {
       const participantId = path.split('/')[2].split('-')[1]
       const participant = getParticipant(participantId)
-      const isHost = get(path) === 'host'
+      const attendee = get(path)
+      const isHost = attendee === 'host'
       return {
         ...participant,
+        attendee,
         isHost
       }
     })
+    .filter(({ attendee }) => attendee)
     .sort(sortAsc('fullName'))
 }
 
