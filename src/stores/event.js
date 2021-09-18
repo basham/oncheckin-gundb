@@ -14,11 +14,13 @@ export function getEvent (id) {
   }
   const dateObj = parseISO(data.date)
   const displayDate = format(dateObj, 'PP')
+  const name = data.name || '(Event)'
   return {
     ...data,
     id,
     dateObj,
-    displayDate
+    displayDate,
+    name
   }
 }
 

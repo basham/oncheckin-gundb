@@ -51,7 +51,7 @@
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
     <li><a href={`?p=edit-attendance&id=${eventId}`}>Edit attendance</a></li>
   </ul>
-  <h2>Participants</h2>
+  <h2>{participants.length ? 'Participants' : 'No participants'}</h2>
   <ul>
     {#each participants as participant}
       <li>

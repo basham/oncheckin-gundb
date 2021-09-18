@@ -30,7 +30,7 @@
   async function submit (event) {
     event.preventDefault()
     await eventStore.set(eventId, { name, date })
-    window.location = './'
+    window.location = `./?p=event&id=${eventId}`
   }
 </script>
 
