@@ -44,13 +44,7 @@
     <BreadcrumbsItem href="?p=participants">Participants</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
-  <h1>
-    {#if title}
-      {title}
-    {:else}
-      <em>Participant</em>
-    {/if}
-  </h1>
+  <h1>{title}</h1>
   <p>{eventCount} {pluralize(eventCount, 'event')}, {hostCount} {pluralize(hostCount, 'host')}</p>
   <p><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></p>
   <h2>{events.length ? 'Events' : 'No events'}</h2>

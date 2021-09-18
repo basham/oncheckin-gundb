@@ -11,7 +11,7 @@ export function getParticipant (id) {
   if (!data) {
     return undefined
   }
-  const fullName = `${data.firstName} ${data.lastName}`.trim()
+  const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
   const url = `?p=participant&id=${id}`
   return {
     ...data,
