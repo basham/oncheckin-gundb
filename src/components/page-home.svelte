@@ -7,6 +7,7 @@
   let loading = true
   let name = ''
   let events = []
+  let upcomingEvents = []
   let participants = []
 
   load()
@@ -14,6 +15,7 @@
   async function load () {
     name = orgStore.get()?.name
     events = eventStore.getAll()
+    upcomingEvents = eventStore.getUpcoming().slice(0, 3)
     participants = participantStore.getAll()
     loading = false
   }
@@ -37,8 +39,8 @@
     <li><a href="?p=participants">Participants ({participants.length})</a></li>
     <li><a href="?p=edit-org">Edit</a></li>
   </ul>
-  <h2>Events</h2>
-  <Events events={events} />
+  <h2>Upcoming events</h2>
+  <Events events={upcomingEvents} />
   <h2>Participants</h2>
   <Participants participants={participants} />
 </Page>
