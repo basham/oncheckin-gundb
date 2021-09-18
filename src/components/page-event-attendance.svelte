@@ -12,6 +12,7 @@
   let loading = true
   let notFound = false
   let eventName = ''
+  let eventDate = ''
   let orgName = ''
   let attendees = []
   let participants = []
@@ -23,6 +24,7 @@
 
     const event = eventStore.get(eventId)
     eventName = event?.name
+    eventDate = event?.displayDate
     notFound = !event
 
     attendees = attendanceStore.getAttendees(eventId)
@@ -78,11 +80,11 @@
 <Page
   loading={loading}
   notFound={notFound}
-  title={title}>
+  title={[title, `${eventName} (${eventDate})`]}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
-    <BreadcrumbsItem href={`?p=event&id=${eventId}`}>{eventName}</BreadcrumbsItem>
+    <BreadcrumbsItem href={`?p=event&id=${eventId}`}>{eventName} ({eventDate})</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>

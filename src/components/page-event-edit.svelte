@@ -12,6 +12,7 @@
   let notFound = false
   let orgName = ''
   let eventName = ''
+  let eventDate = ''
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
 
@@ -23,6 +24,7 @@
     name = event?.name
     date = event?.date
     eventName = name
+    eventDate = event?.displayDate
     notFound = !event
     loading = false
   }
@@ -37,11 +39,11 @@
 <Page
   loading={loading}
   notFound={notFound}
-  title={title}>
+  title={[title, `${eventName} (${eventDate})`]}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
-    <BreadcrumbsItem>{eventName}</BreadcrumbsItem>
+    <BreadcrumbsItem href={`?p=event&id=${eventId}`}>{eventName} ({eventDate})</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>

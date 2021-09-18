@@ -11,6 +11,7 @@
   let loading = true
   let notFound = false
   let orgName = ''
+  let name = ''
   let date = ''
   let participants = []
 
@@ -20,8 +21,9 @@
     orgName = orgStore.get()?.name
 
     const event = eventStore.get(eventId)
-    title = event?.name
+    name = event?.name
     date = event?.displayDate
+    title = `${name} (${date})`
     notFound = !event
 
     participants = attendanceStore.getAttendees(eventId)
@@ -39,13 +41,7 @@
     <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
-  <h1>
-    {#if title}
-      {title}
-    {:else}
-      <em>Event</em>
-    {/if}
-  </h1>
+  <h1>{name}</h1>
   <p>{date}</p>
   <ul>
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>

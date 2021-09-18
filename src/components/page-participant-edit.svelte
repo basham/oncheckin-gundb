@@ -39,7 +39,7 @@
 <Page
   loading={loading}
   notFound={notFound}
-  title={title}>
+  title={[title, fullName]}>
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem href="?p=participants">Participants</BreadcrumbsItem>
