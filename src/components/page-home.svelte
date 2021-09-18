@@ -27,12 +27,12 @@
     padding: 0;
   }
   .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
     list-style-type: '';
     margin: 0;
     padding: 0;
-  }
-  .event-list__item {
-    padding: var(--size-2) 0;
   }
   .event-list__link {
     display: block;
@@ -43,7 +43,7 @@
   }
   .event-list__date {
     display: block;
-    color: var(--color-black-9);
+    color: var(--color-black-1);
   }
   .event-list__name {
     font-size: var(--fs-2);

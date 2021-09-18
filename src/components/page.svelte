@@ -24,8 +24,8 @@
 
 <style>
   header {
-    border-bottom: var(--border);
-    padding: var(--size-2);
+    background-color: var(--color-black);
+    padding: var(--size-4);
   }
 
   main {

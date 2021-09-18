@@ -1,46 +1,71 @@
 :root {
-  --color-black-1: #ccc;
-  --color-black-9: #333;
+  --color-black-1: #ddd;
+  --color-black-8: #444;
+  --color-black-9: #161616;
+  --color-black: #000;
   --color-white: #fff;
+  /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
+  --color-ix: orange;
   --font: system, sans-serif;
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
-  --lh-1: 1.5rem;
-  --lh-2: var(--lh-1);
-  --lh-3: 2rem;
+  --fs-3: calc(20rem/16);
+  --fs-4: calc(28rem/16);
+  --lh-1: 1.25rem;
+  --lh-2: 1.5rem;
+  --lh-3: 1.75rem;
+  --lh-4: 2rem;
   --px-1: calc(1rem/16);
+  --px-2: calc(2rem/16);
   --size-1: 0.25rem;
   --size-2: 0.5rem;
   --size-3: 0.75rem;
   --size-4: 1rem;
-  --border: var(--px-1) solid var(--color-black-1);
+  --size-5: 1.25rem;
+  --size-6: 1.5rem;
+  --border: var(--px-1) solid var(--color-black);
+}
+
+html {
+  background-color: var(--color-black-9);
+  color: var(--color-white);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font);
+  font-size: var(--fs-1);
+  line-height: var(--lh-1);
   margin: 0;
 }
 
 button {
+  background-color: var(--color-ix);
   border: var(--border);
   border-radius: var(--size-1);
+  cursor: pointer;
   font-size: var(--fs-1);
   font-weight: bold;
-  line-height: var(--lh-3);
+  line-height: var(--lh-4);
   padding: 0 var(--size-2);
 }
 
 input[type=date],
 input[type=search],
 input[type=text] {
+  background-color: var(--color-black-8);
   border: var(--border);
   border-radius: var(--size-1);
+  color: var(--color-white);
   font-family: var(--font);
   font-size: var(--fs-1);
   padding: var(--size-2);
 }
 
 h1 {
+  font-size: var(--fs-4);
+  font-weight: normal;
+  line-height: var(--lh-4);
   margin: 0;
 }
 
@@ -49,7 +74,10 @@ h1:focus {
 }
 
 h2 {
-  margin: var(--size-4) 0 var(--size-2);
+  font-size: var(--fs-3);
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  margin: var(--size-6) 0 var(--size-3);
 }
 
 label {
@@ -61,7 +89,12 @@ label {
 }
 
 a {
-  color: blue;
+  color: var(--color-ix);
+}
+
+:focus {
+  outline: var(--px-2) solid var(--color-ix);
+  outline-offset: var(--px-2);
 }
 
 .u-m-top-4 {
