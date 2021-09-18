@@ -57,7 +57,7 @@
   <ul>
     {#each events as event}
       <li>
-        <a href={`?p=event&id=${event.id}`}>{event.name}</a>
+        <a href={event.url}>{event.name}</a>
         ({event.displayDate})
         {#if event.isHost}
           Host

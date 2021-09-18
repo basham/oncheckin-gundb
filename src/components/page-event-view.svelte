@@ -51,7 +51,7 @@
   <ul>
     {#each participants as participant}
       <li>
-        <a href={`?p=participant&id=${participant.id}`}>{participant.fullName}</a>
+        <a href={participant.url}>{participant.fullName}</a>
         {#if participant.isHost}
           Host
         {/if}

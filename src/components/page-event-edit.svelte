@@ -13,6 +13,7 @@
   let orgName = ''
   let eventName = ''
   let eventDate = ''
+  let eventUrl = ''
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
 
@@ -25,6 +26,7 @@
     date = event?.date
     eventName = name
     eventDate = event?.displayDate
+    eventUrl = event?.url
     notFound = !event
     loading = false
   }
@@ -32,7 +34,7 @@
   async function submit (event) {
     event.preventDefault()
     await eventStore.set(eventId, { name, date })
-    window.location = `./?p=event&id=${eventId}`
+    window.location = eventUrl
   }
 </script>
 
@@ -43,7 +45,7 @@
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem href="?p=events">Events</BreadcrumbsItem>
-    <BreadcrumbsItem href={`?p=event&id=${eventId}`}>{eventName} ({eventDate})</BreadcrumbsItem>
+    <BreadcrumbsItem href={eventUrl}>{eventName} ({eventDate})</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>

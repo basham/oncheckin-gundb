@@ -14,6 +14,7 @@
   let firstName = ''
   let lastName = ''
   let fullName = ''
+  let url = ''
 
   load()
 
@@ -24,6 +25,7 @@
     firstName = participant?.firstName
     lastName = participant?.lastName
     fullName = participant?.fullName
+    url = participant?.url
     notFound = !participant
 
     loading = false
@@ -32,7 +34,7 @@
   async function submit (event) {
     event.preventDefault()
     await participantStore.set(participantId, { firstName, lastName })
-    window.location = `./?p=participant&id=${participantId}`
+    window.location = url
   }
 </script>
 
@@ -43,7 +45,7 @@
   <Breadcrumbs>
     <BreadcrumbsItem>{orgName}</BreadcrumbsItem>
     <BreadcrumbsItem href="?p=participants">Participants</BreadcrumbsItem>
-    <BreadcrumbsItem href={`?p=participant&id=${participantId}`}>{fullName}</BreadcrumbsItem>
+    <BreadcrumbsItem href={url}>{fullName}</BreadcrumbsItem>
     <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
   </Breadcrumbs>
   <h1>{title}</h1>
