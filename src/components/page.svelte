@@ -71,6 +71,10 @@
     color: var(--color-ix);
   }
 
+  nav a:focus {
+    outline-offset: var(--size-1);
+  }
+
   nav a[aria-current] {
     box-shadow: 0 var(--px-2) 0 0 var(--color-ix);
     color: var(--color-ix);
