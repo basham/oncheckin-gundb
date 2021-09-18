@@ -31,13 +31,7 @@
 </style>
 
 <Page loading={loading}>
-  <h1>
-    {#if name}
-      {name}
-    {:else}
-      <em>Organization</em>
-    {/if}
-  </h1>
+  <h1>{name}</h1>
   <ul class="toolbar">
     <li><a href="?p=edit-org">Edit</a></li>
     <li><a href="?p=new-event">New event</a></li>
