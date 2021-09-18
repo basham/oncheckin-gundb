@@ -3,7 +3,9 @@ import { createId, get, resolvePath, set, sortAsc, storage } from './util.js'
 const fileName = 'participant.json'
 
 export async function createParticipant (values) {
-  return setParticipant(createId(), values)
+  const id = createId()
+  await setParticipant(id, values)
+  return getParticipant(id)
 }
 
 export function getParticipant (id) {
@@ -12,10 +14,12 @@ export function getParticipant (id) {
     return undefined
   }
   const fullName = `${data.firstName} ${data.lastName}`.trim()
+  const url = `?p=participant&id=${id}`
   return {
     ...data,
     id,
-    fullName
+    fullName,
+    url
   }
 }
 

@@ -20,8 +20,8 @@
 
   async function submit (event) {
     event.preventDefault()
-    await participantStore.create({ firstName, lastName })
-    window.location = './'
+    const participant = await participantStore.create({ firstName, lastName })
+    window.location = participant.url
   }
 </script>
 
