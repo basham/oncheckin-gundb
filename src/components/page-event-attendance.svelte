@@ -1,7 +1,5 @@
 <script>
   import { attendanceStore, eventStore, participantStore } from '../stores.js'
-  import Breadcrumbs from './breadcrumbs.svelte'
-  import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Lookup from './lookup.svelte'
   import Page from './page.svelte'
 
@@ -81,11 +79,8 @@
   location='events'
   notFound={notFound}
   title={[title, `${eventName} (${eventDate})`]}>
-  <Breadcrumbs>
-    <BreadcrumbsItem href={eventUrl}>{eventName} ({eventDate})</BreadcrumbsItem>
-    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
-  </Breadcrumbs>
   <h1>{title}</h1>
+  <h2><a href={eventUrl}>{eventName}</a> ({eventDate})</h2>
   <Lookup
     filter={filterResult}
     label="Add participant"

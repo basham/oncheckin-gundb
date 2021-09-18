@@ -54,6 +54,7 @@
   nav ul {
     display: flex;
     flex-wrap: wrap;
+    font-size: var(--fs-2);
     gap: var(--size-2) var(--size-4);
     list-style-type: '';
     margin: 0;
@@ -63,7 +64,7 @@
   nav a {
     color: var(--color-black-2);
     display: inline-block;
-    padding: var(--size-3) 0;
+    padding: var(--size-4) 0;
     text-decoration: none;
   }
 

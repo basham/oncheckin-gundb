@@ -1,15 +1,13 @@
 <script>
   import { participantStore } from '../stores.js'
-  import Breadcrumbs from './breadcrumbs.svelte'
-  import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
-  const title = 'Edit participant'
   const params = (new URL(document.location)).searchParams
   const participantId = params.get('id')
 
   let loading = true
   let notFound = false
+  let title = ''
   let firstName = ''
   let lastName = ''
   let fullName = ''
@@ -22,6 +20,7 @@
     firstName = participant?.firstName
     lastName = participant?.lastName
     fullName = participant?.fullName
+    title = `Edit: ${fullName}`
     url = participant?.url
     notFound = !participant
 
@@ -39,11 +38,7 @@
   loading={loading}
   location='participants'
   notFound={notFound}
-  title={[title, fullName]}>
-  <Breadcrumbs>
-    <BreadcrumbsItem href={url}>{fullName}</BreadcrumbsItem>
-    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
-  </Breadcrumbs>
+  title={title}>
   <h1>{title}</h1>
   <form
     autocomplete="off"
@@ -65,5 +60,6 @@
     <div class="u-m-top-4">
       <button type="submit">Save</button>
     </div>
+    <p><a href={url}>Back</a></p>
   </form>
 </Page>

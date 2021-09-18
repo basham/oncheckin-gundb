@@ -1,15 +1,13 @@
 <script>
   import { eventStore } from '../stores.js'
-  import Breadcrumbs from './breadcrumbs.svelte'
-  import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
   const params = (new URL(document.location)).searchParams
   const eventId = params.get('id')
-  const title = 'Edit event'
 
   let loading = true
   let notFound = false
+  let title = ''
   let eventName = ''
   let eventDate = ''
   let eventUrl = ''
@@ -25,6 +23,7 @@
     eventName = name
     eventDate = event?.displayDate
     eventUrl = event?.url
+    title = `Edit: ${name}`
     notFound = !event
     loading = false
   }
@@ -40,11 +39,7 @@
   loading={loading}
   location='events'
   notFound={notFound}
-  title={[title, `${eventName} (${eventDate})`]}>
-  <Breadcrumbs>
-    <BreadcrumbsItem href={eventUrl}>{eventName} ({eventDate})</BreadcrumbsItem>
-    <BreadcrumbsItem isCurrent={true}>{title}</BreadcrumbsItem>
-  </Breadcrumbs>
+  title={title}>
   <h1>{title}</h1>
   <form
     autocomplete="off"
@@ -66,5 +61,6 @@
     <div class="u-m-top-4">
       <button type="submit">Save</button>
     </div>
+    <p><a href={eventUrl}>Back</a></p>
   </form>
 </Page>
