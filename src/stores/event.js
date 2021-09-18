@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns'
+import { format, isFuture, isPast, isToday, parseISO } from 'date-fns'
 import { createId, get, resolvePath, set, sortDesc, storage } from './util.js'
 
 const fileName = 'event.json'
@@ -40,6 +40,17 @@ export function getEvents () {
     .sort(sortDesc('dateObj'))
 }
 
+export function getPastEvents () {
+  return getEvents()
+    .filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
+}
+
+export function getUpcomingEvents () {
+  return getEvents()
+    .filter(({ dateObj }) => isToday(dateObj) || isFuture(dateObj))
+    .reverse()
+}
+
 export async function setEvent (id, values) {
   await set(`${id}/${fileName}`, values)
   return getEvent(id)
@@ -49,6 +60,8 @@ const event = {
   create: createEvent,
   get: getEvent,
   getAll: getEvents,
+  getPast: getPastEvents,
+  getUpcoming: getUpcomingEvents,
   set: setEvent
 }
 

@@ -10,12 +10,16 @@
   let loading = true
   let orgName = ''
   let events = []
+  let upcomingEvents = []
+  let pastEvents = []
 
   load()
 
   async function load () {
     orgName = orgStore.get()?.name
     events = eventStore.getAll()
+    upcomingEvents = eventStore.getUpcoming()
+    pastEvents = eventStore.getPast()
     loading = false
   }
 </script>
@@ -42,6 +46,8 @@
   <ul class="toolbar">
     <li><a href="?p=new-event">New event</a></li>
   </ul>
-  <h2>All events ({events.length})</h2>
-  <Events events={events} />
+  <h2>Upcoming events ({upcomingEvents.length})</h2>
+  <Events events={upcomingEvents} />
+  <h2>Past events ({pastEvents.length})</h2>
+  <Events events={pastEvents} />
 </Page>
