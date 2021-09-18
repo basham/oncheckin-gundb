@@ -82,7 +82,7 @@ h2 {
 }
 
 label {
-  display: block;
+  display: inline-block;
   font-size: var(--fs-1);
   font-weight: bold;
   line-height: var(--lh-1);
