@@ -54,7 +54,12 @@
   <h2>Participants</h2>
   <ul>
     {#each participants as participant}
-      <li><a href={`?p=participant&id=${participant.id}`}>{participant.fullName}</a></li>
+      <li>
+        <a href={`?p=participant&id=${participant.id}`}>{participant.fullName}</a>
+        {#if participant.isHost}
+          Hare
+        {/if}
+      </li>
     {/each}
   </ul>
 </Page>
