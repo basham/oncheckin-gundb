@@ -18,10 +18,10 @@
     loading = false
   }
 
-  async function submit (event) {
-    event.preventDefault()
-    await eventStore.create({ name, date })
-    window.location = './'
+  async function submit (ev) {
+    ev.preventDefault()
+    const event = await eventStore.create({ name, date })
+    window.location = event.url
   }
 </script>
 
