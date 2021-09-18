@@ -7,7 +7,7 @@ export function getOrg () {
   if (!data) {
     return undefined
   }
-  const name = data.name || '(Organization)'
+  const name = data.name.trim() || '(Organization)'
   return {
     ...data,
     name

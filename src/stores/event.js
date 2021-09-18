@@ -14,7 +14,7 @@ export function getEvent (id) {
   }
   const dateObj = parseISO(data.date)
   const displayDate = format(dateObj, 'PP')
-  const name = data.name || '(Event)'
+  const name = data.name.trim() || '(Event)'
   const url = `?p=event&id=${id}`
   return {
     ...data,
