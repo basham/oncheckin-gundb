@@ -3,6 +3,7 @@
 
   const pageMap = {
     'edit-attendance': 'page-event-attendance',
+    'edit-event': 'page-event-edit',
     'edit-org': 'page-org-edit',
     'edit-participant': 'page-participant-edit',
     event: 'page-event-view',
