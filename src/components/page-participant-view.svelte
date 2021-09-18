@@ -58,7 +58,7 @@
     {#each events as event}
       <li>
         <a href={`?p=event&id=${event.id}`}>{event.name}</a>
-        {event.displayDate}
+        ({event.displayDate})
         {#if event.isHost}
           Host
         {/if}
