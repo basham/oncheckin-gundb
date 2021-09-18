@@ -1,5 +1,5 @@
 import cuid from 'cuid'
-import earthstar, {
+import {
   OnePubOneWorkspaceSyncer,
   StorageLocalStorage,
   ValidatorEs4,
@@ -17,8 +17,6 @@ const pub = 'http://192.168.7.99:3333'
 export const storage = new StorageLocalStorage([ValidatorEs4], workspace)
 const syncer = new OnePubOneWorkspaceSyncer(storage, pub)
 syncer.syncOnceAndContinueLive()
-
-console.log('ES', earthstar)
 
 const extDecodeMap = {
   json: (content) => JSON.parse(content),
