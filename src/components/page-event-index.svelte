@@ -42,5 +42,6 @@
   <ul class="toolbar">
     <li><a href="?p=new-event">New event</a></li>
   </ul>
+  <h2>All events ({events.length})</h2>
   <Events events={events} />
 </Page>
