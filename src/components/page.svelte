@@ -1,5 +1,5 @@
 <script>
-  import { orgStore } from '../stores.js'
+  import { orgStore, storage } from '../stores.js'
 
   export let loading = false
   export let location = ''
@@ -12,6 +12,7 @@
   // $: focusOnHeading(loading)
 
   let orgName = orgStore.get()?.name
+  let refresh = false
 
   $: nav = [
     ['Home', './'],
@@ -23,6 +24,16 @@
       const current = location === label.toLowerCase() ? 'location' : null
       return { current, label, url }
     })
+
+  storage.onWrite.subscribe((event) => {
+    if (event.isLatest && !event.isLocal) {
+      refresh = true
+    }
+  })
+
+  function reloadPage () {
+    window.location.reload()
+  }
 
   function focusOnHeading (loading) {
     if (loading) return
@@ -45,6 +56,12 @@
     flex-wrap: wrap;
     gap: var(--size-2) var(--size-4);
     padding: var(--size-4);
+  }
+
+  .refresh {
+    position: absolute;
+    right: var(--size-2);
+    top: var(--size-2);
   }
 
   nav {
@@ -97,6 +114,9 @@
 <header>
   <strong>{appName}</strong>
   <span>{orgName}</span>
+  {#if refresh}
+    <button class="refresh" on:click={reloadPage}>Refresh</button>
+  {/if}
 </header>
 
 <nav>
