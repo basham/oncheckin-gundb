@@ -15,6 +15,7 @@
 </script>
 
 <Page
+  location='participants'
   title={title}>
   <h1>{title}</h1>
   <form

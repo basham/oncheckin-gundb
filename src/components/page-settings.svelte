@@ -23,6 +23,7 @@
 
 <Page
   loading={loading}
+  location='settings'
   title={title}>
   <h1>{title}</h1>
   <form

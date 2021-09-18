@@ -32,6 +32,7 @@
 
 <Page
   loading={loading}
+  location='participants'
   notFound={notFound}
   title={title}>
   <h1>{title}</h1>

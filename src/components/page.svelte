@@ -2,6 +2,7 @@
   import { orgStore } from '../stores.js'
 
   export let loading = false
+  export let location = ''
   export let notFound = false
   export let title = ''
 
@@ -11,6 +12,17 @@
   // $: focusOnHeading(loading)
 
   let orgName = orgStore.get()?.name
+
+  $: nav = [
+    ['Home', './'],
+    ['Events', '?p=events'],
+    ['Participants', '?p=participants'],
+    ['Settings', '?p=settings']
+  ]
+    .map(([label, url]) => {
+      const current = location === label.toLowerCase() ? 'location' : null
+      return { current, label, url }
+    })
 
   function focusOnHeading (loading) {
     if (loading) return
@@ -36,7 +48,7 @@
   }
 
   nav {
-    border-bottom: var(--px-1) solid var(--color-black);
+    border-bottom: var(--px-2) solid var(--color-black);
   }
 
   nav ul {
@@ -45,7 +57,23 @@
     gap: var(--size-2) var(--size-4);
     list-style-type: '';
     margin: 0;
-    padding: var(--size-4);
+    padding: 0 var(--size-4);
+  }
+
+  nav a {
+    color: var(--color-black-2);
+    display: inline-block;
+    padding: var(--size-3) 0;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--color-ix);
+  }
+
+  nav a[aria-current] {
+    box-shadow: 0 var(--px-2) 0 0 var(--color-ix);
+    color: var(--color-ix);
   }
 
   main {
@@ -68,10 +96,11 @@
 
 <nav>
   <ul>
-    <li><a href="./">Home</a></li>
-    <li><a href="?p=events">Events</a></li>
-    <li><a href="?p=participants">Participants</a></li>
-    <li><a href="?p=settings">Settings</a></li>
+    {#each nav as item}
+      <li>
+        <a aria-current={item.current} href={item.url}>{item.label}</a>
+      </li>
+    {/each}
   </ul>
 </nav>
 

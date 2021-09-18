@@ -29,6 +29,7 @@
 
 <Page
   loading={loading}
+  location='events'
   notFound={notFound}
   title={title}>
   <h1>{name}</h1>

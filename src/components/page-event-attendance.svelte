@@ -78,6 +78,7 @@
 
 <Page
   loading={loading}
+  location='events'
   notFound={notFound}
   title={[title, `${eventName} (${eventDate})`]}>
   <Breadcrumbs>

@@ -29,6 +29,7 @@
 
 <Page
   loading={loading}
+  location='participants'
   title={title}>
   <h1>{title}</h1>
   <ul class="toolbar">

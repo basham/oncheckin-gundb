@@ -33,6 +33,7 @@
 
 <Page
   loading={loading}
+  location='events'
   title={title}>
   <h1>{title}</h1>
   <ul class="toolbar">

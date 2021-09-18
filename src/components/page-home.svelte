@@ -21,11 +21,13 @@
 
 <style>
   h2:first-child {
-    margin-top: 0;
+    margin-top: var(--size-3);
   }
 </style>
 
-<Page loading={loading}>
+<Page
+  loading={loading}
+  location='home'>
   <h2>Upcoming events</h2>
   <Events events={upcomingEvents} />
   <h2>Participants</h2>

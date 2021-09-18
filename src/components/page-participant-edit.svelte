@@ -37,6 +37,7 @@
 
 <Page
   loading={loading}
+  location='participants'
   notFound={notFound}
   title={[title, fullName]}>
   <Breadcrumbs>
