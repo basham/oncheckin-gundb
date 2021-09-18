@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns'
-import { createId, get, resolvePath, set, storage } from './util.js'
+import { createId, get, resolvePath, set, sortDesc, storage } from './util.js'
 
 const fileName = 'event.json'
 
@@ -33,11 +33,7 @@ export function getEvents () {
   return uniqueIds
     .map(getEvent)
     .filter((item) => item)
-    .sort((a, b) => {
-      const [keyA, keyB] = [a, b]
-        .map(({ dateObj }) => dateObj)
-      return keyA < keyB ? 1 : keyA > keyB ? -1 : 0
-    })
+    .sort(sortDesc('dateObj'))
 }
 
 export async function setEvent (id, values) {

@@ -89,3 +89,19 @@ export async function set (path, content) {
   await delay(100)
   return write
 }
+
+export function sort (key, multiplier) {
+  return (a, b) => {
+    const [keyA, keyB] = [a, b]
+      .map((item) => item[key])
+    return keyA < keyB ? -1 * multiplier : keyA > keyB ? 1 * multiplier : 0
+  }
+}
+
+export function sortAsc (key) {
+  return sort(key, 1)
+}
+
+export function sortDesc (key) {
+  return sort(key, -1)
+}

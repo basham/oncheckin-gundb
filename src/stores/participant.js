@@ -1,4 +1,4 @@
-import { createId, get, resolvePath, set, storage } from './util.js'
+import { createId, get, resolvePath, set, sortAsc, storage } from './util.js'
 
 const fileName = 'participant.json'
 
@@ -30,11 +30,7 @@ export function getParticipants () {
   return uniqueIds
     .map(getParticipant)
     .filter((item) => item)
-    .sort((a, b) => {
-      const [keyA, keyB] = [a, b]
-        .map(({ fullName }) => fullName)
-      return keyA < keyB ? -1 : keyA > keyB ? 1 : 0
-    })
+    .sort(sortAsc('fullName'))
 }
 
 export async function setParticipant (id, values) {

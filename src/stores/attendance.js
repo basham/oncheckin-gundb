@@ -1,5 +1,5 @@
 import { getParticipant } from './participant.js'
-import { get, resolvePath, set, storage } from './util.js'
+import { get, resolvePath, set, sortAsc, storage } from './util.js'
 
 const fileName = 'event-participant.txt'
 
@@ -27,6 +27,7 @@ export function getAttendees (id) {
         isHost
       }
     })
+    .sort(sortAsc('fullName'))
 }
 
 export async function removeAttendee (eventId, participantId) {
