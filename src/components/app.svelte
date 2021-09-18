@@ -4,14 +4,14 @@
   const pageMap = {
     'edit-attendance': 'page-event-attendance',
     'edit-event': 'page-event-edit',
-    'edit-org': 'page-org-edit',
     'edit-participant': 'page-participant-edit',
     event: 'page-event-view',
     events: 'page-event-index',
     'new-event': 'page-event-new',
     'new-participant': 'page-participant-new',
     participant: 'page-participant-view',
-    participants: 'page-participant-index'
+    participants: 'page-participant-index',
+    settings: 'page-settings'
   }
   const notFoundPage = 'page-not-found'
   const defaultPage = 'page-home'

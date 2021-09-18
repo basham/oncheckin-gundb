@@ -37,7 +37,7 @@
   <ul class="toolbar">
     <li><a href="?p=events">Events ({events.length})</a></li>
     <li><a href="?p=participants">Participants ({participants.length})</a></li>
-    <li><a href="?p=edit-org">Edit</a></li>
+    <li><a href="?p=settings">Settings</a></li>
   </ul>
   <h2>Upcoming events</h2>
   <Events events={upcomingEvents} />

@@ -4,7 +4,7 @@
   import BreadcrumbsItem from './breadcrumbs-item.svelte'
   import Page from './page.svelte'
 
-  const title = 'Edit organization'
+  const title = 'Settings'
 
   let loading = true
   let orgName = ''
@@ -14,7 +14,7 @@
 
   async function load () {
     name = orgStore.get()?.name
-    orgName = name || 'Home'
+    orgName = name
     loading = false
   }
 
@@ -37,7 +37,7 @@
     autocomplete="off"
     on:submit={submit}>
     <div class="u-m-top-4">
-      <label for="name">Name</label>
+      <label for="name">Organization name</label>
       <input
         bind:value={name}
         id="name"
