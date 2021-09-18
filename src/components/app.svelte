@@ -10,7 +10,8 @@
     events: 'page-event-index',
     'new-event': 'page-event-new',
     'new-participant': 'page-participant-new',
-    participant: 'page-participant-view'
+    participant: 'page-participant-view',
+    participants: 'page-participant-index'
   }
   const notFoundPage = 'page-not-found'
   const defaultPage = 'page-home'

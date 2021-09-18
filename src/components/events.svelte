@@ -3,21 +3,12 @@
 </script>
 
 <style>
-  ol {
+  ul {
     display: flex;
     flex-direction: column;
     gap: var(--size-3);
-    list-style-type: '';
-    margin: 0;
+    margin: 0 0 0 var(--size-4);
     padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
   }
 
   .date {
@@ -25,14 +16,10 @@
     color: var(--color-black-1);
     min-width: 12ch;
   }
-
-  .name {
-    _font-size: var(--fs-2);
-  }
 </style>
 
 
-<ol>
+<ul>
   {#each events as event}
     <li>
       <span class="date">{event.displayDate}</span>
@@ -41,5 +28,5 @@
       </a>
     </li>
   {/each}
-</ol>
+</ul>
 
