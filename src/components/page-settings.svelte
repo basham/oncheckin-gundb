@@ -31,6 +31,7 @@
     on:submit={submit}>
     <div class="u-m-top-4">
       <label for="name">Organization name</label>
+      <br>
       <input
         bind:value={name}
         id="name"
