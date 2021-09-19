@@ -46,6 +46,7 @@
     on:submit={submit}>
     <div class="u-m-top-4">
       <label for="nameInput">Name</label>
+      <br>
       <input
         bind:value={name}
         id="nameInput"
@@ -53,6 +54,7 @@
     </div>
     <div class="u-m-top-4">
       <label for="dateInput">Date</label>
+      <br>
       <input
         bind:value={date}
         id="dateInput"

@@ -23,6 +23,7 @@
     on:submit={submit}>
     <div class="u-m-top-4">
       <label for="firstNameInput">First name</label>
+      <br>
       <input
         bind:value={firstName}
         id="firstNameInput"
@@ -30,6 +31,7 @@
     </div>
     <div class="u-m-top-4">
       <label for="lastNameInput">Last name</label>
+      <br>
       <input
         bind:value={lastName}
         id="lastNameInput"
