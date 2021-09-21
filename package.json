@@ -1,12 +1,12 @@
 {
-  "name": "oncheckin-gundb",
+  "name": "oncheckin-app",
   "version": "1.0.0",
-  "description": "OnCheckIn that is offline friendly.",
+  "description": "Membership and event management software for Hash House Harriers.",
   "main": "index.js",
   "scripts": {
     "build": "snowpack build && npm run workbox",
     "start": "snowpack dev & npm run start-pub",
-    "start-pub": "earthstar-pub --discoverable --sqlite --dataFolder ./data --title OnCheckIn --notes 'Blooming Fools H3'",
+    "start-pub": "earthstar-pub --discoverable --sqlite --dataFolder ./data",
     "test": "standard",
     "workbox": "node ./scripts/workbox.js"
   },
