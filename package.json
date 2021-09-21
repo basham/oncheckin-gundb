@@ -4,10 +4,11 @@
   "description": "OnCheckIn that is offline friendly.",
   "main": "index.js",
   "scripts": {
-    "build": "snowpack build",
+    "build": "snowpack build && npm run workbox",
     "start": "snowpack dev & npm run start-pub",
     "start-pub": "earthstar-pub --discoverable --sqlite --dataFolder ./data --title OnCheckIn --notes 'Blooming Fools H3'",
-    "test": "standard"
+    "test": "standard",
+    "workbox": "node ./scripts/workbox.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,9 @@
     "@snowpack/plugin-svelte": "3.7.0",
     "earthstar-pub": "6.0.5",
     "snowpack": "3.8.8",
-    "standard": "16.0.3"
+    "standard": "16.0.3",
+    "workbox-build": "6.3.0",
+    "workbox-cli": "6.3.0"
   },
   "dependencies": {
     "cuid": "2.1.8",
