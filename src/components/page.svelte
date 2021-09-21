@@ -7,7 +7,7 @@
   export let notFound = false
   export let title = ''
 
-  const appName = 'OnCheckIn (TEST)'
+  const appName = 'OnCheckIn'
   $: title = notFound ? ['Page not found'] : (Array.isArray(title) ? title : [title])
   $: fullTitle = [...title, appName].filter((v) => v).join(' - ')
   // $: focusOnHeading(loading)
