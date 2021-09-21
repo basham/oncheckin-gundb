@@ -1,5 +1,6 @@
 <script>
   import { orgStore, storage } from '../stores.js'
+  import Upgrader from './upgrader.svelte'
 
   export let loading = false
   export let location = ''
@@ -110,6 +111,8 @@
 <svelte:head>
   <title>{fullTitle}</title>
 </svelte:head>
+
+<Upgrader />
 
 <header>
   <strong>{appName}</strong>

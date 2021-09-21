@@ -4,6 +4,7 @@
   --color-black-8: #444;
   --color-black-9: #161616;
   --color-black: #000;
+  --color-green: limegreen;
   --color-white: #fff;
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
   --color-ix: orange;
@@ -27,6 +28,10 @@
   --border: var(--px-1) solid var(--color-black);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   background-color: var(--color-black-9);
   color: var(--color-white);
@@ -40,15 +45,26 @@ body {
   margin: 0;
 }
 
-button {
+button,
+.button {
   background-color: var(--color-ix);
   border: var(--border);
   border-radius: var(--size-1);
   cursor: pointer;
+  display: inline-flex;
   font-size: var(--fs-1);
   font-weight: bold;
-  line-height: var(--lh-4);
-  padding: 0 var(--size-2);
+  line-height: 1;
+  padding: calc(var(--size-2) - var(--px-1));
+}
+
+.button--light {
+  background-color: var(--color-black-2);
+  border-color: var(--color-black-8);
+}
+
+.button--light-bg:focus {
+  outline-color: var(--color-black);
 }
 
 input[type=date],
@@ -100,4 +116,14 @@ a {
 
 .u-m-top-4 {
   margin-top: var(--size-4);
+}
+
+.icon {
+  fill: var(--color-black);
+  height: 1rem;
+  pointer-events: none;
+  stroke: var(--color-black);
+  stroke-linejoin: round;
+  stroke-width: 2;
+  width: 1rem;
 }
