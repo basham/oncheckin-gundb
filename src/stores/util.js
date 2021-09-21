@@ -12,7 +12,7 @@ const { localStorage } = window
 const APP = 'oncheckin'
 const USER_KEYPAIR = `${APP}-keypair`
 const workspace = '+bfh3.hhh1997'
-const pub = 'http://192.168.7.99:3333'
+const pub = 'https://oncheckin-pub.glitch.me/'
 
 export const storage = new StorageLocalStorage([ValidatorEs4], workspace)
 const syncer = new OnePubOneWorkspaceSyncer(storage, pub)
