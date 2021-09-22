@@ -13,6 +13,7 @@
       })
       syncer.pullStream.addEventListener('message', (e) => {
         offline = false
+        syncer.syncOnceAndContinueLive()
       })
     } else {
       setTimeout(() => checkConnection(syncer), 1000)
