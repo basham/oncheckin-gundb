@@ -7,7 +7,6 @@
 
   function checkConnection (syncer) {
     if (syncer.pullStream) {
-      offline = false
       syncer.pullStream.addEventListener('error', (e) => {
         offline = true
       })
