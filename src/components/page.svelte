@@ -1,5 +1,6 @@
 <script>
   import { orgStore, storage } from '../stores.js'
+  import OnlineStatus from './online-status.svelte'
   import Upgrader from './upgrader.svelte'
 
   export let loading = false
@@ -52,6 +53,7 @@
 
 <style>
   header {
+    align-items: center;
     background-color: var(--color-black);
     display: flex;
     flex-wrap: wrap;
@@ -60,9 +62,7 @@
   }
 
   .refresh {
-    position: absolute;
-    right: var(--size-2);
-    top: var(--size-2);
+    margin: -0.5rem 0;
   }
 
   nav {
@@ -117,9 +117,8 @@
 <header>
   <strong>{appName}</strong>
   <span>{orgName}</span>
-  {#if refresh}
-    <button class="refresh" on:click={reloadPage}>Refresh</button>
-  {/if}
+  <OnlineStatus />
+  <button class="refresh" on:click={reloadPage}>Refresh</button>
 </header>
 
 <nav>
