@@ -1,5 +1,6 @@
 <script>
   import { orgStore, storage } from '../stores.js'
+  import Nav from './nav.svelte'
   import OnlineStatus from './online-status.svelte'
   import Upgrader from './upgrader.svelte'
 
@@ -15,17 +16,6 @@
 
   let orgName = orgStore.get()?.name
   let refresh = false
-
-  $: nav = [
-    ['Home', './'],
-    ['Events', '?p=events'],
-    ['Participants', '?p=participants'],
-    ['Settings', '?p=settings']
-  ]
-    .map(([label, url]) => {
-      const current = location === label.toLowerCase() ? 'location' : null
-      return { current, label, url }
-    })
 
   storage.onWrite.subscribe((event) => {
     if (event.isLatest && !event.isLocal) {
@@ -65,40 +55,6 @@
     margin: -0.5rem 0;
   }
 
-  nav {
-    border-bottom: var(--px-2) solid var(--color-black);
-  }
-
-  nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: var(--fs-2);
-    gap: var(--size-2) var(--size-4);
-    list-style-type: '';
-    margin: 0;
-    padding: 0 var(--size-4);
-  }
-
-  nav a {
-    color: var(--color-black-2);
-    display: inline-block;
-    padding: var(--size-4) 0;
-    text-decoration: none;
-  }
-
-  nav a:hover {
-    color: var(--color-ix);
-  }
-
-  nav a:focus {
-    outline-offset: var(--size-1);
-  }
-
-  nav a[aria-current] {
-    box-shadow: 0 var(--px-2) 0 0 var(--color-ix);
-    color: var(--color-ix);
-  }
-
   main {
     padding: var(--size-4);
   }
@@ -118,18 +74,12 @@
   <strong>{appName}</strong>
   <span>{orgName}</span>
   <OnlineStatus />
-  <button class="refresh" on:click={reloadPage}>Refresh</button>
+  {#if refresh}
+    <button class="refresh" on:click={reloadPage}>Refresh</button>
+  {/if}
 </header>
 
-<nav>
-  <ul>
-    {#each nav as item}
-      <li>
-        <a aria-current={item.current} href={item.url}>{item.label}</a>
-      </li>
-    {/each}
-  </ul>
-</nav>
+<Nav location={location} />
 
 <main class:loading={loading}>
   {#if notFound}
