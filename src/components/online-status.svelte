@@ -6,6 +6,7 @@
   checkConnection(syncer)
 
   function checkConnection (syncer) {
+    offline = !syncer.state.isPushStreaming
     if (syncer.pullStream) {
       syncer.pullStream.addEventListener('error', (e) => {
         offline = true
@@ -14,7 +15,6 @@
         offline = false
       })
     } else {
-      offline = true
       setTimeout(() => checkConnection(syncer), 1000)
     }
   }
