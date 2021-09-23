@@ -24,11 +24,11 @@
 
 <style>
   .status {
-    background-color: var(--color-base-50);
-    border-radius: var(--size-1);
-    color: var(--color-black);
+    background-color: var(--color-base-45);
+    border-radius: var(--size-3);
+    color: var(--color-base-95);
     line-height: var(--lh-2);
-    padding: 0 var(--size-1);
+    padding: 0 var(--size-2);
     visibility: hidden;
   }
 

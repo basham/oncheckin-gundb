@@ -107,12 +107,12 @@ button,
 }
 
 .button--light {
-  background-color: var(--color-black-2);
-  border-color: var(--color-black-8);
+  background-color: var(--color-base-20);
+  border-color: var(--color-base-80);
 }
 
 .button--light-bg:focus {
-  outline-color: var(--color-black);
+  outline-color: var(--color-base-95);
 }
 
 input[type=date],
@@ -177,10 +177,10 @@ a {
 }
 
 .icon {
-  fill: var(--color-black);
+  fill: var(--color-base-95);
   height: 1rem;
   pointer-events: none;
-  stroke: var(--color-black);
+  stroke: var(--color-base-95);
   stroke-linejoin: round;
   stroke-width: 2;
   width: 1rem;

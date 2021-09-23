@@ -42,7 +42,7 @@
   }
 
   .message {
-    color: var(--color-black);
+    color: var(--color-base-95);
     font-size: var(--fs-2);
     font-weight: bold;
     line-height: var(--lh-2);
