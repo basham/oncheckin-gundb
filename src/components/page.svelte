@@ -32,13 +32,19 @@
 
 <style>
   header {
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--color-black);
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--size-2) var(--size-4);
+    gap: 0 var(--size-4);
     line-height: var(--lh-2);
     padding: var(--size-4);
+  }
+
+  .identity {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    gap: 0 var(--size-4);
   }
 
   main {
@@ -57,8 +63,10 @@
 <Upgrader />
 
 <header>
-  <strong>{appName}</strong>
-  <span>{orgName}</span>
+  <span class="identity">
+    <strong>{appName}</strong>
+    <span>{orgName}</span>
+  </span>
   <OfflineStatus />
 </header>
 

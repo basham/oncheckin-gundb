@@ -29,9 +29,16 @@
     color: var(--color-black);
     line-height: var(--lh-2);
     padding: 0 var(--size-1);
+    visibility: hidden;
+  }
+
+  .status--offline {
+    visibility: visible;
   }
 </style>
 
-{#if offline}
-  <span class="status">Offline</span>
-{/if}
+<span
+  class="status"
+  class:status--offline={offline}>
+  Offline
+</span>
