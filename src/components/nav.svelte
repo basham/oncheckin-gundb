@@ -29,7 +29,7 @@
   }
 
   nav a {
-    color: var(--color-black-2);
+    color: var(--color-base-50);
     display: inline-block;
     padding: var(--size-4) 0;
     text-decoration: none;

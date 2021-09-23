@@ -71,7 +71,7 @@
 
 <style>
   .listbox {
-    background-color: var(--color-black-8);
+    background-color: var(--color-base-80);
     border: var(--border);
     border-radius: var(--size-1);
     line-height: var(--lh-1);
@@ -91,7 +91,7 @@
   .option[aria-selected=true] {
     background-color: var(--color-ix);
     border-radius: var(--size-1);
-    color: var(--color-black);
+    color: var(--color-base-95);
   }
 
   .noResults {

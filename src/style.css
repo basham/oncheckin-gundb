@@ -1,3 +1,6 @@
+/*
+ * https://codepen.io/basham/pen/OpNybO
+ */
 :root {
   --color-black-1: #ddd;
   --color-black-2: #ccc;
@@ -7,8 +10,51 @@
   --color-black: #000;
   --color-green: limegreen;
   --color-white: #fff;
+
+  --color-base-5: #ffedd3;
+  --color-base-10: #ffdaa7;
+  --color-base-15: #ffc87b;
+  --color-base-20: #ffb74d;
+  --color-base-25: #ffa503;
+  --color-base-25: orange;
+  --color-base-30: #ec9907;
+  --color-base-35: #da8d0c;
+  --color-base-40: #c88210;
+  --color-base-45: #b57612;
+  --color-base-50: #a46b13;
+  --color-base-55: #926014;
+  --color-base-60: #815514;
+  --color-base-65: #714a14;
+  --color-base-70: #604013;
+  --color-base-75: #513612;
+  --color-base-80: #412c11;
+  --color-base-85: #33230f;
+  --color-base-90: #251a0b;
+  --color-base-95: #171005;
+  /*
+  --color-base-5: #ffecd9;
+  --color-base-10: #ffd9b4;
+  --color-base-15: #ffc68f;
+  --color-base-20: #ffb36a;
+  --color-base-25: #ffa143;
+  --color-base-30: #ff8e0c;
+  --color-base-30: darkorange;
+  --color-base-35: #ed8206;
+  --color-base-40: #d9780b;
+  --color-base-45: #c56d0e;
+  --color-base-50: #b26311;
+  --color-base-55: #9f5912;
+  --color-base-60: #8c4f12;
+  --color-base-65: #7a4513;
+  --color-base-70: #683c12;
+  --color-base-75: #573311;
+  --color-base-80: #462a10;
+  --color-base-85: #36210e;
+  --color-base-90: #27180a;
+  --color-base-95: #190f05;
+  */
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
-  --color-ix: orange;
+  --color-ix: darkorange;
   --font: system, sans-serif;
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
@@ -34,7 +80,7 @@
 }
 
 html {
-  background-color: var(--color-black-9);
+  background-color: var(--color-base-95);
   color: var(--color-white);
   -webkit-text-size-adjust: 100%;
 }
@@ -51,6 +97,7 @@ button,
   background-color: var(--color-ix);
   border: var(--border);
   border-radius: var(--size-1);
+  color: var(--color-base-95);
   cursor: pointer;
   display: inline-flex;
   font-size: var(--fs-1);
@@ -71,10 +118,10 @@ button,
 input[type=date],
 input[type=search],
 input[type=text] {
-  background-color: var(--color-black-8);
+  background-color: var(--color-base-80);
   border: var(--border);
   border-radius: var(--size-1);
-  color: var(--color-white);
+  color: var(--color-base-5);
   font-family: var(--font);
   font-size: var(--fs-1);
   padding: var(--size-2);
