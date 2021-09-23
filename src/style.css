@@ -54,7 +54,7 @@
   --color-base-95: #190f05;
   */
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
-  --color-ix: darkorange;
+  --color-ix: var(--color-base-25);
   --font: system, sans-serif;
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
