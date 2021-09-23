@@ -1,6 +1,7 @@
 <script>
   import { syncer } from '../stores.js'
 
+  const retryTime = 1000
   let offline = true
 
   checkConnection(syncer)
@@ -16,29 +17,21 @@
         syncer.syncOnceAndContinueLive()
       })
     } else {
-      setTimeout(() => checkConnection(syncer), 1000)
+      setTimeout(() => checkConnection(syncer), retryTime)
     }
   }
 </script>
 
 <style>
   .status {
-    --size: calc(12rem/16);
-    border: var(--px-2) solid var(--color-black-2);
-    border-radius: 50%;
-    height: var(--size);
-    width: var(--size);
-  }
-  .status--online {
-    background-color: var(--color-green);
-    border-color: var(--color-green);
+    background-color: var(--color-black-5);
+    border-radius: var(--size-1);
+    color: var(--color-black);
+    line-height: var(--lh-2);
+    padding: 0 var(--size-1);
   }
 </style>
 
 {#if offline}
-  <span class="status"></span>
-  <span class="u-sr-only">Offline</span>
-{:else}
-  <span class="status status--online"></span>
-  <span class="u-sr-only">Online</span>
+  <span class="status">Offline</span>
 {/if}
