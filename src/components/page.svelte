@@ -1,5 +1,5 @@
 <script>
-  import { orgStore, storage } from '../stores.js'
+  import { orgStore } from '../stores.js'
   import Nav from './nav.svelte'
   import OfflineStatus from './offline-status.svelte'
   import Upgrader from './upgrader.svelte'
@@ -15,17 +15,6 @@
   // $: focusOnHeading(loading)
 
   let orgName = orgStore.get()?.name
-  let refresh = false
-
-  storage.onWrite.subscribe((event) => {
-    if (event.isLatest && !event.isLocal) {
-      refresh = true
-    }
-  })
-
-  function reloadPage () {
-    window.location.reload()
-  }
 
   function focusOnHeading (loading) {
     if (loading) return
@@ -52,10 +41,6 @@
     padding: var(--size-4);
   }
 
-  .refresh {
-    margin: -0.5rem 0;
-  }
-
   main {
     padding: var(--size-4);
   }
@@ -75,9 +60,6 @@
   <strong>{appName}</strong>
   <span>{orgName}</span>
   <OfflineStatus />
-  {#if refresh}
-    <button class="refresh" on:click={reloadPage}>Refresh</button>
-  {/if}
 </header>
 
 <Nav location={location} />
