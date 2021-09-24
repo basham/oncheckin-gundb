@@ -2,36 +2,7 @@
  * https://codepen.io/basham/pen/OpNybO
  */
 :root {
-  --color-black-1: #ddd;
-  --color-black-2: #ccc;
-  --color-black-5: #888;
-  --color-black-8: #444;
-  --color-black-9: #161616;
-  --color-black: #000;
-  --color-green: limegreen;
-  --color-white: #fff;
-
-  --color-base-5: #ffedd3;
-  --color-base-10: #ffdaa7;
-  --color-base-15: #ffc87b;
-  --color-base-20: #ffb74d;
-  --color-base-25: #ffa503;
-  --color-base-25: orange;
-  --color-base-30: #ec9907;
-  --color-base-35: #da8d0c;
-  --color-base-40: #c88210;
-  --color-base-45: #b57612;
-  --color-base-50: #a46b13;
-  --color-base-55: #926014;
-  --color-base-60: #815514;
-  --color-base-65: #714a14;
-  --color-base-70: #604013;
-  --color-base-75: #513612;
-  --color-base-80: #412c11;
-  --color-base-85: #33230f;
-  --color-base-90: #251a0b;
-  --color-base-95: #171005;
-  /*
+  --color-base-0: #ffffff;
   --color-base-5: #ffecd9;
   --color-base-10: #ffd9b4;
   --color-base-15: #ffc68f;
@@ -52,27 +23,34 @@
   --color-base-85: #36210e;
   --color-base-90: #27180a;
   --color-base-95: #190f05;
-  */
+  --color-base-100: #000000;
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
-  --color-ix: var(--color-base-25);
+  --color-ix: var(--color-base-30);
+  --color-green: limegreen;
+
   --font: system, sans-serif;
+
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
   --fs-3: calc(20rem/16);
   --fs-4: calc(28rem/16);
+
   --lh-1: 1.25rem;
   --lh-2: 1.5rem;
   --lh-3: 1.75rem;
   --lh-4: 2rem;
+
   --px-1: calc(1rem/16);
   --px-2: calc(2rem/16);
+
   --size-1: 0.25rem;
   --size-2: 0.5rem;
   --size-3: 0.75rem;
   --size-4: 1rem;
   --size-5: 1.25rem;
   --size-6: 1.5rem;
-  --border: var(--px-1) solid var(--color-black);
+
+  --border: var(--px-1) solid var(--color-base-100);
 }
 
 * {
@@ -81,7 +59,7 @@
 
 html {
   background-color: var(--color-base-95);
-  color: var(--color-white);
+  color: var(--color-base-0);
   -webkit-text-size-adjust: 100%;
 }
 

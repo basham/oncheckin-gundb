@@ -33,7 +33,7 @@
 <style>
   header {
     align-items: flex-start;
-    background-color: var(--color-black);
+    background-color: var(--color-base-100);
     display: flex;
     gap: 0 var(--size-4);
     line-height: var(--lh-2);

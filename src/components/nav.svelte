@@ -15,7 +15,7 @@
 
 <style>
   nav {
-    border-bottom: var(--px-2) solid var(--color-black);
+    border-bottom: var(--px-2) solid var(--color-base-100);
   }
 
   nav ul {
