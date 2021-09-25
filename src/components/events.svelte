@@ -13,7 +13,6 @@
 
   .date {
     display: inline-block;
-    color: var(--color-base-10);
     min-width: 12ch;
   }
 </style>

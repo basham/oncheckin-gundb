@@ -24,7 +24,7 @@
 
 <style>
   .status {
-    background-color: var(--color-base-45);
+    background-color: var(--color-base-50);
     border-radius: var(--size-3);
     color: var(--color-base-95);
     line-height: var(--lh-2);

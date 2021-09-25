@@ -9,7 +9,7 @@
   --color-base-20: #ffb36a;
   --color-base-25: #ffa143;
   --color-base-30: #ff8e0c;
-  --color-base-30: darkorange;
+  --color-base-30: darkorange; /* #ff8c00 */
   --color-base-35: #ed8206;
   --color-base-40: #d9780b;
   --color-base-45: #c56d0e;
@@ -59,7 +59,7 @@
 
 html {
   background-color: var(--color-base-95);
-  color: var(--color-base-0);
+  color: var(--color-base-5);
   -webkit-text-size-adjust: 100%;
 }
 

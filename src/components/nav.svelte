@@ -15,13 +15,15 @@
 
 <style>
   nav {
-    border-bottom: var(--px-2) solid var(--color-base-100);
+    background-color: var(--color-base-100);
+    border-bottom: var(--px-2) solid var(--color-base-75);
   }
 
   nav ul {
     display: flex;
     flex-wrap: wrap;
     font-size: var(--fs-2);
+    line-height: var(--lh-2);
     gap: var(--size-2) var(--size-4);
     list-style-type: '';
     margin: 0;
@@ -31,7 +33,7 @@
   nav a {
     color: var(--color-base-50);
     display: inline-block;
-    padding: var(--size-4) 0;
+    padding: var(--size-2) 0 var(--size-2);
     text-decoration: none;
   }
 

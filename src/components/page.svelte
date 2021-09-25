@@ -32,23 +32,30 @@
 
 <style>
   header {
-    align-items: flex-start;
+    align-items: center;
     background-color: var(--color-base-100);
     display: flex;
     gap: 0 var(--size-4);
     line-height: var(--lh-2);
-    padding: var(--size-4);
+    padding: var(--size-2) var(--size-4);
   }
 
   .identity {
+    align-items: center;
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
     gap: 0 var(--size-4);
   }
 
+  .logo {
+    --size: 2.5rem;
+    height: var(--size);
+    width: var(--size);
+  }
+
   main {
-    padding: var(--size-4);
+    padding: var(--size-6) var(--size-4);
   }
 
   .loading {
@@ -64,7 +71,7 @@
 
 <header>
   <span class="identity">
-    <strong>{appName}</strong>
+    <img class="logo" src="../logo.svg" alt={appName}>
     <span>{orgName}</span>
   </span>
   <OfflineStatus />
