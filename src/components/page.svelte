@@ -71,7 +71,7 @@
 
 <header>
   <span class="identity">
-    <img class="logo" src="../logo.svg" alt={appName}>
+    <img class="logo" src="../icon.svg" alt={appName}>
     <span>{orgName}</span>
   </span>
   <OfflineStatus />
