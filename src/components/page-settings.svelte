@@ -29,7 +29,7 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <div class="u-m-top-4">
+    <div class="u-m-top-6">
       <label for="name">Organization name</label>
       <br>
       <input
@@ -37,7 +37,7 @@
         id="name"
         type="text">
     </div>
-    <div class="u-m-top-4">
+    <div class="u-m-top-6">
       <button type="submit">Save</button>
     </div>
   </form>

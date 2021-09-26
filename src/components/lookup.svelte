@@ -101,7 +101,7 @@
 
 <form
   autocomplete="off"
-  class="u-m-top-4"
+  class="u-m-top-6"
   on:submit={handleSubmit}>
   <label
     for={inputId}
