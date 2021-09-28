@@ -44,6 +44,10 @@
         event.preventDefault()
         selectedIndex = i === 0 ? lastIndex : i - 1
         return
+      case 'Enter':
+        event.preventDefault()
+        select()
+        return
       case 'Escape':
         query = ''
         return
@@ -58,16 +62,11 @@
     selectedIndex = parseInt(event.target.dataset.index)
   }
 
-  function handleSubmit (event) {
-    event.preventDefault()
-    if (results.length > 0) {
-      select()
-    }
-  }
-
   function select () {
-    onSelected(results[selectedIndex])
-    query = ''
+    if (results.length > 0) {
+      onSelected(results[selectedIndex])
+      query = ''
+    }
   }
 </script>
 
@@ -104,10 +103,7 @@
   }
 </style>
 
-<form
-  autocomplete="off"
-  class="u-m-top-6"
-  on:submit={handleSubmit}>
+<div class="u-m-top-6">
   <label
     for={inputId}
     id={labelId}>
@@ -122,6 +118,7 @@
       aria-activedescendant={`${optionId}-${selectedIndex}`}
       aria-autocomplete="list"
       aria-controls={listboxId}
+      autocomplete="off"
       id={inputId}
       on:input={handleInput}
       on:keydown={handleKeyDown}
@@ -156,4 +153,4 @@
       <div class="noResults" role="alert">No results</div>
     </div>
   {/if}
-</form>
+</div>
