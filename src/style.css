@@ -97,8 +97,8 @@ button,
 input[type=date],
 input[type=search],
 input[type=text] {
-  background-color: var(--color-base-80);
-  border: var(--border);
+  background-color: var(--color-base-100);
+  border: var(--px-2) solid var(--color-base-75);
   border-radius: var(--size-1);
   color: var(--color-base-5);
   font-family: var(--font);
@@ -107,6 +107,13 @@ input[type=text] {
   max-width: 16rem;
   padding: calc(var(--size-2) + var(--px-1)) calc(var(--size-3) - var(--px-1));
   width: 100%;
+}
+
+input[type=date]:focus,
+input[type=search]:focus,
+input[type=text]:focus {
+  border-color: var(--color-ix);
+  outline: none;
 }
 
 h1 {

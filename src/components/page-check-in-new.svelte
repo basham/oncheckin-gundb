@@ -1,5 +1,6 @@
 <script>
   import { attendanceStore, eventStore, participantStore } from '../stores.js'
+  import Checkbox from './checkbox.svelte'
   import Lookup from './lookup.svelte'
   import Page from './page.svelte'
   import RadioGroup from './radio-group.svelte'
@@ -69,16 +70,14 @@
     onSelected={addParticipant}
     options={participants}
     render={({ fullName }) => fullName} />
-  <div class="u-m-top-6">
-    <input
-      id="host"
-      type="checkbox">
-    <label for="host">Host</label>
-  </div>
+  <Checkbox
+    id="host"
+    label="Host" />
   <RadioGroup
-    legend='Payment'
-    name='payment'
+    legend="Payment"
+    name="payment"
     options={paymentOptions} />
+
   <div class="u-m-top-6">
     <button type="submit">Save</button>
   </div>

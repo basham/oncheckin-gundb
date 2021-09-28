@@ -48,17 +48,16 @@
   }
 
   input + label::before {
-    --color-border: var(--color-base-70);
+    --color-border: var(--color-base-75);
     --color-background: var(--color-base-100);
-    --color-radio: var(--color-base-100);
-    --size: var(--size-5);
-    align-items: center;
+    --color-checked: var(--color-base-100);
+    --size: var(--size-6);
     background-color: var(--color-base-100);
     border-radius: 50%;
     box-shadow:
       inset 0 0 0 var(--px-2) var(--color-border),
       inset 0 0 0 calc(var(--size-1) + var(--px-1)) var(--color-background),
-      inset 0 0 0 var(--size-3) var(--color-radio);
+      inset 0 0 0 var(--size-3) var(--color-checked);
     content: '';
     display: inline-block;
     height: var(--size);
@@ -67,11 +66,15 @@
   }
 
   input:checked + label::before {
-    --color-radio: var(--color-base-5);
+    --color-checked: var(--color-ix);
   }
 
-  input:checked:focus + label::before {
+  input:focus + label::before {
     --color-border: var(--color-ix);
+  }
+
+  label > span {
+    padding: var(--px-2) 0;
   }
 </style>
 
@@ -86,7 +89,9 @@
           name={option.name}
           type="radio"
           value={option.value}>
-        <label for={option.id}>{option.label}</label>
+        <label for={option.id}>
+          <span>{option.label}</span>
+        </label>
       </li>
     {/each}
   </ul>
