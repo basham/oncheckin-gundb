@@ -24,6 +24,8 @@
   }
 </style>
 
-<svg class:invisible={!visible}>
+<svg
+  aria-hidden="true"
+  class:invisible={!visible}>
   <use href={`./icons.svg#${name}`}></use>
 </svg>
