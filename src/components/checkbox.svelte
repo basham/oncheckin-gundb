@@ -4,16 +4,9 @@
 
   const icon = `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <style>
-        polyline {
-          fill: none;
-          stroke: #000;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-          stroke-width: 2px;
-        }
-      </style>
-      <polyline points="3 9 6 12 13 5"/>
+      <g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2px">
+        <polyline points="3 9 6 12 13 5"/>
+      </g>
     </svg>
   `
   const encodedIcon = window.btoa(icon.replace(/  /g, ''))
