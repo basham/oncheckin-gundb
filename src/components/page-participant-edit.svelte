@@ -8,6 +8,7 @@
   let loading = true
   let notFound = false
   let title = ''
+  let alias = ''
   let firstName = ''
   let lastName = ''
   let fullName = ''
@@ -17,6 +18,7 @@
 
   async function load () {
     const participant = participantStore.get(participantId)
+    alias = participant?.alias
     firstName = participant?.firstName
     lastName = participant?.lastName
     fullName = participant?.fullName
@@ -29,7 +31,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    await participantStore.set(participantId, { firstName, lastName })
+    await participantStore.set(participantId, { alias, firstName, lastName })
     window.location = url
   }
 </script>
@@ -57,6 +59,15 @@
       <input
         bind:value={lastName}
         id="lastNameInput"
+        type="text">
+    </div>
+    <div class="u-m-top-6">
+      <label for="aliasInput">Alias</label>
+      <br>
+      <input
+        placeholder={firstName ? `Just ${firstName}` : ''}
+        bind:value={alias}
+        id="aliasInput"
         type="text">
     </div>
     <div class="u-m-top-6">

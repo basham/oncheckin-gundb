@@ -11,12 +11,14 @@ export function getParticipant (id) {
   if (!data) {
     return undefined
   }
+  const displayName = data.alias || `Just ${data.firstName}`
   const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
   const url = `?p=participant&id=${id}`
   return {
     ...data,
-    id,
+    displayName,
     fullName,
+    id,
     url
   }
 }
