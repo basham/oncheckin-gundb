@@ -1,5 +1,6 @@
 <script>
   import cuid from 'cuid'
+  import Icon from './icon.svelte'
 
   export let filter = () => true
   export let isSelected = () => false
@@ -143,11 +144,9 @@
           on:click={handleOptionClick}
           on:mouseover={handleOptionMouseOver}
           role="option">
-          <svg
-            class="icon"
-            class:u-invisible={!isSelected(option)}>
-            <use href="./icons.svg#check" />
-          </svg>
+          <Icon
+            name="check"
+            visible={isSelected(option)} />
           {@html render(option)}
         </li>
       {/each}

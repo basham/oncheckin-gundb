@@ -1,5 +1,6 @@
 <script>
   import { Workbox } from 'workbox-window'
+  import Icon from './icon.svelte'
 
   const states = {
     IDLE: 'idle',
@@ -68,9 +69,7 @@
         aria-label="Dismiss"
         class="button button--light button--light-bg"
         on:click={dismiss}>
-        <svg class="icon">
-          <use xlink:href="../icons.svg#close" />
-        </svg>
+        <Icon name="close" />
       </button>
     </div>
   </div>

@@ -50,7 +50,7 @@
     margin: 0;
   }
 
-  input + label::before {
+  .radio {
     --color-border: var(--color-base-75);
     --color-background: var(--color-base-100);
     --color-checked: var(--color-base-100);
@@ -63,21 +63,22 @@
       inset 0 0 0 var(--size-3) var(--color-checked);
     content: '';
     display: inline-block;
+    flex-shrink: 0;
     height: var(--size);
     margin-right: var(--size-2);
     width: var(--size);
   }
 
-  input:checked + label::before {
+  .text {
+    padding: var(--px-2) 0;
+  }
+
+  input:checked + label .radio {
     --color-checked: var(--color-ix);
   }
 
-  input:focus + label::before {
+  input:focus + label .radio {
     --color-border: var(--color-ix);
-  }
-
-  label > span {
-    padding: var(--px-2) 0;
   }
 </style>
 
@@ -94,7 +95,8 @@
           type="radio"
           value={option.value}>
         <label for={option.id}>
-          <span>{option.label}</span>
+          <span class="radio"></span>
+          <span class="text">{option.label}</span>
         </label>
       </li>
     {/each}

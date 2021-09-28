@@ -169,17 +169,3 @@ a {
   white-space: nowrap;
   width: 1px;
 }
-
-.u-invisible {
-  visibility: hidden;
-}
-
-.icon {
-  fill: var(--color-base-95);
-  height: 1rem;
-  pointer-events: none;
-  stroke: var(--color-base-95);
-  stroke-linejoin: round;
-  stroke-width: 2;
-  width: 1rem;
-}
