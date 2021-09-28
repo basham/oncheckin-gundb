@@ -1,13 +1,16 @@
 <script>
   export let legend = ''
   export let name = ''
+  export let onSelected = () => {}
   export let options = []
+  export let selected = -1
 
   $: _options = options
-    .map((label) => {
-      const value = label.toLowerCase()
+    .map((label, i) => {
+      const value = label.toLowerCase().replace(/ /g, '-')
       return {
-        id: `${name}-${value}`,
+        checked: i === selected,
+        id: `${name}-${value}-radio`,
         label,
         name,
         value
@@ -78,12 +81,13 @@
   }
 </style>
 
-<fieldset>
+<fieldset on:change={onSelected}>
   <legend>{legend}</legend>
   <ul>
     {#each _options as option}
       <li>
         <input
+          checked={option.checked}
           class="u-sr-only"
           id={option.id}
           name={option.name}

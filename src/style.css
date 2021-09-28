@@ -50,6 +50,8 @@
   --size-4: 1rem;
   --size-5: 1.25rem;
   --size-6: 1.5rem;
+  --size-7: 1.75rem;
+  --size-8: 2rem;
 
   --border: var(--px-1) solid var(--color-base-100);
 }
@@ -137,7 +139,6 @@ h2 {
 label {
   display: inline-block;
   font-size: var(--fs-1);
-  font-weight: bold;
   line-height: var(--lh-1);
   margin-bottom: var(--size-2);
 }
@@ -167,6 +168,10 @@ a {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.u-invisible {
+  visibility: hidden;
 }
 
 .icon {

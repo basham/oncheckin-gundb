@@ -14,9 +14,12 @@
   let eventName = ''
   let eventDate = ''
   let eventUrl = ''
-  let attendees = []
   let participants = []
-  const paymentOptions = ['Cash', 'Card', 'Venmo', 'IOU', 'Waived']
+  let checkInType = 'existing-participant'
+  let selectedParticipant = null
+  let firstName = ''
+  let lastName = ''
+  const paymentOptions = ['Cash', 'Prepaid card', 'Online', 'IOU', 'Waived']
 
   load()
 
@@ -27,35 +30,31 @@
     eventUrl = event?.url
     notFound = !event
 
-    attendees = attendanceStore.getAttendees(eventId)
-      .map((p) => {
-        const nameId = `${p.id}-name`
-        return { ...p, nameId }
-      })
-
-    const attendeeIds = attendees
+    const attendeeIds = attendanceStore.getAttendees(eventId)
       .map((p) => p.id)
       .join('-')
 
     participants = participantStore.getAll()
-      .filter((p) => !attendeeIds.includes(p.id))
+      .map((p) => {
+        const checkedIn = attendeeIds.includes(p.id)
+        return { ...p, checkedIn }
+      })
 
     loading = false
+  }
+
+  function selectCheckInType (event) {
+    checkInType = event.target.value
   }
 
   function filterResult (query, participant) {
     return participant.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
   }
 
-  async function addParticipant (participant) {
-    await attendanceStore.addAttendee(eventId, participant.id)
-    await load()
+  function selectParticipant (participant) {
+    selectedParticipant = participant.checkedIn ? null : participant
   }
 </script>
-
-<style>
-
-</style>
 
 <Page
   loading={loading}
@@ -64,20 +63,52 @@
   title={[title, `${eventName} (${eventDate})`]}>
   <h1>{title}</h1>
   <h2><a href={eventUrl}>{eventName}</a> ({eventDate})</h2>
-  <Lookup
-    filter={filterResult}
-    label="Find participant"
-    onSelected={addParticipant}
-    options={participants}
-    render={({ fullName }) => fullName} />
+  <RadioGroup
+    legend="Check in"
+    name="checkin"
+    onSelected={selectCheckInType}
+    options={['Existing participant', 'New participant']}
+    selected={0} />
+  {#if checkInType === 'existing-participant'}
+    <Lookup
+      filter={filterResult}
+      isSelected={({ checkedIn }) => checkedIn}
+      label="Look up participant"
+      onSelected={selectParticipant}
+      options={participants}
+      render={({ fullName }) => fullName} />
+    {#if selectedParticipant}
+      <div class="u-m-top-6">
+        <h2>{selectedParticipant.fullName}</h2>
+      </div>
+    {/if}
+  {/if}
+  {#if checkInType === 'new-participant'}
+    <h2>New participant</h2>
+    <div class="u-m-top-6">
+      <label for="firstNameInput">First name</label>
+      <br>
+      <input
+        bind:value={firstName}
+        id="firstNameInput"
+        type="text">
+    </div>
+    <div class="u-m-top-6">
+      <label for="lastNameInput">Last name</label>
+      <br>
+      <input
+        bind:value={lastName}
+        id="lastNameInput"
+        type="text">
+    </div>
+  {/if}
   <Checkbox
     id="host"
-    label="Host" />
+    label="Host of this event" />
   <RadioGroup
     legend="Payment"
     name="payment"
     options={paymentOptions} />
-
   <div class="u-m-top-6">
     <button type="submit">Save</button>
   </div>

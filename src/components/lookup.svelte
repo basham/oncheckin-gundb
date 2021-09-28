@@ -2,6 +2,7 @@
   import cuid from 'cuid'
 
   export let filter = () => true
+  export let isSelected = () => false
   export let label = ''
   export let onSelected = () => {}
   export let options = []
@@ -77,15 +78,18 @@
     line-height: var(--lh-1);
     list-style-type: none;
     margin: var(--size-1) 0 0;
-    min-width: 10rem;
+    min-width: 16rem;
     padding: var(--size-1);
     position: absolute;
     width: max-content;
   }
 
   .option {
+    align-items: center;
     cursor: pointer;
-    padding: var(--size-1) var(--size-2);
+    display: flex;
+    gap: var(--size-2);
+    padding: var(--size-1) var(--size-8) var(--size-1) var(--size-2);
   }
 
   .option[aria-selected=true] {
@@ -139,7 +143,12 @@
           on:click={handleOptionClick}
           on:mouseover={handleOptionMouseOver}
           role="option">
-          {render(option)}
+          <svg
+            class="icon"
+            class:u-invisible={!isSelected(option)}>
+            <use href="./icons.svg#check" />
+          </svg>
+          {@html render(option)}
         </li>
       {/each}
     </ul>
