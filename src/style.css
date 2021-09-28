@@ -81,6 +81,7 @@ button,
   color: var(--color-base-95);
   cursor: pointer;
   display: inline-flex;
+  flex-shrink: 0;
   font-size: var(--fs-1);
   font-weight: bold;
   line-height: 1;
@@ -96,11 +97,20 @@ button,
   outline-color: var(--color-base-95);
 }
 
+.button--secondary {
+  background-color: var(--color-base-70);
+  color: var(--color-base-5);
+}
+
+.button--small {
+  padding: calc(var(--size-2) - var(--px-1));
+}
+
 input[type=date],
 input[type=search],
 input[type=text] {
   background-color: var(--color-base-100);
-  border: var(--px-2) solid var(--color-base-75);
+  border: var(--px-2) solid var(--color-base-70);
   border-radius: var(--size-1);
   color: var(--color-base-5);
   font-family: var(--font);

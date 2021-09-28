@@ -1,4 +1,6 @@
 <script>
+  import Fieldset from './fieldset.svelte'
+
   export let legend = ''
   export let name = ''
   export let onSelected = () => {}
@@ -19,19 +21,6 @@
 </script>
 
 <style>
-  fieldset {
-    border: none;
-    display: block;
-    margin: var(--size-6) 0 0 0;
-    padding: 0;
-  }
-
-  legend {
-    font-size: var(--fs-2);
-    line-height: var(--lh-2);
-    padding: 0;
-  }
-
   ul {
     list-style-type: '';
     margin: 0;
@@ -51,7 +40,7 @@
   }
 
   .radio {
-    --color-border: var(--color-base-75);
+    --color-border: var(--color-base-70);
     --color-background: var(--color-base-100);
     --color-checked: var(--color-base-100);
     --size: var(--size-6);
@@ -82,9 +71,8 @@
   }
 </style>
 
-<fieldset on:change={onSelected}>
-  <legend>{legend}</legend>
-  <ul>
+<Fieldset legend={legend}>
+  <ul on:change={onSelected}>
     {#each _options as option}
       <li>
         <input
@@ -101,4 +89,4 @@
       </li>
     {/each}
   </ul>
-</fieldset>
+</Fieldset>

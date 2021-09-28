@@ -3,13 +3,13 @@
   import Icon from './icon.svelte'
 
   export let filter = () => true
+  export let id = cuid()
   export let isSelected = () => false
   export let label = ''
   export let onSelected = () => {}
   export let options = []
   export let render = () => {}
 
-  const id = cuid()
   const inputId = `${id}-input`
   const labelId = `${id}-label`
   const listboxId = `${id}-listbox`
@@ -103,7 +103,7 @@
   }
 </style>
 
-<div class="u-m-top-6">
+<div class={$$props.class}>
   <label
     for={inputId}
     id={labelId}>

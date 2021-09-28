@@ -1,6 +1,9 @@
 <script>
   import { attendanceStore, eventStore, participantStore } from '../stores.js'
+  import { focus } from '../util.js'
   import Checkbox from './checkbox.svelte'
+  import Fieldset from './fieldset.svelte'
+  import Icon from './icon.svelte'
   import Lookup from './lookup.svelte'
   import Page from './page.svelte'
   import RadioGroup from './radio-group.svelte'
@@ -52,13 +55,38 @@
   }
 
   function selectParticipant (participant) {
-    selectedParticipant = participant.checkedIn ? null : participant
+    if (!participant.checkedIn) {
+      selectedParticipant = participant
+      focus('unselect-participant')
+    }
+  }
+
+  function unselectParticipant () {
+    selectedParticipant = null
+    focus('find-participant-input')
   }
 
   function submit (event) {
     event.preventDefault()
   }
 </script>
+
+<style>
+  :global(.find-participant label) {
+    font-size: var(--fs-2);
+    line-height: var(--lh-2);
+  }
+
+  .participant {
+    display: flex;
+  }
+
+  .participant .name {
+    flex-grow: 1;
+    font-size: var(--fs-2);
+    line-height: var(--lh-2);
+  }
+</style>
 
 <Page
   loading={loading}
@@ -69,6 +97,7 @@
   <h2><a href={eventUrl}>{eventName}</a> ({eventDate})</h2>
   <form
     autocomplete="off"
+    class="u-m-top-6"
     on:submit={submit}>
     <RadioGroup
       legend="Check in"
@@ -77,52 +106,73 @@
       options={['Existing participant', 'New participant']}
       selected={0} />
     {#if checkInType === 'existing-participant'}
-      <Lookup
-        filter={filterResult}
-        isSelected={({ checkedIn }) => checkedIn}
-        label="Look up participant"
-        onSelected={selectParticipant}
-        options={participants}
-        render={({ fullName }) => fullName} />
-      {#if selectedParticipant}
-        <div class="u-m-top-6">
-          <h2>{selectedParticipant.fullName}</h2>
-        </div>
+      {#if !selectedParticipant}
+        <Fieldset>
+          <Lookup
+            class="find-participant"
+            filter={filterResult}
+            id="find-participant"
+            isSelected={({ checkedIn }) => checkedIn}
+            label="Find participant"
+            onSelected={selectParticipant}
+            options={participants}
+            render={({ fullName }) => fullName} />
+        </Fieldset>
+      {:else}
+        <Fieldset>
+          <div class="participant">
+            <span
+              class="name"
+              id="selectedParticipantName">
+              {selectedParticipant.fullName}
+            </span>
+            <button
+              aria-label="Unselect"
+              aria-describedby="selectedParticipantName"
+              class="button--secondary button--small"
+              id="unselect-participant"
+              on:click={unselectParticipant}>
+              <Icon name="close" />
+            </button>
+          </div>
+        </Fieldset>
       {/if}
     {/if}
     {#if checkInType === 'new-participant'}
-      <h2>New participant</h2>
-      <div class="u-m-top-6">
-        <label for="firstNameInput">First name</label>
-        <br>
-        <input
-          bind:value={firstName}
-          id="firstNameInput"
-          type="text">
-      </div>
-      <div class="u-m-top-6">
-        <label for="lastNameInput">Last name</label>
-        <br>
-        <input
-          bind:value={lastName}
-          id="lastNameInput"
-          type="text">
-      </div>
+      <Fieldset legend="New participant">
+        <div class="u-m-top-4">
+          <label for="firstNameInput">First name</label>
+          <br>
+          <input
+            bind:value={firstName}
+            id="firstNameInput"
+            type="text">
+        </div>
+        <div class="u-m-top-6">
+          <label for="lastNameInput">Last name</label>
+          <br>
+          <input
+            bind:value={lastName}
+            id="lastNameInput"
+            type="text">
+        </div>
+      </Fieldset>
     {/if}
-    <div class="u-m-top-6">
+    <Fieldset>
       <Checkbox
         checked={true}
         id="arrived"
         label="Arrived at this event" />
       <Checkbox
+        class="u-m-top-2"
         id="host"
         label="Host of this event" />
-    </div>
+    </Fieldset>
     <RadioGroup
       legend="Payment"
       name="payment"
       options={paymentOptions} />
-    <div class="u-m-top-6">
+    <div class="u-m-top-4">
       <button type="submit">Save</button>
     </div>
     <p><a href={eventUrl}>Back</a></p>

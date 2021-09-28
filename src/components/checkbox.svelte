@@ -19,7 +19,7 @@
   }
 
   .checkbox {
-    --color-border: var(--color-base-75);
+    --color-border: var(--color-base-70);
     --color-background: var(--color-base-100);
     --color-checked: var(--color-base-100);
     --size: var(--size-6);
@@ -51,7 +51,7 @@
   }
 </style>
 
-<div class="u-m-top-2">
+<div class={$$props.class}>
   <input
     checked={checked}
     class="u-sr-only"
