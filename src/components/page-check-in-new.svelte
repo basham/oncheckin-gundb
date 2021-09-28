@@ -109,9 +109,15 @@
           type="text">
       </div>
     {/if}
-    <Checkbox
-      id="host"
-      label="Host of this event" />
+    <div class="u-m-top-6">
+      <Checkbox
+        checked={true}
+        id="arrived"
+        label="Arrived at this event" />
+      <Checkbox
+        id="host"
+        label="Host of this event" />
+    </div>
     <RadioGroup
       legend="Payment"
       name="payment"

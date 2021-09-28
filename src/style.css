@@ -152,6 +152,10 @@ a {
   outline-offset: var(--px-2);
 }
 
+.u-m-top-2 {
+  margin-top: var(--size-2);
+}
+
 .u-m-top-4 {
   margin-top: var(--size-4);
 }

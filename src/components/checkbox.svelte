@@ -1,6 +1,7 @@
 <script>
   import Icon from './icon.svelte'
 
+  export let checked = false
   export let id = ''
   export let label = ''
 </script>
@@ -50,8 +51,9 @@
   }
 </style>
 
-<div class="u-m-top-6">
+<div class="u-m-top-2">
   <input
+    checked={checked}
     class="u-sr-only"
     id={id}
     type="checkbox">
