@@ -7,6 +7,7 @@
     'edit-participant': 'page-participant-edit',
     event: 'page-event-view',
     events: 'page-event-index',
+    'new-check-in': 'page-check-in-new',
     'new-event': 'page-event-new',
     'new-participant': 'page-participant-new',
     participant: 'page-participant-view',
