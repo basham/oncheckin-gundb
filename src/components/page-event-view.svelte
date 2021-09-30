@@ -1,5 +1,5 @@
 <script>
-  import { attendanceStore, eventStore } from '../stores.js'
+  import { checkInStore, eventStore } from '../stores.js'
   import Page from './page.svelte'
 
   const params = (new URL(document.location)).searchParams
@@ -8,21 +8,16 @@
   let title = ''
   let loading = true
   let notFound = false
-  let name = ''
-  let date = ''
-  let participants = []
+  let event = null
+  let checkIns = []
 
   load()
 
   async function load () {
-    const event = eventStore.get(eventId)
-    name = event?.name
-    date = event?.displayDate
-    title = `${name} (${date})`
+    event = eventStore.get(eventId)
+    title = `${event?.name} (${event?.displayDate})`
     notFound = !event
-
-    participants = attendanceStore.getAttendees(eventId)
-
+    checkIns = checkInStore.getEventCheckIns(eventId)
     loading = false
   }
 </script>
@@ -32,19 +27,19 @@
   location='events'
   notFound={notFound}
   title={title}>
-  <h1>{name}</h1>
-  <p>{date}</p>
+  <h1>{event?.name}</h1>
+  <p>{event?.displayDate}</p>
   <ul class="list-inline">
     <li><a href={`?p=new-check-in&id=${eventId}`}>New check-in</a></li>
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
     <li><a href={`?p=edit-attendance&id=${eventId}`}>Edit attendance</a></li>
   </ul>
-  <h2>{participants.length ? 'Check-ins' : 'No check-ins'}</h2>
+  <h2>{checkIns.length ? 'Check-ins' : 'No check-ins'}</h2>
   <ul>
-    {#each participants as participant}
+    {#each checkIns as checkIn}
       <li>
-        <a href={participant.checkInUrl}>{participant.displayName}</a>
-        {#if participant.isHost}
+        <a href={checkIn.checkInUrl}>{checkIn.displayName}</a>
+        {#if checkIn.isHost}
           Host
         {/if}
       </li>

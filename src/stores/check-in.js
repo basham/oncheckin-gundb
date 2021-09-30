@@ -4,15 +4,26 @@ import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
 
 const fileName = 'event-participant.txt'
 
-export async function addAttendee (eventId, participantId) {
-  return await setAttendee(eventId, participantId, 'attendee')
+export async function createCheckIn (eventId, participantId, value) {
+  return await setCheckIn(eventId, participantId, value)
 }
 
-export async function addHost (eventId, participantId) {
-  return await setAttendee(eventId, participantId, 'host')
+export async function deleteCheckIn (eventId, participantId) {
+  return await setCheckIn(eventId, participantId, '')
 }
 
-export function getAttendees (eventId) {
+export function getCheckIn (eventId, participantId) {
+  const attendee = get(`${eventId}-${participantId}/${fileName}`)
+  const isHost = attendee === 'host'
+  const checkInUrl = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
+  return {
+    attendee,
+    isHost,
+    checkInUrl
+  }
+}
+
+export function getEventCheckIns (eventId) {
   return storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -32,18 +43,7 @@ export function getAttendees (eventId) {
     .sort(sortAsc('displayName'))
 }
 
-export function getCheckIn (eventId, participantId) {
-  const attendee = get(`${eventId}-${participantId}/${fileName}`)
-  const isHost = attendee === 'host'
-  const checkInUrl = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
-  return {
-    attendee,
-    isHost,
-    checkInUrl
-  }
-}
-
-export function getEvents (participantId) {
+export function getParticipantCheckIns (participantId) {
   return storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -63,21 +63,17 @@ export function getEvents (participantId) {
     .sort(sortDesc('dateObj'))
 }
 
-export async function removeAttendee (eventId, participantId) {
-  return await setAttendee(eventId, participantId, '')
-}
-
-export async function setAttendee (eventId, participantId, value) {
+export async function setCheckIn (eventId, participantId, value) {
   return await set(`${eventId}-${participantId}/${fileName}`, value)
 }
 
-const attendance = {
-  addAttendee,
-  addHost,
+const checkInStore = {
+  create: createCheckIn,
+  delete: deleteCheckIn,
   get: getCheckIn,
-  getAttendees,
-  getEvents,
-  removeAttendee
+  getEventCheckIns,
+  getParticipantCheckIns,
+  set: setCheckIn
 }
 
-export default attendance
+export default checkInStore

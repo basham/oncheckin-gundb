@@ -1,5 +1,5 @@
 <script>
-  import { attendanceStore, eventStore, participantStore } from '../stores.js'
+  import { checkInStore, eventStore, participantStore } from '../stores.js'
   import FieldsetCheckIn from './fieldset-check-in.svelte'
   import Page from './page.svelte'
 
@@ -20,7 +20,7 @@
   async function load () {
     event = eventStore.get(eventId)
     participant = participantStore.get(participantId)
-    checkIn = attendanceStore.get(eventId, participantId)
+    checkIn = checkInStore.get(eventId, participantId)
     pageTitle = `${title} for ${participant?.displayName} at ${event?.name} (${event?.date})`
     notFound = !event || !participant || !checkIn
     loading = false

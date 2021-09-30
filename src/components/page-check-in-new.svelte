@@ -1,5 +1,5 @@
 <script>
-  import { attendanceStore, eventStore, participantStore } from '../stores.js'
+  import { checkInStore, eventStore, participantStore } from '../stores.js'
   import { focus } from '../util.js'
   import Fieldset from './fieldset.svelte'
   import FieldsetCheckIn from './fieldset-check-in.svelte'
@@ -31,7 +31,7 @@
     pageTitle = `${title} for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
-    const checkIns = attendanceStore.getAttendees(eventId)
+    const checkIns = checkInStore.getEventCheckIns(eventId)
       .map((checkIn) => [checkIn.id, checkIn])
     const checkInsMap = new Map(checkIns)
     participants = participantStore.getAll()

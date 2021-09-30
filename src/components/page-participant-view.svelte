@@ -1,5 +1,5 @@
 <script>
-  import { participantStore, attendanceStore } from '../stores.js'
+  import { checkInStore, participantStore } from '../stores.js'
   import { pluralize } from '../util.js'
   import Page from './page.svelte'
 
@@ -10,7 +10,7 @@
   let loading = true
   let notFound = false
   let fullName = ''
-  let events = []
+  let checkIns = []
   let eventCount = 0
   let hostCount = 0
 
@@ -22,9 +22,9 @@
     notFound = !participant
     fullName = participant?.fullName
 
-    events = attendanceStore.getEvents(participantId)
-    eventCount = events.length
-    hostCount = events
+    checkIns = checkInStore.getParticipantCheckIns(participantId)
+    eventCount = checkIns.length
+    hostCount = checkIns
       .filter(({ isHost }) => isHost)
       .length
 
@@ -43,13 +43,13 @@
   <ul class="list-inline">
     <li><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></li>
   </ul>
-  <h2>{events.length ? 'Events' : 'No events'}</h2>
+  <h2>{eventCount ? 'Events' : 'No events'}</h2>
   <ul>
-    {#each events as event}
+    {#each checkIns as checkIn}
       <li>
-        <a href={event.url}>{event.name}</a>
-        ({event.displayDate})
-        {#if event.isHost}
+        <a href={checkIn.url}>{checkIn.name}</a>
+        ({checkIn.displayDate})
+        {#if checkIn.isHost}
           Host
         {/if}
       </li>
