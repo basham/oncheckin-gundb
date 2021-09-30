@@ -15,11 +15,11 @@ export async function deleteCheckIn (eventId, participantId) {
 export function getCheckIn (eventId, participantId) {
   const attendee = get(`${eventId}-${participantId}/${fileName}`)
   const isHost = attendee === 'host'
-  const checkInUrl = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
+  const url = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
   return {
     attendee,
     isHost,
-    checkInUrl
+    url
   }
 }
 
@@ -35,8 +35,9 @@ export function getEventCheckIns (eventId) {
       const participant = getParticipant(participantId)
       const checkIn = getCheckIn(eventId, participantId)
       return {
-        ...participant,
-        ...checkIn
+        ...checkIn,
+        displayName: participant.displayName,
+        participant
       }
     })
     .filter(({ attendee }) => attendee)
@@ -55,8 +56,9 @@ export function getParticipantCheckIns (participantId) {
       const event = getEvent(eventId)
       const checkIn = getCheckIn(eventId, participantId)
       return {
-        ...event,
-        ...checkIn
+        ...checkIn,
+        dateObj: event.dateObj,
+        event
       }
     })
     .filter(({ attendee }) => attendee)
