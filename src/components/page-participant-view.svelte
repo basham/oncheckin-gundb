@@ -40,7 +40,9 @@
   <h1>{title}</h1>
   <p>{fullName}</p>
   <p>{eventCount} {pluralize(eventCount, 'event')}, {hostCount} {pluralize(hostCount, 'host')}</p>
-  <p><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></p>
+  <ul class="list-inline">
+    <li><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></li>
+  </ul>
   <h2>{events.length ? 'Events' : 'No events'}</h2>
   <ul>
     {#each events as event}

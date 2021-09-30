@@ -20,17 +20,13 @@
   }
 
   nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--size-2) var(--size-4);
-    list-style-type: '';
     padding: 0 var(--size-4);
   }
 
   nav a {
     color: var(--color-base-50);
     display: inline-block;
-    padding: var(--size-2) 0 var(--size-2);
+    padding: var(--size-2) 0;
     text-decoration: none;
   }
 
@@ -49,7 +45,7 @@
 </style>
 
 <nav>
-  <ul class="u-m-0 u-ts-2">
+  <ul class="list-inline u-m-0 u-ts-2">
     {#each nav as item}
       <li>
         <a aria-current={item.current} href={item.url}>{item.label}</a>

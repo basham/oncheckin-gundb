@@ -166,6 +166,15 @@ a {
   outline-offset: var(--px-2);
 }
 
+.list-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-2) var(--size-4);
+  list-style-type: '';
+  margin: var(--size-4) 0;
+  padding: 0;
+}
+
 .u-m-0 {
   margin: 0;
 }
