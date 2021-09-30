@@ -16,9 +16,7 @@
   let pageTitle = ''
   let loading = true
   let notFound = false
-  let eventName = ''
-  let eventDate = ''
-  let eventUrl = ''
+  let event = null
   let participants = []
   let checkInType = 'existing-participant'
   let selectedParticipant = null
@@ -29,11 +27,8 @@
   load()
 
   async function load () {
-    const event = eventStore.get(eventId)
-    eventName = event?.name
-    eventDate = event?.displayDate
-    eventUrl = event?.url
-    pageTitle = `${title} for ${eventName} (${eventDate})`
+    event = eventStore.get(eventId)
+    pageTitle = `${title} for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
     const attendeeIds = attendanceStore.getAttendees(eventId)
@@ -100,9 +95,9 @@
   <p
     aria-label="Event"
     role="group">
-    <a class="u-ts-3" href={eventUrl}>{eventName}</a>
+    <a class="u-ts-3" href={event?.url}>{event?.name}</a>
     <br>
-    {eventDate}
+    {event?.displayDate}
   </p>
   <form
     autocomplete="off"
@@ -159,6 +154,6 @@
     <div class="u-m-top-4">
       <button type="submit">Save</button>
     </div>
-    <p><a href={eventUrl}>Back</a></p>
+    <p><a href={event?.url}>Back</a></p>
   </form>
 </Page>
