@@ -31,14 +31,18 @@
     pageTitle = `${title} for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
-    const attendeeIds = attendanceStore.getAttendees(eventId)
-      .map((p) => p.id)
-      .join('-')
-
+    const checkIns = attendanceStore.getAttendees(eventId)
+      .map((checkIn) => [checkIn.id, checkIn])
+    const checkInsMap = new Map(checkIns)
     participants = participantStore.getAll()
       .map((p) => {
-        const checkedIn = attendeeIds.includes(p.id)
-        return { ...p, checkedIn }
+        const checkIn = checkInsMap.get(p.id)
+        const checkedIn = !!checkIn
+        return {
+          ...p,
+          ...checkIn,
+          checkedIn
+        }
       })
 
     loading = false
@@ -54,10 +58,13 @@
   }
 
   function selectParticipant (participant) {
-    if (!participant.checkedIn) {
-      selectedParticipant = participant
-      focus('unselect-participant')
+    if (participant.checkedIn) {
+      window.location = participant.checkInUrl
+      return
     }
+
+    selectedParticipant = participant
+    focus('unselect-participant')
   }
 
   function unselectParticipant () {
