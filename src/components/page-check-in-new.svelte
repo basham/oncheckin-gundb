@@ -11,8 +11,9 @@
 
   const params = (new URL(document.location)).searchParams
   const eventId = params.get('id')
-  const title = 'New check-in'
 
+  const title = 'New check-in'
+  let pageTitle = ''
   let loading = true
   let notFound = false
   let eventName = ''
@@ -33,6 +34,7 @@
     eventName = event?.name
     eventDate = event?.displayDate
     eventUrl = event?.url
+    pageTitle = `${title} for ${eventName} (${eventDate})`
     notFound = !event
 
     const attendeeIds = attendanceStore.getAttendees(eventId)
@@ -94,12 +96,17 @@
   loading={loading}
   location='events'
   notFound={notFound}
-  title={[title, `${eventName} (${eventDate})`]}>
+  title={pageTitle}>
   <h1>{title}</h1>
-  <h2><a href={eventUrl}>{eventName}</a> ({eventDate})</h2>
+  <p
+    aria-label="Event"
+    role="group">
+    <a class="u-ts-3" href={eventUrl}>{eventName}</a>
+    <br>
+    {eventDate}
+  </p>
   <form
     autocomplete="off"
-    class="u-m-top-6"
     on:submit={submit}>
     <RadioGroup
       legend="Check in"
