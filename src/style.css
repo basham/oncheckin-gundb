@@ -172,6 +172,10 @@ a:hover {
   width: 100%;
 }
 
+.input:hover {
+  border-color: var(--color-base-50);
+}
+
 .input:focus {
   border-color: var(--color-ix);
   outline: none;
