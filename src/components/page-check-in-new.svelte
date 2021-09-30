@@ -22,6 +22,7 @@
   let selectedParticipant = null
   let firstName = ''
   let lastName = ''
+  let alias = ''
   const paymentOptions = ['Cash', 'Prepaid card', 'Online', 'IOU', 'Waived']
 
   load()
@@ -155,6 +156,14 @@
           <input
             bind:value={lastName}
             id="lastNameInput"
+            type="text">
+        </div>
+        <div class="u-m-top-6">
+          <label for="aliasInput">Alias</label>
+          <br>
+          <input
+            bind:value={alias}
+            id="aliasInput"
             type="text">
         </div>
       </Fieldset>
