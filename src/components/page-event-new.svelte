@@ -1,5 +1,6 @@
 <script>
   import { eventStore } from '../stores.js'
+  import FieldsetEvent from './fieldset-event.svelte'
   import Page from './page.svelte'
 
   const title = 'New event'
@@ -21,22 +22,9 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <div class="u-m-top-6">
-      <label for="nameInput">Name</label>
-      <br>
-      <input
-        bind:value={name}
-        id="nameInput"
-        type="text">
-    </div>
-    <div class="u-m-top-6">
-      <label for="dateInput">Date</label>
-      <br>
-      <input
-        bind:value={date}
-        id="dateInput"
-        type="date">
-    </div>
+    <FieldsetEvent
+      bind:name={name}
+      bind:date={date} />
     <div class="u-m-top-6">
       <button type="submit">Save</button>
     </div>

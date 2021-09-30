@@ -3,6 +3,7 @@
   import { focus } from '../util.js'
   import Checkbox from './checkbox.svelte'
   import Fieldset from './fieldset.svelte'
+  import FieldsetParticipantName from './fieldset-participant-name.svelte'
   import Icon from './icon.svelte'
   import Lookup from './lookup.svelte'
   import Page from './page.svelte'
@@ -142,30 +143,10 @@
     {/if}
     {#if checkInType === 'new-participant'}
       <Fieldset legend="New participant">
-        <div class="u-m-top-4">
-          <label for="firstNameInput">First name</label>
-          <br>
-          <input
-            bind:value={firstName}
-            id="firstNameInput"
-            type="text">
-        </div>
-        <div class="u-m-top-6">
-          <label for="lastNameInput">Last name</label>
-          <br>
-          <input
-            bind:value={lastName}
-            id="lastNameInput"
-            type="text">
-        </div>
-        <div class="u-m-top-6">
-          <label for="aliasInput">Alias</label>
-          <br>
-          <input
-            bind:value={alias}
-            id="aliasInput"
-            type="text">
-        </div>
+        <FieldsetParticipantName
+          bind:firstName={firstName}
+          bind:lastName={lastName}
+          bind:alias={alias} />
       </Fieldset>
     {/if}
     <Fieldset>
