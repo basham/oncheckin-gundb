@@ -111,6 +111,10 @@ a {
   color: var(--color-ix);
 }
 
+a:hover {
+  color: var(--color-base-20);
+}
+
 .button {
   --color-inner-shadow: transparent;
   background-color: var(--color-base-80);
