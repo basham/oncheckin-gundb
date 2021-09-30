@@ -15,7 +15,6 @@
     cursor: pointer;
     display: flex;
     font-weight: normal;
-    margin: 0;
   }
 
   .checkbox {
@@ -57,7 +56,9 @@
     class="u-sr-only"
     id={id}
     type="checkbox">
-  <label for={id}>
+  <label
+    class="u-m-0"
+    for={id}>
     <span class="checkbox">
       <Icon name="check" />
     </span>

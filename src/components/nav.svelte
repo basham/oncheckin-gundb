@@ -22,11 +22,8 @@
   nav ul {
     display: flex;
     flex-wrap: wrap;
-    font-size: var(--fs-2);
-    line-height: var(--lh-2);
     gap: var(--size-2) var(--size-4);
     list-style-type: '';
-    margin: 0;
     padding: 0 var(--size-4);
   }
 
@@ -52,7 +49,7 @@
 </style>
 
 <nav>
-  <ul>
+  <ul class="u-m-0 u-ts-2">
     {#each nav as item}
       <li>
         <a aria-current={item.current} href={item.url}>{item.label}</a>

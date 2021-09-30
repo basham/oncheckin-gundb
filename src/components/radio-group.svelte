@@ -23,8 +23,6 @@
 <style>
   ul {
     list-style-type: '';
-    margin: 0;
-    padding: 0;
   }
 
   li {
@@ -36,7 +34,6 @@
     cursor: pointer;
     display: flex;
     font-weight: normal;
-    margin: 0;
   }
 
   .radio {
@@ -72,7 +69,9 @@
 </style>
 
 <Fieldset legend={legend}>
-  <ul on:change={onSelected}>
+  <ul
+    class="u-m-0 u-p-0"
+    on:change={onSelected}>
     {#each _options as option}
       <li>
         <input
@@ -82,7 +81,9 @@
           name={option.name}
           type="radio"
           value={option.value}>
-        <label for={option.id}>
+        <label
+          class="u-m-0"
+          for={option.id}>
           <span class="radio"></span>
           <span class="text">{option.label}</span>
         </label>

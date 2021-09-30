@@ -8,26 +8,18 @@
     border-radius: var(--size-1);
     border: var(--px-1) solid var(--color-base-100);
     padding: var(--size-4);
-    margin: var(--size-4) 0 0 0;
+    margin-top: var(--size-4);
   }
 
   fieldset {
     border: none;
     display: block;
-    margin: 0;
-    padding: 0;
-  }
-
-  legend {
-    font-size: var(--fs-2);
-    line-height: var(--lh-2);
-    padding: 0;
   }
 </style>
 
 <div class={$$props.class}>
-  <fieldset>
-    <legend>{legend}</legend>
+  <fieldset class="u-m-0 u-p-0">
+    <legend class="u-p-0 u-ts-2">{legend}</legend>
     <slot></slot>
   </fieldset>
 </div>

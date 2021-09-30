@@ -79,13 +79,12 @@
   }
 
   .participant {
+    align-items: flex-start;
     display: flex;
   }
 
   .participant .name {
     flex-grow: 1;
-    font-size: var(--fs-2);
-    line-height: var(--lh-2);
   }
 </style>
 
@@ -122,11 +121,12 @@
       {:else}
         <Fieldset>
           <div class="participant">
-            <span
+            <div
               class="name"
               id="selectedParticipantName">
-              {selectedParticipant.fullName}
-            </span>
+              <div class="u-ts-2">{selectedParticipant.displayName}</div>
+              <div>{selectedParticipant.fullName}</div>
+            </div>
             <button
               aria-label="Unselect"
               aria-describedby="selectedParticipantName"

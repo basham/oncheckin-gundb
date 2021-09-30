@@ -44,9 +44,7 @@
 
   .message {
     color: var(--color-base-95);
-    font-size: var(--fs-2);
     font-weight: bold;
-    line-height: var(--lh-2);
     padding: var(--size-1) 0;
   }
 
@@ -58,7 +56,7 @@
 
 {#if state === states.PROMPT}
   <div class="prompt">
-    <div class="message">New version available</div>
+    <div class="message u-ts-2">New version available</div>
     <div class="buttons">
       <button
         class="button button--light button--light-bg"

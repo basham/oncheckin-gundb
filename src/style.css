@@ -146,8 +146,8 @@ h1:focus {
 h2 {
   font-size: var(--fs-3);
   font-weight: normal;
-  letter-spacing: 0.05em;
-  margin: var(--size-6) 0 var(--size-3);
+  line-height: var(--lh-3);
+  margin: var(--size-6) 0 var(--size-4);
 }
 
 label {
@@ -166,6 +166,10 @@ a {
   outline-offset: var(--px-2);
 }
 
+.u-m-0 {
+  margin: 0;
+}
+
 .u-m-top-2 {
   margin-top: var(--size-2);
 }
@@ -178,6 +182,10 @@ a {
   margin-top: var(--size-6);
 }
 
+.u-p-0 {
+  padding: 0;
+}
+
 .u-sr-only {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -186,4 +194,24 @@ a {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.u-ts-1 {
+  font-size: var(--fs-1);
+  line-height: var(--lh-1);
+}
+
+.u-ts-2 {
+  font-size: var(--fs-2);
+  line-height: var(--lh-2);
+}
+
+.u-ts-3 {
+  font-size: var(--fs-3);
+  line-height: var(--lh-3);
+}
+
+.u-ts-4 {
+  font-size: var(--fs-4);
+  line-height: var(--lh-4);
 }
