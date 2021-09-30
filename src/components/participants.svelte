@@ -14,6 +14,6 @@
 
 <ul>
   {#each participants as p}
-    <li><a href={p.url}>{p.fullName}</a></li>
+    <li><a href={p.url}>{p.displayName}</a></li>
   {/each}
 </ul>

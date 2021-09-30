@@ -9,6 +9,7 @@
   let title = ''
   let loading = true
   let notFound = false
+  let fullName = ''
   let events = []
   let eventCount = 0
   let hostCount = 0
@@ -17,8 +18,9 @@
 
   async function load () {
     const participant = participantStore.get(participantId)
-    title = participant?.fullName
+    title = participant?.displayName
     notFound = !participant
+    fullName = participant?.fullName
 
     events = attendanceStore.getEvents(participantId)
     eventCount = events.length
@@ -36,6 +38,7 @@
   notFound={notFound}
   title={title}>
   <h1>{title}</h1>
+  <p>{fullName}</p>
   <p>{eventCount} {pluralize(eventCount, 'event')}, {hostCount} {pluralize(hostCount, 'host')}</p>
   <p><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></p>
   <h2>{events.length ? 'Events' : 'No events'}</h2>

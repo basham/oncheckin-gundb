@@ -11,11 +11,13 @@ export function getParticipant (id) {
   if (!data) {
     return undefined
   }
+  const alias = data.alias || ''
   const displayName = data.alias || `Just ${data.firstName}`
   const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
   const url = `?p=participant&id=${id}`
   return {
     ...data,
+    alias,
     displayName,
     fullName,
     id,
@@ -34,7 +36,7 @@ export function getParticipants () {
   return uniqueIds
     .map(getParticipant)
     .filter((item) => item)
-    .sort(sortAsc('fullName'))
+    .sort(sortAsc('displayName'))
 }
 
 export async function setParticipant (id, values) {

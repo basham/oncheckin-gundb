@@ -31,7 +31,7 @@ export function getAttendees (eventId) {
       }
     })
     .filter(({ attendee }) => attendee)
-    .sort(sortAsc('fullName'))
+    .sort(sortAsc('displayName'))
 }
 
 export function getEvents (participantId) {

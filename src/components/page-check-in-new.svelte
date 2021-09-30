@@ -51,7 +51,8 @@
   }
 
   function filterResult (query, participant) {
-    return participant.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    const terms = [participant.fullName, participant.displayName].join(' ')
+    return terms.toLowerCase().indexOf(query.toLowerCase()) !== -1
   }
 
   function selectParticipant (participant) {
@@ -116,7 +117,7 @@
             label="Find participant"
             onSelected={selectParticipant}
             options={participants}
-            render={({ fullName }) => fullName} />
+            render={({ displayName, fullName }) => `${displayName} (${fullName})`} />
         </Fieldset>
       {:else}
         <Fieldset>

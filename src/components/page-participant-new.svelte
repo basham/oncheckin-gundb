@@ -6,10 +6,11 @@
 
   let firstName = ''
   let lastName = ''
+  let alias = ''
 
   async function submit (event) {
     event.preventDefault()
-    const participant = await participantStore.create({ firstName, lastName })
+    const participant = await participantStore.create({ alias, firstName, lastName })
     window.location = participant.url
   }
 </script>
@@ -35,6 +36,15 @@
       <input
         bind:value={lastName}
         id="lastNameInput"
+        type="text">
+    </div>
+    <div class="u-m-top-6">
+      <label for="aliasInput">Alias</label>
+      <br>
+      <input
+        placeholder={firstName ? `Just ${firstName}` : ''}
+        bind:value={alias}
+        id="aliasInput"
         type="text">
     </div>
     <div class="u-m-top-6">
