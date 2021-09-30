@@ -24,6 +24,6 @@
   <ul class="list-inline">
     <li><a href="?p=new-participant">New participant</a></li>
   </ul>
-  <h2>All participants ({participants.length})</h2>
+  <h2>{`All participants (${participants.length})`}</h2>
   <Participants participants={participants} />
 </Page>

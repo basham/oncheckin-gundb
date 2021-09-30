@@ -28,8 +28,8 @@
   <ul class="list-inline">
     <li><a href="?p=new-event">New event</a></li>
   </ul>
-  <h2>Upcoming events ({upcomingEvents.length})</h2>
+  <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
   <Events events={upcomingEvents} />
-  <h2>Past events ({pastEvents.length})</h2>
+  <h2>{`Past events (${pastEvents.length})`}</h2>
   <Events events={pastEvents} />
 </Page>
