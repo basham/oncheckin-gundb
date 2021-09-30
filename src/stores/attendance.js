@@ -22,16 +22,25 @@ export function getAttendees (eventId) {
     .map((path) => {
       const participantId = path.split('/')[2].split('-')[1]
       const participant = getParticipant(participantId)
-      const attendee = get(path)
-      const isHost = attendee === 'host'
+      const checkIn = getCheckIn(eventId, participantId)
       return {
         ...participant,
-        attendee,
-        isHost
+        ...checkIn
       }
     })
     .filter(({ attendee }) => attendee)
     .sort(sortAsc('displayName'))
+}
+
+export function getCheckIn (eventId, participantId) {
+  const attendee = get(`${eventId}-${participantId}/${fileName}`)
+  const isHost = attendee === 'host'
+  const checkInUrl = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
+  return {
+    attendee,
+    isHost,
+    checkInUrl
+  }
 }
 
 export function getEvents (participantId) {
@@ -44,12 +53,10 @@ export function getEvents (participantId) {
     .map((path) => {
       const eventId = path.split('/')[2].split('-')[0]
       const event = getEvent(eventId)
-      const attendee = get(path)
-      const isHost = attendee === 'host'
+      const checkIn = getCheckIn(eventId, participantId)
       return {
         ...event,
-        attendee,
-        isHost
+        ...checkIn
       }
     })
     .filter(({ attendee }) => attendee)
@@ -67,6 +74,7 @@ export async function setAttendee (eventId, participantId, value) {
 const attendance = {
   addAttendee,
   addHost,
+  get: getCheckIn,
   getAttendees,
   getEvents,
   removeAttendee

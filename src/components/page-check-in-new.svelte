@@ -1,8 +1,8 @@
 <script>
   import { attendanceStore, eventStore, participantStore } from '../stores.js'
   import { focus } from '../util.js'
-  import Checkbox from './checkbox.svelte'
   import Fieldset from './fieldset.svelte'
+  import FieldsetCheckIn from './fieldset-check-in.svelte'
   import FieldsetParticipantName from './fieldset-participant-name.svelte'
   import Icon from './icon.svelte'
   import Lookup from './lookup.svelte'
@@ -25,7 +25,6 @@
   let firstName = ''
   let lastName = ''
   let alias = ''
-  const paymentOptions = ['Cash', 'Prepaid card', 'Online', 'IOU', 'Waived']
 
   load()
 
@@ -156,20 +155,7 @@
           bind:alias={alias} />
       </Fieldset>
     {/if}
-    <Fieldset>
-      <Checkbox
-        checked={true}
-        id="arrived"
-        label="Arrived at this event" />
-      <Checkbox
-        class="u-m-top-2"
-        id="host"
-        label="Host of this event" />
-    </Fieldset>
-    <RadioGroup
-      legend="Payment"
-      name="payment"
-      options={paymentOptions} />
+    <FieldsetCheckIn />
     <div class="u-m-top-4">
       <button type="submit">Save</button>
     </div>
