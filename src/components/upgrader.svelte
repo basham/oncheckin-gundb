@@ -34,7 +34,7 @@
 <style>
   .prompt {
     align-items: center;
-    background-color: var(--color-green);
+    background-color: var(--color-base-80);
     display: flex;
     flex-wrap: wrap;
     gap: var(--size-2);
@@ -43,8 +43,6 @@
   }
 
   .message {
-    color: var(--color-base-95);
-    font-weight: bold;
     padding: var(--size-1) 0;
   }
 
@@ -59,13 +57,13 @@
     <div class="message u-ts-2">New version available</div>
     <div class="buttons">
       <button
-        class="button button--light button--light-bg"
+        class="button button--primary button--small"
         on:click={upgrade}>
         Upgrade
       </button>
       <button
         aria-label="Dismiss"
-        class="button button--light button--light-bg"
+        class="button button--small"
         on:click={dismiss}>
         <Icon name="close" />
       </button>

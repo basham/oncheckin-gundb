@@ -49,7 +49,7 @@
       bind:name={name}
       bind:date={date} />
     <div class="u-m-top-6">
-      <button type="submit">Save</button>
+      <button class="button button--primary" type="submit">Save</button>
     </div>
     <p><a href={eventUrl}>Back</a></p>
   </form>

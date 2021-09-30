@@ -6,7 +6,7 @@
   div {
     background-color: var(--color-base-90);
     border-radius: var(--size-1);
-    border: var(--px-1) solid var(--color-base-100);
+    box-shadow: 0 0 0 var(--px-1) var(--color-base-100);
     padding: var(--size-4);
     margin-top: var(--size-4);
   }

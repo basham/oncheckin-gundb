@@ -159,7 +159,7 @@
     {/if}
     <FieldsetCheckIn />
     <div class="u-m-top-4">
-      <button type="submit">Save</button>
+      <button class="button button--primary" type="submit">Save</button>
     </div>
     <p><a href={event?.url}>Back</a></p>
   </form>

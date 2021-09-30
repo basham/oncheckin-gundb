@@ -38,7 +38,7 @@
         type="text">
     </div>
     <div class="u-m-top-6">
-      <button type="submit">Save</button>
+      <button class="button button--primary" type="submit">Save</button>
     </div>
   </form>
 </Page>

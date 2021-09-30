@@ -56,10 +56,10 @@
     on:submit={submit}>
     <FieldsetCheckIn />
     <div class="u-m-top-4">
-      <button type="submit">Save</button>
+      <button class="button button--primary" type="submit">Save</button>
     </div>
     <div class="u-m-top-4">
-      <button type="button" class="button--secondary">Delete</button>
+      <button class="button" type="button">Delete</button>
     </div>
     <p><a href={event?.url}>Back</a></p>
   </form>
