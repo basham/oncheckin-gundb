@@ -59,6 +59,10 @@
     padding: var(--px-2) 0;
   }
 
+  input:hover + label .radio {
+    --color-border: var(--color-base-50);
+  }
+
   input:checked + label .radio {
     --color-checked: var(--color-ix);
   }

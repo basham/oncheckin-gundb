@@ -91,25 +91,26 @@ body {
   padding: calc(var(--size-3) - var(--px-2));
 }
 
-.button:focus {
-  --color-inner-shadow: var(--color-base-95);
-  border-color: var(--color-ix);
-  outline: none;
-}
-
-.button--light {
-  background-color: var(--color-base-20);
-  border-color: var(--color-base-80);
-}
-
-.button--light-bg:focus {
-  outline-color: var(--color-base-95);
+.button:hover {
+  background-color: var(--color-base-75);
+  border-color: var(--color-base-75);
 }
 
 .button--primary {
   background-color: var(--color-ix);
   border-color: var(--color-ix);
   color: var(--color-base-95);
+}
+
+.button--primary:hover {
+  background-color: var(--color-base-25);
+  border-color: var(--color-base-25);
+}
+
+.button:focus {
+  --color-inner-shadow: var(--color-base-95);
+  border-color: var(--color-ix);
+  outline: none;
 }
 
 .button--small {

@@ -41,6 +41,10 @@
     padding: var(--px-2) 0;
   }
 
+  input:hover + label .checkbox {
+    --color-border: var(--color-base-50);
+  }
+
   input:checked + label .checkbox {
     --color-checked: var(--color-ix);
   }
