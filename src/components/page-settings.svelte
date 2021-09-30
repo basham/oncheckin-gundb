@@ -34,6 +34,7 @@
       <br>
       <input
         bind:value={name}
+        class="input"
         id="name"
         type="text">
     </div>

@@ -119,6 +119,7 @@
       aria-autocomplete="list"
       aria-controls={listboxId}
       autocomplete="off"
+      class="input"
       id={inputId}
       on:input={handleInput}
       on:keydown={handleKeyDown}

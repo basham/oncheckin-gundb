@@ -140,7 +140,7 @@
             <button
               aria-label="Unselect"
               aria-describedby="selectedParticipantName"
-              class="button--secondary button--small"
+              class="button button--small"
               id="unselect-participant"
               on:click={unselectParticipant}>
               <Icon name="close" />

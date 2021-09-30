@@ -8,6 +8,7 @@
   <br>
   <input
     bind:value={name}
+    class="input"
     id="nameInput"
     type="text">
 </div>
@@ -16,6 +17,7 @@
   <br>
   <input
     bind:value={date}
+    class="input"
     id="dateInput"
     type="date">
 </div>

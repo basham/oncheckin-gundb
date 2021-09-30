@@ -60,6 +60,15 @@
   box-sizing: border-box;
 }
 
+:focus {
+  outline: var(--px-2) solid var(--color-ix);
+  outline-offset: var(--px-2);
+}
+
+::placeholder {
+  color: var(--color-base-50);
+}
+
 html {
   background-color: var(--color-base-95);
   color: var(--color-base-5);
@@ -71,6 +80,35 @@ body {
   font-size: var(--fs-1);
   line-height: var(--lh-1);
   margin: 0;
+}
+
+h1 {
+  font-size: var(--fs-4);
+  font-weight: normal;
+  line-height: var(--lh-4);
+  margin: 0;
+}
+
+h1:focus {
+  outline: none;
+}
+
+h2 {
+  font-size: var(--fs-3);
+  font-weight: normal;
+  line-height: var(--lh-3);
+  margin: var(--size-6) 0 var(--size-4);
+}
+
+label {
+  display: inline-block;
+  font-size: var(--fs-1);
+  line-height: var(--lh-1);
+  margin-bottom: var(--size-2);
+}
+
+a {
+  color: var(--color-ix);
 }
 
 .button {
@@ -117,9 +155,7 @@ body {
   padding: calc(var(--size-2) - var(--px-2));
 }
 
-input[type=date],
-input[type=search],
-input[type=text] {
+.input {
   background-color: var(--color-base-100);
   border: var(--px-2) solid var(--color-base-70);
   border-radius: var(--size-1);
@@ -132,49 +168,9 @@ input[type=text] {
   width: 100%;
 }
 
-input[type=date]:focus,
-input[type=search]:focus,
-input[type=text]:focus {
+.input:focus {
   border-color: var(--color-ix);
   outline: none;
-}
-
-::placeholder {
-  color: var(--color-base-50);
-}
-
-h1 {
-  font-size: var(--fs-4);
-  font-weight: normal;
-  line-height: var(--lh-4);
-  margin: 0;
-}
-
-h1:focus {
-  outline: none;
-}
-
-h2 {
-  font-size: var(--fs-3);
-  font-weight: normal;
-  line-height: var(--lh-3);
-  margin: var(--size-6) 0 var(--size-4);
-}
-
-label {
-  display: inline-block;
-  font-size: var(--fs-1);
-  line-height: var(--lh-1);
-  margin-bottom: var(--size-2);
-}
-
-a {
-  color: var(--color-ix);
-}
-
-:focus {
-  outline: var(--px-2) solid var(--color-ix);
-  outline-offset: var(--px-2);
 }
 
 .list-inline {

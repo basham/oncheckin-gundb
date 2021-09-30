@@ -9,6 +9,7 @@
   <br>
   <input
     bind:value={firstName}
+    class="input"
     id="firstNameInput"
     type="text">
 </div>
@@ -17,6 +18,7 @@
   <br>
   <input
     bind:value={lastName}
+    class="input"
     id="lastNameInput"
     type="text">
 </div>
@@ -24,8 +26,9 @@
   <label for="aliasInput">Alias</label>
   <br>
   <input
-    placeholder={firstName ? `Just ${firstName}` : ''}
     bind:value={alias}
+    class="input"
     id="aliasInput"
+    placeholder={firstName ? `Just ${firstName}` : ''}
     type="text">
 </div>
