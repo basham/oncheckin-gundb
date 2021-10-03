@@ -36,12 +36,11 @@ export function getEventCheckIns (eventId) {
       const checkIn = getCheckIn(eventId, participantId)
       return {
         ...checkIn,
-        displayName: participant.displayName,
         participant
       }
     })
     .filter(({ attendee }) => attendee)
-    .sort(sortAsc('displayName'))
+    .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
 export function getParticipantCheckIns (participantId) {
@@ -57,12 +56,11 @@ export function getParticipantCheckIns (participantId) {
       const checkIn = getCheckIn(eventId, participantId)
       return {
         ...checkIn,
-        dateObj: event.dateObj,
         event
       }
     })
     .filter(({ attendee }) => attendee)
-    .sort(sortDesc('dateObj'))
+    .sort(sortDesc(({ event }) => event.dateObj))
 }
 
 export async function setCheckIn (eventId, participantId, value) {

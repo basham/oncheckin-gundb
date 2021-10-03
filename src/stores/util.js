@@ -88,10 +88,16 @@ export async function set (path, content) {
   return write
 }
 
-export function sort (key, multiplier) {
+export function sort (selectorOrKey, multiplier) {
+  const type = typeof selectorOrKey
+  const typeMap = {
+    function: selectorOrKey,
+    string: (item) => item[selectorOrKey]
+  }
+  const selector = typeMap[type]
   return (a, b) => {
     const [keyA, keyB] = [a, b]
-      .map((item) => item[key])
+      .map((item) => selector(item))
     return keyA < keyB ? -1 * multiplier : keyA > keyB ? 1 * multiplier : 0
   }
 }
