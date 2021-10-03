@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/basham/oncheckin-gundb.git"
+    "url": "git+https://github.com/basham/oncheckin-app.git"
   },
   "author": "Chris Basham <chris@bash.am>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/basham/oncheckin-gundb/issues"
+    "url": "https://github.com/basham/oncheckin-app/issues"
   },
-  "homepage": "https://github.com/basham/oncheckin-gundb#readme",
+  "homepage": "https://github.com/basham/oncheckin-app#readme",
   "devDependencies": {
     "@snowpack/plugin-svelte": "3.7.0",
     "snowpack": "3.8.8",
