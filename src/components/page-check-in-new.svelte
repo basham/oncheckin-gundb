@@ -23,9 +23,7 @@
   let firstName = ''
   let lastName = ''
   let alias = ''
-  let arrived = true
   let host = false
-  let payment = null
 
   load()
 
@@ -73,7 +71,7 @@
 
   function submit (event) {
     event.preventDefault()
-    const checkIn = { arrived, host, payment }
+    const checkIn = { host }
     console.log(checkIn)
   }
 </script>
@@ -158,9 +156,7 @@
       </Fieldset>
     {/if}
     <FieldsetCheckIn
-      bind:arrived={arrived}
-      bind:host={host}
-      bind:payment={payment} />
+      bind:host={host} />
     <div class="u-m-top-4">
       <button class="button button--primary" type="submit">Save</button>
     </div>
