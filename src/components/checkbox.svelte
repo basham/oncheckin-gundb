@@ -56,7 +56,7 @@
 
 <div class={$$props.class}>
   <input
-    checked={checked}
+    bind:checked={checked}
     class="u-sr-only"
     id={id}
     type="checkbox">

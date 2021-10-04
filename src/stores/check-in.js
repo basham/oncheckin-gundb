@@ -2,10 +2,10 @@ import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
 
-const fileName = 'event-participant.txt'
+const fileName = 'check-in.json'
 
-export async function createCheckIn (eventId, participantId, value) {
-  return await setCheckIn(eventId, participantId, value)
+export async function createCheckIn (eventId, participantId, values) {
+  return await setCheckIn(eventId, participantId, values)
 }
 
 export async function deleteCheckIn (eventId, participantId) {
@@ -13,12 +13,17 @@ export async function deleteCheckIn (eventId, participantId) {
 }
 
 export function getCheckIn (eventId, participantId) {
-  const attendee = get(`${eventId}-${participantId}/${fileName}`)
-  const isHost = attendee === 'host'
+  const data = get(`${eventId}-${participantId}/${fileName}`)
+  if (!data) {
+    return undefined
+  }
+  const arrived = data?.arrived ?? true
+  const host = data?.host ?? false
   const url = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
   return {
-    attendee,
-    isHost,
+    ...data,
+    arrived,
+    host,
     url
   }
 }
@@ -63,8 +68,8 @@ export function getParticipantCheckIns (participantId) {
     .sort(sortDesc(({ event }) => event.dateObj))
 }
 
-export async function setCheckIn (eventId, participantId, value) {
-  return await set(`${eventId}-${participantId}/${fileName}`, value)
+export async function setCheckIn (eventId, participantId, values) {
+  return await set(`${eventId}-${participantId}/${fileName}`, values)
 }
 
 const checkInStore = {

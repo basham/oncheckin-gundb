@@ -23,6 +23,9 @@
   let firstName = ''
   let lastName = ''
   let alias = ''
+  let arrived = true
+  let host = false
+  let payment = null
 
   load()
 
@@ -48,10 +51,6 @@
     loading = false
   }
 
-  function selectCheckInType (event) {
-    checkInType = event.target.value
-  }
-
   function filterResult (query, participant) {
     const terms = [participant.fullName, participant.displayName].join(' ')
     return terms.toLowerCase().indexOf(query.toLowerCase()) !== -1
@@ -74,6 +73,8 @@
 
   function submit (event) {
     event.preventDefault()
+    const checkIn = { arrived, host, payment }
+    console.log(checkIn)
   }
 </script>
 
@@ -110,11 +111,10 @@
     autocomplete="off"
     on:submit={submit}>
     <RadioGroup
+      bind:value={checkInType}
       legend="Check in"
       name="checkin"
-      onSelected={selectCheckInType}
-      options={['Existing participant', 'New participant']}
-      selected={0} />
+      options={['Existing participant', 'New participant']} />
     {#if checkInType === 'existing-participant'}
       {#if !selectedParticipant}
         <Fieldset>
@@ -157,7 +157,10 @@
           bind:alias={alias} />
       </Fieldset>
     {/if}
-    <FieldsetCheckIn />
+    <FieldsetCheckIn
+      bind:arrived={arrived}
+      bind:host={host}
+      bind:payment={payment} />
     <div class="u-m-top-4">
       <button class="button button--primary" type="submit">Save</button>
     </div>
