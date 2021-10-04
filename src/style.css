@@ -27,6 +27,7 @@
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
   --color-ix: var(--color-base-30);
   --color-green: limegreen;
+  --color-red: orangered;
 
   --font: system, sans-serif;
 
