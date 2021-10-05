@@ -11,8 +11,7 @@
   let notFound = false
   let fullName = ''
   let checkIns = []
-  let eventCount = 0
-  let hostCount = 0
+  let stats = null
 
   load()
 
@@ -23,14 +22,26 @@
     fullName = participant?.fullName
 
     checkIns = checkInStore.getParticipantCheckIns(participantId)
-    eventCount = checkIns.length
-    hostCount = checkIns
-      .filter(({ isHost }) => isHost)
-      .length
+    stats = checkInStore.getParticipantStats(participantId)
 
     loading = false
   }
 </script>
+
+<style>
+  .checkIns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
+    margin: 0 0 0 var(--size-4);
+    padding: 0;
+  }
+
+  .date {
+    display: inline-block;
+    min-width: 12ch;
+  }
+</style>
 
 <Page
   loading={loading}
@@ -39,16 +50,16 @@
   title={title}>
   <h1>{title}</h1>
   <p>{fullName}</p>
-  <p>{eventCount} {pluralize(eventCount, 'event')}, {hostCount} {pluralize(hostCount, 'host')}</p>
+  <p>{stats?.checkInCount} {pluralize(stats?.checkInCount, 'event')}, {stats?.hostCount} {pluralize(stats?.hostCount, 'host')}</p>
   <ul class="list-inline">
     <li><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></li>
   </ul>
-  <h2>{eventCount ? 'Events' : 'No events'}</h2>
-  <ul>
+  <h2>{stats?.checkInCount ? 'Events' : 'No events'}</h2>
+  <ul class="checkIns">
     {#each checkIns as checkIn}
       <li>
+        <span class="date">{checkIn.event.displayDate}</span>
         <a href={checkIn.event.url}>{checkIn.event.name}</a>
-        ({checkIn.event.displayDate})
         {#if checkIn.host}
           Host
         {/if}

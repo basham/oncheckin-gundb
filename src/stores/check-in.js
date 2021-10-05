@@ -1,4 +1,4 @@
-import { isBefore, startOfToday } from 'date-fns'
+import { isBefore } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
@@ -65,9 +65,9 @@ export function getParticipantCheckIns (participantId) {
     .sort(sortDesc(({ event }) => event.dateObj))
 }
 
-export function getParticipantStats (participantId, date = startOfToday()) {
+export function getParticipantStats (participantId, date) {
   const checkIns = getParticipantCheckIns(participantId)
-    .filter(({ event }) => isBefore(event.dateObj, date))
+    .filter(({ event }) => date ? isBefore(event.dateObj, date) : true)
   const checkInCount = checkIns.length
   const hostCount = checkIns
     .filter(({ host }) => host)
