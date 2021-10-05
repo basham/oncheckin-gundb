@@ -1,3 +1,4 @@
+import { isBefore, startOfToday } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
@@ -26,15 +27,22 @@ export function getCheckIn (eventId, participantId) {
   }
 }
 
-export function getEventCheckIns (eventId) {
+export function getCheckInIds () {
   return storage
     .paths({
       pathStartsWith: resolvePath(),
       pathEndsWith: fileName
     })
-    .filter((path) => path.includes(eventId))
     .map((path) => {
-      const participantId = path.split('/')[2].split('-')[1]
+      const [eventId, participantId] = path.split('/')[2].split('-')
+      return { eventId, participantId }
+    })
+}
+
+export function getEventCheckIns (eventId) {
+  return getCheckInIds()
+    .filter((ids) => ids.eventId === eventId)
+    .map(({ participantId }) => {
       const participant = getParticipant(participantId)
       const checkIn = getCheckIn(eventId, participantId)
       return [checkIn, participant]
@@ -45,14 +53,9 @@ export function getEventCheckIns (eventId) {
 }
 
 export function getParticipantCheckIns (participantId) {
-  return storage
-    .paths({
-      pathStartsWith: resolvePath(),
-      pathEndsWith: fileName
-    })
-    .filter((path) => path.includes(participantId))
-    .map((path) => {
-      const eventId = path.split('/')[2].split('-')[0]
+  return getCheckInIds()
+    .filter((ids) => ids.participantId === participantId)
+    .map(({ eventId }) => {
       const event = getEvent(eventId)
       const checkIn = getCheckIn(eventId, participantId)
       return [checkIn, event]
@@ -60,6 +63,18 @@ export function getParticipantCheckIns (participantId) {
     .filter((source) => source.every((i) => i))
     .map(([checkIn, event]) => ({ ...checkIn, event }))
     .sort(sortDesc(({ event }) => event.dateObj))
+}
+
+export function getParticipantStats (participantId, date = startOfToday()) {
+  const checkIns = getParticipantCheckIns(participantId)
+    .filter(({ event }) => isBefore(event.dateObj, date))
+  const checkInCount = checkIns.length
+  const hostCount = checkIns
+    .filter(({ host }) => host)
+    .length
+  const lastCheckIn = checkIns[checkIns.length - 1]
+  const lastEvent = lastCheckIn?.event
+  return { checkInCount, hostCount, lastEvent }
 }
 
 export async function setCheckIn (eventId, participantId, values) {
@@ -71,7 +86,9 @@ const checkInStore = {
   delete: deleteCheckIn,
   get: getCheckIn,
   getEventCheckIns,
+  getIds: getCheckInIds,
   getParticipantCheckIns,
+  getParticipantStats,
   set: setCheckIn
 }
 
