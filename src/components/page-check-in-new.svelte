@@ -33,7 +33,7 @@
     notFound = !event
 
     const checkIns = checkInStore.getEventCheckIns(eventId)
-      .map((checkIn) => [checkIn.id, checkIn])
+      .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
     participants = participantStore.getAll()
       .map((p) => {
@@ -41,7 +41,7 @@
         const checkedIn = !!checkIn
         return {
           ...p,
-          ...checkIn,
+          checkIn,
           checkedIn
         }
       })
@@ -56,7 +56,7 @@
 
   function selectParticipant (participant) {
     if (participant.checkedIn) {
-      window.location = participant.checkInUrl
+      window.location = participant.checkIn.url
       return
     }
 
