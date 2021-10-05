@@ -8,8 +8,8 @@
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
 
-  async function submit (ev) {
-    ev.preventDefault()
+  async function submit (e) {
+    e.preventDefault()
     const event = await eventStore.create({ name, date })
     window.location = event.url
   }

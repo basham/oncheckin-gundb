@@ -49,7 +49,7 @@
       <li>
         <a href={checkIn.event.url}>{checkIn.event.name}</a>
         ({checkIn.event.displayDate})
-        {#if checkIn.isHost}
+        {#if checkIn.host}
           Host
         {/if}
       </li>

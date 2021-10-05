@@ -14,6 +14,7 @@
   let event = null
   let participant = null
   let checkIn = null
+  let host = false
 
   load()
 
@@ -21,13 +22,21 @@
     event = eventStore.get(eventId)
     participant = participantStore.get(participantId)
     checkIn = checkInStore.get(eventId, participantId)
+    host = checkIn?.host
     pageTitle = `${title} for ${participant?.displayName} at ${event?.name} (${event?.date})`
     notFound = !event || !participant || !checkIn
     loading = false
   }
 
-  function submit (event) {
-    event.preventDefault()
+  async function submit (e) {
+    e.preventDefault()
+    await checkInStore.set(event.id, participant.id, { host })
+    window.location = event.url
+  }
+
+  async function deleteCheckIn () {
+    await checkInStore.delete(event.id, participant.id)
+    window.location = event.url
   }
 </script>
 
@@ -54,12 +63,21 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <FieldsetCheckIn />
+    <FieldsetCheckIn bind:host={host} />
     <div class="u-m-top-4">
-      <button class="button button--primary" type="submit">Save</button>
+      <button
+        class="button button--primary"
+        type="submit">
+        Save
+      </button>
     </div>
     <div class="u-m-top-4">
-      <button class="button" type="button">Delete</button>
+      <button
+        class="button"
+        on:click={deleteCheckIn}
+        type="button">
+        Delete
+      </button>
     </div>
     <p><a href={event?.url}>Back</a></p>
   </form>

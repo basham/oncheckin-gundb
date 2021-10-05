@@ -17,12 +17,10 @@ export function getCheckIn (eventId, participantId) {
   if (!data) {
     return undefined
   }
-  const arrived = data?.arrived ?? true
   const host = data?.host ?? false
   const url = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
   return {
     ...data,
-    arrived,
     host,
     url
   }
@@ -39,12 +37,10 @@ export function getEventCheckIns (eventId) {
       const participantId = path.split('/')[2].split('-')[1]
       const participant = getParticipant(participantId)
       const checkIn = getCheckIn(eventId, participantId)
-      return {
-        ...checkIn,
-        participant
-      }
+      return [checkIn, participant]
     })
-    .filter(({ attendee }) => attendee)
+    .filter((source) => source.every((i) => i))
+    .map(([checkIn, participant]) => ({ ...checkIn, participant }))
     .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
@@ -59,12 +55,10 @@ export function getParticipantCheckIns (participantId) {
       const eventId = path.split('/')[2].split('-')[0]
       const event = getEvent(eventId)
       const checkIn = getCheckIn(eventId, participantId)
-      return {
-        ...checkIn,
-        event
-      }
+      return [checkIn, event]
     })
-    .filter(({ attendee }) => attendee)
+    .filter((source) => source.every((i) => i))
+    .map(([checkIn, event]) => ({ ...checkIn, event }))
     .sort(sortDesc(({ event }) => event.dateObj))
 }
 

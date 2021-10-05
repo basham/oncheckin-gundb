@@ -69,10 +69,10 @@
     focus('find-participant-input')
   }
 
-  function submit (event) {
-    event.preventDefault()
-    const checkIn = { host }
-    console.log(checkIn)
+  async function submit (e) {
+    e.preventDefault()
+    await checkInStore.create(event.id, selectedParticipant.id, { host })
+    window.location = event.url
   }
 </script>
 
@@ -140,7 +140,8 @@
               aria-describedby="selectedParticipantName"
               class="button button--small"
               id="unselect-participant"
-              on:click={unselectParticipant}>
+              on:click={unselectParticipant}
+              type="button">
               <Icon name="close" />
             </button>
           </div>
@@ -155,10 +156,13 @@
           bind:alias={alias} />
       </Fieldset>
     {/if}
-    <FieldsetCheckIn
-      bind:host={host} />
+    <FieldsetCheckIn bind:host={host} />
     <div class="u-m-top-4">
-      <button class="button button--primary" type="submit">Save</button>
+      <button
+        class="button button--primary"
+        type="submit">
+        Save
+      </button>
     </div>
     <p><a href={event?.url}>Back</a></p>
   </form>

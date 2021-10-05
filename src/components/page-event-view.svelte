@@ -39,7 +39,7 @@
     {#each checkIns as checkIn}
       <li>
         <a href={checkIn.url}>{checkIn.participant.displayName}</a>
-        {#if checkIn.isHost}
+        {#if checkIn.host}
           Host
         {/if}
       </li>

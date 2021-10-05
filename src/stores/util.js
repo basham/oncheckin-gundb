@@ -24,10 +24,15 @@ const extDecodeMap = {
 }
 
 const extEncodeMap = {
-  json: (path, content) => JSON.stringify({
-    ...(get(path) || {}),
-    ...content
-  }),
+  json: (path, content) => {
+    if (content === '') {
+      return content
+    }
+    return JSON.stringify({
+      ...(get(path) || {}),
+      ...content
+    })
+  },
   txt: (path, content) => content
 }
 
