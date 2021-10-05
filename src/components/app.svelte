@@ -12,6 +12,7 @@
     'new-participant': 'page-participant-new',
     participant: 'page-participant-view',
     participants: 'page-participant-index',
+    roster: 'page-event-roster',
     settings: 'page-settings'
   }
   const notFoundPage = 'page-not-found'

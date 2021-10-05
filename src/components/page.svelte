@@ -7,6 +7,7 @@
   export let loading = false
   export let location = ''
   export let notFound = false
+  export let theme = 'default'
   export let title = ''
 
   const appName = 'OnCheckIn'
@@ -67,25 +68,29 @@
   <title>{fullTitle}</title>
 </svelte:head>
 
-<Upgrader />
+{#if theme === 'default'}
+  <Upgrader />
 
-<header>
-  <span class="identity">
-    <img
-      alt={appName}
-      class="logo"
-      src="../icon.svg">
-    <span>{orgName}</span>
-  </span>
-  <OfflineStatus />
-</header>
+  <header>
+    <span class="identity">
+      <img
+        alt={appName}
+        class="logo"
+        src="../icon.svg">
+      <span>{orgName}</span>
+    </span>
+    <OfflineStatus />
+  </header>
 
-<Nav location={location} />
+  <Nav location={location} />
 
-<main class:loading={loading}>
-  {#if notFound}
-    <h1>{title}</h1>
-  {:else}
-    <slot></slot>
-  {/if}
-</main>
+  <main class:loading={loading}>
+    {#if notFound}
+      <h1>{title}</h1>
+    {:else}
+      <slot></slot>
+    {/if}
+  </main>
+{:else if theme === 'plain'}
+  <slot></slot>
+{/if}

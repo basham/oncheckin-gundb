@@ -191,6 +191,28 @@ a:hover {
   padding: 0;
 }
 
+/* Utilities */
+
+.u-flex {
+  display: flex;
+}
+
+.u-lh-1 {
+  line-height: var(--lh-1);
+}
+
+.u-lh-2 {
+  line-height: var(--lh-2);
+}
+
+.u-lh-3 {
+  line-height: var(--lh-3);
+}
+
+.u-lh-4 {
+  line-height: var(--lh-4);
+}
+
 .u-m-0 {
   margin: 0;
 }
@@ -219,6 +241,22 @@ a:hover {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.u-text-bold {
+  font-weight: bold;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+.u-text-nobr {
+  white-space: nowrap;
+}
+
+.u-text-right {
+  text-align: right;
 }
 
 .u-ts-1 {

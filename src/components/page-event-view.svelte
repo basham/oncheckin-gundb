@@ -40,6 +40,7 @@
   <p>{event?.displayDate}</p>
   <ul class="list-inline">
     <li><a href={`?p=new-check-in&id=${eventId}`}>New check-in</a></li>
+    <li><a href={`?p=roster&id=${eventId}`}>Print roster</a></li>
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
   </ul>
   <h2>{checkIns.length ? `Check-ins (${checkIns.length})` : 'No check-ins'}</h2>
