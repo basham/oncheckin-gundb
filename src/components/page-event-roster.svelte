@@ -31,6 +31,7 @@
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn
         const checkInCount = randomNum(1, 550)
+        const displayName = p.alias ? p.displayName : `${p.displayName} (${p.lastName})`
         const highlightCheckInCount = checkInCount % 5 === 0
         const highlightName = checkInCount > 5 && !p.alias
         const hostCount = randomNum(0, checkInCount)
@@ -39,6 +40,7 @@
           checkIn,
           checkInCount,
           checkedIn,
+          displayName,
           highlightCheckInCount,
           highlightName,
           hostCount,
