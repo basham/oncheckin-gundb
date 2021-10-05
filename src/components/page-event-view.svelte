@@ -32,7 +32,6 @@
   <ul class="list-inline">
     <li><a href={`?p=new-check-in&id=${eventId}`}>New check-in</a></li>
     <li><a href={`?p=edit-event&id=${eventId}`}>Edit event</a></li>
-    <li><a href={`?p=edit-attendance&id=${eventId}`}>Edit attendance</a></li>
   </ul>
   <h2>{checkIns.length ? 'Check-ins' : 'No check-ins'}</h2>
   <ul>
