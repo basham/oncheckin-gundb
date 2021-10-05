@@ -170,7 +170,6 @@ a:hover {
   line-height: var(--lh-1);
   max-width: 16rem;
   padding: calc(var(--size-2) + var(--px-1)) calc(var(--size-3) - var(--px-1));
-  resize: vertical;
   width: 100%;
 }
 
