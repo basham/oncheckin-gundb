@@ -1,5 +1,5 @@
 <script>
-  import { format, sub } from 'date-fns'
+  import { format, isBefore, sub } from 'date-fns'
   import { checkInStore, eventStore, participantStore } from '../stores.js'
   import Icon from './icon.svelte'
   import Page from './page.svelte'
@@ -21,7 +21,8 @@
     title = `Roster for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
-    returnersCutoff = format(sub(event?.dateObj, { months: 2 }), 'MMM d')
+    const returnersCutoffDate = sub(event?.dateObj, { months: 2 })
+    returnersCutoff = format(returnersCutoffDate, 'MMM d')
 
     const checkIns = checkInStore.getEventCheckIns(eventId)
       .map((checkIn) => [checkIn.participant.id, checkIn])
@@ -38,6 +39,7 @@
         const highlightCheckInCount = (checkInCount % 5 === 0 && checkInCount > 0) || /69$/.test(`${checkInCount}`)
         const highlightName = stats.checkInCount > 5 && !p.alias
         const lastEventDate = lastEvent ? format(lastEvent.dateObj, 'P') : ''
+        const highlightLastEventDate = lastEvent && isBefore(lastEvent.dateObj, returnersCutoffDate)
         return {
           ...p,
           checkIn,
@@ -45,6 +47,7 @@
           checkedIn,
           displayName,
           highlightCheckInCount,
+          highlightLastEventDate,
           highlightName,
           hostCount,
           lastEventDate
@@ -64,10 +67,6 @@
       })
 
     loading = false
-  }
-
-  function randomNum (min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 </script>
 
@@ -155,7 +154,11 @@
               {p.checkInCount}
             </td>
             <td class:highlight={p.highlightName}>{p.displayName}</td>
-            <td class="u-text-nobr u-text-right">{p.lastEventDate}</td>
+            <td
+              class="u-text-nobr u-text-right"
+              class:highlight={p.highlightLastEventDate}>
+              {p.lastEventDate}
+            </td>
           </tr>
         {/each}
       </tbody>
