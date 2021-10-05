@@ -32,7 +32,7 @@
         const checkedIn = !!checkIn
         const checkInCount = randomNum(1, 550)
         const displayName = p.alias ? p.displayName : `${p.displayName} (${p.lastName})`
-        const highlightCheckInCount = checkInCount % 5 === 0
+        const highlightCheckInCount = checkInCount % 5 === 0 || /69$/.test(`${checkInCount}`)
         const highlightName = checkInCount > 5 && !p.alias
         const hostCount = randomNum(0, checkInCount)
         return {
