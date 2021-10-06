@@ -37,7 +37,7 @@
   notFound={notFound}
   title={title}>
   <h1>{event?.name}</h1>
-  <p>{event?.displayDate}</p>
+  <p>{event?.displayDateLong}</p>
   <ul class="list-inline">
     <li><a href={`?p=new-check-in&id=${eventId}`}>New check-in</a></li>
     <li><a href={`?p=roster&id=${eventId}`}>Print roster</a></li>

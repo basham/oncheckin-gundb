@@ -22,7 +22,7 @@
     notFound = !event
 
     const returnersCutoffDate = sub(event?.dateObj, { months: 2 })
-    returnersCutoff = format(returnersCutoffDate, 'MMM d')
+    returnersCutoff = format(returnersCutoffDate, 'MM/dd')
 
     const checkIns = checkInStore.getEventCheckIns(eventId)
       .map((checkIn) => [checkIn.participant.id, checkIn])
@@ -38,7 +38,7 @@
         const displayName = p.alias ? p.displayName : `${p.displayName} (${p.lastName})`
         const highlightCheckInCount = (checkInCount % 5 === 0 && checkInCount > 0) || /69$/.test(`${checkInCount}`)
         const highlightName = stats.checkInCount > 5 && !p.alias
-        const lastEventDate = lastEvent ? format(lastEvent.dateObj, 'P') : ''
+        const lastEventDate = lastEvent ? format(lastEvent.dateObj, 'MM/dd/yy') : ''
         const highlightLastEventDate = lastEvent && isBefore(lastEvent.dateObj, returnersCutoffDate)
         return {
           ...p,
@@ -74,6 +74,8 @@
   :global(html) {
     background-color: var(--color-base-0);
     color: var(--color-base-100);
+    font-size: var(--fs-0);
+    line-height: var(--lh-0);
   }
 
   @media screen {
@@ -82,28 +84,21 @@
     }
   }
 
-  .header {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--size-4);
-  }
-
   .content {
     column-gap: var(--size-6);
-    column-rule: var(--border);
-    column-width: 24rem;
+    column-width: 25rem;
   }
 
   table {
     border-collapse: collapse;
-    margin-top: 3rem;
   }
 
   th {
     border-bottom: var(--border);
-    font-size: var(--fs-0);
-    padding: 0 var(--size-1);
+    padding: 0 var(--size-1) var(--px-2);
     position: relative;
+    height: 5rem;
+    vertical-align: bottom;
     white-space: nowrap;
   }
 
@@ -147,8 +142,7 @@
   title={title}>
   <div class="header">
     <h1 class="u-ts-2 u-text-bold">{event?.name}</h1>
-    <p class="u-lh-2 u-m-0">{event?.displayDate}</p>
-    <p class="u-lh-2 u-m-0">{`Returners cutoff: ${returnersCutoff}`}</p>
+    <p class="u-m-0">{event?.displayDateLong}</p>
   </div>
   <div class="content u-m-top-2">
     <table>
@@ -158,7 +152,10 @@
           <th><div class="right">Hares</div></th>
           <th><div class="right">Hashes</div></th>
           <th class="u-text-left">Hasher</th>
-          <th class="u-text-right">Last hash</th>
+          <th class="u-text-left">
+            Last hash<br>
+            <span class="u-text-normal">{`Ret. ${returnersCutoff}`}</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -183,7 +180,7 @@
             </td>
             <td class:highlight={p.highlightName}>{p.displayName}</td>
             <td
-              class="u-text-num u-text-right"
+              class="u-text-num"
               class:highlight={p.highlightLastEventDate}>
               {p.lastEventDate}
             </td>

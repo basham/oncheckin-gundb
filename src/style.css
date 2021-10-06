@@ -261,6 +261,10 @@ a:hover {
   white-space: nowrap;
 }
 
+.u-text-normal {
+  font-weight: normal;
+}
+
 .u-text-num {
   font-variant-numeric: tabular-nums;
 }
