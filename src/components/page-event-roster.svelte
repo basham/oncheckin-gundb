@@ -96,11 +96,12 @@
 
   table {
     border-collapse: collapse;
-    margin-top: 3.5rem;
+    margin-top: 3rem;
   }
 
   th {
     border-bottom: var(--border);
+    font-size: var(--fs-0);
     padding: 0 var(--size-1);
     position: relative;
     white-space: nowrap;

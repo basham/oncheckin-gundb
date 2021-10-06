@@ -31,11 +31,13 @@
 
   --font: system-ui, sans-serif;
 
+  --fs-0: calc(14rem/16);
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
   --fs-3: calc(20rem/16);
   --fs-4: calc(28rem/16);
 
+  --lh-0: 1rem;
   --lh-1: 1.25rem;
   --lh-2: 1.5rem;
   --lh-3: 1.75rem;
