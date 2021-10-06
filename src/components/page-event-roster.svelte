@@ -96,6 +96,31 @@
 
   table {
     border-collapse: collapse;
+    margin-top: 3.5rem;
+  }
+
+  th {
+    border-bottom: var(--border);
+    padding: 0 var(--size-1);
+    position: relative;
+    white-space: nowrap;
+  }
+
+  th > div {
+    bottom: var(--size-1);
+    left: 0;
+    position: absolute;
+    transform: translate(var(--translate), 0) rotate(-90deg);
+    transform-origin: 0% 100%;
+    width: 100%;
+  }
+
+  th > div.center {
+    --translate: calc(50% + var(--lh-1) / 2);
+  }
+
+  th > div.right {
+    --translate: 100%;
   }
 
   td {
@@ -126,36 +151,38 @@
   </div>
   <div class="content u-m-top-2">
     <table>
-      <thead class="u-sr-only">
+      <thead>
         <tr>
-          <th class="u-text-right">Host count</th>
-          <th class="u-text-center">Check in</th>
-          <th class="u-text-right">Check-in count</th>
-          <th>Participant</th>
-          <th class="u-text-right">Last event</th>
+          <th><div class="center">Check in</div></th>
+          <th><div class="right">Hares</div></th>
+          <th><div class="right">Hashes</div></th>
+          <th class="u-text-left">Hasher</th>
+          <th class="u-text-right">Last hash</th>
         </tr>
       </thead>
       <tbody>
         {#each participants as p}
           <tr>
-            <td class="u-text-right">{p.hostCount > 0 ? p.hostCount : ''}</td>
             <td class="u-text-center">
               {#if p.checkedIn && p.checkIn.host}
-                H
+                <span aria-hidden="true">H</span>
+                <span class="u-sr-only">Hare</span>
               {:else if p.checkedIn}
               <span class="u-flex">
                 <Icon name="check" />
+                <span class="u-sr-only">Checked in</span>
               </span>
               {/if}
             </td>
+            <td class="u-text-num u-text-right">{p.hostCount > 0 ? p.hostCount : ''}</td>
             <td
-              class="u-text-right"
+              class="u-text-num u-text-right"
               class:highlight={p.highlightCheckInCount}>
               {p.checkInCount}
             </td>
             <td class:highlight={p.highlightName}>{p.displayName}</td>
             <td
-              class="u-text-nobr u-text-right"
+              class="u-text-num u-text-right"
               class:highlight={p.highlightLastEventDate}>
               {p.lastEventDate}
             </td>

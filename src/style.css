@@ -29,7 +29,7 @@
   --color-green: limegreen;
   --color-red: orangered;
 
-  --font: system, sans-serif;
+  --font: system-ui, sans-serif;
 
   --fs-1: 1rem;
   --fs-2: calc(18rem/16);
@@ -251,8 +251,16 @@ a:hover {
   text-align: center;
 }
 
+.u-text-left {
+  text-align: left;
+}
+
 .u-text-nobr {
   white-space: nowrap;
+}
+
+.u-text-num {
+  font-variant-numeric: tabular-nums;
 }
 
 .u-text-right {
