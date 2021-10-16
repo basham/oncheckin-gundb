@@ -1,4 +1,4 @@
-import { isBefore } from 'date-fns'
+import { isBefore, isEqual } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
@@ -66,15 +66,34 @@ export function getParticipantCheckIns (participantId) {
 }
 
 export function getParticipantStats (participantId, date) {
+  const participant = getParticipant(participantId)
+  const { recordedLastCheckInDateDisplay, recordedLastCheckInDateObj, recordedCheckInsCount = 0, recordedHostCount = 0 } = participant
   const checkIns = getParticipantCheckIns(participantId)
     .filter(({ event }) => date ? isBefore(event.dateObj, date) : true)
-  const checkInCount = checkIns.length
-  const hostCount = checkIns
+  const foundCheckIns = checkIns
+    .filter(({ event }) =>
+      recordedLastCheckInDateObj
+        ? isBefore(event.dateObj, recordedLastCheckInDateObj) || isEqual(event.dateObj, recordedLastCheckInDateObj)
+        : false
+    )
+  const missingCheckInCount = recordedCheckInsCount - foundCheckIns.length
+  const checkInCount = checkIns.length + missingCheckInCount
+  const hostCheckIns = checkIns
     .filter(({ host }) => host)
-    .length
+  const foundHostCheckIns = foundCheckIns
+    .filter(({ host }) => host)
+  const missingHostCount = recordedHostCount - foundHostCheckIns.length
+  const hostCount = hostCheckIns.length + missingHostCount
   const lastCheckIn = checkIns[checkIns.length - 1]
   const lastEvent = lastCheckIn?.event
-  return { checkInCount, hostCount, lastEvent }
+  return {
+    checkInCount,
+    hostCount,
+    lastEvent,
+    missingCheckInCount,
+    missingHostCount,
+    recordedLastCheckInDateDisplay
+  }
 }
 
 export async function setCheckIn (eventId, participantId, values) {

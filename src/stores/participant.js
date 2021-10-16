@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns'
 import { createId, get, resolvePath, set, sortAsc, storage } from './util.js'
 
 const fileName = 'participant.json'
@@ -14,6 +15,8 @@ export function getParticipant (id) {
   const alias = data.alias || ''
   const displayName = data.alias || `Just ${data.firstName}`
   const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
+  const recordedLastCheckInDateObj = data.recordedLastCheckInDate ? parseISO(data.recordedLastCheckInDate) : null
+  const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
   const url = `?p=participant&id=${id}`
   return {
     ...data,
@@ -21,6 +24,8 @@ export function getParticipant (id) {
     displayName,
     fullName,
     id,
+    recordedLastCheckInDateDisplay,
+    recordedLastCheckInDateObj,
     url
   }
 }
