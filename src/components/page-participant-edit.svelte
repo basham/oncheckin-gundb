@@ -124,7 +124,7 @@
       </div>
     </Fieldset>
     <div class="u-m-top-6">
-      <button class="button" type="submit">Save</button>
+      <button class="button button--primary" type="submit">Save</button>
     </div>
     <p><a href={participant?.url}>Back</a></p>
   </form>
