@@ -7,11 +7,11 @@ import {
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
-import { delay, randomLetter, randomString } from '../util.js'
+import { delay, randomWord } from '../util.js'
 const { localStorage } = window
 
 const APP = 'oncheckin'
-const USER_KEYPAIR = `${APP}-keypair`
+const CURRENT_AUTHOR = `${APP}-current-author`
 const workspace = '+bfh3.hhh1997'
 const pub = 'https://oncheckin-pub.glitch.me/'
 
@@ -41,6 +41,10 @@ export function createId () {
   return cuid()
 }
 
+export function createWorkspaceId (id = createId()) {
+  return `+${APP}.${id}`
+}
+
 export function get (path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
@@ -49,15 +53,15 @@ export function get (path) {
 }
 
 export function getKeypair () {
-  const storedKeypair = JSON.parse(localStorage.getItem(USER_KEYPAIR))
+  const storedKeypair = JSON.parse(localStorage.getItem(CURRENT_AUTHOR))
   const check = checkAuthorKeypairIsValid(storedKeypair)
   if (!isErr(check)) {
     return storedKeypair
   }
 
-  const shortname = `${randomLetter()}${randomString(3)}`
+  const shortname = randomWord(4)
   const keypair = generateAuthorKeypair(shortname)
-  localStorage.setItem(USER_KEYPAIR, JSON.stringify(keypair))
+  localStorage.setItem(CURRENT_AUTHOR, JSON.stringify(keypair))
   return keypair
 }
 

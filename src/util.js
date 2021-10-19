@@ -28,6 +28,10 @@ export function randomString (length, dictionary = numbersLowercaseSafe) {
   ).join('')
 }
 
+export function randomWord (length = 1) {
+  return `${randomLetter()}${randomString(length - 1)}`
+}
+
 export function sort (selectorOrKey, multiplier) {
   const type = typeof selectorOrKey
   const typeMap = {
