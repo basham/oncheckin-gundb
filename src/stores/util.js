@@ -7,6 +7,7 @@ import {
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
+import { randomLetter, randomString } from '../util.js'
 const { localStorage } = window
 
 const APP = 'oncheckin'
@@ -40,10 +41,6 @@ export function createId () {
   return cuid()
 }
 
-export function createRandomString (length) {
-  return Math.random().toString(36).substr(2, length)
-}
-
 export function delay (ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms)
@@ -64,7 +61,7 @@ export function getKeypair () {
     return storedKeypair
   }
 
-  const shortname = createRandomString(4)
+  const shortname = `${randomLetter()}${randomString(3)}`
   const keypair = generateAuthorKeypair(shortname)
   localStorage.setItem(USER_KEYPAIR, JSON.stringify(keypair))
   return keypair

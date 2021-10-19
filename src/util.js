@@ -6,6 +6,22 @@ export function pluralize (count, singular, plural = `${singular}s`) {
   return count === 1 ? singular : plural
 }
 
+// Safe character set inspired by:
+// https://github.com/CyberAP/nanoid-dictionary
+const numbersSafe = '256789'
+const lowercaseSafe = 'bcdfghjkmnpqrstwyz'
+const numbersLowercaseSafe = `${numbersSafe}${lowercaseSafe}`
+
+export function randomLetter () {
+  return randomString(1, lowercaseSafe)
+}
+
+export function randomString (length, dictionary = numbersLowercaseSafe) {
+  return Array.from({ length }, () =>
+    dictionary[Math.floor(Math.random() * dictionary.length)]
+  ).join('')
+}
+
 export function waitForElement (id, callback = () => {}, retry = 180) {
   const el = document.getElementById(id)
   if (el) {
