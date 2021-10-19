@@ -7,7 +7,7 @@ import {
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
-import { randomLetter, randomString } from '../util.js'
+import { delay, randomLetter, randomString } from '../util.js'
 const { localStorage } = window
 
 const APP = 'oncheckin'
@@ -39,12 +39,6 @@ const extEncodeMap = {
 
 export function createId () {
   return cuid()
-}
-
-export function delay (ms) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), ms)
-  })
 }
 
 export function get (path) {
@@ -88,26 +82,4 @@ export async function set (path, content) {
   })
   await delay(100)
   return write
-}
-
-export function sort (selectorOrKey, multiplier) {
-  const type = typeof selectorOrKey
-  const typeMap = {
-    function: selectorOrKey,
-    string: (item) => item[selectorOrKey]
-  }
-  const selector = typeMap[type]
-  return (a, b) => {
-    const [keyA, keyB] = [a, b]
-      .map((item) => selector(item))
-    return keyA < keyB ? -1 * multiplier : keyA > keyB ? 1 * multiplier : 0
-  }
-}
-
-export function sortAsc (key) {
-  return sort(key, 1)
-}
-
-export function sortDesc (key) {
-  return sort(key, -1)
 }

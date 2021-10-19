@@ -1,3 +1,9 @@
+export function delay (ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ms)
+  })
+}
+
 export function focus (id) {
   waitForElement(id, (el) => el.focus())
 }
@@ -20,6 +26,28 @@ export function randomString (length, dictionary = numbersLowercaseSafe) {
   return Array.from({ length }, () =>
     dictionary[Math.floor(Math.random() * dictionary.length)]
   ).join('')
+}
+
+export function sort (selectorOrKey, multiplier) {
+  const type = typeof selectorOrKey
+  const typeMap = {
+    function: selectorOrKey,
+    string: (item) => item[selectorOrKey]
+  }
+  const selector = typeMap[type]
+  return (a, b) => {
+    const [keyA, keyB] = [a, b]
+      .map((item) => selector(item))
+    return keyA < keyB ? -1 * multiplier : keyA > keyB ? 1 * multiplier : 0
+  }
+}
+
+export function sortAsc (key) {
+  return sort(key, 1)
+}
+
+export function sortDesc (key) {
+  return sort(key, -1)
 }
 
 export function waitForElement (id, callback = () => {}, retry = 180) {

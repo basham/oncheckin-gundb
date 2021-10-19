@@ -1,5 +1,6 @@
 import { format, parseISO } from 'date-fns'
-import { createId, get, resolvePath, set, sortAsc, storage } from './util.js'
+import { createId, get, resolvePath, set, storage } from './util.js'
+import { sortAsc } from '../util.js'
 
 const fileName = 'participant.json'
 

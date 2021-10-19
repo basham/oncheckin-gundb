@@ -1,5 +1,6 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns'
-import { createId, get, resolvePath, set, sortDesc, storage } from './util.js'
+import { createId, get, resolvePath, set, storage } from './util.js'
+import { sortDesc } from '../util.js'
 
 const fileName = 'event.json'
 

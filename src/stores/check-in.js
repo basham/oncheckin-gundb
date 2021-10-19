@@ -1,7 +1,8 @@
 import { isBefore, isEqual } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
-import { get, resolvePath, set, sortAsc, sortDesc, storage } from './util.js'
+import { get, resolvePath, set, storage } from './util.js'
+import { sortAsc, sortDesc } from '../util.js'
 
 const fileName = 'check-in.json'
 
