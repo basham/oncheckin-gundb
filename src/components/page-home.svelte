@@ -20,6 +20,6 @@
   loading={loading}
   location='home'>
   <h1>{orgName}</h1>
-  <h2>Upcoming events</h2>
+  <h2>{upcomingEvents.length ? 'Upcoming events' : 'No upcoming events'}</h2>
   <Events events={upcomingEvents} />
 </Page>
