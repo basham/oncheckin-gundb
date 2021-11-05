@@ -13,7 +13,8 @@
     participant: 'page-participant-view',
     participants: 'page-participant-index',
     roster: 'page-event-roster',
-    settings: 'page-settings'
+    settings: 'page-settings',
+    workspace: 'page-workspace'
   }
   const notFoundPage = 'page-not-found'
   const defaultPage = 'page-home'
