@@ -4,6 +4,9 @@
   import { onMount } from 'svelte'
   import Page from './page.svelte'
 
+  let workspaceName = ''
+  let pubLink = ''
+
   const inviteCode = window.btoa(JSON.stringify({
     id: cuid(),
     pub: 'https://oncheckin-pub.glitch.me/'
@@ -12,7 +15,7 @@
 
   onMount(() => {
     new QRious({
-      background: '#ff8c00',
+      background: '#ffb36a',
       element: document.getElementById('inviteQrCode'),
       size: 160,
       value: inviteLink
@@ -53,55 +56,84 @@
     </div>
 
     <h1>Get started</h1>
-    <p>OnCheckIn is a tool for managing participants and events for Hash&nbsp;House&nbsp;Harrier kennels. There is no global database. Instead, data is organized into indepenent workspaces, in which you manage and control.</p>
-    <p><a href="#">Join a workspace</a></p>
+    <p>OnCheckIn is a tool for managing participants and events for Hash&nbsp;House&nbsp;Harrier kennels.</p>
+    <p>Join an existing workspace with an invite link or by scanning a QR&nbsp;code on someone else's device.</p>
     <p><a href="#">Create a new workspace</a></p>
 
-    <h1>Join workspace</h1>
-    <p>Join a workspace with an invite code, invite link, or by scanning a QR&nbsp;code on someone else's device.</p>
+    <h1 class="u-m-top-6">New workspace</h1>
+    <p>OnCheckIn does not sync with a central database. Instead, you control your own data with workspaces and pubs.</p>
+    <p>A workspace initially exists only on the device on which it is created. It works offline, but it must sync with a pub to back up data or collaborate.</p>
+    <details>
+      <summary>Start a pub</summary>
+      <p>A quick and free way to start a pub is with <a href="https://glitch.com/">Glitch</a>.</p>
+      <ol>
+        <li>Create or log in to your Glitch account.</li>
+        <li><a href="https://glitch.com/edit/#!/remix/oncheckin-pub">Remix the OnCheckIn Pub</a>.</li>
+        <li>Click on the Share button at the top.</li>
+        <li>Copy the link to the live site.</li>
+        <li>Enter this link as the <a href="#pubLinkInput">Pub link</a>.</li>
+      </ol>
+      <p>Explore <a href="https://github.com/earthstar-project/earthstar-pub">Earthstar Pub</a> for additional ways to start a pub.</p>
+      <p>Feel free to reuse pubs, since each can host multiple workspaces.</p>
+    </details>
     <div class="u-m-top-6">
-      <label for="inviteCodeInput">Invite code</label><br>
-      <textarea
+      <label for="workspaceNameInput">Workspace name (required)</label>
+      <br>
+      <input
+        bind:value={workspaceName}
         class="input"
-        id="inviteCodeInput">
-      </textarea>
+        id="workspaceNameInput"
+        type="text">
     </div>
     <div class="u-m-top-6">
-      <button
-        class="button button--primary"
-        type="submit">
-        Join workspace
-      </button>
-    </div>
-
-    <h1>New workspace</h1>
-    <p>Workspaces initially exist only on the devices on which they were created. No network connectivity is needed, as all functionality works offline. However, to collaborate or to backup data, it must sync with a server, called a pub.</p>
-    <p>Pubs can host any number of workspaces, and workspaces can be synced with any number of pubs. Pubs are easy to spin up and free to run. Learn how to <a href="#">start your pub</a>.</p>
-    <p><a href="#">Join a workspace</a></p>
-    <p><a href="#">Create a new workspace</a></p>
-
-    <h1>Invite</h1>
-    <p>Invite others to collaborate in this workspace.</p>
-    <h2>Invite QR code</h2>
-    <canvas id="inviteQrCode"></canvas>
-    <h2>Invite link</h2>
-    <div class="u-m-top-6">
-      <label for="inviteLinkInput">Invite code</label><br>
-      <textarea
+      <label for="pubLinkInput">Pub link (optional)</label>
+      <br>
+      <input
+        bind:value={pubLink}
         class="input"
-        id="inviteLinkInput"
-        readonly
-        value={inviteLink} />
+        id="pubLinkInput"
+        type="text">
     </div>
     <div class="u-m-top-6">
       <button class="button button--primary">
-        Copy
+        Create workspace
       </button>
     </div>
 
-    <h1>Workspaces</h1>
+    <h1 class="u-m-top-6">Join workspace</h1>
+
+    <div class="group u-m-top-6">
+      <h2 class="u-m-top-0">Blooming Fools</h2>
+      <p class="u-m-0"><span class="u-color-hint">ID:</span> {cuid()}</p>
+      <p class="u-m-0"><span class="u-color-hint">Pub:</span> https://oncheckin-pub.glitch.me/</p>
+      <p class="u-m-0"><span class="u-color-hint">Created:</span> Nov 1, 2021</p>
+    </div>
+    <div class="u-m-top-6">
+      <button class="button button--primary">
+        Join workspace
+      </button>
+    </div>
+    <h2>You already joined this workspace</h2>
+    <div class="u-m-top-6">
+      <button class="button button--primary">
+        Open workspace
+      </button>
+    </div>
+
+    <h1 class="u-m-top-6">Invite</h1>
+    <p>Invite others to collaborate in this workspace as editors. (There is no read only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
+    <div class="u-m-top-6">
+      <button class="button button--primary">
+        Copy invite link
+      </button>
+    </div>
+    <div class="u-m-top-6">
+      <canvas id="inviteQrCode"></canvas>
+    </div>
+
+    <h1 class="u-m-top-6">Workspaces</h1>
     <p>
-      <a href="#">Blooming Fools</a><br>
+      <a href="#" class="u-ts-2">Blooming Fools</a><br>
       <span>ID: cjld2cjxh0000qzrmn831i7rn</span><br>
       <span>Created: Nov 1, 2021</span>
     </p>

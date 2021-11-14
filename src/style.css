@@ -25,6 +25,7 @@
   --color-base-95: #190f05;
   --color-base-100: #000000;
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
+  --color-hint: var(--color-base-20);
   --color-ix: var(--color-base-30);
   --color-green: limegreen;
   --color-red: orangered;
@@ -101,6 +102,27 @@ h2 {
   font-weight: normal;
   line-height: var(--lh-3);
   margin: var(--size-6) 0 var(--size-4);
+}
+
+ol,
+ul {
+  padding-left: var(--size-8);
+}
+
+details,
+.group {
+  background-color: var(--color-base-100);
+  border-radius: var(--size-1);
+  padding: var(--size-4);
+}
+
+details :last-child {
+  margin-bottom: 0;
+}
+
+summary {
+  color: var(--color-ix);
+  cursor: pointer;
 }
 
 label {
@@ -199,6 +221,14 @@ a:hover {
 
 /* Utilities */
 
+.u-color-hint {
+  color: var(--color-hint);
+}
+
+.u-color-ix {
+  color: var(--color-ix);
+}
+
 .u-flex {
   display: flex;
 }
@@ -221,6 +251,10 @@ a:hover {
 
 .u-m-0 {
   margin: 0;
+}
+
+.u-m-top-0 {
+  margin-top: 0;
 }
 
 .u-m-top-2 {
@@ -275,6 +309,11 @@ a:hover {
 
 .u-text-right {
   text-align: right;
+}
+
+.u-ts-0 {
+  font-size: var(--fs-0);
+  line-height: var(--lh-0);
 }
 
 .u-ts-1 {
