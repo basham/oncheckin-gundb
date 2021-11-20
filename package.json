@@ -23,15 +23,15 @@
     "@snowpack/plugin-svelte": "3.7.0",
     "snowpack": "3.8.8",
     "standard": "16.0.4",
-    "workbox-cli": "6.3.0"
+    "workbox-cli": "6.4.1"
   },
   "dependencies": {
     "cuid": "2.1.8",
-    "date-fns": "2.25.0",
+    "date-fns": "2.26.0",
     "earthstar": "6.8.5",
     "qrious": "4.0.2",
-    "svelte": "3.44.1",
-    "workbox-window": "6.3.0"
+    "svelte": "3.44.2",
+    "workbox-window": "6.4.1"
   },
   "snowpack": {
     "mount": {
