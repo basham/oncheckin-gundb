@@ -1,96 +1,37 @@
 <script>
-  import { orgStore } from '../stores.js'
-  import Nav from './nav.svelte'
-  import OfflineStatus from './offline-status.svelte'
+  import { APP_NAME } from '../constants.js'
   import Upgrader from './upgrader.svelte'
+  import AppLayout from './layout-app.svelte'
+  import WorkspaceLayout from './layout-workspace.svelte'
 
   export let loading = false
   export let location = ''
   export let notFound = false
-  export let theme = 'default'
+  export let theme = 'workspace'
   export let title = ''
 
-  const appName = 'OnCheckIn'
   $: title = notFound ? ['Page not found'] : (Array.isArray(title) ? title : [title])
-  $: fullTitle = [...title, appName].filter((v) => v).join(' - ')
-  // $: focusOnHeading(loading)
-
-  let orgName = orgStore.get()?.name
-
-  function focusOnHeading (loading) {
-    if (loading) return
-    window.requestAnimationFrame(() => {
-      const heading = document.querySelector('h1')
-      if (!heading) return
-      heading.setAttribute('tabindex', '-1')
-      heading.focus()
-      heading.removeAttribute('tabindex')
-    })
-  }
-
-  setTimeout(() => focusOnHeading(loading), 100)
+  $: fullTitle = [...title, APP_NAME].filter((v) => v).join(' - ')
 </script>
-
-<style>
-  header {
-    align-items: center;
-    background-color: var(--color-base-100);
-    display: flex;
-    gap: 0 var(--size-4);
-    line-height: var(--lh-2);
-    padding: var(--size-2) var(--size-4);
-  }
-
-  .identity {
-    align-items: center;
-    display: flex;
-    flex-grow: 1;
-    flex-wrap: wrap;
-    gap: 0 var(--size-4);
-  }
-
-  .logo {
-    --size: 2.5rem;
-    height: var(--size);
-    width: var(--size);
-  }
-
-  main {
-    padding: var(--size-6) var(--size-4);
-  }
-
-  .loading {
-    display: none;
-  }
-</style>
 
 <svelte:head>
   <title>{fullTitle}</title>
 </svelte:head>
 
-{#if theme === 'default'}
-  <Upgrader />
+<Upgrader />
 
-  <header>
-    <span class="identity">
-      <img
-        alt={appName}
-        class="logo"
-        src="../icon.svg">
-      <span>{orgName}</span>
-    </span>
-    <OfflineStatus />
-  </header>
-
-  <Nav location={location} />
-
-  <main class:loading={loading}>
-    {#if notFound}
-      <h1>{title}</h1>
-    {:else}
-      <slot></slot>
-    {/if}
-  </main>
+{#if theme === 'app'}
+  <AppLayout title={title}>
+    <slot></slot>
+  </AppLayout>
+{:else if theme === 'workspace'}
+  <WorkspaceLayout
+    loading={loading}
+    location={location}
+    notFound={notFound}
+    title={title}>
+    <slot></slot>
+  </WorkspaceLayout>
 {:else if theme === 'plain'}
   <slot></slot>
 {/if}
