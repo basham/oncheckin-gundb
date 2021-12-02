@@ -8,14 +8,14 @@
   async function submit (e) {
     e.preventDefault()
     const workspace = await workspaceStore.create({ name, pub })
-    window.location = `p=workspace-created&id=${workspace.id}`
+    window.location = workspace.confirmationUrl
   }
 </script>
 
 <Page
   theme="app"
   title="New workspace">
-  <p>OnCheckIn does not sync with a central database. Instead, you control your own data with workspaces and pubs.</p>
+  <p>OnCheckIn does not sync with a global database. Instead, you control your own data with workspaces and pubs.</p>
   <p>A workspace initially exists only on the device on which it is created. It works offline, but it must sync with a pub to back up data or collaborate.</p>
   <details>
     <summary>Start a pub</summary>
@@ -34,7 +34,7 @@
     autocomplete="off"
     on:submit={submit}>
     <div class="u-m-top-6">
-      <label for="workspaceNameInput">Workspace name (required)</label>
+      <label for="workspaceNameInput">Workspace name (optional)</label>
       <br>
       <input
         bind:value={name}

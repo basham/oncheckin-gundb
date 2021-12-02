@@ -41,10 +41,6 @@ export function createId () {
   return cuid()
 }
 
-export function createWorkspaceId (id = createId()) {
-  return `+${APP}.${id}`
-}
-
 export function get (path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
