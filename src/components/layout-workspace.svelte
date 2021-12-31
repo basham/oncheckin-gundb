@@ -1,6 +1,6 @@
 <script>
   import { APP_NAME } from '../constants.js'
-  import { orgStore } from '../stores.js'
+  import { workspaceStore } from '../stores.js'
   import Nav from './nav.svelte'
   import OfflineStatus from './offline-status.svelte'
 
@@ -9,7 +9,7 @@
   export let notFound = false
   export let title = ''
 
-  let orgName = orgStore.get()?.name
+  const workspace = workspaceStore.get()
 
   // $: focusOnHeading(loading)
 
@@ -66,7 +66,7 @@
       alt={APP_NAME}
       class="logo"
       src="../icon.svg">
-    <span>{orgName}</span>
+    <span>{workspace?.name}</span>
   </span>
   <OfflineStatus />
 </header>

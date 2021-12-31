@@ -5,7 +5,8 @@
     ['Home', './'],
     ['Events', '?p=events'],
     ['Participants', '?p=participants'],
-    ['Settings', '?p=settings']
+    ['Settings', '?p=settings'],
+    ['Workspaces', '?p=workspaces']
   ]
     .map(([label, url]) => {
       const current = location === label.toLowerCase() ? 'location' : null

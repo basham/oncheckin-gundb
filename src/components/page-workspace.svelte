@@ -22,27 +22,6 @@
 
 <Page theme='app'>
   <div>
-    <h1>Workspace created</h1>
-    <div class="group u-m-top-6">
-      <h2 class="u-m-top-0">Blooming Fools</h2>
-      <p class="u-m-0"><span class="u-color-hint">ID:</span> {cuid()}</p>
-      <p class="u-m-0"><span class="u-color-hint">Pub:</span> https://oncheckin-pub.glitch.me/</p>
-    </div>
-    <details class="u-m-top-6">
-      <summary>You should save this workspace's invite link</summary>
-      <p>Now that the workspace is created, you should copy its invite link and save it in a safe place, like a password manager. This way, you can reopen this workspace in case the browser's data is cleared.</p>
-      <div class="u-m-top-4">
-        <button class="button">
-          Copy invite link
-        </button>
-      </div>
-    </details>
-    <div class="u-m-top-6">
-      <button class="button button--primary">
-        Open workspace
-      </button>
-    </div>
-
     <h1 class="u-m-top-6">Join workspace</h1>
     <div class="group u-m-top-6">
       <h2 class="u-m-top-0">Blooming Fools</h2>
@@ -71,12 +50,5 @@
     <div class="u-m-top-6">
       <canvas id="inviteQrCode"></canvas>
     </div>
-
-    <h1 class="u-m-top-6">Workspaces</h1>
-    <p>
-      <a href="#" class="u-ts-2">Blooming Fools</a><br>
-      <span>ID: cjld2cjxh0000qzrmn831i7rn</span><br>
-      <span>Created: Nov 1, 2021</span>
-    </p>
   </div>
 </Page>
