@@ -58,5 +58,8 @@
         Create workspace
       </button>
     </div>
+    <div class="u-m-top-6">
+      <a href="?p=workspaces">Back to workspaces</a>
+    </div>
   </form>
 </Page>

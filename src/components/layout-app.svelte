@@ -18,10 +18,18 @@
     gap: var(--size-3);
   }
 
-  .logo {
+  header > img {
     --size: 3rem;
     height: var(--size);
     width: var(--size);
+  }
+
+  header > a {
+    text-decoration: none;
+  }
+
+  header > a:hover {
+    text-decoration: underline;
   }
 
   main {
@@ -30,15 +38,14 @@
 </style>
 
 <div class="layout">
-  <header class="logo">
-    <img
-      alt=""
-      class="logo"
-      src="../icon.svg">
-    <span>{APP_NAME}</span>
+  <header>
+    <img alt="" src="../icon.svg">
+    <a href="/">{APP_NAME}</a>
   </header>
   <main>
-    <h1>{title}</h1>
+    {#if title}
+      <h1>{title}</h1>
+    {/if}
     <slot></slot>
   </main>
 </div>

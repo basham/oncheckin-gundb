@@ -21,7 +21,7 @@
 <Upgrader />
 
 {#if theme === 'app'}
-  <AppLayout title={title}>
+  <AppLayout title={title[0]}>
     <slot></slot>
   </AppLayout>
 {:else if theme === 'workspace'}
@@ -29,7 +29,7 @@
     loading={loading}
     location={location}
     notFound={notFound}
-    title={title}>
+    title={title[0]}>
     <slot></slot>
   </WorkspaceLayout>
 {:else if theme === 'plain'}

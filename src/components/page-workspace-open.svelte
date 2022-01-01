@@ -8,7 +8,7 @@
 
   onMount(() => {
     workspaceStore.open(workspaceId)
-    window.location = '/'
+    window.location = '?p=home'
   })
 </script>
 

@@ -2,7 +2,7 @@
   export let location = ''
 
   $: nav = [
-    ['Home', './'],
+    ['Home', '?p=home'],
     ['Events', '?p=events'],
     ['Participants', '?p=participants'],
     ['Settings', '?p=settings'],
