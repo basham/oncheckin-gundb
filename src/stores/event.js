@@ -1,6 +1,6 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns'
-import { createId, get, resolvePath, set, storage } from './util.js'
-import { sortDesc } from '../util.js'
+import { getWorkspace } from './workspace.js'
+import { createId, resolvePath, sortDesc } from '../util.js'
 
 const fileName = 'event.json'
 
@@ -9,6 +9,7 @@ export async function createEvent (values) {
 }
 
 export function getEvent (id) {
+  const { get } = getWorkspace()
   const data = get(`${id}/${fileName}`)
   if (!data) {
     return undefined
@@ -30,6 +31,7 @@ export function getEvent (id) {
 }
 
 export function getEvents () {
+  const { storage } = getWorkspace()
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -55,6 +57,7 @@ export function getUpcomingEvents () {
 }
 
 export async function setEvent (id, values) {
+  const { set } = getWorkspace()
   await set(`${id}/${fileName}`, values)
   return getEvent(id)
 }

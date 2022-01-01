@@ -6,9 +6,8 @@ import {
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
-import { createId } from './util.js'
 import { APP } from '../constants.js'
-import { delay, randomWord, sortAsc } from '../util.js'
+import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 const { localStorage } = window
 
 const CURRENT_AUTHOR = `${APP}-current-author`
@@ -17,6 +16,7 @@ const WORKSPACES = `${APP}-workspaces`
 const fileName = 'workspace.json'
 const storages = new Map()
 const syncers = new Map()
+const workspaces = new Map()
 
 const extDecodeMap = {
   json: (content) => JSON.parse(content),
@@ -85,38 +85,41 @@ export function getPub (id = getCurrentWorkspaceId()) {
 }
 
 export function getStorage (id = getCurrentWorkspaceId()) {
-  if (!storages.has(id)) {
+  return getOrCreate(storages, id, () => {
     const workspaceId = createWorkspaceId(id)
-    storages.set(id, new StorageLocalStorage([ValidatorEs4], workspaceId))
-  }
-  return storages.get(id)
+    return new StorageLocalStorage([ValidatorEs4], workspaceId)
+  })
 }
 
 export function getSyncer (id = getCurrentWorkspaceId()) {
-  if (!syncers.has(id)) {
+  return getOrCreate(syncers, id, () => {
     const storage = getStorage(id)
     const pub = getPub(id)
-    syncers.set(id, new OnePubOneWorkspaceSyncer(storage, pub))
-  }
-  return syncers.get(id)
+    return new OnePubOneWorkspaceSyncer(storage, pub)
+  })
 }
 
 export function getWorkspace (id = getCurrentWorkspaceId()) {
-  const storage = getStorage(id)
-  const get = (path) => getContent(storage, path)
-  const set = (path, content) => setContent(storage, path, content)
-  const data = get(fileName) || {}
-  const pub = getPub(id)
-  const name = data.name || '(Workspace)'
-  const openUrl = `?p=open-workspace&id=${id}`
-  return {
-    get,
-    id,
-    pub,
-    name,
-    openUrl,
-    set
-  }
+  return getOrCreate(workspaces, id, () => {
+    const storage = getStorage(id)
+    const syncer = getSyncer(id)
+    const get = (path) => getContent(storage, path)
+    const set = (path, content) => setContent(storage, path, content)
+    const data = get(fileName) || {}
+    const pub = getPub(id)
+    const name = data.name || '(Workspace)'
+    const openUrl = `?p=open-workspace&id=${id}`
+    return {
+      get,
+      id,
+      pub,
+      name,
+      openUrl,
+      set,
+      storage,
+      syncer
+    }
+  })
 }
 
 export function getWorkspaceConfig () {
@@ -135,14 +138,11 @@ export function openWorkspace (id = null) {
   localStorage.setItem(CURRENT_WORKSPACE, JSON.stringify(id))
 }
 
-export function parseExtension (path, defaultExtension = 'txt') {
-  const extGroup = path.match(/\.(.+)$/)
-  return extGroup ? extGroup[1] : defaultExtension
-}
-
-export function resolvePath (path = '') {
-  const prefix = `/${APP}/`
-  return path.startsWith(prefix) ? path : `${prefix}${path}`
+export async function renameWorkspace (name) {
+  const { id, set } = getWorkspace()
+  await set(fileName, { name })
+  workspaces.delete(id)
+  return getWorkspace()
 }
 
 export async function setContent (storage, path, content) {
@@ -176,7 +176,9 @@ const workspaceStore = {
   create: createWorkspace,
   get: getWorkspace,
   getAll: getWorkspaces,
-  open: openWorkspace
+  open: openWorkspace,
+  rename: renameWorkspace,
+  sync: syncWorkspace
 }
 
 export default workspaceStore

@@ -1,6 +1,6 @@
 import { format, parseISO } from 'date-fns'
-import { createId, get, resolvePath, set, storage } from './util.js'
-import { sortAsc } from '../util.js'
+import { getWorkspace } from './workspace.js'
+import { createId, resolvePath, sortAsc } from '../util.js'
 
 const fileName = 'participant.json'
 
@@ -9,6 +9,7 @@ export async function createParticipant (values) {
 }
 
 export function getParticipant (id) {
+  const { get } = getWorkspace()
   const data = get(`${id}/${fileName}`)
   if (!data) {
     return undefined
@@ -32,6 +33,7 @@ export function getParticipant (id) {
 }
 
 export function getParticipants () {
+  const { storage } = getWorkspace()
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -46,6 +48,7 @@ export function getParticipants () {
 }
 
 export async function setParticipant (id, values) {
+  const { set } = getWorkspace()
   await set(`${id}/${fileName}`, values)
   return getParticipant(id)
 }

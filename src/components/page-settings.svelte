@@ -1,28 +1,20 @@
 <script>
-  import { orgStore } from '../stores.js'
+  import { workspaceStore } from '../stores.js'
   import Page from './page.svelte'
 
-  const title = 'Settings'
+  const title = 'Rename workspace'
 
-  let loading = true
-  let name = ''
-
-  load()
-
-  async function load () {
-    name = orgStore.get()?.name
-    loading = false
-  }
+  const workspace = workspaceStore.get()
+  let name = workspace?.name
 
   async function submit (event) {
     event.preventDefault()
-    await orgStore.set({ name })
-    window.location = './'
+    await workspaceStore.rename(name)
+    window.location = '?p=settings'
   }
 </script>
 
 <Page
-  loading={loading}
   location='settings'
   title={title}>
   <h1>{title}</h1>
@@ -30,7 +22,7 @@
     autocomplete="off"
     on:submit={submit}>
     <div class="u-m-top-6">
-      <label for="name">Organization name</label>
+      <label for="name">Workspace name</label>
       <br>
       <input
         bind:value={name}

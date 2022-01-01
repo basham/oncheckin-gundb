@@ -1,9 +1,10 @@
 <script>
-  import { syncer } from '../stores.js'
+  import { workspaceStore } from '../stores.js'
 
   const retryTime = 1000
   let offline = true
-
+  const { syncer } = workspaceStore.get()
+  workspaceStore.sync()
   checkConnection(syncer)
 
   function checkConnection (syncer) {

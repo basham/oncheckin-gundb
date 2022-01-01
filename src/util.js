@@ -1,3 +1,10 @@
+import cuid from 'cuid'
+import { APP } from './constants.js'
+
+export function createId () {
+  return cuid()
+}
+
 export function delay (ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms)
@@ -6,6 +13,18 @@ export function delay (ms) {
 
 export function focus (id) {
   waitForElement(id, (el) => el.focus())
+}
+
+export function getOrCreate (cache, key, createCallback) {
+  if (!cache.has(key)) {
+    cache.set(key, createCallback())
+  }
+  return cache.get(key)
+}
+
+export function parseExtension (path, defaultExtension = 'txt') {
+  const extGroup = path.match(/\.(.+)$/)
+  return extGroup ? extGroup[1] : defaultExtension
 }
 
 export function pluralize (count, singular, plural = `${singular}s`) {
@@ -30,6 +49,11 @@ export function randomString (length, dictionary = numbersLowercaseSafe) {
 
 export function randomWord (length = 1) {
   return `${randomLetter()}${randomString(length - 1)}`
+}
+
+export function resolvePath (path = '') {
+  const prefix = `/${APP}/`
+  return path.startsWith(prefix) ? path : `${prefix}${path}`
 }
 
 export function sort (selectorOrKey, multiplier) {
