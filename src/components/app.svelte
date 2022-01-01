@@ -16,8 +16,10 @@
     'open-workspace': 'page-workspace-open',
     participant: 'page-participant-view',
     participants: 'page-participant-index',
+    'rename-workspace': 'page-workspace-rename',
     roster: 'page-event-roster',
     settings: 'page-settings',
+    share: 'page-share',
     workspace: 'page-workspace',
     'workspace-created': 'page-workspace-created',
     workspaces: 'page-workspace-index'
