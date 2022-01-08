@@ -16,5 +16,5 @@
   <p><a href="?p=edit-pub">Edit pub</a></p>
   <p><a href="?p=share">Share workspace</a></p>
   <h2>Other settings</h2>
-  <p><a href="?p=workspaces">All workspaces</a></p>
+  <p><a href="?p=workspaces">Change workspace</a></p>
 </Page>

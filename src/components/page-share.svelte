@@ -2,6 +2,7 @@
   import QRious from 'qrious'
   import { onMount } from 'svelte'
   import Page from './page.svelte'
+  import Toast from './toast.svelte'
   import { workspaceStore } from '../stores.js'
 
   const title = 'Share workspace'
@@ -12,6 +13,8 @@
   }))
   const shareLink = `${window.location.origin}/?p=join&code=${inviteCode}`
 
+  let toast
+
   onMount(() => {
     new QRious({
       background: '#ffb36a',
@@ -21,10 +24,12 @@
     })
   })
 
-  function copyShareLink () {
+  function copyShareLink (event) {
     const text = document.getElementById('share-link-input')
     text.select()
     document.execCommand('copy')
+    event.target.focus()
+    toast.dispatch('Copied share link')
   }
 </script>
 
@@ -36,7 +41,7 @@
   <div>
     <input
       aria-label="Share link"
-      class="input"
+      class="u-sr-only"
       id="share-link-input"
       readonly
       type="text"
@@ -52,4 +57,5 @@
   <div class="u-m-top-6">
     <canvas id="share-code"></canvas>
   </div>
+  <Toast bind:this={toast} />
 </Page>
