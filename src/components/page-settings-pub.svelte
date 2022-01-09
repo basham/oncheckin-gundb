@@ -1,0 +1,37 @@
+<script>
+  import { workspaceStore } from '../stores.js'
+  import Page from './page.svelte'
+
+  const title = 'Edit pub'
+
+  const workspace = workspaceStore.get()
+  let pub = workspace?.pub
+
+  async function submit (event) {
+    event.preventDefault()
+    await workspaceStore.setPub(workspace.id, pub)
+    window.location = '?p=settings'
+  }
+</script>
+
+<Page
+  location='settings'
+  title={title}>
+  <h1>{title}</h1>
+  <form
+    autocomplete="off"
+    on:submit={submit}>
+    <div class="u-m-top-6">
+      <label for="pub">Pub link</label>
+      <br>
+      <input
+        bind:value={pub}
+        class="input"
+        id="pub"
+        type="text">
+    </div>
+    <div class="u-m-top-6">
+      <button class="button button--primary" type="submit">Save</button>
+    </div>
+  </form>
+</Page>

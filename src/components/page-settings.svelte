@@ -11,10 +11,18 @@
   location='settings'
   title={title}>
   <h1>{title}</h1>
-  <h2>This workspace</h2>
-  <p><a href="?p=rename-workspace">Rename workspace</a></p>
-  <p><a href="?p=edit-pub">Edit pub</a></p>
-  <p><a href="?p=share">Share workspace</a></p>
-  <h2>Other settings</h2>
-  <p><a href="?p=workspaces">Change workspace</a></p>
+  <ul class="list-inline">
+    <li><a href="?p=workspaces">Change workspace</a></li>
+  </ul>
+  <div class="group u-m-top-6">
+    <h2 class="u-m-top-0">This workspace</h2>
+    <p class="u-m-0"><span class="u-color-hint">Name:</span> {workspace?.name}</p>
+    <p class="u-m-0"><span class="u-color-hint">ID:</span> {workspace?.id}</p>
+    <p class="u-m-0"><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
+    <ul class="list-inline u-m-bottom-0">
+      <li><a href="?p=share">Share</a></li>
+      <li><a href="?p=rename-workspace">Rename</a></li>
+      <li><a href="?p=edit-pub">Edit pub</a></li>
+    </ul>
+  </div>
 </Page>

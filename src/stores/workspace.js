@@ -178,6 +178,7 @@ const workspaceStore = {
   getAll: getWorkspaces,
   open: openWorkspace,
   rename: renameWorkspace,
+  setPub,
   sync: syncWorkspace
 }
 
