@@ -6,8 +6,9 @@
 
 <style>
   .layout {
-    margin: var(--size-8) auto;
+    margin: 0 auto;
     max-width: 30rem;
+    padding: var(--size-8);
   }
 
   header {
