@@ -71,6 +71,13 @@
 
   async function submit (e) {
     e.preventDefault()
+    if (checkInType === 'new-participant') {
+      selectedParticipant = await participantStore.create({ alias, firstName, lastName })
+    }
+    if (!selectedParticipant && checkInType === 'existing-participant') {
+      focus('find-participant-input')
+      return
+    }
     await checkInStore.create(event.id, selectedParticipant.id, { host })
     window.location = event.url
   }
