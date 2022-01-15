@@ -10,6 +10,7 @@
     events: 'page-event-index',
     'get-started': 'page-get-started',
     home: 'page-workspace-home',
+    join: 'page-join',
     'new-check-in': 'page-check-in-new',
     'new-event': 'page-event-new',
     'new-participant': 'page-participant-new',
@@ -21,7 +22,6 @@
     roster: 'page-event-roster',
     settings: 'page-settings',
     share: 'page-share',
-    workspace: 'page-workspace',
     'workspace-created': 'page-workspace-created',
     workspaces: 'page-workspace-index'
   }
