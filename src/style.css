@@ -201,7 +201,7 @@ a:hover {
   font-size: var(--fs-1);
   line-height: var(--lh-1);
   max-width: 16rem;
-  padding: calc(var(--size-2) + var(--px-1)) calc(var(--size-3) - var(--px-1));
+  padding: var(--size-2);
   width: 100%;
 }
 
@@ -243,6 +243,18 @@ a:hover {
 
 .u-flex {
   display: flex;
+}
+
+.u-flex-gap-2 {
+  gap: var(--size-2);
+}
+
+.u-flex-grow {
+  flex-grow: 1;
+}
+
+.u-flex-wrap {
+  flex-wrap: wrap;
 }
 
 .u-lh-1 {

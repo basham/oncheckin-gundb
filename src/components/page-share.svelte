@@ -33,25 +33,35 @@
   }
 </script>
 
+<style>
+  .content {
+    max-width: 40rem;
+  }
+
+  .share-link-input {
+    flex-basis: 10rem;
+    flex-grow: 1;
+    max-width: none;
+  }
+</style>
+
 <Page
   location='settings'
   title={title}>
   <h1>{title}</h1>
-  <p>Invite others to collaborate in this workspace as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
-  <div>
+  <p class="content">Invite others to collaborate in this workspace as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
+  <div class="content u-flex u-flex-wrap u-flex-gap-2">
     <input
       aria-label="Share link"
-      class="u-sr-only"
+      class="input share-link-input"
       id="share-link-input"
       readonly
       type="text"
       value={shareLink} />
-  </div>
-  <div class="u-m-top-6">
     <button
       class="button button--primary"
       on:click={copyShareLink}>
-      Copy share link
+      Copy link
     </button>
   </div>
   <div class="u-m-top-6">
