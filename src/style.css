@@ -73,6 +73,11 @@
   color: var(--color-base-50);
 }
 
+::selection {
+  background-color: var(--color-base-5);
+  color: var(--color-base-95);
+}
+
 html {
   background-color: var(--color-base-95);
   color: var(--color-base-5);
