@@ -7,11 +7,6 @@
 
   const title = 'Share workspace'
   const workspace = workspaceStore.get()
-  const inviteCode = window.btoa(JSON.stringify({
-    id: workspace.id,
-    pub: workspace.pub
-  }))
-  const shareLink = `${window.location.origin}/?p=join&code=${inviteCode}`
 
   let toast
 
@@ -20,7 +15,7 @@
       background: '#ffb36a',
       element: document.getElementById('share-code'),
       size: 160,
-      value: shareLink
+      value: workspace?.shareUrl
     })
   })
 
@@ -57,7 +52,7 @@
       id="share-link-input"
       readonly
       type="text"
-      value={shareLink} />
+      value={workspace?.shareUrl} />
     <button
       class="button button--primary"
       on:click={copyShareLink}>
