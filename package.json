@@ -8,7 +8,7 @@
     "build": "snowpack build && npm run workbox",
     "start": "snowpack dev",
     "test": "standard",
-    "workbox": "workbox generateSW workbox-config.js"
+    "workbox": "workbox generateSW workbox-config.cjs"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,9 @@
     "workbox-window": "6.4.2"
   },
   "snowpack": {
+    "alias": {
+      "earthstar": "earthstar/dist/earthstar.min.js"
+    },
     "mount": {
       "src": "/"
     },

@@ -1,7 +1,7 @@
 import {
   StorageLocalStorage,
   StorageMemory
-} from 'earthstar/dist/earthstar.min.js'
+} from 'earthstar'
 
 // https://github.com/flexdinesh/browser-or-node
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined'
