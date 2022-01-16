@@ -10,8 +10,12 @@ export const EarthstarStorage = isBrowser ? StorageLocalStorage : StorageMemory
 
 const storage = new Map()
 const memoryStorage = {
-  getItem: (key) => storage.get(key),
+  getItem: (key) => storage.get(key) || null,
   setItem: (key, value) => storage.set(key, value)
 }
 
 export const localStorage = isBrowser ? window.localStorage : memoryStorage
+
+export const atob = isBrowser ? window.atob : (str) => Buffer.from(str, 'base64').toString('binary')
+
+export const btoa = isBrowser ? window.btoa : (str) => Buffer.from(str, 'binary').toString('base64')

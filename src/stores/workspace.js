@@ -5,7 +5,7 @@ import {
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
-import { EarthstarStorage, localStorage } from './storage.js'
+import { EarthstarStorage, localStorage, btoa } from './storage.js'
 import { APP, URL } from '../constants.js'
 import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
@@ -108,7 +108,7 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
     const pub = getPub(id)
     const name = data.name || '(Workspace)'
     const openUrl = `?p=open-workspace&id=${id}`
-    const inviteCode = window.btoa(JSON.stringify({ id, name, pub }))
+    const inviteCode = btoa(JSON.stringify({ id, name, pub }))
     const shareUrl = `${URL}?p=join&code=${inviteCode}`
     return {
       get,
