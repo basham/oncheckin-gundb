@@ -4,7 +4,7 @@ import {
   checkAuthorKeypairIsValid,
   generateAuthorKeypair,
   isErr
-} from 'earthstar'
+} from 'earthstar/dist/earthstar.min.js'
 import { EarthstarStorage, localStorage, btoa } from './storage.js'
 import { APP, URL } from '../constants.js'
 import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
