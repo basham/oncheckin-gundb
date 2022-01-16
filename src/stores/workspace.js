@@ -1,14 +1,13 @@
 import {
   OnePubOneWorkspaceSyncer,
-  StorageLocalStorage,
   ValidatorEs4,
   checkAuthorKeypairIsValid,
   generateAuthorKeypair,
   isErr
 } from 'earthstar/dist/earthstar.min.js'
+import { EarthstarStorage, localStorage } from './storage.js'
 import { APP, URL } from '../constants.js'
 import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
-const { localStorage } = window
 
 const CURRENT_AUTHOR = `${APP}-current-author`
 const CURRENT_WORKSPACE = `${APP}-current-workspace`
@@ -87,7 +86,7 @@ export function getPub (id = getCurrentWorkspaceId()) {
 export function getStorage (id = getCurrentWorkspaceId()) {
   return getOrCreate(storages, id, () => {
     const workspaceId = createWorkspaceId(id)
-    return new StorageLocalStorage([ValidatorEs4], workspaceId)
+    return new EarthstarStorage([ValidatorEs4], workspaceId)
   })
 }
 
