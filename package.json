@@ -35,6 +35,9 @@
     "workbox-window": "6.4.2"
   },
   "snowpack": {
+    "alias": {
+      "earthstar": "earthstar/dist/earthstar.min.js"
+    },
     "mount": {
       "src": "/"
     },
