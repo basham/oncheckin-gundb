@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Membership and event management software for Hash House Harriers.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "snowpack build && npm run workbox",
     "start": "snowpack dev",
