@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { checkInStore, eventStore } from '../stores.js'
   import Page from './page.svelte'
 
@@ -11,15 +12,13 @@
   let event = null
   let checkIns = []
 
-  load()
-
-  async function load () {
-    event = eventStore.get(eventId)
+  onMount(async () => {
+    event = await eventStore.get(eventId)
     title = `${event?.name} (${event?.displayDate})`
     notFound = !event
-    checkIns = checkInStore.getEventCheckIns(eventId)
+    checkIns = await checkInStore.getEventCheckIns(eventId)
     loading = false
-  }
+  })
 </script>
 
 <style>

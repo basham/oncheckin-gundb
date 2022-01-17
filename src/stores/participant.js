@@ -8,9 +8,9 @@ export async function createParticipant (values) {
   return await setParticipant(createId(), values)
 }
 
-export function getParticipant (id) {
-  const { get } = getWorkspace()
-  const data = get(`${id}/${fileName}`)
+export async function getParticipant (id) {
+  const { get } = await getWorkspace()
+  const data = await get(`${id}/${fileName}`)
   if (!data) {
     return undefined
   }
@@ -32,8 +32,8 @@ export function getParticipant (id) {
   }
 }
 
-export function getParticipants () {
-  const { storage } = getWorkspace()
+export async function getParticipants () {
+  const { storage } = await getWorkspace()
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -41,16 +41,17 @@ export function getParticipants () {
     })
     .map((path) => path.split('/')[2])
   const uniqueIds = Array.from(new Set(ids))
-  return uniqueIds
+  const participantPromises = uniqueIds
     .map(getParticipant)
+  return (await Promise.all(participantPromises))
     .filter((item) => item)
     .sort(sortAsc('displayName'))
 }
 
 export async function setParticipant (id, values) {
-  const { set } = getWorkspace()
+  const { set } = await getWorkspace()
   await set(`${id}/${fileName}`, values)
-  return getParticipant(id)
+  return await getParticipant(id)
 }
 
 const participant = {

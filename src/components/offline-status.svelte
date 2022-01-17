@@ -3,7 +3,7 @@
 
   const retryTime = 1000
   let offline = true
-  const { syncer } = workspaceStore.get()
+  const syncer = workspaceStore.getSyncer()
   workspaceStore.sync()
   checkConnection(syncer)
 

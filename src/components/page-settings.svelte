@@ -1,13 +1,21 @@
 <script>
+  import { onMount } from 'svelte'
   import Page from './page.svelte'
   import { workspaceStore } from '../stores.js'
 
   const title = 'Settings'
 
-  const workspace = workspaceStore.get()
+  let loading = true
+  let workspace
+
+  onMount(async () => {
+    workspace = await workspaceStore.get()
+    loading = false
+  })
 </script>
 
 <Page
+  loading={loading}
   location='settings'
   title={title}>
   <h1>{title}</h1>

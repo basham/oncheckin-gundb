@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { participantStore } from '../stores.js'
   import Participants from './participants.svelte'
   import Page from './page.svelte'
@@ -8,12 +9,10 @@
   let loading = true
   let participants = []
 
-  load()
-
-  async function load () {
-    participants = participantStore.getAll()
+  onMount(async () => {
+    participants = await participantStore.getAll()
     loading = false
-  }
+  })
 </script>
 
 <Page

@@ -14,9 +14,9 @@ export async function deleteCheckIn (eventId, participantId) {
   return await setCheckIn(eventId, participantId, '')
 }
 
-export function getCheckIn (eventId, participantId) {
-  const { get } = getWorkspace()
-  const data = get(`${eventId}-${participantId}/${fileName}`)
+export async function getCheckIn (eventId, participantId) {
+  const { get } = await getWorkspace()
+  const data = await get(`${eventId}-${participantId}/${fileName}`)
   if (!data) {
     return undefined
   }
@@ -29,8 +29,8 @@ export function getCheckIn (eventId, participantId) {
   }
 }
 
-export function getCheckInIds () {
-  const { storage } = getWorkspace()
+export async function getCheckInIds () {
+  const { storage } = await getWorkspace()
   return storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -42,36 +42,38 @@ export function getCheckInIds () {
     })
 }
 
-export function getEventCheckIns (eventId) {
-  return getCheckInIds()
+export async function getEventCheckIns (eventId) {
+  const checkInPromises = (await getCheckInIds())
     .filter((ids) => ids.eventId === eventId)
-    .map(({ participantId }) => {
-      const participant = getParticipant(participantId)
-      const checkIn = getCheckIn(eventId, participantId)
+    .map(async ({ participantId }) => {
+      const participant = await getParticipant(participantId)
+      const checkIn = await getCheckIn(eventId, participantId)
       return [checkIn, participant]
     })
+  return (await Promise.all(checkInPromises))
     .filter((source) => source.every((i) => i))
     .map(([checkIn, participant]) => ({ ...checkIn, participant }))
     .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
-export function getParticipantCheckIns (participantId) {
-  return getCheckInIds()
+export async function getParticipantCheckIns (participantId) {
+  const checkInPromises = (await getCheckInIds())
     .filter((ids) => ids.participantId === participantId)
-    .map(({ eventId }) => {
-      const event = getEvent(eventId)
-      const checkIn = getCheckIn(eventId, participantId)
+    .map(async ({ eventId }) => {
+      const event = await getEvent(eventId)
+      const checkIn = await getCheckIn(eventId, participantId)
       return [checkIn, event]
     })
+  return (await Promise.all(checkInPromises))
     .filter((source) => source.every((i) => i))
     .map(([checkIn, event]) => ({ ...checkIn, event }))
     .sort(sortDesc(({ event }) => event.dateObj))
 }
 
-export function getParticipantStats (participantId, date) {
-  const participant = getParticipant(participantId)
+export async function getParticipantStats (participantId, date) {
+  const participant = await getParticipant(participantId)
   const { recordedLastCheckInDateDisplay, recordedLastCheckInDateObj, recordedCheckInsCount = 0, recordedHostCount = 0 } = participant
-  const checkIns = getParticipantCheckIns(participantId)
+  const checkIns = (await getParticipantCheckIns(participantId))
     .filter(({ event }) => date ? isBefore(event.dateObj, date) : true)
   const foundCheckIns = checkIns
     .filter(({ event }) =>
@@ -100,7 +102,7 @@ export function getParticipantStats (participantId, date) {
 }
 
 export async function setCheckIn (eventId, participantId, values) {
-  const { set } = getWorkspace()
+  const { set } = await getWorkspace()
   return await set(`${eventId}-${participantId}/${fileName}`, values)
 }
 

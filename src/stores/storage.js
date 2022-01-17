@@ -1,10 +1,10 @@
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
-import { StorageLocalStorage } from './storageLocalStorage.js'
+import { StorageIndexedDB } from './storageIndexedDB.js'
 
 // https://github.com/flexdinesh/browser-or-node
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined'
 
-export const EarthstarStorage = isBrowser ? StorageLocalStorage : StorageMemory
+export const EarthstarStorage = isBrowser ? StorageIndexedDB : StorageMemory
 
 const storage = new Map()
 const memoryStorage = {

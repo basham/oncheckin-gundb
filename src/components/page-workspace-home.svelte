@@ -1,18 +1,18 @@
 <script>
+  import { onMount } from 'svelte'
   import { eventStore, workspaceStore } from '../stores.js'
   import Events from './events.svelte'
   import Page from './page.svelte'
 
-  const workspace = workspaceStore.get()
+  let workspace
   let loading = true
   let upcomingEvents = []
 
-  load()
-
-  async function load () {
-    upcomingEvents = eventStore.getUpcoming().slice(0, 3)
+  onMount(async () => {
+    workspace = await workspaceStore.get()
+    upcomingEvents = (await eventStore.getUpcoming()).slice(0, 3)
     loading = false
-  }
+  })
 </script>
 
 <Page

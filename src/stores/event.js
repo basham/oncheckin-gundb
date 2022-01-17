@@ -8,9 +8,9 @@ export async function createEvent (values) {
   return await setEvent(createId(), values)
 }
 
-export function getEvent (id) {
-  const { get } = getWorkspace()
-  const data = get(`${id}/${fileName}`)
+export async function getEvent (id) {
+  const { get } = await getWorkspace()
+  const data = await get(`${id}/${fileName}`)
   if (!data) {
     return undefined
   }
@@ -30,8 +30,8 @@ export function getEvent (id) {
   }
 }
 
-export function getEvents () {
-  const { storage } = getWorkspace()
+export async function getEvents () {
+  const { storage } = await getWorkspace()
   const ids = storage
     .paths({
       pathStartsWith: resolvePath(),
@@ -39,25 +39,26 @@ export function getEvents () {
     })
     .map((path) => path.split('/')[2])
   const uniqueIds = Array.from(new Set(ids))
-  return uniqueIds
+  const eventPromises = uniqueIds
     .map(getEvent)
+  return (await Promise.all(eventPromises))
     .filter((item) => item)
     .sort(sortDesc('dateObj'))
 }
 
-export function getPastEvents () {
-  return getEvents()
+export async function getPastEvents () {
+  return (await getEvents())
     .filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
 }
 
-export function getUpcomingEvents () {
-  return getEvents()
+export async function getUpcomingEvents () {
+  return (await getEvents())
     .filter(({ dateObj }) => isToday(dateObj) || isFuture(dateObj))
     .reverse()
 }
 
 export async function setEvent (id, values) {
-  const { set } = getWorkspace()
+  const { set } = await getWorkspace()
   await set(`${id}/${fileName}`, values)
   return getEvent(id)
 }

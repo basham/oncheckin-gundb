@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { APP_NAME } from '../constants.js'
   import { workspaceStore } from '../stores.js'
   import Nav from './nav.svelte'
@@ -9,7 +10,11 @@
   export let notFound = false
   export let title = ''
 
-  const workspace = workspaceStore.get()
+  let workspace
+
+  onMount(async () => {
+    workspace = await workspaceStore.get()
+  })
 
   // $: focusOnHeading(loading)
 
@@ -54,29 +59,27 @@
   main {
     padding: var(--size-6) var(--size-4);
   }
-
-  .loading {
-    display: none;
-  }
 </style>
 
-<header>
-  <span class="identity">
-    <img
-      alt={APP_NAME}
-      class="logo"
-      src="../icon.svg">
-    <span>{workspace?.name}</span>
-  </span>
-  <OfflineStatus />
-</header>
+{#if !loading}
+  <header>
+    <span class="identity">
+      <img
+        alt={APP_NAME}
+        class="logo"
+        src="../icon.svg">
+      <span>{workspace?.name}</span>
+    </span>
+    <OfflineStatus />
+  </header>
 
-<Nav location={location} />
+  <Nav location={location} />
 
-<main class:loading={loading}>
-  {#if notFound}
-    <h1>{title}</h1>
-  {:else}
-    <slot></slot>
-  {/if}
-</main>
+  <main>
+    {#if notFound}
+      <h1>{title}</h1>
+    {:else}
+      <slot></slot>
+    {/if}
+  </main>
+{/if}

@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { checkInStore, participantStore } from '../stores.js'
   import { pluralize } from '../util.js'
   import Page from './page.svelte'
@@ -13,19 +14,17 @@
   let checkIns = []
   let stats = null
 
-  load()
-
-  async function load () {
-    const participant = participantStore.get(participantId)
+  onMount(async () => {
+    const participant = await participantStore.get(participantId)
     title = participant?.displayName
     notFound = !participant
     fullName = participant?.fullName
 
-    checkIns = checkInStore.getParticipantCheckIns(participantId)
-    stats = checkInStore.getParticipantStats(participantId)
+    checkIns = await checkInStore.getParticipantCheckIns(participantId)
+    stats = await checkInStore.getParticipantStats(participantId)
 
     loading = false
-  }
+  })
 </script>
 
 <style>

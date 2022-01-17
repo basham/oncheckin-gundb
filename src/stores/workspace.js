@@ -53,10 +53,10 @@ export function createWorkspaceId (id = createId()) {
   return `+${APP}.${id}`
 }
 
-export function getContent (storage, path) {
+export async function getContent (storage, path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
-  const content = storage.getContent(resolvePath(path))
+  const content = await storage.getContent(resolvePath(path))
   return content ? decode(content) : undefined
 }
 
@@ -99,12 +99,12 @@ export function getSyncer (id = getCurrentWorkspaceId()) {
 }
 
 export function getWorkspace (id = getCurrentWorkspaceId()) {
-  return getOrCreate(workspaces, id, () => {
+  return getOrCreate(workspaces, id, async () => {
     const storage = getStorage(id)
     const syncer = getSyncer(id)
     const get = (path) => getContent(storage, path)
     const set = (path, content) => setContent(storage, path, content)
-    const data = get(fileName) || {}
+    const data = await get(fileName) || {}
     const pub = getPub(id)
     const name = data.name || '(Workspace)'
     const openUrl = `?p=open-workspace&id=${id}`
@@ -183,6 +183,8 @@ const workspaceStore = {
   create: createWorkspace,
   get: getWorkspace,
   getAll: getWorkspaces,
+  getStorage,
+  getSyncer,
   open: openWorkspace,
   rename: renameWorkspace,
   setPub,

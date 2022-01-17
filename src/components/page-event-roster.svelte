@@ -1,5 +1,6 @@
 <script>
   import { format, isBefore, sub } from 'date-fns'
+  import { onMount } from 'svelte'
   import { checkInStore, eventStore, participantStore } from '../stores.js'
   import Icon from './icon.svelte'
   import Page from './page.svelte'
@@ -14,24 +15,22 @@
   let returnersCutoff = ''
   let participants = []
 
-  load()
-
-  async function load () {
-    event = eventStore.get(eventId)
+  onMount(async () => {
+    event = await eventStore.get(eventId)
     title = `Roster for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
     const returnersCutoffDate = sub(event?.dateObj, { months: 2 })
     returnersCutoff = format(returnersCutoffDate, 'MM/dd')
 
-    const checkIns = checkInStore.getEventCheckIns(eventId)
+    const checkIns = (await checkInStore.getEventCheckIns(eventId))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
-    participants = participantStore.getAll()
-      .map((p) => {
+    const participantsPromises = (await participantStore.getAll())
+      .map(async (p) => {
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn
-        const stats = checkInStore.getParticipantStats(p.id, event.dateObj)
+        const stats = await checkInStore.getParticipantStats(p.id, event.dateObj)
         const { lastEvent } = stats
         const checkInCount = stats.checkInCount + 1
         const hostCount = stats.hostCount + (checkedIn && checkIn.host ? 1 : 0)
@@ -53,6 +52,7 @@
           lastEventDate
         }
       })
+    participants = (await Promise.all(participantsPromises))
       .sort((a, b) => {
         if (a.checkIn?.host && !b.checkIn?.host) {
           return -1
@@ -67,7 +67,7 @@
       })
 
     loading = false
-  }
+  })
 </script>
 
 <style>

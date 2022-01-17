@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { eventStore } from '../stores.js'
   import Events from './events.svelte'
   import Page from './page.svelte'
@@ -10,14 +11,12 @@
   let upcomingEvents = []
   let pastEvents = []
 
-  load()
-
-  async function load () {
-    events = eventStore.getAll()
-    upcomingEvents = eventStore.getUpcoming()
-    pastEvents = eventStore.getPast()
+  onMount(async () => {
+    events = await eventStore.getAll()
+    upcomingEvents = await eventStore.getUpcoming()
+    pastEvents = await eventStore.getPast()
     loading = false
-  }
+  })
 </script>
 
 <Page
