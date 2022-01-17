@@ -174,6 +174,11 @@ export function syncWorkspace () {
   syncer.syncOnceAndContinueLive()
 }
 
+export function syncWorkspaceOnce () {
+  const syncer = getSyncer()
+  return syncer.syncOnce()
+}
+
 const workspaceStore = {
   create: createWorkspace,
   get: getWorkspace,
@@ -181,7 +186,8 @@ const workspaceStore = {
   open: openWorkspace,
   rename: renameWorkspace,
   setPub,
-  sync: syncWorkspace
+  sync: syncWorkspace,
+  syncOnce: syncWorkspaceOnce
 }
 
 export default workspaceStore

@@ -6,8 +6,9 @@
   const params = (new URL(document.location)).searchParams
   const workspaceId = params.get('id')
 
-  onMount(() => {
+  onMount(async () => {
     workspaceStore.open(workspaceId)
+    await workspaceStore.syncOnce()
     window.location = '?p=home'
   })
 </script>
