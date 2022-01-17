@@ -34,7 +34,6 @@ export class StorageIndexedDB extends StorageMemory {
       const tags = [...this._tags.values()]
       this._tags.clear()
       tags.forEach((resolve) => resolve(true))
-      console.log('Saved')
     })
 
     this.onWrite.subscribe(async (e) => {

@@ -175,7 +175,7 @@ export async function syncWorkspaceOnce () {
   const { storage, syncer } = await workspaceStore.get()
   const tag = storage.tag()
   const stats = await syncer.syncOnce()
-  if (stats.pull.numInjested) {
+  if (stats.pull.numIngested > 0) {
     await tag
   }
   const lastSync = Date.now()
