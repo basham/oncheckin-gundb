@@ -6,9 +6,9 @@
   const inviteCode = params.get('code')
   const { id, name, pub } = JSON.parse(window.atob(inviteCode))
 
-  function joinWorkspace () {
+  async function joinWorkspace () {
     workspaceStore.setPub(id, pub)
-    const workspace = workspaceStore.get(id)
+    const workspace = await workspaceStore.get(id)
     window.location = workspace.openUrl
   }
 </script>
