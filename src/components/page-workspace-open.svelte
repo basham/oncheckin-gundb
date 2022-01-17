@@ -8,7 +8,7 @@
 
   onMount(async () => {
     workspaceStore.open(workspaceId)
-    await workspaceStore.syncOnce()
+    // await workspaceStore.syncOnce()
     window.location = '?p=home'
   })
 </script>
