@@ -11,7 +11,6 @@ import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, 
 
 const CURRENT_AUTHOR = `${APP}-current-author`
 const CURRENT_WORKSPACE = `${APP}-current-workspace`
-const WORKSPACES = `${APP}-workspaces`
 const fileName = 'workspace.json'
 const storages = new Map()
 const syncers = new Map()
@@ -37,8 +36,8 @@ const extEncodeMap = {
 
 export async function createWorkspace ({ name, pub = null }) {
   const id = createId()
-  setPub(id, pub)
   const storage = getStorage(id)
+  await setPub(id, pub)
   await setContent(storage, fileName, { name })
   const confirmationUrl = `?p=workspace-created&id=${id}`
   return {
@@ -78,11 +77,6 @@ export function getKeypair () {
   return keypair
 }
 
-export function getPub (id = getCurrentWorkspaceId()) {
-  const workspaces = getWorkspaceConfig()
-  return workspaces[id]
-}
-
 export function getStorage (id = getCurrentWorkspaceId()) {
   return getOrCreate(storages, id, () => {
     const workspaceId = createWorkspaceId(id)
@@ -91,26 +85,32 @@ export function getStorage (id = getCurrentWorkspaceId()) {
 }
 
 export function getSyncer (id = getCurrentWorkspaceId()) {
-  return getOrCreate(syncers, id, () => {
+  return getOrCreate(syncers, id, async () => {
     const storage = getStorage(id)
-    const pub = getPub(id)
+    const pub = await storage.getConfig('pub')
     return new OnePubOneWorkspaceSyncer(storage, pub)
   })
 }
 
 export function getWorkspace (id = getCurrentWorkspaceId()) {
   return getOrCreate(workspaces, id, async () => {
+    const workspaceId = createWorkspaceId(id)
     const storage = getStorage(id)
-    const syncer = getSyncer(id)
+    const syncer = await getSyncer(id)
     const get = (path) => getContent(storage, path)
     const set = (path, content) => setContent(storage, path, content)
     const data = await get(fileName) || {}
-    const pub = getPub(id)
+    const pub = await storage.getConfig('pub')
     const name = data.name || '(Workspace)'
     const openUrl = `?p=open-workspace&id=${id}`
     const inviteCode = btoa(JSON.stringify({ id, name, pub }))
     const shareUrl = `${URL}?p=join&code=${inviteCode}`
+    const apiUrl = `${pub}earthstar-api/v1/${workspaceId}/`
+    const apiPathsUrl = `${apiUrl}paths`
+    const apiDocumentsUrl = `${apiUrl}documents`
     return {
+      apiPathsUrl,
+      apiDocumentsUrl,
       get,
       id,
       pub,
@@ -119,18 +119,18 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
       set,
       shareUrl,
       storage,
-      syncer
+      syncer,
+      workspaceId
     }
   })
 }
 
-export function getWorkspaceConfig () {
-  return JSON.parse(localStorage.getItem(WORKSPACES)) || {}
-}
-
 export async function getWorkspaces () {
-  const config = getWorkspaceConfig()
-  const ids = Object.keys(config)
+  const prefix = 'documents/+oncheckin.'
+  const ids = (await window.indexedDB.databases())
+    .map(({ name }) => name)
+    .filter((name) => name.startsWith(prefix))
+    .map((name) => name.replace(prefix, ''))
   const workspacesPromises = ids.map(getWorkspace)
   return (await Promise.all(workspacesPromises))
     .sort(sortAsc('name'))
@@ -141,10 +141,10 @@ export function openWorkspace (id = null) {
 }
 
 export async function renameWorkspace (name) {
-  const { id, set } = getWorkspace()
+  const { id, set } = await getWorkspace()
   await set(fileName, { name })
   workspaces.delete(id)
-  return getWorkspace()
+  return await getWorkspace()
 }
 
 export async function setContent (storage, path, content) {
@@ -160,23 +160,22 @@ export async function setContent (storage, path, content) {
   return write
 }
 
-export function setPub (id, pub) {
-  const workspaces = getWorkspaceConfig()
-  const newWorkspaces = {
-    ...workspaces,
-    [id]: pub
-  }
-  localStorage.setItem(WORKSPACES, JSON.stringify(newWorkspaces))
+export async function setPub (id, pub) {
+  const storage = getStorage(id)
+  await storage.setConfig('pub', pub)
 }
 
-export function syncWorkspace () {
-  const syncer = getSyncer()
+export async function syncWorkspace () {
+  const syncer = await getSyncer()
   syncer.syncOnceAndContinueLive()
 }
 
-export function syncWorkspaceOnce () {
-  const syncer = getSyncer()
-  return syncer.syncOnce()
+export async function syncWorkspaceOnce () {
+  const { storage, syncer } = await workspaceStore.get()
+  const stats = await syncer.syncOnce()
+  const lastSync = Date.now()
+  await storage.setConfig('last-sync', lastSync)
+  return { lastSync, stats }
 }
 
 const workspaceStore = {
@@ -184,7 +183,6 @@ const workspaceStore = {
   get: getWorkspace,
   getAll: getWorkspaces,
   getStorage,
-  getSyncer,
   open: openWorkspace,
   rename: renameWorkspace,
   setPub,

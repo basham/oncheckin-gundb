@@ -1,11 +1,12 @@
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
-import { clear, createStore, delMany, entries, keys, set, setMany } from 'idb-keyval'
+import { clear, createStore, del, delMany, entries, get, keys, set, setMany } from 'idb-keyval'
 
 export class StorageIndexedDB extends StorageMemory {
   constructor (validators, workspace) {
     super(validators, workspace)
 
-    this._store = createStore(workspace, 'earthstar')
+    this._config = createStore(`config/${workspace}`, 'earthstar')
+    this._store = createStore(`documents/${workspace}`, 'earthstar')
     this._ready = new Promise((resolve, reject) => {
       entries(this._store).then((docs) => {
         this._docs = Object.fromEntries(docs)
@@ -16,7 +17,25 @@ export class StorageIndexedDB extends StorageMemory {
     this.onWrite.subscribe(async (e) => {
       const { path } = e.document
       await set(path, this._docs[path], this._store)
+      const lastUpdatedKey = e.isLocal ? 'last-local-update' : 'last-remote-update'
+      await set(lastUpdatedKey, Date.now(), this._config)
     })
+  }
+
+  async setConfig (key, value) {
+    await set(key, value, this._config)
+  }
+
+  async getConfig (key) {
+    return await get(key, this._config)
+  }
+
+  async deleteConfig (key) {
+    await del(key, this._config)
+  }
+
+  async deleteAllConfig () {
+    await clear(this._config)
   }
 
   async getContent (path) {

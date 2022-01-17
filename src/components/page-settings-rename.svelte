@@ -1,11 +1,19 @@
 <script>
+  import { onMount } from 'svelte'
   import { workspaceStore } from '../stores.js'
   import Page from './page.svelte'
 
   const title = 'Rename workspace'
 
-  const workspace = workspaceStore.get()
-  let name = workspace?.name
+  let loading = true
+  let workspace
+  let name
+
+  onMount(async () => {
+    workspace = await workspaceStore.get()
+    name = workspace?.name
+    loading = false
+  })
 
   async function submit (event) {
     event.preventDefault()
@@ -15,6 +23,7 @@
 </script>
 
 <Page
+  loading={loading}
   location='settings'
   title={title}>
   <h1>{title}</h1>

@@ -6,14 +6,21 @@
   const params = (new URL(document.location)).searchParams
   const workspaceId = params.get('id')
 
+  let syncing = false
+
   onMount(async () => {
     workspaceStore.open(workspaceId)
-    // await workspaceStore.syncOnce()
+    const { storage } = await workspaceStore.get()
+    const lastSync = await storage.getConfig('last-sync')
+    if (!lastSync) {
+      await workspaceStore.syncOnce()
+    }
     window.location = '?p=home'
   })
 </script>
 
 <Page
-  theme="plain"
+  theme="app"
   title="Opening workspace…">
+  <p>Please wait while the workspace syncs and opens.<br>The first time may take awhile.</p>
 </Page>

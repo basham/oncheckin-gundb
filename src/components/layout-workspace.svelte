@@ -3,7 +3,7 @@
   import { APP_NAME } from '../constants.js'
   import { workspaceStore } from '../stores.js'
   import Nav from './nav.svelte'
-  import OfflineStatus from './offline-status.svelte'
+  import SyncStatus from './sync-status.svelte'
 
   export let location = ''
   export let notFound = false
@@ -32,6 +32,7 @@
     align-items: center;
     background-color: var(--color-base-100);
     display: flex;
+    flex-wrap: wrap;
     gap: 0 var(--size-4);
     line-height: var(--lh-2);
     padding: var(--size-2) var(--size-4);
@@ -64,7 +65,7 @@
       src="../icon.svg">
     <span>{workspace?.name}</span>
   </span>
-  <OfflineStatus />
+  <SyncStatus />
 </header>
 
 <Nav location={location} />
