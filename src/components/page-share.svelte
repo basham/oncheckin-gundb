@@ -1,22 +1,19 @@
 <script>
-  import QRious from 'qrious'
   import { onMount } from 'svelte'
   import Page from './page.svelte'
+  import QRCode from './qr-code.svelte'
   import Toast from './toast.svelte'
   import { workspaceStore } from '../stores.js'
 
   const title = 'Share workspace'
-  const workspace = workspaceStore.get()
 
+  let loading = true
+  let workspace
   let toast
 
-  onMount(() => {
-    new QRious({
-      background: '#ffb36a',
-      element: document.getElementById('share-code'),
-      size: 160,
-      value: workspace?.shareUrl
-    })
+  onMount(async () => {
+    workspace = await workspaceStore.get()
+    loading = false
   })
 
   function copyShareLink (event) {
@@ -41,6 +38,7 @@
 </style>
 
 <Page
+  loading={loading}
   location='settings'
   title={title}>
   <h1>{title}</h1>
@@ -60,7 +58,7 @@
     </button>
   </div>
   <div class="u-m-top-6">
-    <canvas id="share-code"></canvas>
+    <QRCode code={workspace?.shareUrl} />
   </div>
   <Toast bind:this={toast} />
 </Page>
