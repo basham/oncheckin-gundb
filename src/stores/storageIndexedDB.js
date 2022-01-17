@@ -1,6 +1,16 @@
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
 import { clear, createStore, del, delMany, entries, get, keys, set, setMany } from 'idb-keyval'
 
+function debounce (fn, timeout = 100) {
+  let timer
+  return (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, timeout)
+  }
+}
+
 export class StorageIndexedDB extends StorageMemory {
   constructor (validators, workspace) {
     super(validators, workspace)
@@ -14,11 +24,26 @@ export class StorageIndexedDB extends StorageMemory {
       })
     })
 
+    const writeEvents = new Set()
+    const debouncedSave = debounce(async () => {
+      const events = [...writeEvents.values()]
+      writeEvents.clear()
+      const updates = events
+        .map((event) => event.document.path)
+        .map((path) => [path, this._docs[path]])
+      await setMany(updates, this._store)
+      const now = Date.now()
+      if (events.some((e) => e.isLocal)) {
+        await set('last-local-update', now, this._config)
+      }
+      if (events.some((e) => !e.isLocal)) {
+        await set('last-remote-update', now, this._config)
+      }
+    })
+
     this.onWrite.subscribe(async (e) => {
-      const { path } = e.document
-      await set(path, this._docs[path], this._store)
-      const lastUpdatedKey = e.isLocal ? 'last-local-update' : 'last-remote-update'
-      await set(lastUpdatedKey, Date.now(), this._config)
+      writeEvents.add(e)
+      debouncedSave()
     })
   }
 
