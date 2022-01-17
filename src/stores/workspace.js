@@ -128,11 +128,11 @@ export function getWorkspaceConfig () {
   return JSON.parse(localStorage.getItem(WORKSPACES)) || {}
 }
 
-export function getWorkspaces () {
+export async function getWorkspaces () {
   const config = getWorkspaceConfig()
   const ids = Object.keys(config)
-  return ids
-    .map(getWorkspace)
+  const workspacesPromises = ids.map(getWorkspace)
+  return (await Promise.all(workspacesPromises))
     .sort(sortAsc('name'))
 }
 

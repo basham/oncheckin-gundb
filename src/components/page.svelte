@@ -20,18 +20,19 @@
 
 <Upgrader />
 
-{#if theme === 'app'}
-  <AppLayout title={title[0]}>
+{#if !loading}
+  {#if theme === 'app'}
+    <AppLayout title={title[0]}>
+      <slot></slot>
+    </AppLayout>
+  {:else if theme === 'workspace'}
+    <WorkspaceLayout
+      location={location}
+      notFound={notFound}
+      title={title[0]}>
+      <slot></slot>
+    </WorkspaceLayout>
+  {:else if theme === 'plain'}
     <slot></slot>
-  </AppLayout>
-{:else if theme === 'workspace'}
-  <WorkspaceLayout
-    loading={loading}
-    location={location}
-    notFound={notFound}
-    title={title[0]}>
-    <slot></slot>
-  </WorkspaceLayout>
-{:else if theme === 'plain'}
-  <slot></slot>
+  {/if}
 {/if}

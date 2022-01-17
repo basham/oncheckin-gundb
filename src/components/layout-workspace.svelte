@@ -5,7 +5,6 @@
   import Nav from './nav.svelte'
   import OfflineStatus from './offline-status.svelte'
 
-  export let loading = false
   export let location = ''
   export let notFound = false
   export let title = ''
@@ -14,12 +13,10 @@
 
   onMount(async () => {
     workspace = await workspaceStore.get()
+    focusOnHeading()
   })
 
-  // $: focusOnHeading(loading)
-
-  function focusOnHeading (loading) {
-    if (loading) return
+  function focusOnHeading () {
     window.requestAnimationFrame(() => {
       const heading = document.querySelector('h1')
       if (!heading) return
@@ -28,8 +25,6 @@
       heading.removeAttribute('tabindex')
     })
   }
-
-  setTimeout(() => focusOnHeading(loading), 100)
 </script>
 
 <style>
@@ -61,25 +56,23 @@
   }
 </style>
 
-{#if !loading}
-  <header>
-    <span class="identity">
-      <img
-        alt={APP_NAME}
-        class="logo"
-        src="../icon.svg">
-      <span>{workspace?.name}</span>
-    </span>
-    <OfflineStatus />
-  </header>
+<header>
+  <span class="identity">
+    <img
+      alt={APP_NAME}
+      class="logo"
+      src="../icon.svg">
+    <span>{workspace?.name}</span>
+  </span>
+  <OfflineStatus />
+</header>
 
-  <Nav location={location} />
+<Nav location={location} />
 
-  <main>
-    {#if notFound}
-      <h1>{title}</h1>
-    {:else}
-      <slot></slot>
-    {/if}
-  </main>
-{/if}
+<main>
+  {#if notFound}
+    <h1>{title}</h1>
+  {:else}
+    <slot></slot>
+  {/if}
+</main>

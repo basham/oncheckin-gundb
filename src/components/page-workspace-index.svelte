@@ -1,16 +1,19 @@
 <script>
+  import { onMount } from 'svelte'
   import { workspaceStore } from '../stores.js'
   import Page from './page.svelte'
 
-  const workspaces = workspaceStore.getAll()
+  let loading = true
+  let workspaces = []
 
-  function openWorkspace () {
-    workspaceStore.open(workspaceId)
-    window.location = '/'
-  }
+  onMount(async () => {
+    workspaces = await workspaceStore.getAll()
+    loading = false
+  })
 </script>
 
 <Page
+  loading={loading}
   theme="app"
   title="Workspaces">
   <ul class="list-inline">
