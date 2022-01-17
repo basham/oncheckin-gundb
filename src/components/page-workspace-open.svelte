@@ -6,8 +6,6 @@
   const params = (new URL(document.location)).searchParams
   const workspaceId = params.get('id')
 
-  let syncing = false
-
   onMount(async () => {
     workspaceStore.open(workspaceId)
     const { storage } = await workspaceStore.get()

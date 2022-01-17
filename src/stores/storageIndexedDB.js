@@ -1,15 +1,6 @@
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
 import { clear, createStore, del, delMany, entries, get, keys, set, setMany } from 'idb-keyval'
-
-function debounce (fn, timeout = 100) {
-  let timer
-  return (...args) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn.apply(this, args)
-    }, timeout)
-  }
-}
+import { debounce } from '../util.js'
 
 export class StorageIndexedDB extends StorageMemory {
   constructor (validators, workspace) {
@@ -23,6 +14,7 @@ export class StorageIndexedDB extends StorageMemory {
         resolve(true)
       })
     })
+    this._tags = new Set()
 
     const writeEvents = new Set()
     const debouncedSave = debounce(async () => {
@@ -39,12 +31,23 @@ export class StorageIndexedDB extends StorageMemory {
       if (events.some((e) => !e.isLocal)) {
         await set('last-remote-update', now, this._config)
       }
+      const tags = [...this._tags.values()]
+      this._tags.clear()
+      tags.forEach((resolve) => resolve(true))
+      console.log('Saved')
     })
 
     this.onWrite.subscribe(async (e) => {
       writeEvents.add(e)
       debouncedSave()
     })
+  }
+
+  tag () {
+    const t = new Promise((resolve, reject) => {
+      this._tags.add(resolve)
+    })
+    return t
   }
 
   async setConfig (key, value) {

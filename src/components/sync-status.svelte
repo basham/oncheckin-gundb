@@ -37,7 +37,6 @@
     syncing = true
     const sync = await workspaceStore.syncOnce()
     lastSync = sync.lastSync
-    console.log('Sync stats', sync.stats)
     syncing = false
   }
 </script>

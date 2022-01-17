@@ -7,7 +7,7 @@ import {
 } from 'earthstar/dist/earthstar.min.js'
 import { EarthstarStorage, localStorage, btoa } from './storage.js'
 import { APP, URL } from '../constants.js'
-import { createId, delay, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
+import { createId, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
 const CURRENT_AUTHOR = `${APP}-current-author`
 const CURRENT_WORKSPACE = `${APP}-current-workspace`
@@ -151,12 +151,13 @@ export async function setContent (storage, path, content) {
   const keypair = getKeypair()
   const ext = parseExtension(path)
   const encode = extEncodeMap[ext]
+  const tag = storage.tag()
   const write = storage.set(keypair, {
     format: 'es.4',
     path: resolvePath(path),
     content: encode(storage, path, content)
   })
-  await delay(100)
+  await tag
   return write
 }
 
@@ -172,7 +173,11 @@ export async function syncWorkspace () {
 
 export async function syncWorkspaceOnce () {
   const { storage, syncer } = await workspaceStore.get()
+  const tag = storage.tag()
   const stats = await syncer.syncOnce()
+  if (stats.pull.numInjested) {
+    await tag
+  }
   const lastSync = Date.now()
   await storage.setConfig('last-sync', lastSync)
   return { lastSync, stats }
