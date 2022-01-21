@@ -13,7 +13,7 @@
     if (!lastSync) {
       await workspaceStore.syncOnce()
     }
-    window.location = '?p=home'
+    window.location = '?p=events'
   })
 </script>
 
