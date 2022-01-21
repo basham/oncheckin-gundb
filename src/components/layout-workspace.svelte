@@ -8,6 +8,7 @@
   export let notFound = false
   export let title = ''
 
+  let loaded = false
   let workspace
   let unsyncedChanges
 
@@ -15,6 +16,7 @@
     workspace = await workspaceStore.get()
     const syncStatus = await workspaceStore.syncStatus()
     unsyncedChanges = syncStatus.unsyncedChanges
+    loaded = true
     focusOnHeading()
   })
 
@@ -59,32 +61,34 @@
   }
 </style>
 
-<header>
-  <span class="identity">
-    <img
-      alt={APP_NAME}
-      class="logo"
-      src="../icon.svg">
-    <span>
-      {workspace?.name}
-      {#if unsyncedChanges}
-        <strong
-          aria-hidden="true"
-          class="u-color-ix">
-          *
-        </strong>
-        <span class="u-sr-only">(unsynced changes)</span>
-      {/if}
+{#if loaded}
+  <header>
+    <span class="identity">
+      <img
+        alt={APP_NAME}
+        class="logo"
+        src="../icon.svg">
+      <span>
+        {workspace?.name}
+        {#if unsyncedChanges}
+          <strong
+            aria-hidden="true"
+            class="u-color-ix">
+            *
+          </strong>
+          <span class="u-sr-only">(unsynced changes)</span>
+        {/if}
+      </span>
     </span>
-  </span>
-</header>
+  </header>
 
-<Nav location={location} />
+  <Nav location={location} />
 
-<main>
-  {#if notFound}
-    <h1>{title}</h1>
-  {:else}
-    <slot></slot>
-  {/if}
-</main>
+  <main>
+    {#if notFound}
+      <h1>{title}</h1>
+    {:else}
+      <slot></slot>
+    {/if}
+  </main>
+{/if}
