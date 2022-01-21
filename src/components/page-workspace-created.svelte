@@ -5,7 +5,13 @@
   const params = (new URL(document.location)).searchParams
   const workspaceId = params.get('id')
 
-  const workspace = workspaceStore.get(workspaceId)
+  let loading = true
+  let workspace
+
+  onMount(async () => {
+    workspace = await workspaceStore.get(workspaceId)
+    loading = false
+  })
 
   function copyInviteLink () {
 
@@ -13,6 +19,7 @@
 </script>
 
 <Page
+  loading={loading}
   theme="app"
   title="Workspace created">
   <div class="group u-m-top-6">

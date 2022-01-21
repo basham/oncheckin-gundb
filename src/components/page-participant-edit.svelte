@@ -1,5 +1,6 @@
 <script>
   import { format, parseISO } from 'date-fns'
+  import { onMount } from 'svelte'
   import { participantStore } from '../stores.js'
   import Fieldset from './fieldset.svelte'
   import FieldsetParticipantName from './fieldset-participant-name.svelte'
@@ -22,10 +23,8 @@
   let recordedCheckInsCount = 0
   let recordedHostCount = 0
 
-  load()
-
-  async function load () {
-    participant = participantStore.get(participantId)
+  onMount(async () => {
+    participant = await participantStore.get(participantId)
     notFound = !participant
     title = `Edit: ${participant?.displayName}`
     alias = participant?.alias
@@ -37,7 +36,7 @@
     recordedCheckInsCount = participant?.recordedCheckInsCount
     recordedHostCount = participant?.recordedHostCount
     loading = false
-  }
+  })
 
   async function submit (event) {
     event.preventDefault()

@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { checkInStore, eventStore, participantStore } from '../stores.js'
   import FieldsetCheckIn from './fieldset-check-in.svelte'
   import Page from './page.svelte'
@@ -16,17 +17,15 @@
   let checkIn = null
   let host = false
 
-  load()
-
-  async function load () {
-    event = eventStore.get(eventId)
-    participant = participantStore.get(participantId)
-    checkIn = checkInStore.get(eventId, participantId)
+  onMount(async () => {
+    event = await eventStore.get(eventId)
+    participant = await participantStore.get(participantId)
+    checkIn = await checkInStore.get(eventId, participantId)
     host = checkIn?.host
     pageTitle = `${title} for ${participant?.displayName} at ${event?.name} (${event?.date})`
     notFound = !event || !participant || !checkIn
     loading = false
-  }
+  })
 
   async function submit (e) {
     e.preventDefault()

@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { eventStore } from '../stores.js'
   import FieldsetEvent from './fieldset-event.svelte'
   import Page from './page.svelte'
@@ -15,10 +16,8 @@
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
 
-  load()
-
-  async function load () {
-    const event = eventStore.get(eventId)
+  onMount(async () => {
+    const event = await eventStore.get(eventId)
     name = event?.name
     date = event?.date
     eventName = name
@@ -27,7 +26,7 @@
     title = `Edit: ${name}`
     notFound = !event
     loading = false
-  }
+  })
 
   async function submit (event) {
     event.preventDefault()

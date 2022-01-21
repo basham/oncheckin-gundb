@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import { checkInStore, eventStore, participantStore } from '../stores.js'
   import { focus } from '../util.js'
   import Fieldset from './fieldset.svelte'
@@ -25,17 +26,15 @@
   let alias = ''
   let host = false
 
-  load()
-
-  async function load () {
-    event = eventStore.get(eventId)
+  onMount(async () => {
+    event = await eventStore.get(eventId)
     pageTitle = `${title} for ${event?.name} (${event?.displayDate})`
     notFound = !event
 
-    const checkIns = checkInStore.getEventCheckIns(eventId)
+    const checkIns = (await checkInStore.getEventCheckIns(eventId))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
-    participants = participantStore.getAll()
+    participants = (await participantStore.getAll())
       .map((p) => {
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn
@@ -47,7 +46,7 @@
       })
 
     loading = false
-  }
+  })
 
   function filterResult (query, participant) {
     const terms = [participant.fullName, participant.displayName].join(' ')
