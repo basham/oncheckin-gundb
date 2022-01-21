@@ -188,6 +188,13 @@ a:hover {
   outline: none;
 }
 
+.button:disabled {
+  background-color: var(--color-base-80);
+  border-color: var(--color-base-80);
+  color: var(--color-base-60);
+  cursor: not-allowed;
+}
+
 .button--small {
   padding: calc(var(--size-2) - var(--px-2));
 }
