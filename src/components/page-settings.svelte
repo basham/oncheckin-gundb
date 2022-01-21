@@ -51,7 +51,7 @@
   </p>
   <div class="u-m-top-4">
     <button
-      class="button button--small"
+      class="button"
       disabled={syncing}
       on:click={sync}>
       Sync
