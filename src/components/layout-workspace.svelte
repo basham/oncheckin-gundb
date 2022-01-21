@@ -3,16 +3,18 @@
   import { APP_NAME } from '../constants.js'
   import { workspaceStore } from '../stores.js'
   import Nav from './nav.svelte'
-  import SyncStatus from './sync-status.svelte'
 
   export let location = ''
   export let notFound = false
   export let title = ''
 
   let workspace
+  let unsyncedChanges
 
   onMount(async () => {
     workspace = await workspaceStore.get()
+    const syncStatus = await workspaceStore.syncStatus()
+    unsyncedChanges = syncStatus.unsyncedChanges
     focusOnHeading()
   })
 
@@ -63,9 +65,18 @@
       alt={APP_NAME}
       class="logo"
       src="../icon.svg">
-    <span>{workspace?.name}</span>
+    <span>
+      {workspace?.name}
+      {#if unsyncedChanges}
+        <strong
+          aria-hidden="true"
+          class="u-color-ix">
+          *
+        </strong>
+        <span class="u-sr-only">(unsynced changes)</span>
+      {/if}
+    </span>
   </span>
-  <SyncStatus />
 </header>
 
 <Nav location={location} />

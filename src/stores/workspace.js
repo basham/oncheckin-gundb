@@ -1,3 +1,4 @@
+import { format, isToday } from 'date-fns'
 import {
   OnePubOneWorkspaceSyncer,
   ValidatorEs4,
@@ -166,6 +167,24 @@ export async function setPub (id, pub) {
   await storage.setConfig('pub', pub)
 }
 
+export async function syncStatus () {
+  const { storage } = await workspaceStore.get()
+  const lastLocalUpdate = await storage.getConfig('last-local-update')
+  const lastRemoteUpdate = await storage.getConfig('last-remote-update')
+  const lastSync = await storage.getConfig('last-sync')
+  const unsyncedChanges = lastLocalUpdate > lastSync
+  const day = isToday(lastSync) ? 'Today' : format(lastSync, 'PP')
+  const time = format(lastSync, 'p')
+  const lastSyncDisplay = lastSync ? `${day}, ${time}` : ''
+  return {
+    lastLocalUpdate,
+    lastRemoteUpdate,
+    lastSync,
+    lastSyncDisplay,
+    unsyncedChanges
+  }
+}
+
 export async function syncWorkspace () {
   const syncer = await getSyncer()
   syncer.syncOnceAndContinueLive()
@@ -192,7 +211,8 @@ const workspaceStore = {
   rename: renameWorkspace,
   setPub,
   sync: syncWorkspace,
-  syncOnce: syncWorkspaceOnce
+  syncOnce: syncWorkspaceOnce,
+  syncStatus: syncStatus
 }
 
 export default workspaceStore
