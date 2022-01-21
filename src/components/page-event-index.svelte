@@ -7,14 +7,16 @@
   const title = 'Events'
 
   let loading = true
-  let events = []
   let upcomingEvents = []
-  let pastEvents = []
+  let recentEvents = []
+  let years = []
 
   onMount(async () => {
-    events = await eventStore.getAll()
     upcomingEvents = await eventStore.getUpcoming()
-    pastEvents = await eventStore.getPast()
+    recentEvents = (await eventStore.getPast()).slice(0, 5)
+    const eventYears = (await eventStore.getAll())
+      .map(({ year }) => year)
+    years = [...(new Set(eventYears))].sort().reverse()
     loading = false
   })
 </script>
@@ -29,6 +31,12 @@
   </ul>
   <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
   <Events events={upcomingEvents} />
-  <h2>{`Past events (${pastEvents.length})`}</h2>
-  <Events events={pastEvents} />
+  <h2>Recent events</h2>
+  <Events events={recentEvents} />
+  <h2>Past events</h2>
+  <ul>
+    {#each years as year}
+      <li><a href={`?p=events-year&year=${year}`}>{year}</a></li>
+    {/each}
+  </ul>
 </Page>

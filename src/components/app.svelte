@@ -8,6 +8,7 @@
     'edit-pub': 'page-settings-pub',
     event: 'page-event-view',
     events: 'page-event-index',
+    'events-year': 'page-event-year',
     'get-started': 'page-get-started',
     home: 'page-workspace-home',
     join: 'page-join',

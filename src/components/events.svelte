@@ -17,13 +17,13 @@
   }
 </style>
 
-
-<ul>
-  {#each events as event}
-    <li>
-      <span class="date">{event.displayDate}</span>
-      <a href={event.url}>{event.name}</a>
-    </li>
-  {/each}
-</ul>
-
+{#if events.length}
+  <ul>
+    {#each events as event}
+      <li>
+        <span class="date">{event.displayDate}</span>
+        <a href={event.url}>{event.name}</a>
+      </li>
+    {/each}
+  </ul>
+{/if}

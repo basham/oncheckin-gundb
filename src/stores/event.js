@@ -17,6 +17,7 @@ export async function getEvent (id) {
   const dateObj = parseISO(data.date)
   const displayDate = format(dateObj, 'PP')
   const displayDateLong = format(dateObj, 'E, PP')
+  const year = format(dateObj, 'y')
   const name = data.name.trim() || '(Event)'
   const url = `?p=event&id=${id}`
   return {
@@ -26,7 +27,8 @@ export async function getEvent (id) {
     displayDate,
     displayDateLong,
     name,
-    url
+    url,
+    year
   }
 }
 
