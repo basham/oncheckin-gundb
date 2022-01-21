@@ -45,7 +45,10 @@
   </ul>
   <h2>Data</h2>
   <p class="u-m-0"><span class="u-color-hint">Last sync:</span> {status?.lastSyncDisplay}</p>
-  <p class="u-m-0"><span class="u-color-hint">Status:</span> {syncing ? 'Syncing…' : status?.unsyncedChanges ? 'Unsynced changes' : status?.lastSync ? 'All local changes are synced' : ''}</p>
+  <p class="u-m-0">
+    <span class="u-color-hint">Status:</span>
+    <span role="status">{syncing ? 'Syncing…' : status?.unsyncedChanges ? 'Unsynced changes' : status?.lastSync ? 'All local changes are synced' : ''}</span>
+  </p>
   <div class="u-m-top-4">
     <button
       class="button button--small"
