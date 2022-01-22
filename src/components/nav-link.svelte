@@ -9,6 +9,7 @@
     color: var(--color-base-50);
     display: inline-block;
     font-weight: bold;
+    line-height: var(--lh-2);
     padding: var(--size-1) 0;
     text-decoration: none;
   }

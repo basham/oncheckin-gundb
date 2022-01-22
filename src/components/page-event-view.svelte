@@ -18,25 +18,22 @@
   let visitors = []
   let virgins = []
 
-  const heading = {
-    all: 'Check-ins',
-    anniversaries: 'Anniversaries',
-    visitors: 'Visitors',
-    virgins: 'Virgins'
-  }
-  const defaultHeading = heading.all
-
   onMount(async () => {
     event = await eventStore.get(eventId)
     title = `${event?.name} (${event?.displayDate})`
     notFound = !event
     checkIns = (await checkInStore.getEventCheckInsWithStats(eventId))
-    anniversaries = checkIns
-      .filter(({ checkInCount, host, specialCheckInCount, specialHostCount }) =>
-        checkInCount > 0 && (specialCheckInCount || (host && specialHostCount))
-      )
-    virgins = checkIns
-      .filter(({ checkInCount }) => checkInCount === 0)
+    
+    if (page === 'event-circle') {
+      title = `Circle: ${title}`
+      anniversaries = checkIns
+        .filter(({ checkInCount, host, specialCheckInCount, specialHostCount }) =>
+          checkInCount > 0 && (specialCheckInCount || (host && specialHostCount))
+        )
+      virgins = checkIns
+        .filter(({ checkInCount }) => checkInCount === 0)
+    }
+
     loading = false
   })
 </script>
@@ -48,7 +45,7 @@
   title={title}>
   <h1>{event?.name}</h1>
   <p class="u-m-top-2 u-m-bottom-0">{event?.displayDateLong}</p>
-  <nav class="list-inline u-border-bottom u-p-bottom-4">
+  <nav class="list-inline list-inline--nav">
     <NavLink
       href={event.url}
       id="event"
