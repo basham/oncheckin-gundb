@@ -237,7 +237,6 @@ p {
 }
 
 .link-row__primary {
-  flex-basis: 15rem;
   flex-grow: 1;
   font-size: var(--fs-2);
 }
