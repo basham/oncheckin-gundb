@@ -79,7 +79,7 @@
 }
 
 html {
-  background-color: var(--color-base-90);
+  background-color: var(--color-base-95);
   color: var(--color-base-5);
   -webkit-text-size-adjust: 100%;
 }
@@ -215,7 +215,7 @@ a:hover {
 }
 
 .link-row {
-  background-color: var(--color-base-85);
+  background-color: var(--color-base-90);
   border-radius: var(--size-1);
   display: flex;
   flex-wrap: wrap;
@@ -281,11 +281,16 @@ a:hover {
 
 .list-inline--nav {
   border-bottom: var(--border);
+  border-color: var(--color-base-85);
   margin-top: var(--size-3);
   padding-bottom: var(--size-3);
 }
 
 /* Utilities */
+
+.u-bg-90 {
+  background-color: var(--color-base-90);
+}
 
 .u-bg-95 {
   background-color: var(--color-base-95);

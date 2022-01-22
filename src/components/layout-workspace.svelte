@@ -55,7 +55,7 @@
 </style>
 
 {#if loaded}
-  <header class="u-bg-95 u-border-bottom">
+  <header class="u-bg-90">
     <div class="header layout-content u-p-bottom-2 u-p-top-2">
       <span class="nav">
         <img
