@@ -4,7 +4,7 @@
 </script>
 
 {#if checkIns.length}
-  <ul class="link-list u-m-top-4">
+  <ul class="link-list">
     {#each checkIns as checkIn}
       <li>
         <a class="link-row" href={checkIn.url}>

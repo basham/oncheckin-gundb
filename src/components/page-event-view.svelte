@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { checkInStore, eventStore } from '../stores.js'
+  import Card from './card.svelte'
   import CheckInList from './list-check-in.svelte'
   import NavLink from './nav-link.svelte'
   import Page from './page.svelte'
@@ -69,18 +70,33 @@
     </NavLink>
   </nav>
   {#if page === 'event'}
-    <h2>{`Check-ins (${checkIns.length})`}</h2>
-    <div class="u-m-top-4">
-      <a class="button button--primary" href={`?p=new-check-in&id=${eventId}`}>New check-in</a>
-    </div>
-    <CheckInList checkIns={checkIns} />
+    <Card
+      class="u-m-top-6"
+      heading={`Check-ins (${checkIns.length})`}>
+      <a
+        class="button button--primary button--small"
+        href={`?p=new-check-in&id=${eventId}`}
+        slot="actions">
+        New check-in
+      </a>
+      <CheckInList checkIns={checkIns} />
+    </Card>
   {/if}
   {#if page === 'event-circle'}
-    <h2 class="u-m-all-0">{`Anniversaries (${anniversaries.length})`}</h2>
-    <CheckInList checkIns={anniversaries} />
-    <h2 class="u-m-all-0">{`Visitors (${visitors.length})`}</h2>
-    <CheckInList checkIns={visitors} />
-    <h2 class="u-m-all-0">{`Virgins (${virgins.length})`}</h2>
-    <CheckInList checkIns={virgins} />
+    <Card
+      class="u-m-top-6"
+      heading={`Anniversaries (${anniversaries.length})`}>
+      <CheckInList checkIns={anniversaries} />
+    </Card>
+    <Card
+      class="u-m-top-4"
+      heading={`Visitors (${visitors.length})`}>
+      <CheckInList checkIns={visitors} />
+    </Card>
+    <Card
+      class="u-m-top-4"
+      heading={`Virgins (${virgins.length})`}>
+      <CheckInList checkIns={virgins} />
+    </Card>
   {/if}
 </Page>
