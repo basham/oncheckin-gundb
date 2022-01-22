@@ -215,7 +215,7 @@ a:hover {
 }
 
 .link-row {
-  background-color: var(--color-base-90);
+  background-color: var(--color-base-85);
   border-radius: var(--size-1);
   display: flex;
   flex-wrap: wrap;
@@ -225,8 +225,8 @@ a:hover {
   text-decoration: none;
 }
 
-.link-row:hover .link-row__primary {
-  text-decoration: underline;
+.link-row:hover {
+  background-color: var(--color-base-80);
 }
 
 .link-row__primary {
@@ -288,12 +288,20 @@ a:hover {
 
 /* Utilities */
 
+.u-bg-85 {
+  background-color: var(--color-base-85);
+}
+
 .u-bg-90 {
   background-color: var(--color-base-90);
 }
 
 .u-bg-95 {
   background-color: var(--color-base-95);
+}
+
+.u-bg-100 {
+  background-color: var(--color-base-100);
 }
 
 .u-border-bottom {
