@@ -57,7 +57,7 @@
   --size-7: 1.75rem;
   --size-8: 2rem;
 
-  --border: var(--px-1) solid var(--color-base-100);
+  --border: var(--px-1) solid var(--color-base-85);
 }
 
 * {
@@ -103,10 +103,12 @@ h1:focus {
 }
 
 h2 {
+  border-top: var(--border);
   font-size: var(--fs-3);
   font-weight: normal;
   line-height: var(--lh-3);
-  margin: var(--size-6) 0 var(--size-4);
+  margin: var(--size-4) 0 0;
+  padding-top: var(--size-4);
 }
 
 ol,
@@ -280,10 +282,7 @@ a:hover {
 }
 
 .list-inline--nav {
-  border-bottom: var(--border);
-  border-color: var(--color-base-85);
-  margin-top: var(--size-3);
-  padding-bottom: var(--size-3);
+  margin: var(--size-3) 0;
 }
 
 /* Utilities */

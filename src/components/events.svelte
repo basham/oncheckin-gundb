@@ -3,7 +3,7 @@
 </script>
 
 {#if events.length}
-  <ul class="link-list">
+  <ul class="link-list u-m-top-4">
     {#each events as event}
       <li>
         <a class="link-row" href={event.url}>

@@ -70,7 +70,7 @@
   </nav>
   {#if page === 'event'}
     <h2>{`Check-ins (${checkIns.length})`}</h2>
-    <div>
+    <div class="u-m-top-4">
       <a class="button button--primary" href={`?p=new-check-in&id=${eventId}`}>New check-in</a>
     </div>
     <CheckInList checkIns={checkIns} />
