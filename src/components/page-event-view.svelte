@@ -44,8 +44,8 @@
   notFound={notFound}
   title={title}>
   <h1>{event?.name}</h1>
-  <p class="u-m-top-2 u-m-bottom-0">{event?.displayDateLong}</p>
-  <nav class="list-inline list-inline--nav">
+  <p class="u-m-top-2">{event?.displayDateLong}</p>
+  <nav class="list-inline u-m-top-4">
     <NavLink
       href={event.url}
       id="event"

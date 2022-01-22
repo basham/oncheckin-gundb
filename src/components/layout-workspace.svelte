@@ -62,7 +62,7 @@
           alt={APP_NAME}
           class="logo"
           src="../icon.svg">
-        <nav class="list-inline u-m-0">
+        <nav class="list-inline">
           <NavLink
             href="?p=events"
             id="events"

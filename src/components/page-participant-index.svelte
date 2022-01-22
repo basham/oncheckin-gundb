@@ -20,7 +20,7 @@
   location='participants'
   title={title}>
   <h1>{title}</h1>
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-2">
     <li><a href="?p=new-participant">New participant</a></li>
   </ul>
   <h2>{`All participants (${participants.length})`}</h2>

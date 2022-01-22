@@ -32,7 +32,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--size-3);
-    margin: 0 0 0 var(--size-4);
     padding: 0;
   }
 
@@ -48,13 +47,13 @@
   notFound={notFound}
   title={title}>
   <h1>{title}</h1>
-  <p>{fullName}</p>
+  <p class="u-m-top-4">{fullName}</p>
   <p>{stats?.checkInCount} {pluralize(stats?.checkInCount, 'hash', 'hashes')}, {stats?.hostCount} {pluralize(stats?.hostCount, 'hare')}</p>
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-2">
     <li><a href={`?p=edit-participant&id=${participantId}`}>Edit</a></li>
   </ul>
   <h2>{stats?.checkInCount ? 'Check-ins' : 'No check-ins'}</h2>
-  <ul class="checkIns">
+  <ul class="checkIns u-m-top-4">
     {#each checkIns as checkIn}
       <li>
         <span class="date">{checkIn.event.displayDate}</span>
@@ -67,7 +66,7 @@
   </ul>
   {#if stats?.missingCheckInCount}
     <h2>Missing records</h2>
-    <p>Records are missing for this participant:</p>
+    <p class="u-m-top-2">Records are missing for this participant:</p>
     <p>{`${stats?.missingCheckInCount} ${pluralize(stats?.missingCheckInCount, 'hash', 'hashes')} and ${stats?.missingHostCount} ${pluralize(stats?.missingHostCount, 'hare')}, as of ${stats?.recordedLastCheckInDateDisplay}.`}</p>
   {/if}
 </Page>

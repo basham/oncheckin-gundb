@@ -16,7 +16,7 @@
   loading={loading}
   theme="app"
   title="Workspaces">
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-2">
     <li><a href="?p=new-workspace">New workspace</a></li>
   </ul>
   <details class="u-m-top-6">

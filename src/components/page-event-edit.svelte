@@ -50,6 +50,8 @@
     <div class="u-m-top-6">
       <button class="button button--primary" type="submit">Save</button>
     </div>
-    <p><a href={eventUrl}>Back</a></p>
+    <div class="u-m-top-4">
+      <a href={eventUrl}>Back</a>
+    </div>
   </form>
 </Page>

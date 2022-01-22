@@ -31,21 +31,21 @@
   location='settings'
   title={title}>
   <h1>{title}</h1>
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-2">
     <li><a href="?p=workspaces">Change workspace</a></li>
   </ul>
   <h2>This workspace</h2>
-  <p class="u-m-0"><span class="u-color-hint">Name:</span> {workspace?.name}</p>
-  <p class="u-m-0"><span class="u-color-hint">ID:</span> {workspace?.id}</p>
-  <p class="u-m-0"><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
+  <p class="u-m-top-2"><span class="u-color-hint">Name:</span> {workspace?.name}</p>
+  <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
+  <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
   <ul class="list-inline u-m-bottom-0">
     <li><a href="?p=share">Share</a></li>
     <li><a href="?p=rename-workspace">Rename</a></li>
     <li><a href="?p=edit-pub">Edit pub</a></li>
   </ul>
   <h2>Data</h2>
-  <p class="u-m-0"><span class="u-color-hint">Last sync:</span> {status?.lastSyncDisplay}</p>
-  <p class="u-m-0">
+  <p class="u-m-top-2"><span class="u-color-hint">Last sync:</span> {status?.lastSyncDisplay}</p>
+  <p>
     <span class="u-color-hint">Status:</span>
     <span role="status">{syncing ? 'Syncing…' : status?.unsyncedChanges ? 'Unsynced changes' : status?.lastSync ? 'All local changes are synced' : ''}</span>
   </p>

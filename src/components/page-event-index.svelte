@@ -35,7 +35,7 @@
   location='events'
   title={title}>
   <h1>{title}</h1>
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-2">
     <li><a href="?p=new-event">New event</a></li>
   </ul>
   <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
@@ -43,7 +43,7 @@
   <h2>Recent events</h2>
   <Events events={recentEvents} />
   <h2>Past events</h2>
-  <ul class="list-inline">
+  <ul class="list-inline u-m-top-4">
     {#each years as year}
       <li><a class="badge" href={`?p=events-year&year=${year}`}>{year}</a></li>
     {/each}
