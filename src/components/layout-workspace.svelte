@@ -34,12 +34,11 @@
 <style>
   header {
     align-items: center;
-    background-color: var(--color-base-100);
+    border-bottom: var(--px-2) solid var(--color-base-100);
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--size-4);
+    gap: 0 var(--size-2);
     line-height: var(--lh-2);
-    padding: var(--size-2) var(--size-4);
   }
 
   .identity {
@@ -48,16 +47,13 @@
     flex-grow: 1;
     flex-wrap: wrap;
     gap: 0 var(--size-4);
+    padding: var(--size-2) var(--size-4);
   }
 
   .logo {
     --size: 2.5rem;
     height: var(--size);
     width: var(--size);
-  }
-
-  main {
-    padding: var(--size-6) var(--size-4);
   }
 </style>
 
@@ -80,10 +76,8 @@
         {/if}
       </span>
     </span>
+    <Nav location={location} />
   </header>
-
-  <Nav location={location} />
-
   <main>
     {#if notFound}
       <h1>{title}</h1>

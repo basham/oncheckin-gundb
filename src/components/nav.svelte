@@ -13,11 +13,6 @@
 </script>
 
 <style>
-  nav {
-    background-color: var(--color-base-100);
-    border-bottom: var(--px-2) solid var(--color-base-75);
-  }
-
   nav ul {
     padding: 0 var(--size-4);
   }
@@ -25,7 +20,7 @@
   nav a {
     color: var(--color-base-50);
     display: inline-block;
-    padding: var(--size-2) 0;
+    padding: var(--size-4) 0;
     text-decoration: none;
   }
 
@@ -44,7 +39,7 @@
 </style>
 
 <nav>
-  <ul class="list-inline u-m-0 u-ts-2">
+  <ul class="layout-content list-inline u-m-0 u-ts-2">
     {#each nav as item}
       <li>
         <a aria-current={item.current} href={item.url}>{item.label}</a>

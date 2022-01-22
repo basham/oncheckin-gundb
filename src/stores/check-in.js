@@ -6,6 +6,10 @@ import { resolvePath, sortAsc, sortDesc } from '../util.js'
 
 const fileName = 'check-in.json'
 
+function isSpecial (value) {
+  return value % 5 === 0 || /69$/.test(value)
+}
+
 export async function createCheckIn (eventId, participantId, values) {
   return await setCheckIn(eventId, participantId, values)
 }
@@ -56,6 +60,22 @@ export async function getEventCheckIns (eventId) {
     .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
+export async function getEventCheckInsWithStats (eventId) {
+  const event = await getEvent(eventId)
+  const checkInPromises = (await getCheckInIds())
+    .filter((ids) => ids.eventId === eventId)
+    .map(async ({ participantId }) => {
+      const participant = await getParticipant(participantId)
+      const checkIn = await getCheckIn(eventId, participantId)
+      const stats = await getParticipantStats(participantId, event.dateObj)
+      return [checkIn, participant, stats]
+    })
+  return (await Promise.all(checkInPromises))
+    .filter((source) => source.every((i) => i))
+    .map(([checkIn, participant, stats]) => ({ ...checkIn, ...stats, participant }))
+    .sort(sortAsc(({ participant }) => participant.displayName))
+}
+
 export async function getParticipantCheckIns (participantId) {
   const checkInPromises = (await getCheckInIds())
     .filter((ids) => ids.participantId === participantId)
@@ -91,13 +111,17 @@ export async function getParticipantStats (participantId, date) {
   const hostCount = hostCheckIns.length + missingHostCount
   const lastCheckIn = checkIns[checkIns.length - 1]
   const lastEvent = lastCheckIn?.event
+  const specialCheckInCount = isSpecial(checkInCount)
+  const specialHostCount = isSpecial(hostCount)
   return {
     checkInCount,
     hostCount,
     lastEvent,
     missingCheckInCount,
     missingHostCount,
-    recordedLastCheckInDateDisplay
+    recordedLastCheckInDateDisplay,
+    specialCheckInCount,
+    specialHostCount
   }
 }
 
@@ -111,6 +135,7 @@ const checkInStore = {
   delete: deleteCheckIn,
   get: getCheckIn,
   getEventCheckIns,
+  getEventCheckInsWithStats,
   getIds: getCheckInIds,
   getParticipantCheckIns,
   getParticipantStats,

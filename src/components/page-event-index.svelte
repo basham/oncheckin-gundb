@@ -21,6 +21,15 @@
   })
 </script>
 
+<style>
+  .badge {
+    background-color: var(--color-base-85);
+    border-radius: var(--size-1);
+    display: inline-block;
+    padding: var(--size-2);
+  }
+</style>
+
 <Page
   loading={loading}
   location='events'
@@ -34,9 +43,9 @@
   <h2>Recent events</h2>
   <Events events={recentEvents} />
   <h2>Past events</h2>
-  <ul>
+  <ul class="list-inline">
     {#each years as year}
-      <li><a href={`?p=events-year&year=${year}`}>{year}</a></li>
+      <li><a class="badge" href={`?p=events-year&year=${year}`}>{year}</a></li>
     {/each}
   </ul>
 </Page>

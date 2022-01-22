@@ -7,6 +7,8 @@
     'edit-participant': 'page-participant-edit',
     'edit-pub': 'page-settings-pub',
     event: 'page-event-view',
+    'event-check-ins': 'page-event-view',
+    'event-circle': 'page-event-view',
     events: 'page-event-index',
     'events-year': 'page-event-year',
     'get-started': 'page-get-started',
