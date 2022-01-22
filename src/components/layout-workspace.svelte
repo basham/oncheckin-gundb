@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { APP_NAME } from '../constants.js'
   import { workspaceStore } from '../stores.js'
-  import Nav from './nav.svelte'
+  import NavLink from './nav-link.svelte'
 
   export let location = ''
   export let notFound = false
@@ -32,26 +32,19 @@
 </script>
 
 <style>
-  header {
+  .header {
     align-items: center;
-    border-bottom: var(--px-2) solid var(--color-base-100);
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--size-2);
-    line-height: var(--lh-2);
+    gap: var(--size-4);
   }
 
-  .left {
+  .nav {
     align-items: center;
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
-    padding: 0 var(--size-4);
-  }
-
-  .identity {
-    font-size: var(--fs-2);
-    padding: 0 var(--size-4);
+    gap: var(--size-4);
   }
 
   .logo {
@@ -62,27 +55,48 @@
 </style>
 
 {#if loaded}
-  <header>
-    <span class="left">
-      <img
-        alt={APP_NAME}
-        class="logo"
-        src="../icon.svg">
-      <Nav location={location} />
-    </span>
-    <span class="identity">
-      {workspace?.name}
-      {#if unsyncedChanges}
-        <strong
-          aria-hidden="true"
-          class="u-color-ix">
-          *
-        </strong>
-        <span class="u-sr-only">(unsynced changes)</span>
-      {/if}
-    </span>
+  <header class="u-bg-95 u-border-bottom">
+    <div class="header layout-content u-p-bottom-2 u-p-top-2">
+      <span class="nav">
+        <img
+          alt={APP_NAME}
+          class="logo"
+          src="../icon.svg">
+        <nav class="list-inline u-m-0">
+          <NavLink
+            href="?p=events"
+            id="events"
+            location={location}>
+            Runs
+          </NavLink>
+          <NavLink
+            href="?p=participants"
+            id="participants"
+            location={location}>
+            Hashers
+          </NavLink>
+          <NavLink
+            href="?p=settings"
+            id="settings"
+            location={location}>
+            Settings
+          </NavLink>
+        </nav>
+      </span>
+      <span class="u-ts-2">
+        {workspace?.name}
+        {#if unsyncedChanges}
+          <strong
+            aria-hidden="true"
+            class="u-color-ix">
+            *
+          </strong>
+          <span class="u-sr-only">(unsynced changes)</span>
+        {/if}
+      </span>
+    </div>
   </header>
-  <main>
+  <main class="layout-content">
     {#if notFound}
       <h1>{title}</h1>
     {:else}

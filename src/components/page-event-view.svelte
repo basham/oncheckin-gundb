@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte'
   import { checkInStore, eventStore } from '../stores.js'
+  import CheckInList from './list-check-in.svelte'
+  import NavLink from './nav-link.svelte'
   import Page from './page.svelte'
 
   const params = (new URL(document.location)).searchParams
@@ -39,145 +41,49 @@
   })
 </script>
 
-<style>
-  .div {
-    border-bottom: var(--px-2) solid var(--color-base-100);
-  }
-
-  .div2 {
-    border-bottom: var(--px-1) solid var(--color-base-95);
-  }
-
-  .sub-nav {
-    border-radius: var(--size-1);
-    gap: var(--size-4);
-    margin: 0 !important;
-  }
-
-  .sub-nav a {
-    color: var(--color-base-50);
-    display: inline-block;
-    font-size: var(--fs-1);
-    line-height: var(--lh-1);
-    font-weight: bold;
-    padding: var(--size-4) 0;
-    text-decoration: none;
-  }
-
-  .sub-nav a:hover {
-    color: var(--color-ix);
-  }
-
-  .sub-nav a[aria-current] {
-    box-shadow: 0 var(--px-2) 0 0 var(--color-ix);
-    color: var(--color-ix);
-  }
-</style>
-
 <Page
   loading={loading}
   location='events'
   notFound={notFound}
   title={title}>
-  <div class="layout-header u-p-top-6 u-p-bottom-4 div2">
-    <div class="layout-content">
-      <h1>{event?.name}</h1>
-      <p class="u-m-bottom-0">{event?.displayDateLong}</p>
-    </div>
-  </div>
-  <div class="layout-header u-m-top-2pxx div">
-    <div class="layout-content u-p-top-0 u-p-bottom-0">
-      <ul class="sub-nav list-inline">
-        <li><a href={event.url} aria-current={page === 'event' ? 'page' : null}>Check-ins</a></li>
-        <li><a href={`?p=event-circle&id=${event.id}`} aria-current={page === 'event-circle' ? 'page' : null}>Circle</a></li>
-        <li><a href={`?p=roster&id=${eventId}`}>Print</a></li>
-        <li><a href={`?p=edit-event&id=${eventId}`}>Edit</a></li>
-      </ul>
-    </div>
-  </div>
+  <h1>{event?.name}</h1>
+  <p class="u-m-top-2 u-m-bottom-0">{event?.displayDateLong}</p>
+  <nav class="list-inline u-border-bottom u-p-bottom-4">
+    <NavLink
+      href={event.url}
+      id="event"
+      location={page}>
+      Check-ins
+    </NavLink>
+    <NavLink
+      href={`?p=event-circle&id=${event.id}`}
+      id="event-circle"
+      location={page}>
+      Circle
+    </NavLink>
+    <NavLink href={`?p=roster&id=${eventId}`}>
+      Print
+    </NavLink>
+    <NavLink
+      href={`?p=edit-event&id=${eventId}`}
+      id="edit-event"
+      location={page}>
+      Edit
+    </NavLink>
+  </nav>
   {#if page === 'event'}
-    <div class="layout-content u-p-bottom-6">
-      <h2 class="u-m-all-0">{`Check-ins (${checkIns.length})`}</h2>
-      <div>
-        <a class="button button--primary" href={`?p=new-check-in&id=${eventId}`}>New check-in</a>
-      </div>
-      <ul class="link-list u-m-top-6">
-        {#each checkIns as checkIn}
-          <li>
-            <a class="link-row" href={checkIn.url}>
-              <span class="link-row__primary">{checkIn.participant.displayName}</span>
-              <span class="link-row__secondary">
-                {#if checkIn.host}
-                  <span>{`Hare #${checkIn.hostCount}`}</span>
-                  <span>&middot;</span>
-                {/if}
-                <span>{`Run #${checkIn.checkInCount}`}</span>
-              </span>
-            </a>
-          </li>
-        {/each}
-      </ul>
+    <h2>{`Check-ins (${checkIns.length})`}</h2>
+    <div>
+      <a class="button button--primary" href={`?p=new-check-in&id=${eventId}`}>New check-in</a>
     </div>
+    <CheckInList checkIns={checkIns} />
   {/if}
   {#if page === 'event-circle'}
-    <div class="layout-content u-p-bottom-6">
-      <h2 class="u-m-all-0">{`Anniversaries (${anniversaries.length})`}</h2>
-      {#if anniversaries.length}
-        <ul class="link-list u-m-top-6">
-          {#each anniversaries as checkIn}
-            <li>
-              <a class="link-row" href={checkIn.url}>
-                <span class="link-row__primary">{checkIn.participant.displayName}</span>
-                <span class="link-row__secondary">
-                  {#if checkIn.host}
-                    <span>{`Hare #${checkIn.hostCount}`}</span>
-                    <span>&middot;</span>
-                  {/if}
-                  <span>{`Run #${checkIn.checkInCount}`}</span>
-                </span>
-              </a>
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <h2 class="u-m-all-0">{`Visitors (${visitors.length})`}</h2>
-      {#if visitors.length}
-        <ul class="link-list u-m-top-6">
-          {#each visitors as checkIn}
-            <li>
-              <a class="link-row" href={checkIn.url}>
-                <span class="link-row__primary">{checkIn.participant.displayName}</span>
-                <span class="link-row__secondary">
-                  {#if checkIn.host}
-                    <span>{`Hare #${checkIn.hostCount}`}</span>
-                    <span>&middot;</span>
-                  {/if}
-                  <span>{`Run #${checkIn.checkInCount}`}</span>
-                </span>
-              </a>
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <h2 class="u-m-all-0">{`Virgins (${virgins.length})`}</h2>
-      {#if virgins.length}
-        <ul class="link-list u-m-top-6">
-          {#each virgins as checkIn}
-            <li>
-              <a class="link-row" href={checkIn.url}>
-                <span class="link-row__primary">{checkIn.participant.displayName}</span>
-                <span class="link-row__secondary">
-                  {#if checkIn.host}
-                    <span>{`Hare #${checkIn.hostCount}`}</span>
-                    <span>&middot;</span>
-                  {/if}
-                  <span>{`Run #${checkIn.checkInCount}`}</span>
-                </span>
-              </a>
-            </li>
-          {/each}
-        </ul>
-      {/if}
-    </div>
+    <h2 class="u-m-all-0">{`Anniversaries (${anniversaries.length})`}</h2>
+    <CheckInList checkIns={anniversaries} />
+    <h2 class="u-m-all-0">{`Visitors (${visitors.length})`}</h2>
+    <CheckInList checkIns={visitors} />
+    <h2 class="u-m-all-0">{`Virgins (${virgins.length})`}</h2>
+    <CheckInList checkIns={virgins} />
   {/if}
 </Page>

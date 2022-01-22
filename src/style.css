@@ -79,7 +79,7 @@
 }
 
 html {
-  background-color: var(--color-base-95);
+  background-color: var(--color-base-90);
   color: var(--color-base-5);
   -webkit-text-size-adjust: 100%;
 }
@@ -204,7 +204,7 @@ a:hover {
 }
 
 .layout-content {
-  padding: 0 var(--size-4);
+  padding: var(--size-6) var(--size-4);
   margin: 0 auto !important;
   max-width: 40rem;
 }
@@ -285,6 +285,14 @@ a:hover {
 
 /* Utilities */
 
+.u-bg-95 {
+  background-color: var(--color-base-95);
+}
+
+.u-border-bottom {
+  border-bottom: var(--border);
+}
+
 .u-color-hint {
   color: var(--color-hint);
 }
@@ -361,12 +369,20 @@ a:hover {
   padding: 0;
 }
 
+.u-p-top-2 {
+  padding-top: var(--size-2);
+}
+
 .u-p-top-6 {
   padding-top: var(--size-6);
 }
 
 .u-p-bottom-0 {
   padding-bottom: 0;
+}
+
+.u-p-bottom-2 {
+  padding-bottom: var(--size-2);
 }
 
 .u-p-bottom-4 {
