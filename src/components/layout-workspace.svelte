@@ -56,7 +56,7 @@
 
 {#if loaded}
   <header class="u-bg-100">
-    <div class="header layout-content">
+    <div class="header layout-content u-p-4">
       <span class="nav">
         <img
           alt={APP_NAME}
@@ -96,7 +96,7 @@
       </span>
     </div>
   </header>
-  <main class="layout-content">
+  <main class="layout-content u-p-bottom-4">
     {#if notFound}
       <h1>{title}</h1>
     {:else}

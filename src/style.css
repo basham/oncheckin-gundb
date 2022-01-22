@@ -103,13 +103,11 @@ h1:focus {
 }
 
 h2 {
-  _border-top: var(--border);
   font-size: var(--fs-3);
   font-weight: normal;
   line-height: var(--lh-3);
   margin: var(--size-4) 0 0;
   margin: 0;
-  _padding-top: var(--size-4);
 }
 
 ol,
@@ -207,7 +205,6 @@ p {
 }
 
 .layout-content {
-  padding: var(--size-4);
   margin: 0 auto;
   max-width: 40rem;
 }
@@ -381,6 +378,10 @@ p {
 
 .u-p-0 {
   padding: 0;
+}
+
+.u-p-4 {
+  padding: var(--size-4);
 }
 
 .u-p-bottom-0 {
