@@ -152,7 +152,7 @@ a:hover {
   border-radius: var(--size-1);
   box-shadow:
     inset 0 0 0 var(--px-2) var(--color-inner-shadow),
-    0 0 0 var(--px-1) var(--color-base-100);
+    0 0 0 var(--px-1) var(--color-base-95);
   color: var(--color-ix);
   cursor: pointer;
   display: inline-flex;
@@ -199,13 +199,9 @@ a:hover {
   padding: calc(var(--size-2) - var(--px-2));
 }
 
-.layout-header {
-  background-color: var(--color-base-90);
-}
-
 .layout-content {
-  padding: var(--size-6) var(--size-4);
-  margin: 0 auto !important;
+  padding: var(--size-4);
+  margin: 0 auto;
   max-width: 40rem;
 }
 
