@@ -2,8 +2,8 @@
   export let location = ''
 
   $: nav = [
-    ['Events', '?p=events'],
-    ['Participants', '?p=participants'],
+    ['Runs', '?p=events'],
+    ['Hashers', '?p=participants'],
     ['Settings', '?p=settings']
   ]
     .map(([label, url]) => {
@@ -20,6 +20,7 @@
   nav a {
     color: var(--color-base-50);
     display: inline-block;
+    font-weight: bold;
     padding: var(--size-4) 0;
     text-decoration: none;
   }
@@ -39,7 +40,7 @@
 </style>
 
 <nav>
-  <ul class="layout-content list-inline u-m-0 u-ts-2">
+  <ul class="layout-content list-inline u-m-0">
     {#each nav as item}
       <li>
         <a aria-current={item.current} href={item.url}>{item.label}</a>

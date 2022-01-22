@@ -40,6 +40,14 @@
 </script>
 
 <style>
+  .div {
+    border-bottom: var(--px-2) solid var(--color-base-100);
+  }
+
+  .div2 {
+    border-bottom: var(--px-1) solid var(--color-base-95);
+  }
+
   .sub-nav {
     border-radius: var(--size-1);
     gap: var(--size-4);
@@ -61,7 +69,7 @@
   }
 
   .sub-nav a[aria-current] {
-    box-shadow: inset 0 calc(-1 * var(--px-2)) 0 0 var(--color-ix);
+    box-shadow: 0 var(--px-2) 0 0 var(--color-ix);
     color: var(--color-ix);
   }
 </style>
@@ -71,13 +79,13 @@
   location='events'
   notFound={notFound}
   title={title}>
-  <div class="layout-header u-p-top-6 u-p-bottom-4">
+  <div class="layout-header u-p-top-6 u-p-bottom-4 div2">
     <div class="layout-content">
       <h1>{event?.name}</h1>
       <p class="u-m-bottom-0">{event?.displayDateLong}</p>
     </div>
   </div>
-  <div class="layout-header u-m-top-2px">
+  <div class="layout-header u-m-top-2pxx div">
     <div class="layout-content u-p-top-0 u-p-bottom-0">
       <ul class="sub-nav list-inline">
         <li><a href={event.url} aria-current={page === 'event' ? 'page' : null}>Check-ins</a></li>

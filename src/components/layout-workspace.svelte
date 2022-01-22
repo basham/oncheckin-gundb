@@ -41,13 +41,17 @@
     line-height: var(--lh-2);
   }
 
-  .identity {
+  .left {
     align-items: center;
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
-    gap: 0 var(--size-4);
-    padding: var(--size-2) var(--size-4);
+    padding: 0 var(--size-4);
+  }
+
+  .identity {
+    font-size: var(--fs-2);
+    padding: 0 var(--size-4);
   }
 
   .logo {
@@ -59,24 +63,24 @@
 
 {#if loaded}
   <header>
-    <span class="identity">
+    <span class="left">
       <img
         alt={APP_NAME}
         class="logo"
         src="../icon.svg">
-      <span>
-        {workspace?.name}
-        {#if unsyncedChanges}
-          <strong
-            aria-hidden="true"
-            class="u-color-ix">
-            *
-          </strong>
-          <span class="u-sr-only">(unsynced changes)</span>
-        {/if}
-      </span>
+      <Nav location={location} />
     </span>
-    <Nav location={location} />
+    <span class="identity">
+      {workspace?.name}
+      {#if unsyncedChanges}
+        <strong
+          aria-hidden="true"
+          class="u-color-ix">
+          *
+        </strong>
+        <span class="u-sr-only">(unsynced changes)</span>
+      {/if}
+    </span>
   </header>
   <main>
     {#if notFound}
