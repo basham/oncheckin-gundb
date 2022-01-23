@@ -57,7 +57,7 @@
   --size-7: 1.75rem;
   --size-8: 2rem;
 
-  --border: var(--px-2) solid var(--color-base-90);
+  --border: var(--px-2) solid var(--color-base-85);
 }
 
 * {
