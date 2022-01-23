@@ -7,14 +7,13 @@
 
 <style>
   .card {
-    background-color: var(--color-base-90);
-    border-radius: var(--size-2);
+    border-top: var(--border);
     display: grid;
     grid-template-areas:
       "heading actions"
       "body body";
     grid-template-columns: 1fr auto;
-    padding: var(--size-4);
+    padding-top: var(--size-4);
   }
 
   .heading {

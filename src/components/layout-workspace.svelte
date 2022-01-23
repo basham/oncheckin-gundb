@@ -56,7 +56,7 @@
 
 {#if loaded}
   <header class="u-border-bottom">
-    <div class="header layout-content u-p-4">
+    <div class="header layout-content">
       <span class="nav">
         <img
           alt={APP_NAME}

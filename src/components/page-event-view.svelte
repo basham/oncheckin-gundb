@@ -44,36 +44,34 @@
   location='events'
   notFound={notFound}
   title={title}>
-  <div class="u-p-4">
-    <h1>{event?.name}</h1>
-    <p class="u-m-top-2">{event?.displayDateLong}</p>
-    <nav class="list-inline u-m-top-4">
-      <NavLink
-        href={event.url}
-        id="event"
-        location={page}>
-        Check-ins
-      </NavLink>
-      <NavLink
-        href={`?p=event-circle&id=${event.id}`}
-        id="event-circle"
-        location={page}>
-        Circle
-      </NavLink>
-      <NavLink href={`?p=roster&id=${eventId}`}>
-        Print
-      </NavLink>
-      <NavLink
-        href={`?p=edit-event&id=${eventId}`}
-        id="edit-event"
-        location={page}>
-        Edit
-      </NavLink>
-    </nav>
-  </div>
+  <h1>{event?.name}</h1>
+  <p class="u-m-top-2">{event?.displayDateLong}</p>
+  <nav class="list-inline u-m-top-4">
+    <NavLink
+      href={event.url}
+      id="event"
+      location={page}>
+      Check-ins
+    </NavLink>
+    <NavLink
+      href={`?p=event-circle&id=${event.id}`}
+      id="event-circle"
+      location={page}>
+      Circle
+    </NavLink>
+    <NavLink href={`?p=roster&id=${eventId}`}>
+      Print
+    </NavLink>
+    <NavLink
+      href={`?p=edit-event&id=${eventId}`}
+      id="edit-event"
+      location={page}>
+      Edit
+    </NavLink>
+  </nav>
   {#if page === 'event'}
     <Card
-      class="u-m-top-2"
+      class="u-m-top-4"
       heading={`Check-ins (${checkIns.length})`}>
       <a
         class="button button--primary button--small"
@@ -86,7 +84,7 @@
   {/if}
   {#if page === 'event-circle'}
     <Card
-      class="u-m-top-2"
+      class="u-m-top-4"
       heading={`Anniversaries (${anniversaries.length})`}>
       <CheckInList checkIns={anniversaries} />
     </Card>

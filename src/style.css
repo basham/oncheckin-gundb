@@ -207,6 +207,7 @@ p {
 .layout-content {
   margin: 0 auto;
   max-width: 40rem;
+  padding: var(--size-4);
 }
 
 .link-list {
@@ -219,7 +220,7 @@ p {
 }
 
 .link-row {
-  background-color: var(--color-base-80);
+  background-color: var(--color-base-85);
   border-radius: var(--size-1);
   display: flex;
   flex-wrap: wrap;
