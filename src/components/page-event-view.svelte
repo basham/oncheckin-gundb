@@ -73,7 +73,7 @@
   </div>
   {#if page === 'event'}
     <Card
-      class="u-m-top-4x"
+      class="u-m-top-2"
       heading={`Check-ins (${checkIns.length})`}>
       <a
         class="button button--primary button--small"
@@ -86,7 +86,7 @@
   {/if}
   {#if page === 'event-circle'}
     <Card
-      class="u-m-top-4"
+      class="u-m-top-2"
       heading={`Anniversaries (${anniversaries.length})`}>
       <CheckInList checkIns={anniversaries} />
     </Card>
