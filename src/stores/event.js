@@ -20,7 +20,7 @@ export async function getEvent (id) {
   const displayDateLong = format(dateObj, 'E, PP')
   const year = format(dateObj, 'y')
   const name = data.name.trim() || '(Event)'
-  const url = `?p=event&id=${id}`
+  const url = `?p=events/${id}`
   return {
     ...data,
     id,
