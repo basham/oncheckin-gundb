@@ -26,10 +26,6 @@
 </script>
 
 <style>
-  .content {
-    max-width: 40rem;
-  }
-
   .share-link-input {
     flex-basis: 10rem;
     flex-grow: 1;
@@ -41,24 +37,26 @@
   loading={loading}
   location='settings'
   title={title}>
-  <h1>{title}</h1>
-  <p class="content">Invite others to collaborate in this workspace as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
-  <div class="content u-flex u-flex-wrap u-flex-gap-2">
-    <input
-      aria-label="Share link"
-      class="input share-link-input"
-      id="share-link-input"
-      readonly
-      type="text"
-      value={workspace?.shareUrl} />
-    <button
-      class="button button--primary"
-      on:click={copyShareLink}>
-      Copy link
-    </button>
-  </div>
-  <div class="u-m-top-6">
-    <QRCode code={workspace?.shareUrl} />
+  <div class="card">
+    <h1>{title}</h1>
+    <p class="u-m-top-4">Invite others to collaborate in this workspace as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
+    <div class="u-m-top-6 u-flex u-flex-wrap u-flex-gap-2">
+      <input
+        aria-label="Share link"
+        class="input share-link-input"
+        id="share-link-input"
+        readonly
+        type="text"
+        value={workspace?.shareUrl} />
+      <button
+        class="button button--primary"
+        on:click={copyShareLink}>
+        Copy link
+      </button>
+    </div>
+    <div class="u-m-top-6">
+      <QRCode code={workspace?.shareUrl} />
+    </div>
   </div>
   <Toast bind:this={toast} />
 </Page>

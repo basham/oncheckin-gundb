@@ -23,7 +23,7 @@
 
 <style>
   .badge {
-    background-color: var(--color-base-85);
+    background-color: var(--color-base-80);
     border-radius: var(--size-1);
     display: inline-block;
     padding: var(--size-2);
@@ -34,18 +34,24 @@
   loading={loading}
   location='events'
   title={title}>
-  <h1>{title}</h1>
-  <ul class="list-inline u-m-top-2">
-    <li><a href="?p=new-event">New event</a></li>
-  </ul>
-  <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
-  <Events events={upcomingEvents} />
-  <h2>Recent events</h2>
-  <Events events={recentEvents} />
-  <h2>Past events</h2>
-  <ul class="list-inline u-m-top-4">
-    {#each years as year}
-      <li><a class="badge" href={`?p=events-year&year=${year}`}>{year}</a></li>
-    {/each}
-  </ul>
+  <div class="card u-flex u-flex-space">
+    <h1>{title}</h1>
+    <a class="button button--primary button--small" href="?p=new-event">New event</a>
+  </div>
+  <div class="card u-m-top-6">
+    <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
+    <Events events={upcomingEvents} />
+  </div>
+  <div class="card u-m-top-6">
+    <h2>Recent events</h2>
+    <Events events={recentEvents} />
+  </div>
+  <div class="card u-m-top-6">
+    <h2>Past events</h2>
+    <ul class="list-inline u-m-top-4">
+      {#each years as year}
+        <li><a class="badge" href={`?p=events-year&year=${year}`}>{year}</a></li>
+      {/each}
+    </ul>
+  </div>
 </Page>

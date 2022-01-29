@@ -32,11 +32,19 @@
 </script>
 
 <style>
+  header {
+    background-color: var(--color-base-90);
+    box-shadow:
+      0 var(--px-2) 0 0 var(--color-base-95),
+      0 var(--size-1) 0 0 var(--color-base-90);
+  }
+
   .header {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: var(--size-4);
+    padding: var(--size-4);
   }
 
   .nav {
@@ -55,7 +63,7 @@
 </style>
 
 {#if loaded}
-  <header class="u-border-bottom">
+  <header>
     <div class="header layout-content">
       <span class="nav">
         <img
@@ -96,7 +104,7 @@
       </span>
     </div>
   </header>
-  <main class="layout-content u-p-bottom-4">
+  <main class="layout-content u-p-bottom-6 u-p-top-6">
     {#if notFound}
       <h1>{title}</h1>
     {:else}
