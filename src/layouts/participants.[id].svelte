@@ -5,12 +5,13 @@
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from '@src/layouts/workspace.svelte'
 
+  export let loaded = true
   export let params
   export let route
   export let title = ''
 
   let _title = ''
-  let loaded = false
+  let _loaded = false
   let notFound = false
   let stats = null
   let participant
@@ -20,12 +21,12 @@
     _title = `${title ? `${title}: ` : ''}${participant?.displayName}`
     notFound = !participant
     stats = await checkInStore.getParticipantStats(participant.id)
-    loaded = true
+    _loaded = true
   })
 </script>
 
 <Layout
-  loaded={loaded}
+  loaded={loaded && _loaded}
   location='participants'
   params={params}
   route={route}

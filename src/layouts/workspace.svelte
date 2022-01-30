@@ -3,6 +3,7 @@
   import { APP_NAME } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
+  import Layout from './page.svelte'
 
   export let loaded = true
   export let location = ''
@@ -14,9 +15,6 @@
   let _loaded = false
   let workspace
   let unsyncedChanges
-
-  $: title = notFound ? ['Page not found'] : (Array.isArray(title) ? title : [title])
-  $: fullTitle = [...title, APP_NAME].filter((v) => v).join(' - ')
 
   onMount(async () => {
     workspace = await workspaceStore.get()
@@ -68,11 +66,10 @@
   }
 </style>
 
-<svelte:head>
-  <title>{fullTitle}</title>
-</svelte:head>
-
-{#if loaded && _loaded}
+<Layout
+  loaded={loaded && _loaded}
+  notFound={notFound}
+  title={title}>
   <header>
     <div class="header layout-content">
       <span class="nav">
@@ -121,4 +118,4 @@
       <slot></slot>
     {/if}
   </main>
-{/if}
+</Layout>
