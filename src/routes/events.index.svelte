@@ -55,7 +55,7 @@
     <h2>Past events</h2>
     <ul class="list-inline u-m-top-4">
       {#each years as year}
-        <li><a class="badge" href={`?p=events-year&year=${year}`}>{year}</a></li>
+        <li><a class="badge" href={`?p=events/past/${year}`}>{year}</a></li>
       {/each}
     </ul>
   </div>

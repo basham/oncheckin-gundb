@@ -40,6 +40,7 @@
     'events/[id]/index',
     'events/[id]/circle',
     'events/[id]/edit',
+    'events/past/[year]',
     'settings/index',
     'settings/edit-pub',
     'settings/rename',
