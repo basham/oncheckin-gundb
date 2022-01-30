@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte'
   import { checkInStore, eventStore } from '@src/stores.js'
+  import Layout from '@src/layouts/events.[id].svelte'
   import CheckInList from '@src/lib/list-check-in.svelte'
-  import Layout from './events.[id].layout.svelte'
 
   export let params
   export let route

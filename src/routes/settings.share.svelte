@@ -1,9 +1,9 @@
 <script>
   import { onMount } from 'svelte'
   import { workspaceStore } from '@src/stores.js'
+  import Layout from '@src/layouts/workspace.svelte'
   import QRCode from '@src/lib/qr-code.svelte'
   import Toast from '@src/lib/toast.svelte'
-  import Layout from './layout.svelte'
 
   export let params
   export let route

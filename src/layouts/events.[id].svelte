@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { eventStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
-  import Layout from './layout.svelte'
+  import Layout from './workspace.svelte'
 
   export let loaded = true
   export let params

@@ -1,7 +1,7 @@
 <script>
   import { eventStore } from '@src/stores.js'
+  import Layout from '@src/layouts/workspace.svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
-  import Layout from './layout.svelte'
 
   export let params
   export let route

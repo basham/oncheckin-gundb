@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte'
   import { eventStore } from '@src/stores.js'
+  import Layout from '@src/layouts/events.[id].svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
-  import Layout from './events.[id].layout.svelte'
 
   export let params
   export let route

@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { workspaceStore } from '@src/stores.js'
-  import Layout from './layout.svelte'
+  import Layout from '@src/layouts/workspace.svelte'
 
   export let params
   export let route
