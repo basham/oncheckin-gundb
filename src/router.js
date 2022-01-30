@@ -15,7 +15,7 @@ export function getRoute () {
       return result
     }
   }
-  return { route: 404 }
+  return { component: 404 }
 }
 
 function testRoute (route, path) {
