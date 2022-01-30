@@ -25,7 +25,6 @@
 
 <Layout
   loaded={loaded && _loaded}
-  location='events'
   notFound={notFound}
   title={_title}>
   <div class="card">

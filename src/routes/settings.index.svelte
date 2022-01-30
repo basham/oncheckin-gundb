@@ -28,7 +28,6 @@
 
 <Layout
   loaded={loaded}
-  location='settings'
   title={title}>
   <div class="card">
     <h1>{title}</h1>

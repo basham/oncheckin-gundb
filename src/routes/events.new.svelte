@@ -15,9 +15,7 @@
   }
 </script>
 
-<Layout
-  location='events'
-  title={title}>
+<Layout title={title}>
   <div class="card">
     <h1>{title}</h1>
     <form

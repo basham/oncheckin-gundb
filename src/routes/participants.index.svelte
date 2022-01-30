@@ -17,7 +17,6 @@
 
 <Layout
   loaded={loaded}
-  location='participants'
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>

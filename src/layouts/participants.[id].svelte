@@ -28,7 +28,6 @@
 
 <Layout
   loaded={loaded && _loaded}
-  location='participants'
   notFound={notFound}
   title={_title}>
   <div class="card">

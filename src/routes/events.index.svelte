@@ -32,7 +32,6 @@
 
 <Layout
   loaded={loaded}
-  location='events'
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>

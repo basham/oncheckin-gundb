@@ -1,14 +1,16 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { APP_NAME } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from './page.svelte'
 
   export let loaded = true
-  export let location = ''
   export let notFound = false
   export let title = ''
+
+  const route = getContext('route')
+  const location = route.split('/')[0]
 
   let _loaded = false
   let workspace
