@@ -1,37 +1,40 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns'
 import { getWorkspace } from './workspace.js'
-import { createId, resolvePath, sortDesc } from '../util.js'
+import { createId, getOrCreate, resolvePath, sortDesc } from '../util.js'
 
 const fileName = 'event.json'
+const events = new Map()
 
 export async function createEvent (values) {
   return await setEvent(createId(), values)
 }
 
 export async function getEvent (id) {
-  const { get } = await getWorkspace()
-  const data = await get(`${id}/${fileName}`)
-  if (!data) {
-    return undefined
-  }
-  const dateObj = parseISO(data.date)
-  const displayDate = format(dateObj, 'PP')
-  const displayDateMedium = format(dateObj, 'E, MMM d')
-  const displayDateLong = format(dateObj, 'E, PP')
-  const year = format(dateObj, 'y')
-  const name = data.name.trim() || '(Event)'
-  const url = `?p=events/${id}`
-  return {
-    ...data,
-    id,
-    dateObj,
-    displayDate,
-    displayDateMedium,
-    displayDateLong,
-    name,
-    url,
-    year
-  }
+  return getOrCreate(events, id, async () => {
+    const { get } = await getWorkspace()
+    const data = await get(`${id}/${fileName}`)
+    if (!data) {
+      return undefined
+    }
+    const dateObj = parseISO(data.date)
+    const displayDate = format(dateObj, 'PP')
+    const displayDateMedium = format(dateObj, 'E, MMM d')
+    const displayDateLong = format(dateObj, 'E, PP')
+    const year = format(dateObj, 'y')
+    const name = data.name.trim() || '(Event)'
+    const url = `?p=events/${id}`
+    return {
+      ...data,
+      id,
+      dateObj,
+      displayDate,
+      displayDateMedium,
+      displayDateLong,
+      name,
+      url,
+      year
+    }
+  })
 }
 
 export async function getEvents () {

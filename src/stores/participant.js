@@ -1,35 +1,38 @@
 import { format, parseISO } from 'date-fns'
 import { getWorkspace } from './workspace.js'
-import { createId, resolvePath, sortAsc } from '../util.js'
+import { createId, getOrCreate, resolvePath, sortAsc } from '../util.js'
 
 const fileName = 'participant.json'
+const participants = new Map()
 
 export async function createParticipant (values) {
   return await setParticipant(createId(), values)
 }
 
 export async function getParticipant (id) {
-  const { get } = await getWorkspace()
-  const data = await get(`${id}/${fileName}`)
-  if (!data) {
-    return undefined
-  }
-  const alias = data.alias || ''
-  const displayName = data.alias || `Just ${data.firstName}`
-  const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
-  const recordedLastCheckInDateObj = data.recordedLastCheckInDate ? parseISO(data.recordedLastCheckInDate) : null
-  const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
-  const url = `?p=participants/${id}`
-  return {
-    ...data,
-    alias,
-    displayName,
-    fullName,
-    id,
-    recordedLastCheckInDateDisplay,
-    recordedLastCheckInDateObj,
-    url
-  }
+  return getOrCreate(participants, id, async () => {
+    const { get } = await getWorkspace()
+    const data = await get(`${id}/${fileName}`)
+    if (!data) {
+      return undefined
+    }
+    const alias = data.alias || ''
+    const displayName = data.alias || `Just ${data.firstName}`
+    const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
+    const recordedLastCheckInDateObj = data.recordedLastCheckInDate ? parseISO(data.recordedLastCheckInDate) : null
+    const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
+    const url = `?p=participants/${id}`
+    return {
+      ...data,
+      alias,
+      displayName,
+      fullName,
+      id,
+      recordedLastCheckInDateDisplay,
+      recordedLastCheckInDateObj,
+      url
+    }
+  })
 }
 
 export async function getParticipants () {

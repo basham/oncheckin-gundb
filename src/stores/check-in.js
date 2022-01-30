@@ -2,9 +2,10 @@ import { isBefore, isEqual } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { getWorkspace } from './workspace.js'
-import { resolvePath, sortAsc, sortDesc } from '../util.js'
+import { getOrCreate, resolvePath, sortAsc, sortDesc } from '../util.js'
 
 const fileName = 'check-in.json'
+const cache = new Map()
 
 function isSpecial (value) {
   return value > 0 && (value % 5 === 0 || /69$/.test(value))
@@ -33,23 +34,37 @@ export async function getCheckIn (eventId, participantId) {
   }
 }
 
-export async function getCheckInIds () {
-  const { storage } = await getWorkspace()
-  return storage
-    .paths({
-      pathStartsWith: resolvePath(),
-      pathEndsWith: fileName
-    })
-    .map((path) => {
-      const [eventId, participantId] = path.split('/')[2].split('-')
-      return { eventId, participantId }
-    })
+async function getCheckInIds () {
+  return getOrCreate(cache, 'ids', async () => {
+    const { storage } = await getWorkspace()
+    const checkInsByEventId = new Map()
+    const checkInsByParticipantId = new Map()
+    storage
+      .paths({
+        pathStartsWith: resolvePath(),
+        pathEndsWith: fileName
+      })
+      .forEach((path) => {
+        const [eventId, participantId] = path.split('/')[2].split('-')
+        if (!checkInsByEventId.has(eventId)) {
+          checkInsByEventId.set(eventId, new Set())
+        }
+        checkInsByEventId.get(eventId).add(participantId)
+        if (!checkInsByParticipantId.has(participantId)) {
+          checkInsByParticipantId.set(participantId, new Set())
+        }
+        checkInsByParticipantId.get(participantId).add(eventId)
+      })
+    return { checkInsByEventId, checkInsByParticipantId }
+  })
 }
 
 export async function getEventCheckIns (eventId) {
-  const checkInPromises = (await getCheckInIds())
-    .filter((ids) => ids.eventId === eventId)
-    .map(async ({ participantId }) => {
+  const participantIds = (await getCheckInIds())
+    .checkInsByEventId
+    .get(eventId) || []
+  const checkInPromises = [...participantIds]
+    .map(async (participantId) => {
       const participant = await getParticipant(participantId)
       const checkIn = await getCheckIn(eventId, participantId)
       return [checkIn, participant]
@@ -61,10 +76,12 @@ export async function getEventCheckIns (eventId) {
 }
 
 export async function getEventCheckInsWithStats (eventId) {
+  const participantIds = (await getCheckInIds())
+    .checkInsByEventId
+    .get(eventId) || []
   const event = await getEvent(eventId)
-  const checkInPromises = (await getCheckInIds())
-    .filter((ids) => ids.eventId === eventId)
-    .map(async ({ participantId }) => {
+  const checkInPromises = [...participantIds]
+    .map(async (participantId) => {
       const participant = await getParticipant(participantId)
       const checkIn = await getCheckIn(eventId, participantId)
       const stats = await getParticipantStats(participantId, event.dateObj)
@@ -77,9 +94,11 @@ export async function getEventCheckInsWithStats (eventId) {
 }
 
 export async function getParticipantCheckIns (participantId) {
-  const checkInPromises = (await getCheckInIds())
-    .filter((ids) => ids.participantId === participantId)
-    .map(async ({ eventId }) => {
+  const eventIds = (await getCheckInIds())
+    .checkInsByParticipantId
+    .get(participantId) || []
+  const checkInPromises = [...eventIds]
+    .map(async (eventId) => {
       const event = await getEvent(eventId)
       const checkIn = await getCheckIn(eventId, participantId)
       return [checkIn, event]
@@ -138,7 +157,6 @@ const checkInStore = {
   get: getCheckIn,
   getEventCheckIns,
   getEventCheckInsWithStats,
-  getIds: getCheckInIds,
   getParticipantCheckIns,
   getParticipantStats,
   set: setCheckIn
