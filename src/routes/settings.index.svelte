@@ -1,11 +1,14 @@
 <script>
   import { onMount } from 'svelte'
-  import Page from './page.svelte'
+  import Layout from './layout.svelte'
   import { workspaceStore } from '../stores.js'
+
+  export let params
+  export let route
 
   const title = 'Settings'
 
-  let loading = true
+  let loaded = false
   let status = {}
   let syncing = false
   let workspace
@@ -13,7 +16,7 @@
   onMount(async () => {
     workspace = await workspaceStore.get()
     status = await workspaceStore.syncStatus()
-    loading = false
+    loaded = true
   })
 
   async function sync () {
@@ -26,9 +29,11 @@
   }
 </script>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='settings'
+  params={params}
+  route={route}
   title={title}>
   <div class="card">
     <h1>{title}</h1>
@@ -42,9 +47,9 @@
     <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
     <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
     <ul class="list-inline u-m-top-4">
-      <li><a href="?p=share">Share</a></li>
-      <li><a href="?p=rename-workspace">Rename</a></li>
-      <li><a href="?p=edit-pub">Edit pub</a></li>
+      <li><a href="?p=settings/share">Share</a></li>
+      <li><a href="?p=settings/rename">Rename</a></li>
+      <li><a href="?p=settings/edit-pub">Edit pub</a></li>
     </ul>
   </div>
   <div class="card u-m-top-6">
@@ -63,4 +68,4 @@
       </button>
     </div>
   </div>
-</Page>
+</Layout>

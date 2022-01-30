@@ -1,19 +1,22 @@
 <script>
   import { onMount } from 'svelte'
-  import Page from './page.svelte'
-  import QRCode from './qr-code.svelte'
-  import Toast from './toast.svelte'
-  import { workspaceStore } from '../stores.js'
+  import { workspaceStore } from '@src/stores.js'
+  import QRCode from '@src/lib/qr-code.svelte'
+  import Toast from '@src/lib/toast.svelte'
+  import Layout from './layout.svelte'
+
+  export let params
+  export let route
 
   const title = 'Share workspace'
 
-  let loading = true
+  let loaded = false
   let workspace
   let toast
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    loading = false
+    loaded = true
   })
 
   function copyShareLink (event) {
@@ -33,9 +36,11 @@
   }
 </style>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='settings'
+  params={params}
+  route={route}
   title={title}>
   <div class="card">
     <h1>{title}</h1>
@@ -59,4 +64,4 @@
     </div>
   </div>
   <Toast bind:this={toast} />
-</Page>
+</Layout>

@@ -40,6 +40,10 @@
     'events/[id]/index',
     'events/[id]/circle',
     'events/[id]/edit',
+    'settings/index',
+    'settings/edit-pub',
+    'settings/rename',
+    'settings/share'
   ]
   const dynamicSlugTest = /^\[\w+\]$/
   const SLUG_MATCH = 1

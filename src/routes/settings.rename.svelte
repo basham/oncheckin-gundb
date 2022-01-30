@@ -1,30 +1,35 @@
 <script>
   import { onMount } from 'svelte'
-  import { workspaceStore } from '../stores.js'
-  import Page from './page.svelte'
+  import { workspaceStore } from '@src/stores.js'
+  import Layout from './layout.svelte'
 
-  const title = 'Edit pub'
+  export let params
+  export let route
 
-  let loading = true
+  const title = 'Rename workspace'
+
+  let loaded = false
   let workspace
-  let pub
+  let name
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    pub = workspace?.pub
-    loading = false
+    name = workspace?.name
+    loaded = true
   })
 
   async function submit (event) {
     event.preventDefault()
-    await workspaceStore.setPub(workspace.id, pub)
+    await workspaceStore.rename(name)
     window.location = '?p=settings'
   }
 </script>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='settings'
+  params={params}
+  route={route}
   title={title}>
   <div class="card">
     <h1>{title}</h1>
@@ -32,12 +37,12 @@
       autocomplete="off"
       on:submit={submit}>
       <div class="u-m-top-6">
-        <label for="pub">Pub link</label>
+        <label for="name">Workspace name</label>
         <br>
         <input
-          bind:value={pub}
+          bind:value={name}
           class="input"
-          id="pub"
+          id="name"
           type="text">
       </div>
       <div class="u-m-top-6">
@@ -45,4 +50,4 @@
       </div>
     </form>
   </div>
-</Page>
+</Layout>
