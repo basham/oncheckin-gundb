@@ -3,9 +3,6 @@
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
 
-  export let params
-  export let route
-
   const title = 'Edit pub'
 
   let loaded = false

@@ -3,9 +3,6 @@
   import Layout from '@src/layouts/workspace.svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
 
-  export let params
-  export let route
-
   const title = 'New event'
 
   let name = ''

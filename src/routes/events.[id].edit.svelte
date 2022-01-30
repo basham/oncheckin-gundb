@@ -1,11 +1,10 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/events.[id].svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
 
-  export let params
-  export let route
+  const params = getContext('params')
 
   let loaded = false
   let event
@@ -28,8 +27,6 @@
 
 <Layout
   loaded={loaded}
-  params={params}
-  route={route}
   title="Edit">
   <div class="card u-m-top-6">
     <h2>Edit event</h2>

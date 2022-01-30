@@ -1,7 +1,16 @@
-import App from './lib/app.svelte'
+import { getRoute } from './router.js'
 
-const app = new App({
-  target: document.body
-})
+async function init () {
+  try {
+    const route = getRoute()
+    const Page = (await import(`../routes/${route.component}.svelte.js`)).default
+    return new Page({
+      context: new Map(Object.entries(route)),
+      target: document.body
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
 
-export default app
+init()

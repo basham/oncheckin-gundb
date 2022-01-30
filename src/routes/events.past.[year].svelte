@@ -1,12 +1,10 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Events from '@src/lib/events.svelte'
 
-  export let params
-  export let route
-
+  const params = getContext('params')
   const title = `Events in ${params.year}`
 
   let loaded = false

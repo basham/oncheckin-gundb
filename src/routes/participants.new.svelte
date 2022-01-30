@@ -3,9 +3,6 @@
   import Layout from '@src/layouts/workspace.svelte'
   import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
-  export let params
-  export let route
-
   const title = 'New hasher'
 
   let firstName = ''

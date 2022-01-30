@@ -4,9 +4,6 @@
   import Layout from '@src/layouts/workspace.svelte'
   import Events from '@src/lib/events.svelte'
 
-  export let params
-  export let route
-
   const title = 'Events'
 
   let loaded = false

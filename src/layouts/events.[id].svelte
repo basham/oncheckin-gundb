@@ -1,13 +1,14 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { eventStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from './workspace.svelte'
 
   export let loaded = true
-  export let params
-  export let route
   export let title = ''
+
+  const params = getContext('params')
+  const route = getContext('route')
 
   let event = null
   let _loaded = true

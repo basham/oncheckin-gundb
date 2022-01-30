@@ -5,9 +5,6 @@
   import QRCode from '@src/lib/qr-code.svelte'
   import Toast from '@src/lib/toast.svelte'
 
-  export let params
-  export let route
-
   const title = 'Share workspace'
 
   let loaded = false

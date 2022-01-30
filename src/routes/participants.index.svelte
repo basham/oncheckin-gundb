@@ -4,9 +4,6 @@
   import Layout from '@src/layouts/workspace.svelte'
   import Participants from '@src/lib/participants.svelte'
 
-  export let params
-  export let route
-
   const title = 'Hashers'
 
   let loaded = false

@@ -1,14 +1,15 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { checkInStore, participantStore } from '@src/stores.js'
   import { pluralize } from '@src/util.js'
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from '@src/layouts/workspace.svelte'
 
   export let loaded = true
-  export let params
-  export let route
   export let title = ''
+
+  const params = getContext('params')
+  const route = getContext('route')
 
   let _title = ''
   let _loaded = false

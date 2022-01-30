@@ -1,11 +1,10 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { checkInStore, eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/events.[id].svelte'
   import CheckInList from '@src/lib/list-check-in.svelte'
 
-  export let params
-  export let route
+  const params = getContext('params')
 
   let loaded = false
   let event = null
@@ -28,8 +27,6 @@
 
 <Layout
   loaded={loaded}
-  params={params}
-  route={route}
   title="Circle">
   <div class="card u-m-top-6">
     <h2>{`Anniversaries (${anniversaries.length})`}</h2>

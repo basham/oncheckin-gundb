@@ -1,13 +1,12 @@
 <script>
   import { format, parseISO } from 'date-fns'
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { participantStore } from '@src/stores.js'
   import Layout from '@src/layouts/participants.[id].svelte'
   import Fieldset from '@src/lib/fieldset.svelte'
   import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
-  export let params
-  export let route
+  const params = getContext('params')
 
   let loaded = false
   let participant = null
@@ -52,8 +51,6 @@
 
 <Layout
   loaded={loaded}
-  params={params}
-  route={route}
   title="Edit">
   <form
     autocomplete="off"
