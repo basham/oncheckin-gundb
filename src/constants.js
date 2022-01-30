@@ -19,9 +19,9 @@ export const ROUTES = [
   'settings/share'
 ]
 
-export const STATE_LOADING = 1
-export const STATE_LOADED = 2
-export const STATE_NOT_FOUND = 3
+export const STATE_LOADING = Symbol('loading')
+export const STATE_LOADED = Symbol('loaded')
+export const STATE_NOT_FOUND = Symbol('not found')
 export const STATE = {
   LOADING: STATE_LOADING,
   LOADED: STATE_LOADED,
