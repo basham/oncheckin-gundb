@@ -1,16 +1,17 @@
 <script>
-  import { workspaceStore } from '../stores.js'
-  import Page from './page.svelte'
+  import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
+  import { workspaceStore } from '@src/stores.js'
+  import Layout from '@src/layouts/page.svelte'
 
-  const params = (new URL(document.location)).searchParams
-  const workspaceId = params.get('id')
+  const params = getContext('params')
 
-  let loading = true
+  let state = STATE.LOADING
   let workspace
 
   onMount(async () => {
-    workspace = await workspaceStore.get(workspaceId)
-    loading = false
+    workspace = await workspaceStore.get(params.id)
+    state = STATE.LOADED
   })
 
   function copyInviteLink () {
@@ -18,9 +19,8 @@
   }
 </script>
 
-<Page
-  loading={loading}
-  theme="app"
+<Layout
+  state={state}
   title="Workspace created">
   <div class="group u-m-top-6">
     <h2 class="u-m-top-0">{workspace?.name}</h2>
@@ -45,4 +45,4 @@
       Open workspace
     </a>
   </div>
-</Page>
+</Layout>

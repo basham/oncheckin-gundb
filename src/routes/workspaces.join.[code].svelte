@@ -1,10 +1,10 @@
 <script>
-  import Page from './page.svelte'
-  import { workspaceStore } from '../stores.js'
+  import { getContext } from 'svelte'
+  import { workspaceStore } from '@src/stores.js'
+  import Layout from '@src/layouts/page.svelte'
 
-  const params = (new URL(document.location)).searchParams
-  const inviteCode = params.get('code')
-  const { id, name, pub } = JSON.parse(window.atob(inviteCode))
+  const params = getContext('params')
+  const { id, name, pub } = JSON.parse(window.atob(params.code))
 
   async function joinWorkspace () {
     await workspaceStore.setPub(id, pub)
@@ -13,9 +13,7 @@
   }
 </script>
 
-<Page
-  theme="app"
-  title="Join workspace">
+<Layout title="Join workspace">
   <div class="group u-m-top-6">
     <h2 class="u-m-top-0">{name}</h2>
     <p class="u-m-0"><span class="u-color-hint">ID:</span> {id}</p>
@@ -28,4 +26,4 @@
       Join workspace
     </button>
   </div>
-</Page>
+</Layout>

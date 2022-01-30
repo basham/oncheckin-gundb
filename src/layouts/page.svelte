@@ -2,7 +2,7 @@
   import { APP_NAME, STATE } from '@src/constants.js'
   import Upgrader from '@src/lib/upgrader.svelte'
 
-  export let state
+  export let state = STATE.LOADED
   export let title = ''
 
   const NOT_FOUND_TITLE = 'Page not found'

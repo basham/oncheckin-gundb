@@ -1,8 +1,8 @@
 <script>
-  import Page from './page.svelte'
+  import Layout from '@src/layouts/page.svelte'
 </script>
 
-<Page theme="app">
+<Layout>
   <h1>Membership management for Hash&nbsp;House&nbsp;Harrier kennels</h1>
   <ul class="list">
     <li><strong>Attendance:</strong> Check in hashers to events, with the app or a printable roster.</li>
@@ -18,4 +18,4 @@
       Get started
     </a>
   </p>
-</Page>
+</Layout>

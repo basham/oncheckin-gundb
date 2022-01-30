@@ -16,7 +16,12 @@ export const ROUTES = [
   'settings/index',
   'settings/edit-pub',
   'settings/rename',
-  'settings/share'
+  'settings/share',
+  'workspaces/index',
+  'workspaces/new',
+  'workspaces/created/[id]',
+  'workspaces/join/[code]',
+  'workspaces/open/[id]'
 ]
 
 export const STATE_LOADING = Symbol('loading')

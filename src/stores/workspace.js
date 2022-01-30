@@ -40,7 +40,7 @@ export async function createWorkspace ({ name, pub = null }) {
   const storage = getStorage(id)
   await setPub(id, pub)
   await setContent(storage, fileName, { name })
-  const confirmationUrl = `?p=workspace-created&id=${id}`
+  const confirmationUrl = `?p=workspaces/created/${id}`
   return {
     confirmationUrl,
     id,
@@ -103,9 +103,9 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
     const data = await get(fileName) || {}
     const pub = await storage.getConfig('pub')
     const name = data.name || '(Workspace)'
-    const openUrl = `?p=open-workspace&id=${id}`
+    const openUrl = `?p=workspaces/open/${id}`
     const inviteCode = btoa(JSON.stringify({ id, name, pub }))
-    const shareUrl = `${URL}?p=join&code=${inviteCode}`
+    const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
     const apiUrl = `${pub}earthstar-api/v1/${workspaceId}/`
     const apiPathsUrl = `${apiUrl}paths`
     const apiDocumentsUrl = `${apiUrl}documents`

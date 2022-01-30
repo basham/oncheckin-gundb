@@ -1,0 +1,21 @@
+<script>
+  import { getContext, onMount } from 'svelte'
+  import { workspaceStore } from '@src/stores.js'
+  import Layout from '@src/layouts/page.svelte'
+
+  const params = getContext('params')
+
+  onMount(async () => {
+    workspaceStore.open(params.id)
+    const { storage } = await workspaceStore.get()
+    const lastSync = await storage.getConfig('last-sync')
+    if (!lastSync) {
+      await workspaceStore.syncOnce()
+    }
+    window.location = '?p=events'
+  })
+</script>
+
+<Layout title="Opening workspace…">
+  <p>Please wait while the workspace syncs and opens. The first time may take awhile.</p>
+</Layout>

@@ -8,7 +8,10 @@ const DYNAMIC = 3
 const NOT_FOUND = -1
 
 export function getRoute () {
-  const path = params.get('p') || ''
+  const path = params.get('p')
+  if (!path) {
+    return { component: 'index' }
+  }
   for (const route of ROUTES) {
     const result = testRoute(route, path)
     if (result) {

@@ -1,6 +1,6 @@
 <script>
-  import { workspaceStore } from '../stores.js'
-  import Page from './page.svelte'
+  import { workspaceStore } from '@src/stores.js'
+  import Layout from '@src/layouts/page.svelte'
 
   let name = ''
   let pub = ''
@@ -12,12 +12,10 @@
   }
 </script>
 
-<Page
-  theme="app"
-  title="New workspace">
+<Layout title="New workspace">
   <p>OnCheckIn does not sync with a global database. Instead, you control your own data with workspaces and pubs.</p>
   <p>A workspace initially exists only on the device on which it is created. It works offline, but it must sync with a pub to back up data or collaborate.</p>
-  <details>
+  <details class="u-m-top-4">
     <summary>Start a pub</summary>
     <p>A quick and free way to start a pub is with <a href="https://glitch.com/">Glitch</a>.</p>
     <ol>
@@ -62,4 +60,4 @@
       <a href="?p=workspaces">Back to workspaces</a>
     </div>
   </form>
-</Page>
+</Layout>
