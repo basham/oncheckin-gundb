@@ -6,6 +6,8 @@ export const ROUTES = [
   'events/index',
   'events/new',
   'events/[id]/index',
+  'events/[id]/check-ins/new',
+  'events/[id]/check-ins/[pid]/edit',
   'events/[id]/circle',
   'events/[id]/edit',
   'events/[id]/roster',

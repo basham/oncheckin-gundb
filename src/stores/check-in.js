@@ -25,7 +25,7 @@ export async function getCheckIn (eventId, participantId) {
     return undefined
   }
   const host = data?.host ?? false
-  const url = `./?p=edit-check-in&event-id=${eventId}&participant-id=${participantId}`
+  const url = `./?p=events/${eventId}/check-ins/${participantId}/edit`
   return {
     ...data,
     host,

@@ -24,7 +24,7 @@
       <h2>{`Check-ins (${checkIns.length})`}</h2>
       <a
         class="button button--primary button--small"
-        href={`?p=events/${event?.id}/check-in`}>
+        href={`${event.url}/check-ins/new`}>
         New check-in
       </a>
     </div>

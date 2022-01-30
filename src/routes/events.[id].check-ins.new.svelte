@@ -1,22 +1,20 @@
 <script>
-  import { onMount } from 'svelte'
-  import { checkInStore, eventStore, participantStore } from '../stores.js'
-  import { focus } from '../util.js'
-  import Fieldset from './fieldset.svelte'
-  import FieldsetCheckIn from './fieldset-check-in.svelte'
-  import FieldsetParticipantName from './fieldset-participant-name.svelte'
-  import Icon from './icon.svelte'
-  import Lookup from './lookup.svelte'
-  import Page from './page.svelte'
-  import RadioGroup from './radio-group.svelte'
+  import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
+  import { checkInStore, eventStore, participantStore } from '@src/stores.js'
+  import { focus } from '@src/util.js'
+  import Layout from '@src/layouts/events.[id].svelte'
+  import Fieldset from '@src/lib/fieldset.svelte'
+  import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
+  import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
+  import Icon from '@src/lib/icon.svelte'
+  import Lookup from '@src/lib/lookup.svelte'
+  import RadioGroup from '@src/lib/radio-group.svelte'
 
-  const params = (new URL(document.location)).searchParams
-  const eventId = params.get('id')
-
+  const params = getContext('params')
   const title = 'New check-in'
-  let pageTitle = ''
-  let loading = true
-  let notFound = false
+
+  let state = STATE.LOADING
   let event = null
   let participants = []
   let checkInType = 'existing-participant'
@@ -27,11 +25,9 @@
   let host = false
 
   onMount(async () => {
-    event = await eventStore.get(eventId)
-    pageTitle = `${title} for ${event?.name} (${event?.displayDate})`
-    notFound = !event
+    event = await eventStore.get(params.id)
 
-    const checkIns = (await checkInStore.getEventCheckIns(eventId))
+    const checkIns = (await checkInStore.getEventCheckIns(event.id))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
     participants = (await participantStore.getAll())
@@ -45,7 +41,7 @@
         }
       })
 
-    loading = false
+    state = STATE.LOADED
   })
 
   function filterResult (query, participant) {
@@ -98,19 +94,9 @@
   }
 </style>
 
-<Page
-  loading={loading}
-  location='events'
-  notFound={notFound}
-  title={pageTitle}>
-  <h1>{title}</h1>
-  <p
-    aria-label="Event"
-    role="group">
-    <a class="u-ts-3" href={event?.url}>{event?.name}</a>
-    <br>
-    {event?.displayDate}
-  </p>
+<Layout
+  state={state}
+  title={title}>
   <form
     autocomplete="off"
     on:submit={submit}>
@@ -163,13 +149,13 @@
       </Fieldset>
     {/if}
     <FieldsetCheckIn bind:host={host} />
-    <div class="u-m-top-4">
+    <div class="u-m-top-6">
       <button
         class="button button--primary"
         type="submit">
         Save
       </button>
     </div>
-    <p><a href={event?.url}>Back</a></p>
+    <p class="u-m-top-6"><a href={event.url}>Back</a></p>
   </form>
-</Page>
+</Layout>
