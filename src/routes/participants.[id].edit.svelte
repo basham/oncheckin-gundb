@@ -2,7 +2,7 @@
   import { format, parseISO } from 'date-fns'
   import { onMount } from 'svelte'
   import { participantStore } from '@src/stores.js'
-  import Layout from '@src/layouts/workspace.svelte'
+  import Layout from '@src/layouts/participants.[id].svelte'
   import Fieldset from '@src/lib/fieldset.svelte'
   import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
@@ -10,8 +10,6 @@
   export let route
 
   let loaded = false
-  let notFound = false
-  let title = ''
   let participant = null
   let alias = ''
   let firstName = ''
@@ -25,8 +23,6 @@
 
   onMount(async () => {
     participant = await participantStore.get(params.id)
-    notFound = !participant
-    title = `Edit: ${participant?.displayName}`
     alias = participant?.alias
     firstName = participant?.firstName
     lastName = participant?.lastName
@@ -56,14 +52,9 @@
 
 <Layout
   loaded={loaded}
-  location='participants'
-  notFound={notFound}
   params={params}
   route={route}
-  title={title}>
-  <div class="card">
-    <h1>{title}</h1>
-  </div>
+  title="Edit">
   <form
     autocomplete="off"
     on:submit={submit}>
