@@ -1,6 +1,6 @@
 <script>
   import { workspaceStore } from '@src/stores.js'
-  import Layout from '@src/layouts/page.svelte'
+  import Layout from '@src/layouts/public.svelte'
 
   let name = ''
   let pub = ''

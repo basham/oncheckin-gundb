@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
-  import Layout from '@src/layouts/page.svelte'
+  import Layout from '@src/layouts/public.svelte'
 
   let state = STATE.LOADING
   let workspaces = []
