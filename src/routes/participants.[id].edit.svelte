@@ -1,15 +1,15 @@
 <script>
   import { format, parseISO } from 'date-fns'
   import { onMount } from 'svelte'
-  import { participantStore } from '../stores.js'
-  import Fieldset from './fieldset.svelte'
-  import FieldsetParticipantName from './fieldset-participant-name.svelte'
-  import Page from './page.svelte'
+  import { participantStore } from '@src/stores.js'
+  import Layout from '@src/layouts/workspace.svelte'
+  import Fieldset from '@src/lib/fieldset.svelte'
+  import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
-  const params = (new URL(document.location)).searchParams
-  const participantId = params.get('id')
+  export let params
+  export let route
 
-  let loading = true
+  let loaded = false
   let notFound = false
   let title = ''
   let participant = null
@@ -24,7 +24,7 @@
   let recordedHostCount = 0
 
   onMount(async () => {
-    participant = await participantStore.get(participantId)
+    participant = await participantStore.get(params.id)
     notFound = !participant
     title = `Edit: ${participant?.displayName}`
     alias = participant?.alias
@@ -35,12 +35,12 @@
     recordedLastCheckInDate = participant?.recordedLastCheckInDate
     recordedCheckInsCount = participant?.recordedCheckInsCount
     recordedHostCount = participant?.recordedHostCount
-    loading = false
+    loaded = true
   })
 
   async function submit (event) {
     event.preventDefault()
-    await participantStore.set(participantId, {
+    await participantStore.set(params.id, {
       alias,
       firstName,
       lastName,
@@ -54,12 +54,16 @@
   }
 </script>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='participants'
   notFound={notFound}
+  params={params}
+  route={route}
   title={title}>
-  <h1>{title}</h1>
+  <div class="card">
+    <h1>{title}</h1>
+  </div>
   <form
     autocomplete="off"
     on:submit={submit}>
@@ -125,6 +129,6 @@
     <div class="u-m-top-6">
       <button class="button button--primary" type="submit">Save</button>
     </div>
-    <p><a href={participant?.url}>Back</a></p>
+    <p class="u-m-top-6"><a href={participant?.url}>Back</a></p>
   </form>
-</Page>
+</Layout>

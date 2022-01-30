@@ -1,30 +1,35 @@
 <script>
   import { onMount } from 'svelte'
-  import { participantStore } from '../stores.js'
-  import Participants from './participants.svelte'
-  import Page from './page.svelte'
+  import { participantStore } from '@src/stores.js'
+  import Layout from '@src/layouts/workspace.svelte'
+  import Participants from '@src/lib/participants.svelte'
+
+  export let params
+  export let route
 
   const title = 'Hashers'
 
-  let loading = true
+  let loaded = false
   let participants = []
 
   onMount(async () => {
     participants = await participantStore.getAll()
-    loading = false
+    loaded = true
   })
 </script>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='participants'
+  params={params}
+  route={route}
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>
-    <a class="button button--primary button--small" href="?p=new-participant">New hasher</a>
+    <a class="button button--primary button--small" href="?p=participants/new">New hasher</a>
   </div>
   <div class="card u-m-top-6">
     <h2>{`All hashers (${participants.length})`}</h2>
     <Participants participants={participants} />
   </div>
-</Page>
+</Layout>

@@ -3,23 +3,15 @@
 </script>
 
 <style>
-  div {
-    background-color: var(--color-base-90);
-    border-radius: var(--size-1);
-    box-shadow: 0 0 0 var(--px-1) var(--color-base-100);
-    padding: var(--size-4);
-    margin-top: var(--size-4);
-  }
-
   fieldset {
     border: none;
     display: block;
   }
 </style>
 
-<div class={$$props.class}>
+<div class={`card u-m-top-6 ${$$props.class}`}>
   <fieldset class="u-m-0 u-p-0">
-    <legend class="u-p-0 u-ts-2">{legend}</legend>
+    <legend class="u-p-0 u-ts-3">{legend}</legend>
     <slot></slot>
   </fieldset>
 </div>

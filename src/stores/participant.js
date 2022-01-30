@@ -19,7 +19,7 @@ export async function getParticipant (id) {
   const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
   const recordedLastCheckInDateObj = data.recordedLastCheckInDate ? parseISO(data.recordedLastCheckInDate) : null
   const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
-  const url = `?p=participant&id=${id}`
+  const url = `?p=participants/${id}`
   return {
     ...data,
     alias,
