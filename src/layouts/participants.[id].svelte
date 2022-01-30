@@ -28,8 +28,6 @@
 <Layout
   loaded={loaded && _loaded}
   location='participants'
-  params={params}
-  route={route}
   notFound={notFound}
   title={_title}>
   <div class="card">

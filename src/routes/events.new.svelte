@@ -20,8 +20,6 @@
 
 <Layout
   location='events'
-  params={params}
-  route={route}
   title={title}>
   <div class="card">
     <h1>{title}</h1>

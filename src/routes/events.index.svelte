@@ -36,8 +36,6 @@
 <Layout
   loaded={loaded}
   location='events'
-  params={params}
-  route={route}
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>

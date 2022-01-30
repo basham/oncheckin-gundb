@@ -7,8 +7,6 @@
 
   export let loaded = true
   export let location = ''
-  export let params
-  export let route
   export let notFound = false
   export let title = ''
 

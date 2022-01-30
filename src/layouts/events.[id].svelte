@@ -26,8 +26,6 @@
   loaded={loaded && _loaded}
   location='events'
   notFound={notFound}
-  params={params}
-  route={route}
   title={_title}>
   <div class="card">
     <h1>{event?.name}</h1>
