@@ -19,4 +19,13 @@ export const ROUTES = [
   'settings/share'
 ]
 
+export const STATE_LOADING = 1
+export const STATE_LOADED = 2
+export const STATE_NOT_FOUND = 3
+export const STATE = {
+  LOADING: STATE_LOADING,
+  LOADED: STATE_LOADED,
+  NOT_FOUND: STATE_NOT_FOUND
+}
+
 export const URL = 'https://oncheck.in/'

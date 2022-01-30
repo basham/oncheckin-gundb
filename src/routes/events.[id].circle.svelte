@@ -1,12 +1,13 @@
 <script>
   import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { checkInStore, eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/events.[id].svelte'
   import CheckInList from '@src/lib/list-check-in.svelte'
 
   const params = getContext('params')
 
-  let loaded = false
+  let state = STATE.LOADING
   let event = null
   let anniversaries = []
   let visitors = []
@@ -21,12 +22,12 @@
       )
     virgins = checkIns
       .filter(({ checkInCount }) => checkInCount === 0)
-    loaded = true
+    state = STATE.LOADED
   })
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title="Circle">
   <div class="card u-m-top-6">
     <h2>{`Anniversaries (${anniversaries.length})`}</h2>

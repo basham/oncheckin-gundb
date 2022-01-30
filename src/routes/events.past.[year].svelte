@@ -1,5 +1,6 @@
 <script>
   import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Events from '@src/lib/events.svelte'
@@ -7,19 +8,19 @@
   const params = getContext('params')
   const title = `Events in ${params.year}`
 
-  let loaded = false
+  let state = STATE.LOADING
   let events = []
 
   onMount(async () => {
     events = (await eventStore.getAll())
       .filter((event) => event.year === params.year)
       .reverse()
-    loaded = true
+    state = STATE.LOADED
   })
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   location='events'
   title={title}>
   <div class="card">

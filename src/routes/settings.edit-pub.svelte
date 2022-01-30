@@ -1,18 +1,19 @@
 <script>
   import { onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
 
   const title = 'Edit pub'
 
-  let loaded = false
+  let state = STATE.LOADING
   let workspace
   let pub
 
   onMount(async () => {
     workspace = await workspaceStore.get()
     pub = workspace?.pub
-    loaded = true
+    state = STATE.LOADED
   })
 
   async function submit (event) {
@@ -23,7 +24,7 @@
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title={title}>
   <div class="card">
     <h1>{title}</h1>

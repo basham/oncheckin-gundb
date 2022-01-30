@@ -1,12 +1,13 @@
 <script>
   import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/events.[id].svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
 
   const params = getContext('params')
 
-  let loaded = false
+  let state = STATE.LOADING
   let event
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
@@ -15,7 +16,7 @@
     event = await eventStore.get(params.id)
     name = event?.name
     date = event?.date
-    loaded = true
+    state = STATE.LOADED
   })
 
   async function submit (ev) {
@@ -26,7 +27,7 @@
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title="Edit">
   <div class="card u-m-top-6">
     <h2>Edit event</h2>

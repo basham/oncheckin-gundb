@@ -1,18 +1,17 @@
 <script>
   import { getContext, onMount } from 'svelte'
-  import { APP_NAME } from '@src/constants.js'
+  import { APP_NAME, STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from './page.svelte'
 
-  export let loaded = true
-  export let notFound = false
+  export let state = STATE.LOADED
   export let title = ''
 
   const route = getContext('route')
   const location = route.split('/')[0]
 
-  let _loaded = false
+  let _state = STATE.LOADING
   let workspace
   let unsyncedChanges
 
@@ -20,7 +19,7 @@
     workspace = await workspaceStore.get()
     const syncStatus = await workspaceStore.syncStatus()
     unsyncedChanges = syncStatus.unsyncedChanges
-    _loaded = true
+    _state = STATE.LOADED
     focusOnHeading()
   })
 
@@ -67,8 +66,7 @@
 </style>
 
 <Layout
-  loaded={loaded && _loaded}
-  notFound={notFound}
+  state={[state, _state]}
   title={title}>
   <header>
     <div class="header layout-content">
@@ -112,10 +110,6 @@
     </div>
   </header>
   <main class="layout-content u-p-bottom-6 u-p-top-6">
-    {#if notFound}
-      <h1>{title}</h1>
-    {:else}
-      <slot></slot>
-    {/if}
+    <slot></slot>
   </main>
 </Layout>

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import QRCode from '@src/lib/qr-code.svelte'
@@ -7,13 +8,13 @@
 
   const title = 'Share workspace'
 
-  let loaded = false
+  let state = STATE.LOADING
   let workspace
   let toast
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    loaded = true
+    state = STATE.LOADED
   })
 
   function copyShareLink (event) {
@@ -34,7 +35,7 @@
 </style>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title={title}>
   <div class="card">
     <h1>{title}</h1>

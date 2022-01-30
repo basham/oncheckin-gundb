@@ -1,12 +1,13 @@
 <script>
   import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { checkInStore, participantStore } from '@src/stores.js'
   import { pluralize } from '@src/util.js'
   import Layout from '@src/layouts/participants.[id].svelte'
 
   const params = getContext('params')
 
-  let loaded = false
+  let state = STATE.LOADING
   let checkIns = []
   let stats = null
   let participant
@@ -15,11 +16,11 @@
     participant = await participantStore.get(params.id)
     checkIns = await checkInStore.getParticipantCheckIns(participant.id)
     stats = await checkInStore.getParticipantStats(participant.id)
-    loaded = true
+    state = STATE.LOADED
   })
 </script>
 
-<Layout loaded={loaded}>
+<Layout state={state}>
   <div class="card u-m-top-6">
     <h2>{stats?.checkInCount ? 'Check-ins' : 'No check-ins'}</h2>
     <ul class="link-list u-m-top-4">

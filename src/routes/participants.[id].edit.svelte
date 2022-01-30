@@ -1,6 +1,7 @@
 <script>
   import { format, parseISO } from 'date-fns'
   import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { participantStore } from '@src/stores.js'
   import Layout from '@src/layouts/participants.[id].svelte'
   import Fieldset from '@src/lib/fieldset.svelte'
@@ -8,7 +9,7 @@
 
   const params = getContext('params')
 
-  let loaded = false
+  let state = STATE.LOADING
   let participant = null
   let alias = ''
   let firstName = ''
@@ -30,7 +31,7 @@
     recordedLastCheckInDate = participant?.recordedLastCheckInDate
     recordedCheckInsCount = participant?.recordedCheckInsCount
     recordedHostCount = participant?.recordedHostCount
-    loaded = true
+    state = STATE.LOADED
   })
 
   async function submit (event) {
@@ -50,7 +51,7 @@
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title="Edit">
   <form
     autocomplete="off"

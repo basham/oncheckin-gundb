@@ -1,12 +1,13 @@
 <script>
   import { onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Events from '@src/lib/events.svelte'
 
   const title = 'Events'
 
-  let loaded = false
+  let state = STATE.LOADING
   let upcomingEvents = []
   let recentEvents = []
   let years = []
@@ -17,7 +18,7 @@
     const eventYears = (await eventStore.getAll())
       .map(({ year }) => year)
     years = [...(new Set(eventYears))].sort().reverse()
-    loaded = true
+    state = STATE.LOADED
   })
 </script>
 
@@ -31,7 +32,7 @@
 </style>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>

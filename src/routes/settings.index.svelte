@@ -1,11 +1,12 @@
 <script>
   import { onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
 
   const title = 'Settings'
 
-  let loaded = false
+  let state = STATE.LOADING
   let status = {}
   let syncing = false
   let workspace
@@ -13,7 +14,7 @@
   onMount(async () => {
     workspace = await workspaceStore.get()
     status = await workspaceStore.syncStatus()
-    loaded = true
+    state = STATE.LOADED
   })
 
   async function sync () {
@@ -27,7 +28,7 @@
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title={title}>
   <div class="card">
     <h1>{title}</h1>

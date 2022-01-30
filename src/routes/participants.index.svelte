@@ -1,22 +1,23 @@
 <script>
   import { onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
   import { participantStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Participants from '@src/lib/participants.svelte'
 
   const title = 'Hashers'
 
-  let loaded = false
+  let state = STATE.LOADING
   let participants = []
 
   onMount(async () => {
     participants = await participantStore.getAll()
-    loaded = true
+    state = STATE.LOADED
   })
 </script>
 
 <Layout
-  loaded={loaded}
+  state={state}
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>
