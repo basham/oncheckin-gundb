@@ -1,6 +1,9 @@
 <script>
   import { pluralize } from '../util.js'
+
   export let checkIns = []
+  export let showCheckInCount = false
+  export let showHostCount = false
 </script>
 
 {#if checkIns.length}
@@ -10,11 +13,12 @@
         <a class="link-row" href={checkIn.url}>
           <span class="link-row__primary">{checkIn.participant.displayName}</span>
           <span class="link-row__secondary">
-            {#if checkIn.host}
+            {#if showHostCount && checkIn.host}
               <span>{`${checkIn.hostCount} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
-              <span>&middot;</span>
             {/if}
-            <span>{`${checkIn.checkInCount} ${pluralize(checkIn.checkInCount, 'run')}`}</span>
+            {#if showCheckInCount}
+              <span>{`${checkIn.checkInCount} ${pluralize(checkIn.checkInCount, 'run')}`}</span>
+            {/if}
           </span>
         </a>
       </li>

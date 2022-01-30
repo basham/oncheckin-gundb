@@ -30,7 +30,10 @@
     </div>
     {#if checkIns.length}
       <div class="u-m-top-4">
-        <CheckInList checkIns={checkIns} />
+        <CheckInList
+          checkIns={checkIns}
+          showCheckInCount={true}
+          showHostCount={true} />
       </div>
     {/if}
   </div>

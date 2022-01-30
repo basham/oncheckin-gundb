@@ -302,7 +302,13 @@ p {
 
 .link-row__secondary {
   color: var(--color-base-5);
+  display: flex;
   flex-shrink: 0;
+}
+
+.link-row__secondary > * + *::before {
+  content: '\00b7';
+  padding: 0 var(--size-2);
 }
 
 /* Utilities */
@@ -341,6 +347,10 @@ p {
 
 .u-flex-gap-2 {
   gap: var(--size-2);
+}
+
+.u-flex-gap-4 {
+  gap: var(--size-4);
 }
 
 .u-flex-grow {

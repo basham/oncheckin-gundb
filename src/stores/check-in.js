@@ -7,7 +7,7 @@ import { resolvePath, sortAsc, sortDesc } from '../util.js'
 const fileName = 'check-in.json'
 
 function isSpecial (value) {
-  return value % 5 === 0 || /69$/.test(value)
+  return value > 0 && (value % 5 === 0 || /69$/.test(value))
 }
 
 export async function createCheckIn (eventId, participantId, values) {
@@ -113,6 +113,7 @@ export async function getParticipantStats (participantId, date) {
   const lastEvent = lastCheckIn?.event
   const specialCheckInCount = isSpecial(checkInCount)
   const specialHostCount = isSpecial(hostCount)
+  const readyForNaming = checkInCount >= 7 && !participant.alias
   return {
     checkInCount,
     hostCount,
@@ -121,7 +122,8 @@ export async function getParticipantStats (participantId, date) {
     missingHostCount,
     recordedLastCheckInDateDisplay,
     specialCheckInCount,
-    specialHostCount
+    specialHostCount,
+    readyForNaming
   }
 }
 
