@@ -86,8 +86,10 @@
       .filter(([status]) => status === SLUG_DYNAMIC)
       .map(([status, key, value]) => [key, value])
     return {
-      component: route,
-      params: Object.fromEntries(paramsEntries)
+      component: route.replaceAll('/', '.'),
+      params: Object.fromEntries(paramsEntries),
+      path,
+      route
     }
   }
 
@@ -103,4 +105,7 @@
   })
 </script>
 
-<svelte:component this={Page} params={route.params}></svelte:component>
+<svelte:component
+  this={Page}
+  params={route.params}
+  route={route.route} />

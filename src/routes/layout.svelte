@@ -4,19 +4,25 @@
   import { workspaceStore } from '@src/stores.js'
   import NavLink from '@src/lib/nav-link.svelte'
 
+  export let loaded = true
   export let location = ''
+  export let params
+  export let route
   export let notFound = false
   export let title = ''
 
-  let loaded = false
+  let _loaded = false
   let workspace
   let unsyncedChanges
+
+  $: title = notFound ? ['Page not found'] : (Array.isArray(title) ? title : [title])
+  $: fullTitle = [...title, APP_NAME].filter((v) => v).join(' - ')
 
   onMount(async () => {
     workspace = await workspaceStore.get()
     const syncStatus = await workspaceStore.syncStatus()
     unsyncedChanges = syncStatus.unsyncedChanges
-    loaded = true
+    _loaded = true
     focusOnHeading()
   })
 
@@ -62,7 +68,11 @@
   }
 </style>
 
-{#if loaded}
+<svelte:head>
+  <title>{fullTitle}</title>
+</svelte:head>
+
+{#if loaded && _loaded}
   <header>
     <div class="header layout-content">
       <span class="nav">

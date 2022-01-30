@@ -1,7 +1,10 @@
 <script>
   import { eventStore } from '@src/stores.js'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
-  import Layout from '../layout.svelte'
+  import Layout from './layout.svelte'
+
+  export let params
+  export let route
 
   const title = 'New event'
 
@@ -17,6 +20,8 @@
 
 <Layout
   location='events'
+  params={params}
+  route={route}
   title={title}>
   <div class="card">
     <h1>{title}</h1>

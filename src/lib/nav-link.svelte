@@ -1,7 +1,7 @@
 <script>
   export let href
-  export let id
-  export let location
+  export let id = null
+  export let location = null
 </script>
 
 <style>

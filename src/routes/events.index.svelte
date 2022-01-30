@@ -1,12 +1,15 @@
 <script>
   import { onMount } from 'svelte'
-  import { eventStore } from '../stores.js'
-  import Events from './events.svelte'
-  import Page from './page.svelte'
+  import { eventStore } from '@src/stores.js'
+  import Events from '@src/lib/events.svelte'
+  import Layout from './layout.svelte'
+
+  export let params
+  export let route
 
   const title = 'Events'
 
-  let loading = true
+  let loaded = false
   let upcomingEvents = []
   let recentEvents = []
   let years = []
@@ -17,7 +20,7 @@
     const eventYears = (await eventStore.getAll())
       .map(({ year }) => year)
     years = [...(new Set(eventYears))].sort().reverse()
-    loading = false
+    loaded = true
   })
 </script>
 
@@ -30,13 +33,15 @@
   }
 </style>
 
-<Page
-  loading={loading}
+<Layout
+  loaded={loaded}
   location='events'
+  params={params}
+  route={route}
   title={title}>
   <div class="card u-flex u-flex-space">
     <h1>{title}</h1>
-    <a class="button button--primary button--small" href="?p=new-event">New event</a>
+    <a class="button button--primary button--small" href="?p=events/new">New event</a>
   </div>
   <div class="card u-m-top-6">
     <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
@@ -54,4 +59,4 @@
       {/each}
     </ul>
   </div>
-</Page>
+</Layout>
