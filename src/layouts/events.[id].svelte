@@ -45,8 +45,8 @@
         location={route}>
         Circle
       </NavLink>
-      <NavLink href={`?p=roster&id=${event?.id}`}>
-        Print
+      <NavLink href={`${event.url}/roster`}>
+        Roster
       </NavLink>
       <NavLink
         href={`${event.url}/edit`}

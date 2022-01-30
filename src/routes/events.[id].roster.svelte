@@ -1,29 +1,33 @@
 <script>
   import { format, isBefore, sub } from 'date-fns'
-  import { onMount } from 'svelte'
-  import { checkInStore, eventStore, participantStore } from '../stores.js'
-  import Icon from './icon.svelte'
-  import Page from './page.svelte'
+  import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
+  import { checkInStore, eventStore, participantStore } from '@src/stores.js'
+  import Layout from '@src/layouts/page.svelte'
+  import Icon from '@src/lib/icon.svelte'
 
-  const params = (new URL(document.location)).searchParams
-  const eventId = params.get('id')
+  const params = getContext('params')
 
-  let title = ''
-  let loading = true
-  let notFound = false
+  let state = STATE.LOADING
   let event = null
+  let title = ''
   let returnersCutoff = ''
   let participants = []
 
   onMount(async () => {
-    event = await eventStore.get(eventId)
-    title = `Roster for ${event?.name} (${event?.displayDate})`
-    notFound = !event
+    event = await eventStore.get(params.id)
+
+    if (!event) {
+      state = STATE.NOT_FOUND
+      return
+    }
+
+    title = `Roster: ${event?.name} (${event?.displayDate})`
 
     const returnersCutoffDate = sub(event?.dateObj, { months: 2 })
     returnersCutoff = format(returnersCutoffDate, 'MM/dd')
 
-    const checkIns = (await checkInStore.getEventCheckIns(eventId))
+    const checkIns = (await checkInStore.getEventCheckIns(event.id))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
     const participantsPromises = (await participantStore.getAll())
@@ -66,7 +70,7 @@
         return 0
       })
 
-    loading = false
+    state = STATE.LOADED
   })
 </script>
 
@@ -135,10 +139,8 @@
   }
 </style>
 
-<Page
-  loading={loading}
-  notFound={notFound}
-  theme='plain'
+<Layout
+  state={state}
   title={title}>
   <div class="header">
     <h1 class="u-ts-2 u-text-bold">{event?.name}</h1>
@@ -189,4 +191,4 @@
       </tbody>
     </table>
   </div>
-</Page>
+</Layout>
