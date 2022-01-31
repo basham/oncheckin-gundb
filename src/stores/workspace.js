@@ -132,6 +132,7 @@ export async function getWorkspaces () {
     .map(({ name }) => name)
     .filter((name) => name.startsWith(prefix))
     .map((name) => name.replace(prefix, ''))
+    .filter((name) => name !== 'null')
   const workspacesPromises = ids.map(getWorkspace)
   return (await Promise.all(workspacesPromises))
     .sort(sortAsc('name'))
