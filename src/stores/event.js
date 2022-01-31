@@ -3,14 +3,14 @@ import { getWorkspace } from './workspace.js'
 import { createId, getOrCreate, resolvePath, sortDesc } from '../util.js'
 
 const fileName = 'event.json'
-const events = new Map()
+const cache = new Map()
 
 export async function createEvent (values) {
   return await setEvent(createId(), values)
 }
 
 export async function getEvent (id) {
-  return getOrCreate(events, id, async () => {
+  return getOrCreate(cache, id, async () => {
     const { get } = await getWorkspace()
     const data = await get(`${id}/${fileName}`)
     if (!data) {
@@ -38,19 +38,21 @@ export async function getEvent (id) {
 }
 
 export async function getEvents () {
-  const { storage } = await getWorkspace()
-  const ids = storage
-    .paths({
-      pathStartsWith: resolvePath(),
-      pathEndsWith: fileName
-    })
-    .map((path) => path.split('/')[2])
-  const uniqueIds = Array.from(new Set(ids))
-  const eventPromises = uniqueIds
-    .map(getEvent)
-  return (await Promise.all(eventPromises))
-    .filter((item) => item)
-    .sort(sortDesc('dateObj'))
+  return getOrCreate(cache, 'events', async () => {
+    const { storage } = await getWorkspace()
+    const ids = storage
+      .paths({
+        pathStartsWith: resolvePath(),
+        pathEndsWith: fileName
+      })
+      .map((path) => path.split('/')[2])
+    const uniqueIds = Array.from(new Set(ids))
+    const eventPromises = uniqueIds
+      .map(getEvent)
+    return (await Promise.all(eventPromises))
+      .filter((item) => item)
+      .sort(sortDesc('dateObj'))
+  })
 }
 
 export async function getPastEvents () {
