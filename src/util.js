@@ -32,6 +32,10 @@ export function getOrCreate (cache, key, createCallback) {
   return cache.get(key)
 }
 
+export function nextFrame () {
+  return new Promise((resolve) => window.requestAnimationFrame(() => resolve()))
+}
+
 export function parseExtension (path, defaultExtension = 'txt') {
   const extGroup = path.match(/\.(.+)$/)
   return extGroup ? extGroup[1] : defaultExtension

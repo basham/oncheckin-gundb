@@ -11,7 +11,7 @@ export class StorageIndexedDB extends StorageMemory {
     this._ready = new Promise((resolve) => {
       entries(this._store).then((docs) => {
         this._docs = Object.fromEntries(docs)
-        resolve(true)
+        resolve()
       })
     })
     this._tags = new Set()
@@ -33,7 +33,7 @@ export class StorageIndexedDB extends StorageMemory {
       }
       const tags = [...this._tags.values()]
       this._tags.clear()
-      tags.forEach((resolve) => resolve(true))
+      tags.forEach((resolve) => resolve())
     })
 
     this.onWrite.subscribe(async (e) => {
@@ -43,10 +43,9 @@ export class StorageIndexedDB extends StorageMemory {
   }
 
   tag () {
-    const t = new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this._tags.add(resolve)
     })
-    return t
   }
 
   async setConfig (key, value) {
