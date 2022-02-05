@@ -32,7 +32,7 @@
     "earthstar": "6.8.5",
     "idb-keyval": "6.1.0",
     "qrious": "4.0.2",
-    "svelte": "3.46.3",
+    "svelte": "3.46.4",
     "workbox-window": "6.4.2"
   },
   "snowpack": {
