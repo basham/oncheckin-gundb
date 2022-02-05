@@ -1,5 +1,5 @@
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
-import { clear, createStore, del, delMany, entries, get, keys, set, setMany } from 'idb-keyval'
+import { clear, createStore, del, delMany, entries, get, set, setMany } from 'idb-keyval'
 import { debounce } from '../util.js'
 
 export class StorageIndexedDB extends StorageMemory {
@@ -8,7 +8,7 @@ export class StorageIndexedDB extends StorageMemory {
 
     this._config = createStore(`config/${workspace}`, 'earthstar')
     this._store = createStore(`documents/${workspace}`, 'earthstar')
-    this._ready = new Promise((resolve, reject) => {
+    this._ready = new Promise((resolve) => {
       entries(this._store).then((docs) => {
         this._docs = Object.fromEntries(docs)
         resolve(true)
@@ -70,21 +70,36 @@ export class StorageIndexedDB extends StorageMemory {
     return super.getContent(path)
   }
 
-  async forgetDocuments (q) {
-    super.forgetDocuments(q)
-    await this._syncDocuments()
-  }
-
-  async discardExpiredDocuments () {
-    super.discardExpiredDocuments()
-    await this._syncDocuments()
-  }
-
-  async _syncDocuments () {
-    const pathsToDelete = (await keys())
-      .filter((path) => !this._docs[path])
-    await delMany(pathsToDelete, this._store)
-    await setMany(Object.entries(this._docs), this._store)
+  // Replace this method in StorageMemory,
+  // so we can more acurrately track adjustments
+  // and efficiently update IDB.
+  async _filterDocs (shouldKeep) {
+    this._assertNotClosed()
+    const updates = new Map()
+    const deletes = new Set()
+    for (const path in this._docs) {
+      const slots = this._docs[path]
+      for (const author in slots) {
+        const doc = slots[author]
+        if (!shouldKeep(doc)) {
+          delete slots[author]
+          updates.set(path, slots)
+        }
+      }
+      if (Object.keys(slots).length === 0) {
+        delete this._docs[path]
+        updates.delete(path)
+        deletes.add(path)
+      }
+    }
+    if (updates.size) {
+      const docs = [...updates.entries()]
+      await setMany(docs, this._store)
+    }
+    if (deletes.size) {
+      const paths = [...deletes.values()]
+      await delMany(paths, this._store)
+    }
   }
 
   async closeAndForgetWorkspace () {
