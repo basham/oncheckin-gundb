@@ -20,23 +20,25 @@
 <Layout state={state}>
   <div class="card u-m-top-6">
     <h2>{checkIns.length ? 'Check-ins' : 'No check-ins'}</h2>
-    <ul class="link-list u-m-top-4">
-      {#each checkIns as checkIn}
-        <li>
-          <a class="link-row" href={checkIn.event.url}>
-            <span class="link-row__primary">{checkIn.event.name}</span>
-            <span class="link-row__secondary">
-              <span>{checkIn.event.displayDate}</span>
-              {#if checkIn.count}
-                <span>{`Run #${checkIn.count}`}</span>
-              {/if}
-              {#if checkIn.host}
-                <span>{`Hare #${checkIn.hostCount}`}</span>
-              {/if}
-            </span>
-          </a>
-        </li>
-      {/each}
-    </ul>
+    {#if checkIns.length}
+      <ul class="link-list u-m-top-4">
+        {#each checkIns as checkIn}
+          <li>
+            <a class="link-row" href={checkIn.event.url}>
+              <span class="link-row__primary">{checkIn.event.name}</span>
+              <span class="link-row__secondary">
+                <span>{checkIn.event.displayDate}</span>
+                {#if checkIn.count}
+                  <span>{`Run #${checkIn.count}`}</span>
+                {/if}
+                {#if checkIn.host}
+                  <span>{`Hare #${checkIn.hostCount}`}</span>
+                {/if}
+              </span>
+            </a>
+          </li>
+        {/each}
+      </ul>
+    {/if}
   </div>
 </Layout>
