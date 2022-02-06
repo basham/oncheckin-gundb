@@ -26,10 +26,10 @@
       .filter(({ specialHostCount }) => specialHostCount)
       .sort(sortAsc('hostCount'))
     anniversaries = checkIns
-      .filter(({ specialCheckInCount }) => specialCheckInCount)
-      .sort(sortAsc('checkInCount'))
+      .filter(({ specialCount }) => specialCount)
+      .sort(sortAsc('count'))
     virgins = checkIns
-      .filter(({ checkInCount }) => checkInCount === 0)
+      .filter(({ count }) => count === 1)
     namings = checkIns
       .filter(({ readyForNaming }) => readyForNaming)
     state = STATE.LOADED
