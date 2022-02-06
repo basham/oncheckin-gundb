@@ -1,4 +1,3 @@
-import { isBefore, isEqual } from 'date-fns'
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
 import { getWorkspace } from './workspace.js'
@@ -25,11 +24,19 @@ export async function getCheckIn (eventId, participantId) {
   if (!data) {
     return undefined
   }
-  const host = data?.host ?? false
+  const { count = 0, host = false, hostCount = 0 } = data
+  const participant = await getParticipant(participantId)
+  const specialCount = isSpecial(count)
+  const specialHostCount = isSpecial(hostCount)
+  const readyForNaming = count >= 5 && !participant.alias
   const url = `./?p=events/${eventId}/check-ins/${participantId}/edit`
   return {
-    ...data,
+    count,
     host,
+    hostCount,
+    readyForNaming,
+    specialCount,
+    specialHostCount,
     url
   }
 }
@@ -75,75 +82,22 @@ export async function getEventCheckIns (eventId) {
     .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
-export async function getEventCheckInsWithStats (eventId) {
-  const participantIds = (await getCheckInIds())
-    .checkInsByEventId
-    .get(eventId) || []
-  const event = await getEvent(eventId)
-  const checkInPromises = [...participantIds]
-    .map(async (participantId) => {
-      const participant = await getParticipant(participantId)
-      const checkIn = await getCheckIn(eventId, participantId)
-      const stats = await getParticipantStats(participantId, event.dateObj)
-      return [checkIn, participant, stats]
-    })
-  return (await Promise.all(checkInPromises))
-    .filter((source) => source.every((i) => i))
-    .map(([checkIn, participant, stats]) => ({ ...checkIn, ...stats, participant }))
-    .sort(sortAsc(({ participant }) => participant.displayName))
-}
-
 export async function getParticipantCheckIns (participantId) {
-  const eventIds = (await getCheckInIds())
-    .checkInsByParticipantId
-    .get(participantId) || []
-  const checkInPromises = [...eventIds]
-    .map(async (eventId) => {
-      const event = await getEvent(eventId)
-      const checkIn = await getCheckIn(eventId, participantId)
-      return [checkIn, event]
-    })
-  return (await Promise.all(checkInPromises))
-    .filter((source) => source.every((i) => i))
-    .map(([checkIn, event]) => ({ ...checkIn, event }))
-    .sort(sortDesc(({ event }) => event.dateObj))
-}
-
-export async function getParticipantStats (participantId, date) {
-  const participant = await getParticipant(participantId)
-  const { recordedLastCheckInDateDisplay, recordedLastCheckInDateObj, recordedCheckInsCount = 0, recordedHostCount = 0 } = participant
-  const checkIns = (await getParticipantCheckIns(participantId))
-    .filter(({ event }) => date ? isBefore(event.dateObj, date) : true)
-  const foundCheckIns = checkIns
-    .filter(({ event }) =>
-      recordedLastCheckInDateObj
-        ? isBefore(event.dateObj, recordedLastCheckInDateObj) || isEqual(event.dateObj, recordedLastCheckInDateObj)
-        : false
-    )
-  const missingCheckInCount = recordedCheckInsCount - foundCheckIns.length
-  const checkInCount = checkIns.length + missingCheckInCount
-  const hostCheckIns = checkIns
-    .filter(({ host }) => host)
-  const foundHostCheckIns = foundCheckIns
-    .filter(({ host }) => host)
-  const missingHostCount = recordedHostCount - foundHostCheckIns.length
-  const hostCount = hostCheckIns.length + missingHostCount
-  const lastCheckIn = checkIns[checkIns.length - 1]
-  const lastEvent = lastCheckIn?.event
-  const specialCheckInCount = isSpecial(checkInCount)
-  const specialHostCount = isSpecial(hostCount)
-  const readyForNaming = checkInCount >= 7 && !participant.alias
-  return {
-    checkInCount,
-    hostCount,
-    lastEvent,
-    missingCheckInCount,
-    missingHostCount,
-    recordedLastCheckInDateDisplay,
-    specialCheckInCount,
-    specialHostCount,
-    readyForNaming
-  }
+  return getOrCreate(cache, `participant-${participantId}`, async () => {
+    const eventIds = (await getCheckInIds())
+      .checkInsByParticipantId
+      .get(participantId) || []
+    const checkInPromises = [...eventIds]
+      .map(async (eventId) => {
+        const event = await getEvent(eventId)
+        const checkIn = await getCheckIn(eventId, participantId)
+        return [checkIn, event]
+      })
+    return (await Promise.all(checkInPromises))
+      .filter((source) => source.every((i) => i))
+      .map(([checkIn, event]) => ({ ...checkIn, event }))
+      .sort(sortDesc(({ event }) => event.dateObj))
+  })
 }
 
 export async function setCheckIn (eventId, participantId, values) {
@@ -156,9 +110,7 @@ const checkInStore = {
   delete: deleteCheckIn,
   get: getCheckIn,
   getEventCheckIns,
-  getEventCheckInsWithStats,
   getParticipantCheckIns,
-  getParticipantStats,
   set: setCheckIn
 }
 

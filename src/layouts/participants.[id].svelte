@@ -14,7 +14,7 @@
 
   let _title = ''
   let _state = STATE.LOADING
-  let stats = null
+  let latestCheckIn
   let participant
 
   onMount(async () => {
@@ -24,7 +24,8 @@
       _state = STATE.NOT_FOUND
       return
     }
-    stats = await checkInStore.getParticipantStats(participant.id)
+    const checkIns = await checkInStore.getParticipantCheckIns(participant.id)
+    latestCheckIn = checkIns[0]
     _state = STATE.LOADED
   })
 </script>
@@ -35,7 +36,9 @@
   <div class="card">
     <h1>{participant.displayName}</h1>
     <p class="u-m-top-4">{participant.fullName}</p>
-    <p>{stats?.checkInCount} {pluralize(stats?.checkInCount, 'hash', 'hashes')}, {stats?.hostCount} {pluralize(stats?.hostCount, 'hare')}</p>
+    {#if latestCheckIn}
+      <p>{latestCheckIn?.count} {pluralize(latestCheckIn?.count, 'hash', 'hashes')}, {latestCheckIn?.hostCount} {pluralize(latestCheckIn?.hostCount, 'hare')}</p>
+    {/if}
     <nav class="list-inline u-m-top-4">
       <NavLink
         href={participant.url}

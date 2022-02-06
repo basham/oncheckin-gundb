@@ -7,7 +7,7 @@
     {#each events as event}
       <li>
         <a class="link-row" href={event.url}>
-          <div class="link-row__primary">{event.name}</div>
+          <div class="link-row__primary">{`#${event.count}: ${event.name}`}</div>
           <div class="link-row__secondary">{event.displayDateMedium}</div>
         </a>
       </li>

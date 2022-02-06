@@ -13,7 +13,7 @@
 
   onMount(async () => {
     event = await eventStore.get(params.id)
-    checkIns = (await checkInStore.getEventCheckInsWithStats(event?.id))
+    checkIns = (await checkInStore.getEventCheckIns(event?.id))
     state = STATE.LOADED
   })
 </script>

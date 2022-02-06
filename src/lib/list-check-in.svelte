@@ -14,10 +14,10 @@
           <span class="link-row__primary">{checkIn.participant.displayName}</span>
           <span class="link-row__secondary">
             {#if showHostCount && checkIn.host}
-              <span>{`${checkIn.hostCount} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
+              <span>{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
             {/if}
             {#if showCheckInCount}
-              <span>{`${checkIn.checkInCount} ${pluralize(checkIn.checkInCount, 'run')}`}</span>
+              <span>{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}</span>
             {/if}
           </span>
         </a>

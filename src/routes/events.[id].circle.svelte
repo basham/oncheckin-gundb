@@ -19,7 +19,7 @@
 
   onMount(async () => {
     event = await eventStore.get(params.id)
-    const checkIns = (await checkInStore.getEventCheckInsWithStats(event?.id))
+    const checkIns = (await checkInStore.getEventCheckIns(event?.id))
     hosts = checkIns
       .filter(({ host }) => host)
     specialHosts = hosts

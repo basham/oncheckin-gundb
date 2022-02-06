@@ -21,7 +21,7 @@
       _state = STATE.NOT_FOUND
       return
     }
-    _title = `${title ? `${title}: ` : ''}${event?.name} (${event?.displayDate})`
+    _title = `${title ? `${title}: ` : ''}#${event?.count}: ${event?.name} (${event?.displayDate})`
     _state = STATE.LOADED
   })
 </script>
@@ -30,7 +30,7 @@
   state={[state, _state]}
   title={_title}>
   <div class="card">
-    <h1>{event?.name}</h1>
+    <h1>{`#${event.count}: ${event.name}`}</h1>
     <p class="u-m-top-2">{event?.displayDateLong}</p>
     <nav class="list-inline u-m-top-4">
       <NavLink
