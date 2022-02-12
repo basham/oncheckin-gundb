@@ -73,7 +73,7 @@
 <style>
   .listbox {
     background-color: var(--color-base-80);
-    border: var(--border);
+    border: var(--px-1) solid var(--color-base-95);
     border-radius: var(--size-1);
     line-height: var(--lh-1);
     list-style-type: none;

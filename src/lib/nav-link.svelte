@@ -15,7 +15,6 @@
 
   a[aria-current] {
     box-shadow: 0 var(--px-2) 0 0 currentColor;
-    color: var(--color-ix);
   }
 
   a:focus {

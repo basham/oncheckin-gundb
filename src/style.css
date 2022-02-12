@@ -160,13 +160,9 @@ p {
 }
 
 .button {
-  --color-inner-shadow: transparent;
   background-color: var(--color-base-80);
-  border: var(--px-2) solid var(--color-base-80);
+  border: none;
   border-radius: var(--size-1);
-  box-shadow:
-    inset 0 0 0 var(--px-2) var(--color-inner-shadow),
-    0 0 0 var(--px-1) var(--color-base-95);
   color: var(--color-ix);
   cursor: pointer;
   display: inline-flex;
@@ -174,37 +170,27 @@ p {
   font-size: var(--fs-1);
   font-weight: bold;
   line-height: 1;
-  padding: calc(var(--size-3) - var(--px-2));
+  padding: var(--size-3);
   text-decoration: none;
 }
 
 .button:hover {
   background-color: var(--color-base-75);
-  border-color: var(--color-base-75);
   color: var(--color-ix);
 }
 
 .button--primary {
   background-color: var(--color-ix);
-  border-color: var(--color-ix);
   color: var(--color-base-95);
 }
 
 .button--primary:hover {
   background-color: var(--color-base-25);
-  border-color: var(--color-base-25);
   color: var(--color-base-95);
-}
-
-.button:focus {
-  --color-inner-shadow: var(--color-base-95);
-  border-color: var(--color-ix);
-  outline: none;
 }
 
 .button:disabled {
   background-color: var(--color-base-80);
-  border-color: var(--color-base-80);
   color: var(--color-base-60);
   cursor: not-allowed;
 }

@@ -107,7 +107,7 @@
   }
 
   th {
-    border-bottom: var(--border);
+    border-bottom: var(--px-1) solid currentColor;
     padding: 0 var(--size-1) var(--px-2);
     position: relative;
     height: 5rem;

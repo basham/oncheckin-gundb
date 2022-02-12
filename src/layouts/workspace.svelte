@@ -36,8 +36,7 @@
 
 <style>
   header {
-    background-color: var(--color-base-80);
-    border-bottom: var(--px-2) solid var(--color-base-95);
+    border-bottom: var(--px-2) solid var(--color-base-80);
   }
 
   .header {
@@ -65,7 +64,7 @@
 <Layout
   state={[state, _state]}
   title={title}>
-  <header>
+  <header class="border-bottom">
     <div class="header layout-content">
       <span class="nav">
         <img
