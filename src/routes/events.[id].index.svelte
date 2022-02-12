@@ -19,22 +19,20 @@
 </script>
 
 <Layout state={state}>
-  <div class="card u-m-top-6">
-    <div class="u-flex u-flex-space">
-      <h2>{`Check-ins (${checkIns.length})`}</h2>
-      <a
-        class="button button--primary button--small"
-        href={`${event.url}/check-ins/new`}>
-        New check-in
-      </a>
-    </div>
-    {#if checkIns.length}
-      <div class="u-m-top-4">
-        <CheckInList
-          checkIns={checkIns}
-          showCheckInCount={true}
-          showHostCount={true} />
-      </div>
-    {/if}
+  <div class="u-flex u-flex-space u-m-top-6">
+    <h2 class="u-m-top-0">Check-ins <span class="badge">{checkIns.length}</span></h2>
+    <a
+      class="button button--primary button--small"
+      href={`${event.url}/check-ins/new`}>
+      New check-in
+    </a>
   </div>
+  {#if checkIns.length}
+    <div class="u-m-top-2">
+      <CheckInList
+        checkIns={checkIns}
+        showCheckInCount={true}
+        showHostCount={true} />
+    </div>
+  {/if}
 </Layout>

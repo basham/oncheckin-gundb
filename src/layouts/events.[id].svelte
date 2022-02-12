@@ -29,32 +29,30 @@
 <Layout
   state={[state, _state]}
   title={_title}>
-  <div class="card">
-    <h1>{`#${event.count}: ${event.name}`}</h1>
-    <p class="u-m-top-2">{event?.displayDateLong}</p>
-    <nav class="list-inline u-m-top-4">
-      <NavLink
-        href={event.url}
-        id="events/[id]/index"
-        location={route}>
-        Check-ins
-      </NavLink>
-      <NavLink
-        href={`${event.url}/circle`}
-        id="events/[id]/circle"
-        location={route}>
-        Circle
-      </NavLink>
-      <NavLink href={`${event.url}/roster`}>
-        Roster
-      </NavLink>
-      <NavLink
-        href={`${event.url}/edit`}
-        id="events/[id]/edit"
-        location={route}>
-        Edit
-      </NavLink>
-    </nav>
-  </div>
+  <h1>{`#${event.count}: ${event.name}`}</h1>
+  <p class="u-m-top-2">{event?.displayDateLong}</p>
+  <nav class="list-inline u-m-top-4">
+    <NavLink
+      href={event.url}
+      id="events/[id]/index"
+      location={route}>
+      Check-ins
+    </NavLink>
+    <NavLink
+      href={`${event.url}/circle`}
+      id="events/[id]/circle"
+      location={route}>
+      Circle
+    </NavLink>
+    <NavLink href={`${event.url}/roster`}>
+      Roster
+    </NavLink>
+    <NavLink
+      href={`${event.url}/edit`}
+      id="events/[id]/edit"
+      location={route}>
+      Edit
+    </NavLink>
+  </nav>
   <slot></slot>
 </Layout>

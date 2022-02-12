@@ -39,58 +39,46 @@
 <Layout
   state={state}
   title="Circle">
-  <div class="card u-m-top-6">
-    <h2>{`Hares (${hosts.length})`}</h2>
-    {#if hosts.length}
-      <div class="u-m-top-4">
-        <CheckInList checkIns={hosts} />
-      </div>
-    {/if}
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Hare-iversaries (${specialHosts.length})`}</h2>
-    {#if specialHosts.length}
-      <div class="u-m-top-4">
-        <CheckInList
-          checkIns={specialHosts}
-          showHostCount={true} />
-      </div>
-    {/if}
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Anniversaries (${anniversaries.length})`}</h2>
-    {#if anniversaries.length}
-      <div class="u-m-top-4">
-        <CheckInList
-          checkIns={anniversaries}
-          showCheckInCount={true} />
-      </div>
-    {/if}
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Visitors (${visitors.length})`}</h2>
-    {#if visitors.length}
-      <div class="u-m-top-4">
-        <CheckInList checkIns={visitors} />
-      </div>
-    {/if}
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Virgins (${virgins.length})`}</h2>
-    {#if virgins.length}
-      <div class="u-m-top-4">
-        <CheckInList checkIns={virgins} />
-      </div>
-    {/if}
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Namings (${namings.length})`}</h2>
-    {#if namings.length}
-      <div class="u-m-top-4">
-        <CheckInList
-          checkIns={namings}
-          showCheckInCount={true} />
-      </div>
-    {/if}
-  </div>
+  <h2>Hares <span class="badge">{hosts.length}</span></h2>
+  {#if hosts.length}
+    <div class="u-m-top-2">
+      <CheckInList checkIns={hosts} />
+    </div>
+  {/if}
+  <h2>Hare-iversaries <span class="badge">{specialHosts.length}</span></h2>
+  {#if specialHosts.length}
+    <div class="u-m-top-2">
+      <CheckInList
+        checkIns={specialHosts}
+        showHostCount={true} />
+    </div>
+  {/if}
+  <h2>Anniversaries <span class="badge">{anniversaries.length}</span></h2>
+  {#if anniversaries.length}
+    <div class="u-m-top-2">
+      <CheckInList
+        checkIns={anniversaries}
+        showCheckInCount={true} />
+    </div>
+  {/if}
+  <h2>Visitors <span class="badge">{visitors.length}</span></h2>
+  {#if visitors.length}
+    <div class="u-m-top-2">
+      <CheckInList checkIns={visitors} />
+    </div>
+  {/if}
+  <h2>Virgins <span class="badge">{virgins.length}</span></h2>
+  {#if virgins.length}
+    <div class="u-m-top-2">
+      <CheckInList checkIns={virgins} />
+    </div>
+  {/if}
+  <h2>Namings <span class="badge">{namings.length}</span></h2>
+  {#if namings.length}
+    <div class="u-m-top-2">
+      <CheckInList
+        checkIns={namings}
+        showCheckInCount={true} />
+    </div>
+  {/if}
 </Layout>

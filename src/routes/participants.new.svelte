@@ -17,18 +17,16 @@
 </script>
 
 <Layout title={title}>
-  <div class="card">
-    <h1>{title}</h1>
-    <form
-      autocomplete="off"
-      on:submit={submit}>
-      <FieldsetParticipantName
-        bind:firstName={firstName}
-        bind:lastName={lastName}
-        bind:alias={alias} />
-      <div class="u-m-top-6">
-        <button class="button button--primary" type="submit">Save</button>
-      </div>
-    </form>
-  </div>
+  <h1>{title}</h1>
+  <form
+    autocomplete="off"
+    on:submit={submit}>
+    <FieldsetParticipantName
+      bind:firstName={firstName}
+      bind:lastName={lastName}
+      bind:alias={alias} />
+    <div class="u-m-top-6">
+      <button class="button button--primary" type="submit">Save</button>
+    </div>
+  </form>
 </Layout>

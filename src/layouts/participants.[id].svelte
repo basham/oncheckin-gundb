@@ -33,26 +33,24 @@
 <Layout
   state={[state, _state]}
   title={_title}>
-  <div class="card">
-    <h1>{participant.displayName}</h1>
-    <p class="u-m-top-4">{participant.fullName}</p>
-    {#if latestCheckIn}
-      <p>{latestCheckIn?.count} {pluralize(latestCheckIn?.count, 'hash', 'hashes')}, {latestCheckIn?.hostCount} {pluralize(latestCheckIn?.hostCount, 'hare')}</p>
-    {/if}
-    <nav class="list-inline u-m-top-4">
-      <NavLink
-        href={participant.url}
-        id="participants/[id]/index"
-        location={route}>
-        Check-ins
-      </NavLink>
-      <NavLink
-        href={`${participant.url}/edit`}
-        id="participants/[id]/edit"
-        location={route}>
-        Edit
-      </NavLink>
-    </nav>
-  </div>
+  <h1>{participant.displayName}</h1>
+  <p class="u-m-top-4">{participant.fullName}</p>
+  {#if latestCheckIn}
+    <p>{latestCheckIn?.count} {pluralize(latestCheckIn?.count, 'hash', 'hashes')}, {latestCheckIn?.hostCount} {pluralize(latestCheckIn?.hostCount, 'hare')}</p>
+  {/if}
+  <nav class="list-inline u-m-top-4">
+    <NavLink
+      href={participant.url}
+      id="participants/[id]/index"
+      location={route}>
+      Check-ins
+    </NavLink>
+    <NavLink
+      href={`${participant.url}/edit`}
+      id="participants/[id]/edit"
+      location={route}>
+      Edit
+    </NavLink>
+  </nav>
   <slot></slot>
 </Layout>

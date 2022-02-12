@@ -23,7 +23,7 @@
 </script>
 
 <style>
-  .badge {
+  .link-cell {
     background-color: var(--color-base-80);
     border-radius: var(--size-1);
     display: inline-block;
@@ -34,24 +34,18 @@
 <Layout
   state={state}
   title={title}>
-  <div class="card u-flex u-flex-space">
+  <div class="u-flex u-flex-space">
     <h1>{title}</h1>
     <a class="button button--primary button--small" href="?p=events/new">New event</a>
   </div>
-  <div class="card u-m-top-6">
-    <h2>{`Upcoming events (${upcomingEvents.length})`}</h2>
-    <Events events={upcomingEvents} />
-  </div>
-  <div class="card u-m-top-6">
-    <h2>Recent events</h2>
-    <Events events={recentEvents} />
-  </div>
-  <div class="card u-m-top-6">
-    <h2>Past events</h2>
-    <ul class="list-inline u-m-top-4">
-      {#each years as year}
-        <li><a class="badge" href={`?p=events/past/${year}`}>{year}</a></li>
-      {/each}
-    </ul>
-  </div>
+  <h2>Upcoming events <span class="badge">{upcomingEvents.length}</span></h2>
+  <Events events={upcomingEvents} />
+  <h2>Recent events</h2>
+  <Events events={recentEvents} />
+  <h2>Past events</h2>
+  <ul class="list-inline u-m-top-2">
+    {#each years as year}
+      <li><a class="link-cell" href={`?p=events/past/${year}`}>{year}</a></li>
+    {/each}
+  </ul>
 </Layout>

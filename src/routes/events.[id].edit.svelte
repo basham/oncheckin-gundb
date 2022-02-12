@@ -29,17 +29,15 @@
 <Layout
   state={state}
   title="Edit">
-  <div class="card u-m-top-6">
-    <h2>Edit event</h2>
-    <form
-      autocomplete="off"
-      on:submit={submit}>
-      <FieldsetEvent
-        bind:name={name}
-        bind:date={date} />
-      <div class="u-m-top-6">
-        <button class="button button--primary" type="submit">Save</button>
-      </div>
-    </form>
-  </div>
+  <h2>Edit event</h2>
+  <form
+    autocomplete="off"
+    on:submit={submit}>
+    <FieldsetEvent
+      bind:name={name}
+      bind:date={date} />
+    <div class="u-m-top-6">
+      <button class="button button--primary" type="submit">Save</button>
+    </div>
+  </form>
 </Layout>

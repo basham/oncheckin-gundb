@@ -16,17 +16,15 @@
 </script>
 
 <Layout title={title}>
-  <div class="card">
-    <h1>{title}</h1>
-    <form
-      autocomplete="off"
-      on:submit={submit}>
-      <FieldsetEvent
-        bind:name={name}
-        bind:date={date} />
-      <div class="u-m-top-6">
-        <button class="button button--primary" type="submit">Save</button>
-      </div>
-    </form>
-  </div>
+  <h1>{title}</h1>
+  <form
+    autocomplete="off"
+    on:submit={submit}>
+    <FieldsetEvent
+      bind:name={name}
+      bind:date={date} />
+    <div class="u-m-top-6">
+      <button class="button button--primary" type="submit">Save</button>
+    </div>
+  </form>
 </Layout>

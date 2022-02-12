@@ -2,7 +2,7 @@
   export let participants = []
 </script>
 
-<ul class="link-list u-m-top-4">
+<ul class="link-list u-m-top-2">
   {#each participants as p}
     <li>
       <a class="link-row" href={p.url}>

@@ -23,13 +23,9 @@
   state={state}
   location='events'
   title={title}>
-  <div class="card">
-    <h1>{title}</h1>
-  </div>
-  <div class="card u-m-top-6">
-    <h2>{`Events (${events.length})`}</h2>
-    <div class="u-m-top-4">
-      <Events events={events} />
-    </div>
+  <h1>{title}</h1>
+  <h2>Events <span class="badge">{events.length}</span></h2>
+  <div class="u-m-top-2">
+    <Events events={events} />
   </div>
 </Layout>

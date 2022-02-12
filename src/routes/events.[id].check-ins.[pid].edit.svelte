@@ -42,7 +42,7 @@
 <Layout
   state={state}
   title={title}>
-  <p aria-label="Participant" class="card u-m-top-6" role="group">
+  <p aria-label="Participant" class="u-m-top-6" role="group">
     <a class="u-ts-3" href={participant.url}>{participant.displayName}</a>
     <br>
     {participant.fullName}

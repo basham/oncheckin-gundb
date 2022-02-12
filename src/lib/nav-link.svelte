@@ -6,7 +6,6 @@
 
 <style>
   a {
-    color: var(--color-base-45);
     display: inline-block;
     font-weight: bold;
     line-height: var(--lh-2);

@@ -36,10 +36,8 @@
 
 <style>
   header {
-    background-color: var(--color-base-90);
-    box-shadow:
-      0 var(--px-2) 0 0 var(--color-base-95),
-      0 var(--size-1) 0 0 var(--color-base-90);
+    background-color: var(--color-base-80);
+    border-bottom: var(--px-2) solid var(--color-base-95);
   }
 
   .header {
@@ -47,7 +45,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--size-4);
-    padding: var(--size-4);
   }
 
   .nav {
@@ -109,7 +106,7 @@
       </span>
     </div>
   </header>
-  <main class="layout-content u-p-bottom-6 u-p-top-6">
+  <main class="layout-content u-p-top-6 u-p-bottom-6">
     <slot></slot>
   </main>
 </Layout>
