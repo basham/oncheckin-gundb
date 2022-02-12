@@ -258,7 +258,12 @@ p {
   padding: 0;
 }
 
-.link-row {
+.link-list--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.link-item {
   background-color: var(--color-base-80);
   border-radius: var(--size-1);
   display: flex;
@@ -268,26 +273,26 @@ p {
   text-decoration: none;
 }
 
-.link-row:hover {
+.link-item:hover {
   background-color: var(--color-base-75);
 }
 
-.link-row:focus {
+.link-item:focus {
   position: relative;
 }
 
-.link-row__primary {
+.link-item__primary {
   flex-grow: 1;
   font-size: var(--fs-2);
 }
 
-.link-row__secondary {
+.link-item__secondary {
   color: var(--color-base-5);
   display: flex;
   flex-shrink: 0;
 }
 
-.link-row__secondary > * + *::before {
+.link-item__secondary > * + *::before {
   content: '\00b7';
   padding: 0 var(--size-2);
 }

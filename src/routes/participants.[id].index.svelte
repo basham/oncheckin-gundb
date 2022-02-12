@@ -23,9 +23,9 @@
     <ul class="link-list u-m-top-2">
       {#each checkIns as checkIn}
         <li>
-          <a class="link-row" href={checkIn.event.url}>
-            <span class="link-row__primary">{checkIn.event.name}</span>
-            <span class="link-row__secondary">
+          <a class="link-item" href={checkIn.event.url}>
+            <span class="link-item__primary">{checkIn.event.name}</span>
+            <span class="link-item__secondary">
               <span>{checkIn.event.displayDate}</span>
               {#if checkIn.count}
                 <span>{`Run #${checkIn.count}`}</span>

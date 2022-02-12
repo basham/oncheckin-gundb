@@ -10,9 +10,9 @@
   <ul class="link-list">
     {#each checkIns as checkIn}
       <li>
-        <a class="link-row" href={checkIn.url}>
-          <span class="link-row__primary">{checkIn.participant.displayName}</span>
-          <span class="link-row__secondary">
+        <a class="link-item" href={checkIn.url}>
+          <span class="link-item__primary">{checkIn.participant.displayName}</span>
+          <span class="link-item__secondary u-text-num">
             {#if showHostCount && checkIn.host}
               <span>{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
             {/if}

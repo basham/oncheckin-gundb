@@ -22,15 +22,6 @@
   })
 </script>
 
-<style>
-  .link-cell {
-    background-color: var(--color-base-80);
-    border-radius: var(--size-1);
-    display: inline-block;
-    padding: var(--size-2);
-  }
-</style>
-
 <Layout
   state={state}
   title={title}>
@@ -43,9 +34,9 @@
   <h2>Recent events</h2>
   <Events events={recentEvents} />
   <h2>Past events</h2>
-  <ul class="list-inline u-m-top-2">
+  <ul class="link-list link-list--inline u-m-top-2">
     {#each years as year}
-      <li><a class="link-cell" href={`?p=events/past/${year}`}>{year}</a></li>
+      <li><a class="link-item u-text-num" href={`?p=events/past/${year}`}>{year}</a></li>
     {/each}
   </ul>
 </Layout>
