@@ -196,7 +196,7 @@ p {
 }
 
 .button--small {
-  padding: calc(var(--size-2) - var(--px-2));
+  padding: var(--size-2);
 }
 
 .card {
