@@ -57,8 +57,6 @@
   --size-6: 1.5rem;
   --size-7: 1.75rem;
   --size-8: 2rem;
-
-  --border: var(--px-2) solid var(--color-base-85);
 }
 
 * {
@@ -313,7 +311,7 @@ p {
 }
 
 .u-border-bottom {
-  border-bottom: var(--border);
+  border-bottom: var(--px-2) solid var(--color-base-80);
 }
 
 .u-color-hint {

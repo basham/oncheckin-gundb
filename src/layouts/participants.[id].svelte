@@ -38,7 +38,7 @@
   {#if latestCheckIn}
     <p>{latestCheckIn?.count} {pluralize(latestCheckIn?.count, 'hash', 'hashes')}, {latestCheckIn?.hostCount} {pluralize(latestCheckIn?.hostCount, 'hare')}</p>
   {/if}
-  <nav class="list-inline u-m-top-4">
+  <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
     <NavLink
       href={participant.url}
       id="participants/[id]/index"

@@ -35,10 +35,6 @@
 </script>
 
 <style>
-  header {
-    border-bottom: var(--px-2) solid var(--color-base-80);
-  }
-
   .header {
     align-items: center;
     display: flex;
@@ -64,7 +60,7 @@
 <Layout
   state={[state, _state]}
   title={title}>
-  <header class="border-bottom">
+  <header class="u-border-bottom">
     <div class="header layout-content">
       <span class="nav">
         <img
