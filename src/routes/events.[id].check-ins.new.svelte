@@ -97,6 +97,7 @@
 <Layout
   state={state}
   title={title}>
+  <h2>{title}</h2>
   <form
     autocomplete="off"
     on:submit={submit}>

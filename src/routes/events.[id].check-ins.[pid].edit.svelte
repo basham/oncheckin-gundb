@@ -6,9 +6,9 @@
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
 
   const params = getContext('params')
+  const title = 'Edit check-in'
 
   let state = STATE.LOADING
-  let title = ''
   let event = null
   let participant = null
   let checkIn = null
@@ -23,7 +23,6 @@
       return
     }
     host = checkIn?.host
-    title = `${title} for ${participant?.displayName}`
     state = STATE.LOADED
   })
 
@@ -42,7 +41,8 @@
 <Layout
   state={state}
   title={title}>
-  <p aria-label="Participant" class="u-m-top-6" role="group">
+  <h2>{title}</h2>
+  <p aria-label="Participant" class="card u-m-top-4" role="group">
     <a class="u-ts-3" href={participant.url}>{participant.displayName}</a>
     <br>
     {participant.fullName}
@@ -51,7 +51,7 @@
     autocomplete="off"
     on:submit={submit}>
     <FieldsetCheckIn bind:host={host} />
-    <div class="u-m-top-4">
+    <div class="u-m-top-6">
       <button
         class="button button--primary"
         type="submit">
