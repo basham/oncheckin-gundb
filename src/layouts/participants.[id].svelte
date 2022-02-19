@@ -34,16 +34,27 @@
   state={[state, _state]}
   title={_title}>
   <h1>{participant.displayName}</h1>
-  <p class="u-m-top-4">{participant.fullName}</p>
-  {#if latestCheckIn}
-    <p>{latestCheckIn?.count} {pluralize(latestCheckIn?.count, 'hash', 'hashes')}, {latestCheckIn?.hostCount} {pluralize(latestCheckIn?.hostCount, 'hare')}</p>
-  {/if}
+  <p class="u-m-top-2">
+    <span>{participant.fullName}</span>
+    {#if latestCheckIn}
+      <span class="u-m-lr-1">&middot;</span>
+      <span>{`${latestCheckIn?.count} ${pluralize(latestCheckIn?.count, 'run')}`}</span>
+      <span class="u-m-lr-1">&middot;</span>
+      <span>{`${latestCheckIn?.hostCount} ${pluralize(latestCheckIn?.hostCount, 'hare')}`}</span>
+    {/if}
+  </p>
   <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
     <NavLink
       href={participant.url}
       id="participants/[id]/index"
       location={route}>
-      Check-ins
+      Runs
+    </NavLink>
+    <NavLink
+      href={`${participant.url}/hares`}
+      id="participants/[id]/hares"
+      location={route}>
+      Hares
     </NavLink>
     <NavLink
       href={`${participant.url}/edit`}

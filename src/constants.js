@@ -16,6 +16,7 @@ export const ROUTES = [
   'participants/new',
   'participants/[id]/index',
   'participants/[id]/edit',
+  'participants/[id]/hares',
   'settings/index',
   'settings/edit-pub',
   'settings/rename',

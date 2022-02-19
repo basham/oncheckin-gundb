@@ -13,6 +13,7 @@
   onMount(async () => {
     participant = await participantStore.get(params.id)
     const checkInsByYear = (await checkInStore.getParticipantCheckIns(participant.id))
+      .filter(({ host }) => host)
       .reduce((yearMap, checkIn) => {
         const { year } = checkIn.event
         if (!yearMap.has(year)) {
@@ -27,6 +28,9 @@
 </script>
 
 <Layout state={state}>
+  {#if !checkIns.length}
+    <h2>No hares</h2>
+  {/if}
   {#each checkIns as [year, checkInsThisYear]}
     <h2>{year} <span class="badge">{checkInsThisYear.length}</span></h2>
     <ul class="link-list u-m-top-2">
@@ -36,7 +40,7 @@
             <span class="link-item__primary"><strong>{`#${checkIn.event.count}:`}</strong> {checkIn.event.name}</span>
             <span class="link-item__secondary">
               <span>{checkIn.event.displayDateMedium}</span>
-              <span>{`Run #${checkIn.count}`}</span>
+              <span>{`Hare #${checkIn.hostCount}`}</span>
             </span>
           </a>
         </li>

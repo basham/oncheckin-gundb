@@ -399,6 +399,11 @@ p {
   margin-top: var(--size-6);
 }
 
+.u-m-lr-1 {
+  margin-left: var(--size-1);
+  margin-right: var(--size-1);
+}
+
 .u-p-0 {
   padding: 0;
 }
