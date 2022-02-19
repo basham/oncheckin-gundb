@@ -18,9 +18,9 @@
   }
 
   .checkbox {
-    --color-border: var(--color-base-70);
-    --color-background: var(--color-base-100);
-    --color-checked: var(--color-base-100);
+    --color-border: var(--color-base-100);
+    --color-background: var(--color-base-90);
+    --color-checked: var(--color-base-90);
     --size: var(--size-6);
     align-items: center;
     background-color: var(--color-checked);
@@ -41,15 +41,16 @@
     padding: var(--px-2) 0;
   }
 
-  input:hover + label .checkbox {
-    --color-border: var(--color-base-50);
-  }
-
   input:checked + label .checkbox {
     --color-checked: var(--color-ix);
   }
 
+  input:checked:hover + label .checkbox {
+    --color-checked: var(--color-base-25);
+  }
+
   input:focus + label .checkbox {
+    _outline: var(--px-2) solid var(--color-ix);
     --color-border: var(--color-ix);
   }
 </style>

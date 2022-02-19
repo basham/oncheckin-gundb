@@ -20,9 +20,11 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <FieldsetEvent
-      bind:name={name}
-      bind:date={date} />
+    <div class="card u-m-top-6">
+      <FieldsetEvent
+        bind:name={name}
+        bind:date={date} />
+    </div>
     <div class="u-m-top-6">
       <button class="button button--primary" type="submit">Save</button>
     </div>

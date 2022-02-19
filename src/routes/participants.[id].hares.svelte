@@ -3,6 +3,7 @@
   import { STATE } from '@src/constants.js'
   import { checkInStore, participantStore } from '@src/stores.js'
   import Layout from '@src/layouts/participants.[id].svelte'
+  import { pluralize } from '@src/util.js'
 
   const params = getContext('params')
 
@@ -37,11 +38,9 @@
       {#each checkInsThisYear as checkIn}
         <li>
           <a class="link-item" href={checkIn.event.url}>
-            <span class="link-item__primary"><strong>{`#${checkIn.event.count}:`}</strong> {checkIn.event.name}</span>
-            <span class="link-item__secondary">
-              <span>{checkIn.event.displayDateMedium}</span>
-              <span>{`Hare #${checkIn.hostCount}`}</span>
-            </span>
+            <span class="link-item__primary">{checkIn.event.name}</span>
+            <span class="link-item__secondary u-text-num">{`#${checkIn.event.count}: ${checkIn.event.displayDateMedium}`}</span>
+            <span class="link-item__tertiary u-text-num">{`${checkIn.hostCount} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
           </a>
         </li>
       {/each}

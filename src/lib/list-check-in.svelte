@@ -12,9 +12,10 @@
       <li>
         <a class="link-item" href={checkIn.url}>
           <span class="link-item__primary">{checkIn.participant.displayName}</span>
-          <span class="link-item__secondary u-text-num">
+          <span class="link-item__secondary">{checkIn.participant.fullName}</span>
+          <span class="link-item__tertiary u-text-num">
             {#if showHostCount && checkIn.host}
-              <span>{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
+              <span>{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}${showCheckInCount ? ',' : ''}`}</span>
             {/if}
             {#if showCheckInCount}
               <span>{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}</span>

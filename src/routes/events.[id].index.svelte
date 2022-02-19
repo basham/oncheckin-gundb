@@ -9,28 +9,40 @@
 
   let state = STATE.LOADING
   let event = null
-  let checkIns = []
+  let hares = []
+  let runners = []
 
   onMount(async () => {
     event = await eventStore.get(params.id)
-    checkIns = (await checkInStore.getEventCheckIns(event?.id))
+    const checkIns = (await checkInStore.getEventCheckIns(event?.id))
+    hares = checkIns.filter(({ host }) => host)
+    runners = checkIns.filter(({ host }) => !host)
     state = STATE.LOADED
   })
 </script>
 
 <Layout state={state}>
-  <div class="u-flex u-flex-space u-m-top-6">
-    <h2 class="u-m-top-0">Check-ins <span class="badge">{checkIns.length}</span></h2>
+  <div class="u-m-top-6">
     <a
-      class="button button--primary button--small"
+      class="button button--primary"
       href={`${event.url}/check-ins/new`}>
       New check-in
     </a>
   </div>
-  {#if checkIns.length}
+  <h2>Hares <span class="badge">{hares.length}</span></h2>
+  {#if hares.length}
     <div class="u-m-top-2">
       <CheckInList
-        checkIns={checkIns}
+        checkIns={hares}
+        showCheckInCount={true}
+        showHostCount={true} />
+    </div>
+  {/if}
+  <h2>Runners <span class="badge">{runners.length}</span></h2>
+  {#if runners.length}
+    <div class="u-m-top-2">
+      <CheckInList
+        checkIns={runners}
         showCheckInCount={true}
         showHostCount={true} />
     </div>

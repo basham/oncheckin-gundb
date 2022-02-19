@@ -143,10 +143,12 @@
     {/if}
     {#if checkInType === 'new-participant'}
       <Fieldset legend="New participant">
-        <FieldsetParticipantName
-          bind:firstName={firstName}
-          bind:lastName={lastName}
-          bind:alias={alias} />
+        <div class="u-m-top-6">
+          <FieldsetParticipantName
+            bind:firstName={firstName}
+            bind:lastName={lastName}
+            bind:alias={alias} />
+        </div>
       </Fieldset>
     {/if}
     <FieldsetCheckIn bind:host={host} />

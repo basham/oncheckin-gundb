@@ -106,7 +106,6 @@ h2 {
   font-weight: bold;
   line-height: var(--lh-3);
   margin: var(--size-6) 0 0;
-  padding: var(--px-2) 0;
 }
 
 ol,
@@ -204,8 +203,8 @@ p {
 }
 
 .input {
-  background-color: var(--color-base-100);
-  border: var(--px-2) solid var(--color-base-70);
+  background-color: var(--color-base-90);
+  border: var(--px-2) solid var(--color-base-100);
   border-radius: var(--size-1);
   color: var(--color-base-5);
   font-family: var(--font);
@@ -214,10 +213,6 @@ p {
   max-width: 16rem;
   padding: var(--size-2);
   width: 100%;
-}
-
-.input:hover {
-  border-color: var(--color-base-50);
 }
 
 .input:focus {
@@ -264,10 +259,13 @@ p {
 }
 
 .link-item {
+  align-items: center;
   background-color: var(--color-base-80);
   border-radius: var(--size-1);
-  display: flex;
-  gap: 0 var(--size-2);
+  display: grid;
+  grid-template:
+    "primary tertiary" auto
+    "secondary tertiary" auto / 1fr auto;
   line-height: var(--lh-2);
   padding: var(--size-2) var(--size-3);
   text-decoration: none;
@@ -282,19 +280,20 @@ p {
 }
 
 .link-item__primary {
-  flex-grow: 1;
+  display: block;
   font-size: var(--fs-2);
+  grid-area: primary;
 }
 
 .link-item__secondary {
   color: var(--color-base-5);
-  display: flex;
-  flex-shrink: 0;
+  grid-area: secondary;
 }
 
-.link-item__secondary > * + *::before {
-  content: '\00b7';
-  padding: 0 var(--size-2);
+.link-item__tertiary {
+  color: var(--color-base-5);
+  grid-area: tertiary;
+  padding-left: var(--size-2);
 }
 
 /* Utilities */

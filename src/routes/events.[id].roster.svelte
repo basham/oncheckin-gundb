@@ -161,10 +161,10 @@
         <tr>
           <th><div class="center">Check in</div></th>
           <th><div class="right">Hares</div></th>
-          <th><div class="right">Hashes</div></th>
+          <th><div class="right">Runs</div></th>
           <th class="u-text-left">Hasher</th>
           <th class="u-text-left">
-            Last hash<br>
+            Last run<br>
             <span class="u-text-normal">{`Ret. ${returnersCutoff}`}</span>
           </th>
         </tr>

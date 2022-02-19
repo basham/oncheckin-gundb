@@ -30,7 +30,7 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <div class="u-m-top-6">
+    <div class="card u-m-top-6">
       <label for="name">Workspace name</label>
       <br>
       <input

@@ -4,7 +4,7 @@
   export let alias = ''
 </script>
 
-<div class="u-m-top-6">
+<div>
   <label for="firstNameInput">First name</label>
   <br>
   <input

@@ -21,7 +21,7 @@
       _state = STATE.NOT_FOUND
       return
     }
-    _title = `${title ? `${title}: ` : ''}#${event?.count}: ${event?.name} (${event?.displayDate})`
+    _title = `${title ? `${title}: ` : ''}${event?.name} (#${event?.count}: ${event?.displayDate})`
     _state = STATE.LOADED
   })
 </script>
@@ -29,8 +29,8 @@
 <Layout
   state={[state, _state]}
   title={_title}>
-  <h1>{`#${event.count}: ${event.name}`}</h1>
-  <p class="u-m-top-2">{event?.displayDateLong}</p>
+  <h1>{event.name}</h1>
+  <p class="u-m-top-2">{`#${event.count}: ${event?.displayDateLong}`}</p>
   <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
     <NavLink
       href={event.url}

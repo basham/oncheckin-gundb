@@ -21,10 +21,12 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <FieldsetParticipantName
-      bind:firstName={firstName}
-      bind:lastName={lastName}
-      bind:alias={alias} />
+    <div class="card u-m-top-6">
+      <FieldsetParticipantName
+        bind:firstName={firstName}
+        bind:lastName={lastName}
+        bind:alias={alias} />
+    </div>
     <div class="u-m-top-6">
       <button class="button button--primary" type="submit">Save</button>
     </div>

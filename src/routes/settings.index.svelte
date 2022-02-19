@@ -35,26 +35,30 @@
     <li><a href="?p=workspaces">Change workspace</a></li>
   </ul>
   <h2>This workspace</h2>
-  <p class="u-m-top-2"><span class="u-color-hint">Name:</span> {workspace?.name}</p>
-  <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
-  <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
-  <ul class="list-inline u-m-top-4">
-    <li><a href="?p=settings/share">Share</a></li>
-    <li><a href="?p=settings/rename">Rename</a></li>
-    <li><a href="?p=settings/edit-pub">Edit pub</a></li>
-  </ul>
+  <div class="card u-m-top-2">
+    <p><span class="u-color-hint">Name:</span> {workspace?.name}</p>
+    <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
+    <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
+    <ul class="list-inline u-m-top-4">
+      <li><a href="?p=settings/share">Share</a></li>
+      <li><a href="?p=settings/rename">Rename</a></li>
+      <li><a href="?p=settings/edit-pub">Edit pub</a></li>
+    </ul>
+  </div>
   <h2>Data</h2>
-  <p class="u-m-top-2"><span class="u-color-hint">Last sync:</span> {status?.lastSyncDisplay}</p>
-  <p>
-    <span class="u-color-hint">Status:</span>
-    <span role="status">{syncing ? 'Syncing…' : status?.unsyncedChanges ? 'Unsynced changes' : status?.lastSync ? 'All local changes are synced' : ''}</span>
-  </p>
-  <div class="u-m-top-4">
-    <button
-      class="button"
-      disabled={syncing}
-      on:click={sync}>
-      Sync
-    </button>
+  <div class="card u-m-top-2">
+    <p><span class="u-color-hint">Last sync:</span> {status?.lastSyncDisplay}</p>
+    <p>
+      <span class="u-color-hint">Status:</span>
+      <span role="status">{syncing ? 'Syncing…' : status?.unsyncedChanges ? 'Unsynced changes' : status?.lastSync ? 'All local changes are synced' : ''}</span>
+    </p>
+    <div class="u-m-top-4">
+      <button
+        class="button button--primary"
+        disabled={syncing}
+        on:click={sync}>
+        Sync
+      </button>
+    </div>
   </div>
 </Layout>

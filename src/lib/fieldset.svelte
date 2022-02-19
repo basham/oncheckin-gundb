@@ -9,9 +9,9 @@
   }
 </style>
 
-<div class={`u-m-top-6 ${$$props.class}`}>
+<div class={`card u-m-top-4 ${$$props.class}`}>
   <fieldset class="u-m-0 u-p-0">
-    <legend class="u-p-0 u-ts-3">{legend}</legend>
+    <legend class="u-p-0 u-ts-2">{legend}</legend>
     <slot></slot>
   </fieldset>
 </div>

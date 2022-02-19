@@ -35,11 +35,11 @@
   }
 
   .radio {
-    --color-border: var(--color-base-70);
-    --color-background: var(--color-base-100);
-    --color-checked: var(--color-base-100);
+    --color-border: var(--color-base-100);
+    --color-background: var(--color-base-90);
+    --color-checked: var(--color-base-90);
     --size: var(--size-6);
-    background-color: var(--color-base-100);
+    background-color: var(--color-base-90);
     border-radius: 50%;
     box-shadow:
       inset 0 0 0 var(--px-2) var(--color-border),
@@ -55,10 +55,6 @@
 
   .text {
     padding: var(--px-2) 0;
-  }
-
-  input:hover + label .radio {
-    --color-border: var(--color-base-50);
   }
 
   input:checked + label .radio {

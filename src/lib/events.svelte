@@ -7,8 +7,8 @@
     {#each events as event}
       <li>
         <a class="link-item" href={event.url}>
-          <div class="link-item__primary"><strong>{`#${event.count}:`}</strong> {event.name}</div>
-          <div class="link-item__secondary">{event.displayDateMedium}</div>
+          <span class="link-item__primary">{event.name}</span>
+          <span class="link-item__secondary u-text-num">{`#${event.count}: ${event.displayDateMedium}`}</span>
         </a>
       </li>
     {/each}

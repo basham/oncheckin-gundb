@@ -42,14 +42,17 @@
 <Layout
   state={state}
   title="Edit">
+  <h2>Edit hasher</h2>
   <form
     autocomplete="off"
     on:submit={submit}>
     <Fieldset legend="Profile">
-      <FieldsetParticipantName
-        bind:firstName={firstName}
-        bind:lastName={lastName}
-        bind:alias={alias} />
+      <div class="u-m-top-6">
+        <FieldsetParticipantName
+          bind:firstName={firstName}
+          bind:lastName={lastName}
+          bind:alias={alias} />
+      </div>
       <div class="u-m-top-6">
         <label for="locationInput">Location</label>
         <br>

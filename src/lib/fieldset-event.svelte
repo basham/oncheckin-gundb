@@ -3,7 +3,7 @@
   export let date = ''
 </script>
 
-<div class="u-m-top-6">
+<div>
   <label for="nameInput">Name</label>
   <br>
   <input
