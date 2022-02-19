@@ -12,7 +12,7 @@
   let event = null
   let hosts = []
   let specialHosts = []
-  let anniversaries = []
+  let specialRuns = []
   let visitors = []
   let virgins = []
   let namings = []
@@ -25,7 +25,7 @@
     specialHosts = hosts
       .filter(({ specialHostCount }) => specialHostCount)
       .sort(sortAsc('hostCount'))
-    anniversaries = checkIns
+    specialRuns = checkIns
       .filter(({ specialCount }) => specialCount)
       .sort(sortAsc('count'))
     virgins = checkIns
@@ -53,11 +53,11 @@
         showHostCount={true} />
     </div>
   {/if}
-  <h2>Anniversaries <span class="badge">{anniversaries.length}</span></h2>
-  {#if anniversaries.length}
+  <h2>Run-iversaries <span class="badge">{specialRuns.length}</span></h2>
+  {#if specialRuns.length}
     <div class="u-m-top-2">
       <CheckInList
-        checkIns={anniversaries}
+        checkIns={specialRuns}
         showCheckInCount={true} />
     </div>
   {/if}
