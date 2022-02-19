@@ -9,7 +9,7 @@
   <br>
   <input
     bind:value={firstName}
-    class="input"
+    class="input input--small"
     id="firstNameInput"
     type="text">
 </div>
@@ -18,7 +18,7 @@
   <br>
   <input
     bind:value={lastName}
-    class="input"
+    class="input input--small"
     id="lastNameInput"
     type="text">
 </div>

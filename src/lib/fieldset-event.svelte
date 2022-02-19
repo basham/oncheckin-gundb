@@ -17,7 +17,7 @@
   <br>
   <input
     bind:value={date}
-    class="input"
+    class="input input--small"
     id="dateInput"
     type="date">
 </div>

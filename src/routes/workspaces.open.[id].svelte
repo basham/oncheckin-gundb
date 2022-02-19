@@ -17,5 +17,5 @@
 </script>
 
 <Layout title="Opening workspace…">
-  <p>Please wait while the workspace syncs and opens. The first time may take awhile.</p>
+  <p class="u-m-top-4">Please wait while the workspace syncs and opens. The first time may take awhile.</p>
 </Layout>

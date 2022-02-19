@@ -115,7 +115,7 @@ ul {
 
 details,
 .group {
-  background-color: var(--color-base-100);
+  background-color: var(--color-base-80);
   border-radius: var(--size-1);
   padding: var(--size-4);
 }
@@ -127,6 +127,10 @@ details :last-child {
 summary {
   color: var(--color-ix);
   cursor: pointer;
+}
+
+summary:hover {
+  color: var(--color-base-25);
 }
 
 label {
@@ -210,7 +214,6 @@ p {
   font-family: var(--font);
   font-size: var(--fs-1);
   line-height: var(--lh-1);
-  max-width: 16rem;
   padding: var(--size-2);
   width: 100%;
 }
@@ -222,6 +225,10 @@ p {
 
 .input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+.input--small {
+  width: 16rem;
 }
 
 .layout-content {

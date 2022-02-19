@@ -16,21 +16,26 @@
 <Layout
   state={state}
   title="Workspaces">
-  <ul class="list-inline u-m-top-2">
-    <li><a href="?p=workspaces/new">New workspace</a></li>
-  </ul>
+  <div class="u-m-top-6">
+    <a class="button button--primary" href="?p=workspaces/new">New workspace</a>
+  </div>
   <details class="u-m-top-6">
     <summary>Join a workspace</summary>
     <p class="u-m-top-4">Join an existing workspace with an invite link or by scanning a QR&nbsp;code on someone else's device.</p>
   </details>
-  {#each workspaces as workspace}
-    <h2 class="u-m-bottom-0">
-      <a
-        class="u-ts-2"
-        href={workspace.openUrl}>
-        {workspace.name}
-      </a>
-    </h2>
-    <p class="u-m-top-0">ID: {workspace.id}</p>
-  {/each}
+  {#if workspaces.length}
+    <h2>All workspaces</h2>
+    <ul class="link-list u-m-top-2">
+      {#each workspaces as workspace}
+        <li>
+          <a
+            class="link-item"
+            href={workspace.openUrl}>
+            <span class="link-item__primary">{workspace.name}</span>
+            <span class="link-item__secondary">{`ID: ${workspace.id}`}</span>
+          </a>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </Layout>
