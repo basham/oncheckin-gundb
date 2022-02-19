@@ -411,6 +411,10 @@ p {
   padding: var(--size-4);
 }
 
+.u-p-8 {
+  padding: var(--size-8);
+}
+
 .u-p-bottom-0 {
   padding-bottom: 0;
 }

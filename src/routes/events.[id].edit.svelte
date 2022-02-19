@@ -6,6 +6,7 @@
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
 
   const params = getContext('params')
+  const title = 'Edit event'
 
   let state = STATE.LOADING
   let event
@@ -28,8 +29,8 @@
 
 <Layout
   state={state}
-  title="Edit">
-  <h2>Edit event</h2>
+  title={title}>
+  <h2>{title}</h2>
   <form
     autocomplete="off"
     on:submit={submit}>

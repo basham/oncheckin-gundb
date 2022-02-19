@@ -59,7 +59,7 @@
 
 <Layout
   state={[state, _state]}
-  title={title}>
+  title={[title, workspace?.name]}>
   <header class="u-border-bottom">
     <div class="header layout-content">
       <span class="nav">

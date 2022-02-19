@@ -7,20 +7,18 @@
 
   const NOT_FOUND_TITLE = 'Page not found'
 
-  $: _state = getState(state)
-  $: title = _state === STATE.NOT_FOUND ? [NOT_FOUND_TITLE] : (Array.isArray(title) ? title : [title])
-  $: fullTitle = [...title, APP_NAME].filter((v) => v).join(' - ')
+  $: [_state, _title] = getState(state)
+  $: fullTitle = [_title, APP_NAME].flat(Infinity).filter((v) => v).join(' \u00b7 ')
 
   function getState (source) {
-    const state = Array.isArray(source) ? source : [source]
-    const all = state.flat(Infinity)
+    const all = [source].flat(Infinity)
     if (all.some((s) => s === STATE.NOT_FOUND)) {
-      return STATE.NOT_FOUND
+      return [STATE.NOT_FOUND, NOT_FOUND_TITLE]
     }
     if (all.some((s) => s === STATE.LOADING)) {
-      return STATE.LOADING
+      return [STATE.LOADING, null]
     }
-    return STATE.LOADED
+    return [STATE.LOADED, title]
   }
 </script>
 
@@ -35,5 +33,7 @@
 {/if}
 
 {#if _state === STATE.NOT_FOUND}
-  <h1>{NOT_FOUND_TITLE}</h1>
+  <main class="u-p-8">
+    <h1>{NOT_FOUND_TITLE}</h1>
+  </main>
 {/if}
