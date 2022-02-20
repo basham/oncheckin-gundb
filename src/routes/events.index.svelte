@@ -36,9 +36,15 @@
   <h2>Recent events</h2>
   <Events events={recentEvents} />
   <h2>Past events</h2>
-  <ul class="link-list link-list--inline u-m-top-2">
+  <ul class="list-plain list-plain--inline u-gap-2px u-m-top-2">
     {#each years as year}
-      <li><a class="link-item u-text-num" href={`?p=events/past/${year}`}>{year}</a></li>
+      <li class="row">
+        <a
+          class="row__left u-text-num"
+          href={`?p=events/past/${year}`}>
+          <span class="row__primary">{year}</span>
+        </a>
+      </li>
     {/each}
   </ul>
 </Layout>

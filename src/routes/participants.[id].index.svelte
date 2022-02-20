@@ -33,10 +33,10 @@
     <ul class="link-list u-m-top-2">
       {#each checkInsThisYear as checkIn}
         <li>
-          <a class="link-item" href={checkIn.event.url}>
-            <span class="link-item__primary">{checkIn.event.name}</span>
-            <span class="link-item__secondary u-text-num">{`#${checkIn.event.count}: ${checkIn.event.displayDateMedium}`}</span>
-            <span class="link-item__tertiary u-text-num">{`${checkIn.count} ${pluralize(checkIn.count, 'run')}`}</span>
+          <a class="row" href={checkIn.event.url}>
+            <span class="row__primary">{checkIn.event.name}</span>
+            <span class="row__secondary u-text-num">{`#${checkIn.event.count}: ${checkIn.event.displayDateMedium}`}</span>
+            <span class="row__tertiary u-text-num">{`${checkIn.count} ${pluralize(checkIn.count, 'run')}`}</span>
           </a>
         </li>
       {/each}

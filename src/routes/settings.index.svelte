@@ -31,15 +31,15 @@
   state={state}
   title={title}>
   <h1>{title}</h1>
-  <ul class="list-inline u-m-top-4">
-    <li><a href="?p=workspaces">Change workspace</a></li>
-  </ul>
+  <p class="u-m-top-4">
+    <a href="?p=workspaces">Change workspace</a>
+  </p>
   <h2>This workspace</h2>
   <div class="card u-m-top-2">
     <p><span class="u-color-hint">Name:</span> {workspace?.name}</p>
     <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
     <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
-    <ul class="list-inline u-m-top-4">
+    <ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
       <li><a href="?p=settings/share">Share</a></li>
       <li><a href="?p=settings/rename">Rename</a></li>
       <li><a href="?p=settings/edit-pub">Edit pub</a></li>

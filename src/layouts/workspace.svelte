@@ -67,7 +67,7 @@
           alt={APP_NAME}
           class="logo"
           src="../icon.svg">
-        <nav class="list-inline">
+        <nav class="list-plain list-plain--inline u-gap-4">
           <NavLink
             href="?p=events"
             id="events"

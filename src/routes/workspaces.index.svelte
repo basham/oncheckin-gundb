@@ -29,10 +29,10 @@
       {#each workspaces as workspace}
         <li>
           <a
-            class="link-item"
+            class="row"
             href={workspace.openUrl}>
-            <span class="link-item__primary">{workspace.name}</span>
-            <span class="link-item__secondary">{`ID: ${workspace.id}`}</span>
+            <span class="row__primary">{workspace.name}</span>
+            <span class="row__secondary">{`ID: ${workspace.id}`}</span>
           </a>
         </li>
       {/each}

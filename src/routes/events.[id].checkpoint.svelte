@@ -46,26 +46,25 @@
 <Layout state={state}>
   <h2>Waiting <span class="badge">{waiting.length}</span></h2>
   {#if waiting.length}
-    <ul class="link-list u-m-top-2">
+    <ul class="list-plain u-gap-2px u-m-top-2">
       {#each waiting as checkIn}
-        <li>
-          <div class="link-item">
-            <span
-              class="link-item__primary"
-              id={checkIn.participant.id}>
-              {checkIn.participant.displayName}
-            </span>
-            <span class="link-item__secondary">{checkIn.participant.fullName}</span>
-            <span class="link-item__tertiary u-text-num">
-              <button
-                aria-describedby={checkIn.participant.id}
-                class="button button--primary"
-                data-id={checkIn.participant.id}
-                on:click={markAsArrived}>
-                Arrived
-              </button>
-            </span>
-          </div>
+        <li class="row">
+          <a
+            class="row__left"
+            href={checkIn.participant.url}
+            id={checkIn.participant.id}>
+            <span class="row__primary">{checkIn.participant.displayName}</span>
+            <span class="row__secondary">{checkIn.participant.fullName}</span>
+          </a>
+          <span class="row__right">
+            <button
+              aria-describedby={checkIn.participant.id}
+              class="button button--primary"
+              data-id={checkIn.participant.id}
+              on:click={markAsArrived}>
+              Arrived
+            </button>
+          </span>
         </li>
       {/each}
     </ul>
@@ -81,27 +80,26 @@
     {/if}
   </div>
   {#if arrived.length}
-    <ul class="link-list u-m-top-2">
+    <ul class="list-plain u-gap-2px u-m-top-2">
       {#each arrived as checkIn}
-        <li>
-          <div class="link-item">
-            <span
-              class="link-item__primary"
-              id={checkIn.participant.id}>
-              {checkIn.participant.displayName}
-            </span>
-            <span class="link-item__secondary">{checkIn.participant.fullName}</span>
-            <span class="link-item__tertiary u-text-num">
-              <button
-                aria-describedby={checkIn.participant.id}
-                aria-label="Remove"
-                class="button"
-                data-id={checkIn.participant.id}
-                on:click={markAsWaiting}>
-                <Icon name="close" />
-              </button>
-            </span>
-          </div>
+        <li class="row">
+          <a
+            class="row__left"
+            href={checkIn.participant.url}
+            id={checkIn.participant.id}>
+            <span class="row__primary">{checkIn.participant.displayName}</span>
+            <span class="row__secondary">{checkIn.participant.fullName}</span>
+          </a>
+          <span class="row__right">
+            <button
+              aria-describedby={checkIn.participant.id}
+              class="button button--ghostx"
+              data-id={checkIn.participant.id}
+              on:click={markAsWaiting}>
+              <span class="u-sr-only">Remove</span>
+              <Icon name="close" />
+            </button>
+          </span>
         </li>
       {/each}
     </ul>

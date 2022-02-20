@@ -30,7 +30,7 @@
   title={[title, event?.name]}>
   <h1>{event.name}</h1>
   <p class="u-m-top-2">{`#${event.count}: ${event?.displayDateLong}`}</p>
-  <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
+  <nav class="list-plain list-plain--inline u-border-bottom u-gap-4 u-m-top-4 u-p-bottom-4">
     <NavLink
       href={event.url}
       id="check-ins"

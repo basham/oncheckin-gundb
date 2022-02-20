@@ -248,77 +248,74 @@ p {
   padding: var(--size-4);
 }
 
-.list li {
-  margin-top: var(--size-2);
-}
-
-.list-inline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--size-2) var(--size-4);
-  list-style-type: '';
-  margin: 0;
-  padding: 0;
-}
-
-.link-list {
-  border-radius: var(--size-1);
+.list-plain {
   display: flex;
   flex-direction: column;
-  gap: var(--px-2);
   list-style-type: '';
   margin: 0;
   padding: 0;
 }
 
-.link-list--inline {
+.list-plain--inline {
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.link-item {
+.row {
+  background-color: var(--color-base-80);
+  border-radius: var(--size-1);
+  display: flex;
+}
+
+.row__left {
   align-items: center;
-  border: var(--px-2) solid var(--color-base-80);
   border-radius: var(--size-1);
   display: grid;
+  flex-grow: 1;
   grid-template:
     "primary tertiary" auto
     "secondary tertiary" auto / 1fr auto;
   line-height: var(--lh-1);
-  padding: var(--size-2);
+  padding: var(--size-2) var(--size-3);
   text-decoration: none;
 }
 
-a.link-item {
-  background-color: var(--color-base-80);
+.row__left:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
-a.link-item:hover {
+.row__left:hover {
   background-color: var(--color-base-75);
-  border-color: var(--color-base-75);
 }
 
-.link-item:focus {
+.row__left:focus {
   position: relative;
 }
 
-.link-item__primary {
+.row__primary {
+  color: var(--color-ix);
   display: block;
   font-size: var(--fs-2);
   grid-area: primary;
-
 }
 
-.link-item__secondary {
+.row__secondary {
   color: var(--color-hint);
   grid-area: secondary;
   line-height: var(--lh-1);
 }
 
-.link-item__tertiary {
+.row__tertiary {
   color: var(--color-hint);
   grid-area: tertiary;
   padding-left: var(--size-2);
+}
+
+.row__right {
+  align-items: center;
+  display: flex;
+  padding: var(--size-2);
 }
 
 /* Utilities */
@@ -357,6 +354,14 @@ a.link-item:hover {
 
 .u-flex-end {
   align-items: flex-end;
+}
+
+.u-gap-2px {
+  gap: var(--px-2);
+}
+
+.u-gap-4 {
+  gap: var(--size-4);
 }
 
 .u-flex-gap-2 {
