@@ -44,11 +44,6 @@
 </script>
 
 <Layout state={state}>
-  <div class="u-m-top-6">
-    <button class="button" on:click={reset}>
-      Reset
-    </button>
-  </div>
   <h2>Waiting <span class="badge">{waiting.length}</span></h2>
   {#if waiting.length}
     <ul class="link-list u-m-top-2">
@@ -64,7 +59,7 @@
             <span class="link-item__tertiary u-text-num">
               <button
                 aria-describedby={checkIn.participant.id}
-                class="button"
+                class="button button--primary"
                 data-id={checkIn.participant.id}
                 on:click={markAsArrived}>
                 Arrived
@@ -75,7 +70,16 @@
       {/each}
     </ul>
   {/if}
-  <h2>Arrived <span class="badge">{arrived.length}</span></h2>
+  <div class="u-flex u-flex-end u-flex-space">
+    <h2>Arrived <span class="badge">{arrived.length}</span></h2>
+    {#if arrived.length}
+      <div class="u-m-top-2">
+        <button class="button button--plain" on:click={reset}>
+          Reset
+        </button>
+      </div>
+    {/if}
+  </div>
   {#if arrived.length}
     <ul class="link-list u-m-top-2">
       {#each arrived as checkIn}

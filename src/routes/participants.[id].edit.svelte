@@ -46,14 +46,14 @@
   <form
     autocomplete="off"
     on:submit={submit}>
-    <Fieldset legend="Profile">
-      <div class="u-m-top-6">
-        <FieldsetParticipantName
-          bind:firstName={firstName}
-          bind:lastName={lastName}
-          bind:alias={alias} />
-      </div>
-      <div class="u-m-top-6">
+    <Fieldset legend="Name">
+      <FieldsetParticipantName
+        bind:firstName={firstName}
+        bind:lastName={lastName}
+        bind:alias={alias} />
+    </Fieldset>
+    <Fieldset legend="Details">
+      <div class="u-m-top-4">
         <label for="locationInput">Location</label>
         <br>
         <input
@@ -62,7 +62,7 @@
           id="locationInput"
           type="text">
       </div>
-      <div class="u-m-top-6">
+      <div class="u-m-top-4">
         <label for="notesInput">Notes</label>
         <br>
         <textarea
@@ -72,9 +72,9 @@
           rows="5" />
       </div>
     </Fieldset>
-    <div class="u-m-top-6">
+    <div class="u-m-top-4">
       <button class="button button--primary" type="submit">Save</button>
     </div>
-    <p class="u-m-top-6"><a href={participant?.url}>Back</a></p>
+    <p class="u-m-top-4"><a href={participant?.url}>Back</a></p>
   </form>
 </Layout>

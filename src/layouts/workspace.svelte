@@ -72,7 +72,7 @@
             href="?p=events"
             id="events"
             location={location}>
-            Runs
+            Events
           </NavLink>
           <NavLink
             href="?p=participants"
@@ -101,7 +101,7 @@
       </span>
     </div>
   </header>
-  <main class="layout-content u-p-top-6 u-p-bottom-6">
+  <main class="layout-content u-p-bottom-6">
     <slot></slot>
   </main>
 </Layout>

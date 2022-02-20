@@ -25,9 +25,11 @@
 <Layout
   state={state}
   title={title}>
-  <div class="u-flex u-flex-space">
+  <div class="u-flex u-flex-end u-flex-space">
     <h1>{title}</h1>
-    <a class="button button--primary button--small" href="?p=events/new">New event</a>
+    <div>
+      <a class="button button--primary" href="?p=events/new">New event</a>
+    </div>
   </div>
   <h2>Upcoming events <span class="badge">{upcomingEvents.length}</span></h2>
   <Events events={upcomingEvents} />

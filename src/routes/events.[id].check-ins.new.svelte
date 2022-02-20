@@ -143,7 +143,7 @@
     {/if}
     {#if checkInType === 'new-participant'}
       <Fieldset legend="New participant">
-        <div class="u-m-top-6">
+        <div class="u-m-top-4">
           <FieldsetParticipantName
             bind:firstName={firstName}
             bind:lastName={lastName}
@@ -152,13 +152,13 @@
       </Fieldset>
     {/if}
     <FieldsetCheckIn bind:host={host} />
-    <div class="u-m-top-6">
+    <div class="u-m-top-4">
       <button
         class="button button--primary"
         type="submit">
         Save
       </button>
     </div>
-    <p class="u-m-top-6"><a href={event.url}>Back</a></p>
+    <p class="u-m-top-4"><a href={event.url}>Back</a></p>
   </form>
 </Layout>
