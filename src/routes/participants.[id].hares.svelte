@@ -34,10 +34,10 @@
   {/if}
   {#each checkIns as [year, checkInsThisYear]}
     <h2>{year} <span class="badge">{checkInsThisYear.length}</span></h2>
-    <ul class="link-list u-m-top-2">
+    <ul class="list-plain u-gap-2px u-m-top-2">
       {#each checkInsThisYear as checkIn}
-        <li>
-          <a class="row" href={checkIn.event.url}>
+        <li class="row">
+          <a class="row__left" href={checkIn.event.url}>
             <span class="row__primary">{checkIn.event.name}</span>
             <span class="row__secondary u-text-num">{`#${checkIn.event.count}: ${checkIn.event.displayDateMedium}`}</span>
             <span class="row__tertiary u-text-num">{`${checkIn.hostCount} ${pluralize(checkIn.hostCount, 'hare')}`}</span>

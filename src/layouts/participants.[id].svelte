@@ -43,7 +43,7 @@
       <span>{`${latestCheckIn?.hostCount} ${pluralize(latestCheckIn?.hostCount, 'hare')}`}</span>
     {/if}
   </p>
-  <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
+  <nav class="list-plain list-plain--inline u-border-bottom u-gap-4 u-m-top-4 u-p-bottom-4">
     <NavLink
       href={participant.url}
       id="participants/[id]/index"
