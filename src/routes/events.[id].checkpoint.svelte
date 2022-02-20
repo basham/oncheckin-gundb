@@ -3,6 +3,7 @@
   import { STATE } from '@src/constants.js'
   import { checkInStore, eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/events.[id].svelte'
+  import Icon from '@src/lib/icon.svelte'
 
   const params = getContext('params')
 
@@ -54,10 +55,15 @@
       {#each waiting as checkIn}
         <li>
           <div class="link-item">
-            <span class="link-item__primary u-color-hint">{checkIn.participant.displayName}</span>
+            <span
+              class="link-item__primary"
+              id={checkIn.participant.id}>
+              {checkIn.participant.displayName}
+            </span>
             <span class="link-item__secondary">{checkIn.participant.fullName}</span>
             <span class="link-item__tertiary u-text-num">
               <button
+                aria-describedby={checkIn.participant.id}
                 class="button"
                 data-id={checkIn.participant.id}
                 on:click={markAsArrived}>
@@ -75,14 +81,20 @@
       {#each arrived as checkIn}
         <li>
           <div class="link-item">
-            <span class="link-item__primary u-color-hint">{checkIn.participant.displayName}</span>
+            <span
+              class="link-item__primary"
+              id={checkIn.participant.id}>
+              {checkIn.participant.displayName}
+            </span>
             <span class="link-item__secondary">{checkIn.participant.fullName}</span>
             <span class="link-item__tertiary u-text-num">
               <button
+                aria-describedby={checkIn.participant.id}
+                aria-label="Remove"
                 class="button"
                 data-id={checkIn.participant.id}
                 on:click={markAsWaiting}>
-                Remove
+                <Icon name="close" />
               </button>
             </span>
           </div>

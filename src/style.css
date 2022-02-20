@@ -26,7 +26,7 @@
   --color-base-98: #0f0803;
   --color-base-100: #000000;
   /* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
-  --color-hint: var(--color-base-20);
+  --color-hint: var(--color-base-15);
   --color-ix: var(--color-base-30);
   --color-green: limegreen;
   --color-red: orangered;
@@ -145,7 +145,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-base-20);
+  color: var(--color-base-15);
 }
 
 p {
@@ -161,10 +161,10 @@ p {
 }
 
 .button {
-  background-color: var(--color-base-80);
+  background-color: var(--color-base-70);
   border: none;
   border-radius: var(--size-1);
-  color: var(--color-ix);
+  color: var(--color-base-25);
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
@@ -176,8 +176,8 @@ p {
 }
 
 .button:hover {
-  background-color: var(--color-base-75);
-  color: var(--color-ix);
+  background-color: var(--color-base-65);
+  color: var(--color-base-15);
 }
 
 .button--primary {
@@ -293,12 +293,12 @@ a.link-item:hover {
 }
 
 .link-item__secondary {
-  color: var(--color-base-5);
+  color: var(--color-hint);
   grid-area: secondary;
 }
 
 .link-item__tertiary {
-  color: var(--color-base-5);
+  color: var(--color-hint);
   grid-area: tertiary;
   padding-left: var(--size-2);
 }
