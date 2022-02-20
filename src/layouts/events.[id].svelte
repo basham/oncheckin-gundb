@@ -37,6 +37,12 @@
       Check-ins
     </NavLink>
     <NavLink
+      href={`${event.url}/checkpoint`}
+      id="events/[id]/checkpoint"
+      location={route}>
+      Checkpoint
+    </NavLink>
+    <NavLink
       href={`${event.url}/circle`}
       id="events/[id]/circle"
       location={route}>
