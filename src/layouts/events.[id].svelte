@@ -10,6 +10,7 @@
 
   const params = getContext('params')
   const route = getContext('route')
+  const location = route.split('/')[2]
 
   let event = null
   let _state = STATE.LOADING
@@ -32,29 +33,26 @@
   <nav class="list-inline u-border-bottom u-m-top-4 u-p-bottom-4">
     <NavLink
       href={event.url}
-      id="events/[id]/index"
-      location={route}>
+      id="check-ins"
+      location={location === 'index' ? 'check-ins' : location}>
       Check-ins
     </NavLink>
     <NavLink
       href={`${event.url}/checkpoint`}
-      id="events/[id]/checkpoint"
-      location={route}>
+      id="checkpoint"
+      location={location}>
       Checkpoint
     </NavLink>
     <NavLink
       href={`${event.url}/circle`}
-      id="events/[id]/circle"
-      location={route}>
+      id="circle"
+      location={location}>
       Circle
-    </NavLink>
-    <NavLink href={`${event.url}/roster`}>
-      Roster
     </NavLink>
     <NavLink
       href={`${event.url}/edit`}
-      id="events/[id]/edit"
-      location={route}>
+      id="edit"
+      location={location}>
       Edit
     </NavLink>
   </nav>
