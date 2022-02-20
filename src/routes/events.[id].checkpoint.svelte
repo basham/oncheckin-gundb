@@ -75,7 +75,7 @@
       {#each arrived as checkIn}
         <li>
           <div class="link-item">
-            <span class="link-item__primary">{checkIn.participant.displayName}</span>
+            <span class="link-item__primary u-color-hint">{checkIn.participant.displayName}</span>
             <span class="link-item__secondary">{checkIn.participant.fullName}</span>
             <span class="link-item__tertiary u-text-num">
               <button
