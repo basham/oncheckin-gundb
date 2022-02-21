@@ -336,6 +336,10 @@ p {
   background-color: var(--color-base-100);
 }
 
+.u-block {
+  display: block;
+}
+
 .u-border-bottom {
   border-bottom: var(--px-2) solid var(--color-base-80);
 }
@@ -479,6 +483,10 @@ p {
 
 .u-p-top-6 {
   padding-top: var(--size-6);
+}
+
+.u-right {
+  text-align: right;
 }
 
 .u-sr-only {

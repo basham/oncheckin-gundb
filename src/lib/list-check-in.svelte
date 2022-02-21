@@ -13,12 +13,12 @@
         <a class="row__left" href={checkIn.url}>
           <span class="row__primary">{checkIn.participant.displayName}</span>
           <span class="row__secondary">{checkIn.participant.fullName}</span>
-          <span class="row__tertiary u-text-num">
+          <span class="row__tertiary u-right u-text-num">
             {#if showHostCount && checkIn.host}
-              <span>{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}${showCheckInCount ? ',' : ''}`}</span>
+              <span class="u-block">{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
             {/if}
             {#if showCheckInCount}
-              <span>{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}</span>
+              <span class="u-block">{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}</span>
             {/if}
           </span>
         </a>
