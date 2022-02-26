@@ -1,10 +1,9 @@
-import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
-import { StorageIndexedDB } from './storageIndexedDB.js'
+import { ReplicaDriverMemory, ReplicaDriverIndexedDB } from 'earthstar'
 
 // https://github.com/flexdinesh/browser-or-node
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined'
 
-export const EarthstarStorage = isBrowser ? StorageIndexedDB : StorageMemory
+export const ReplicaDriver = isBrowser ? ReplicaDriverIndexedDB : ReplicaDriverMemory
 
 const storage = new Map()
 const memoryStorage = {

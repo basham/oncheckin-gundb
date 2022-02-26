@@ -39,13 +39,14 @@ export async function getEvent (id) {
 
 export async function getEvents () {
   return getOrCreate(cache, 'events', async () => {
-    const { storage } = await getWorkspace()
-    const ids = storage
-      .paths({
-        pathStartsWith: resolvePath(),
-        pathEndsWith: fileName
-      })
-      .map((path) => path.split('/')[2])
+    const { replica } = await getWorkspace()
+    const docs = await replica.queryDocs({
+      filter: {
+        pathEndsWith: fileName,
+        pathStartsWith: resolvePath()
+      }
+    })
+    const ids = docs.map((path) => path.split('/')[2])
     const uniqueIds = Array.from(new Set(ids))
     const eventPromises = uniqueIds
       .map(getEvent)

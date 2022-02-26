@@ -1,3 +1,4 @@
+/*
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
 import { clear, createStore, del, delMany, entries, get, set, setMany } from 'idb-keyval'
 import { debounce } from '../util.js'
@@ -109,3 +110,4 @@ export class StorageIndexedDB extends StorageMemory {
     await clear(this._store)
   }
 }
+*/

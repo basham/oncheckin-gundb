@@ -1,21 +1,13 @@
 import { format, isToday } from 'date-fns'
-import {
-  OnePubOneWorkspaceSyncer,
-  ValidatorEs4,
-  checkAuthorKeypairIsValid,
-  generateAuthorKeypair,
-  isErr
-} from 'earthstar/dist/earthstar.min.js'
-import { EarthstarStorage, localStorage, btoa } from './storage.js'
+import { Crypto, FormatValidatorEs4, Peer, Replica, isErr } from 'earthstar'
+import { ReplicaDriver, localStorage, btoa } from './storage.js'
 import { APP, URL } from '../constants.js'
 import { createId, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
 const CURRENT_AUTHOR = `${APP}-current-author`
 const CURRENT_WORKSPACE = `${APP}-current-workspace`
 const fileName = 'workspace.json'
-const storages = new Map()
-const syncers = new Map()
-const workspaces = new Map()
+const cache = new Map()
 
 const extDecodeMap = {
   json: (content) => JSON.parse(content),
@@ -23,23 +15,24 @@ const extDecodeMap = {
 }
 
 const extEncodeMap = {
-  json: (storage, path, content) => {
+  json: async (replica, path, content) => {
     if (content === '') {
       return content
     }
+    const doc = await getDoc(replica, path)
     return JSON.stringify({
-      ...(getContent(storage, path) || {}),
+      ...(doc || {}),
       ...content
     })
   },
-  txt: (storage, path, content) => content
+  txt: async (replica, path, content) => content
 }
 
 export async function createWorkspace ({ name, pub = null }) {
   const id = createId()
-  const storage = getStorage(id)
+  const replica = getReplica(id)
   await setPub(id, pub)
-  await setContent(storage, fileName, { name })
+  await setDoc(replica, fileName, { name })
   const confirmationUrl = `?p=workspaces/created/${id}`
   return {
     confirmationUrl,
@@ -53,10 +46,11 @@ export function createWorkspaceId (id = createId()) {
   return `+${APP}.${id}`
 }
 
-export async function getContent (storage, path) {
+export async function getDoc (replica, path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
-  const content = await storage.getContent(resolvePath(path))
+  const content = await replica.getLatestDocAtPath(resolvePath(path))
+  console.log('CC', path, content)
   return content ? decode(content) : undefined
 }
 
@@ -64,44 +58,47 @@ export function getCurrentWorkspaceId () {
   return JSON.parse(localStorage.getItem(CURRENT_WORKSPACE))
 }
 
-export function getKeypair () {
+export async function getKeypair () {
   const storedKeypair = JSON.parse(localStorage.getItem(CURRENT_AUTHOR))
-  const check = checkAuthorKeypairIsValid(storedKeypair)
+  const check = await Crypto.checkAuthorKeypairIsValid(storedKeypair)
 
   if (!isErr(check)) {
     return storedKeypair
   }
 
   const shortname = randomWord(4)
-  const keypair = generateAuthorKeypair(shortname)
+  const keypair = await Crypto.generateAuthorKeypair(shortname)
   localStorage.setItem(CURRENT_AUTHOR, JSON.stringify(keypair))
   return keypair
 }
 
-export function getStorage (id = getCurrentWorkspaceId()) {
-  return getOrCreate(storages, id, () => {
+export function getReplica (id = getCurrentWorkspaceId()) {
+  return getOrCreate(cache, `replica/${id}`, () => {
     const workspaceId = createWorkspaceId(id)
-    return new EarthstarStorage([ValidatorEs4], workspaceId)
+    return new Replica(workspaceId, FormatValidatorEs4, new ReplicaDriver(workspaceId))
   })
 }
 
-export function getSyncer (id = getCurrentWorkspaceId()) {
-  return getOrCreate(syncers, id, async () => {
-    const storage = getStorage(id)
-    const pub = await storage.getConfig('pub')
-    return new OnePubOneWorkspaceSyncer(storage, pub)
+export function getPeer (id = getCurrentWorkspaceId()) {
+  return getOrCreate(cache, `peer/${id}`, async () => {
+    const replica = getReplica(id)
+    const peer = new Peer()
+    peer.addReplica(replica)
+    // const pub = await replica.getConfig('pub')
+    // peer.sync(pub)
+    return peer
   })
 }
 
 export function getWorkspace (id = getCurrentWorkspaceId()) {
-  return getOrCreate(workspaces, id, async () => {
+  return getOrCreate(cache, `workspace/${id}`, async () => {
     const workspaceId = createWorkspaceId(id)
-    const storage = getStorage(id)
-    const syncer = await getSyncer(id)
-    const get = (path) => getContent(storage, path)
-    const set = (path, content) => setContent(storage, path, content)
-    const data = await get(fileName) || {}
-    const pub = await storage.getConfig('pub')
+    const replica = getReplica(id)
+    const peer = await getPeer(id)
+    const get = (path) => getDoc(replica, path)
+    const set = (path, content) => setDoc(replica, path, content)
+    const data = (await get(fileName)) || {}
+    const pub = await replica.getConfig('pub')
     const name = data.name || '(Workspace)'
     const openUrl = `?p=workspaces/open/${id}`
     const inviteCode = btoa(JSON.stringify({ id, name, pub }))
@@ -117,10 +114,10 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
       pub,
       name,
       openUrl,
+      peer,
+      replica,
       set,
       shareUrl,
-      storage,
-      syncer,
       workspaceId
     }
   })
@@ -145,37 +142,36 @@ export function openWorkspace (id = null) {
 export async function renameWorkspace (name) {
   const { id, set } = await getWorkspace()
   await set(fileName, { name })
-  workspaces.delete(id)
+  cache.delete(`workspace/${id}`)
   return await getWorkspace()
 }
 
-export async function setContent (storage, path, content) {
-  const keypair = getKeypair()
+export async function setDoc (replica, path, value) {
+  const keypair = await getKeypair()
   const ext = parseExtension(path)
   const encode = extEncodeMap[ext]
-  const tag = storage.tag()
-  const write = storage.set(keypair, {
+  const content = await encode(replica, path, value)
+  console.log('##', keypair, path, content)
+  await replica.set(keypair, {
     format: 'es.4',
     path: resolvePath(path),
-    content: encode(storage, path, content)
+    content
   })
-  await tag
-  return write
 }
 
 export async function setPub (id, pub) {
-  const storage = getStorage(id)
-  await storage.setConfig('pub', pub)
+  const replica = getReplica(id)
+  await replica.setConfig('pub', pub)
 }
 
 export async function syncStatus () {
-  const { storage } = await workspaceStore.get()
-  const lastLocalUpdate = await storage.getConfig('last-local-update')
-  const lastRemoteUpdate = await storage.getConfig('last-remote-update')
-  const lastSync = await storage.getConfig('last-sync')
+  const { replica } = await workspaceStore.get()
+  const lastLocalUpdate = await replica.getConfig('last-local-update')
+  const lastRemoteUpdate = await replica.getConfig('last-remote-update')
+  const lastSync = await replica.getConfig('last-sync')
   const unsyncedChanges = lastLocalUpdate > lastSync
-  const day = isToday(lastSync) ? 'Today' : format(lastSync, 'PP')
-  const time = format(lastSync, 'p')
+  const day = '' // isToday(lastSync) ? 'Today' : format(lastSync, 'PP')
+  const time = '' // format(lastSync, 'p')
   const lastSyncDisplay = lastSync ? `${day}, ${time}` : ''
   return {
     lastLocalUpdate,
@@ -187,11 +183,12 @@ export async function syncStatus () {
 }
 
 export async function syncWorkspace () {
-  const syncer = await getSyncer()
-  syncer.syncOnceAndContinueLive()
+  // const syncer = await getSyncer()
+  // syncer.syncOnceAndContinueLive()
 }
 
 export async function syncWorkspaceOnce () {
+  /*
   const { storage, syncer } = await workspaceStore.get()
   const tag = storage.tag()
   const stats = await syncer.syncOnce()
@@ -200,14 +197,15 @@ export async function syncWorkspaceOnce () {
   }
   const lastSync = Date.now()
   await storage.setConfig('last-sync', lastSync)
-  return { lastSync, stats }
+  */
+  return { lastSync: Date.now(), stats: {} }
 }
 
 const workspaceStore = {
   create: createWorkspace,
   get: getWorkspace,
   getAll: getWorkspaces,
-  getStorage,
+  getReplica,
   open: openWorkspace,
   rename: renameWorkspace,
   setPub,

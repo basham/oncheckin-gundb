@@ -1,3 +1,4 @@
+/*
 import { StorageMemory } from 'earthstar/dist/earthstar.min.js'
 
 const { localStorage } = window
@@ -84,3 +85,4 @@ export class StorageLocalStorage extends StorageMemory {
     })
   }
 }
+*/

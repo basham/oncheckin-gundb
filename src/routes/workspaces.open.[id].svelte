@@ -7,10 +7,10 @@
 
   onMount(async () => {
     workspaceStore.open(params.id)
-    const { storage } = await workspaceStore.get()
-    const lastSync = await storage.getConfig('last-sync')
+    const { replica } = await workspaceStore.get()
+    const lastSync = await replica.getConfig('last-sync')
     if (!lastSync) {
-      await workspaceStore.syncOnce()
+      // await workspaceStore.syncOnce()
     }
     window.location = '?p=events'
   })
