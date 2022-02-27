@@ -25,7 +25,7 @@
   <div class="group u-m-top-6">
     <h2 class="u-m-top-0">{workspace?.name}</h2>
     <p class="u-m-0"><span class="u-color-hint">ID:</span> {workspace?.id}</p>
-    <p class="u-m-0"><span class="u-color-hint">Pub:</span> {workspace?.pub}</p>
+    <p class="u-m-0"><span class="u-color-hint">Pub:</span> {workspace?.server}</p>
   </div>
   <details class="u-m-top-6">
     <summary>You should save this workspace's invite link</summary>

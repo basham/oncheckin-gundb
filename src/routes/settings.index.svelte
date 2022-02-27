@@ -38,7 +38,7 @@
   <div class="card u-m-top-2">
     <p><span class="u-color-hint">Name:</span> {workspace?.name}</p>
     <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
-    <p><span class="u-color-hint">Pub link:</span> {workspace?.pub}</p>
+    <p><span class="u-color-hint">Pub link:</span> {workspace?.server || '(none)'}</p>
     <ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
       <li><a href="?p=settings/share">Share</a></li>
       <li><a href="?p=settings/rename">Rename</a></li>

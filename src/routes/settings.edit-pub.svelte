@@ -8,17 +8,17 @@
 
   let state = STATE.LOADING
   let workspace
-  let pub
+  let server
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    pub = workspace?.pub
+    server = workspace?.server
     state = STATE.LOADED
   })
 
   async function submit (event) {
     event.preventDefault()
-    await workspaceStore.setPub(workspace.id, pub)
+    await workspaceStore.setServer(workspace.id, server)
     window.location = '?p=settings'
   }
 </script>
@@ -31,12 +31,12 @@
     autocomplete="off"
     on:submit={submit}>
     <div class="u-m-top-4">
-      <label for="pub">Pub link</label>
+      <label for="server">Pub link</label>
       <br>
       <input
-        bind:value={pub}
+        bind:value={server}
         class="input"
-        id="pub"
+        id="server"
         type="text">
     </div>
     <div class="u-m-top-4">

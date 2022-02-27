@@ -3,11 +3,11 @@
   import Layout from '@src/layouts/public.svelte'
 
   let name = ''
-  let pub = ''
+  let server = ''
 
   async function submit (e) {
     e.preventDefault()
-    const workspace = await workspaceStore.create({ name, pub })
+    const workspace = await workspaceStore.create({ name, server })
     window.location = workspace.confirmationUrl
   }
 </script>
@@ -23,7 +23,7 @@
       <li><a href="https://glitch.com/edit/#!/remix/oncheckin-pub">Remix the OnCheckIn Pub</a>.</li>
       <li>Click on the Share button at the top.</li>
       <li>Copy the link to the live site.</li>
-      <li>Enter this link as the <a href="#pubLinkInput">Pub link</a>.</li>
+      <li>Enter this link as the <a href="#serverLinkInput">Pub link</a>.</li>
     </ol>
     <p>Explore <a href="https://github.com/earthstar-project/earthstar-pub">Earthstar Pub</a> for additional ways to start a pub.</p>
     <p class="u-m-top-4">Feel free to reuse pubs, since each can host multiple workspaces.</p>
@@ -42,12 +42,12 @@
           type="text">
       </div>
       <div class="u-m-top-6">
-        <label for="pubLinkInput">Pub link (optional)</label>
+        <label for="serverLinkInput">Pub link (optional)</label>
         <br>
         <input
-          bind:value={pub}
+          bind:value={server}
           class="input"
-          id="pubLinkInput"
+          id="serverLinkInput"
           type="text">
       </div>
     </div>

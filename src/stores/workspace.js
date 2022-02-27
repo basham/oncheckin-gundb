@@ -28,17 +28,17 @@ const extEncodeMap = {
   txt: async (replica, path, content) => content
 }
 
-export async function createWorkspace ({ name, pub = null }) {
+export async function createWorkspace ({ name, server = null }) {
   const id = createId()
   const replica = getReplica(id)
-  await setPub(id, pub)
+  await setServer(id, server)
   await setDoc(replica, fileName, { name })
   const confirmationUrl = `?p=workspaces/created/${id}`
   return {
     confirmationUrl,
     id,
     name,
-    pub
+    server
   }
 }
 
@@ -84,8 +84,8 @@ export function getPeer (id = getCurrentWorkspaceId()) {
     const replica = getReplica(id)
     const peer = new Peer()
     peer.addReplica(replica)
-    // const pub = await replica.getConfig('pub')
-    // peer.sync(pub)
+    // const server = await replica.getConfig('server')
+    // peer.sync(server)
     return peer
   })
 }
@@ -98,12 +98,12 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
     const get = (path) => getDoc(replica, path)
     const set = (path, content) => setDoc(replica, path, content)
     const data = (await get(fileName)) || {}
-    const pub = await replica.getConfig('pub')
+    const server = await replica.getConfig('server')
     const name = data.name || '(Workspace)'
     const openUrl = `?p=workspaces/open/${id}`
-    const inviteCode = btoa(JSON.stringify({ id, name, pub }))
+    const inviteCode = btoa(JSON.stringify({ id, name, server }))
     const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
-    const apiUrl = `${pub}earthstar-api/v1/${workspaceId}/`
+    const apiUrl = `${server}earthstar-api/v1/${workspaceId}/`
     const apiPathsUrl = `${apiUrl}paths`
     const apiDocumentsUrl = `${apiUrl}documents`
     return {
@@ -111,11 +111,11 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
       apiDocumentsUrl,
       get,
       id,
-      pub,
       name,
       openUrl,
       peer,
       replica,
+      server,
       set,
       shareUrl,
       workspaceId
@@ -158,9 +158,9 @@ export async function setDoc (replica, path, value) {
   })
 }
 
-export async function setPub (id, pub) {
+export async function setServer (id, server) {
   const replica = getReplica(id)
-  await replica.setConfig('pub', pub)
+  await replica.setConfig('server', server)
 }
 
 export async function syncStatus () {
@@ -207,7 +207,7 @@ const workspaceStore = {
   getReplica,
   open: openWorkspace,
   rename: renameWorkspace,
-  setPub,
+  setServer,
   sync: syncWorkspace,
   syncOnce: syncWorkspaceOnce,
   syncStatus: syncStatus
