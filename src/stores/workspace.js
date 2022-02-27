@@ -1,6 +1,6 @@
 import { format, isToday } from 'date-fns'
 import { Crypto, FormatValidatorEs4, Peer, Replica, isErr } from 'earthstar'
-import { ReplicaDriver, localStorage, btoa } from './storage.js'
+import { ReplicaDriver, localStorage, btoa } from './env.js'
 import { APP, URL } from '../constants.js'
 import { createId, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
