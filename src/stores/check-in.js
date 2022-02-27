@@ -43,25 +43,27 @@ export async function getCheckIn (eventId, participantId) {
 
 async function getCheckInIds () {
   return getOrCreate(cache, 'ids', async () => {
-    const { storage } = await getWorkspace()
+    const { replica } = await getWorkspace()
     const checkInsByEventId = new Map()
     const checkInsByParticipantId = new Map()
-    storage
-      .paths({
-        pathStartsWith: resolvePath(),
-        pathEndsWith: fileName
-      })
-      .forEach((path) => {
-        const [eventId, participantId] = path.split('/')[2].split('-')
-        if (!checkInsByEventId.has(eventId)) {
-          checkInsByEventId.set(eventId, new Set())
-        }
-        checkInsByEventId.get(eventId).add(participantId)
-        if (!checkInsByParticipantId.has(participantId)) {
-          checkInsByParticipantId.set(participantId, new Set())
-        }
-        checkInsByParticipantId.get(participantId).add(eventId)
-      })
+    const docs = await replica.queryDocs({
+      historyMode: 'latest',
+      filter: {
+        pathEndsWith: fileName,
+        pathStartsWith: resolvePath()
+      }
+    })
+    docs.forEach((doc) => {
+      const [eventId, participantId] = doc.path.split('/')[2].split('-')
+      if (!checkInsByEventId.has(eventId)) {
+        checkInsByEventId.set(eventId, new Set())
+      }
+      checkInsByEventId.get(eventId).add(participantId)
+      if (!checkInsByParticipantId.has(participantId)) {
+        checkInsByParticipantId.set(participantId, new Set())
+      }
+      checkInsByParticipantId.get(participantId).add(eventId)
+    })
     return { checkInsByEventId, checkInsByParticipantId }
   })
 }

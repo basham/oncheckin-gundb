@@ -49,9 +49,9 @@ export function createWorkspaceId (id = createId()) {
 export async function getDoc (replica, path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
-  const content = await replica.getLatestDocAtPath(resolvePath(path))
-  console.log('CC', path, content)
-  return content ? decode(content) : undefined
+  await replica.replicaDriver.getIndexedDb()
+  const doc = await replica.getLatestDocAtPath(resolvePath(path))
+  return doc ? decode(doc.content) : undefined
 }
 
 export function getCurrentWorkspaceId () {
@@ -124,7 +124,7 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
 }
 
 export async function getWorkspaces () {
-  const prefix = 'documents/+oncheckin.'
+  const prefix = 'stonesoup:database:+oncheckin.'
   const ids = (await window.indexedDB.databases())
     .map(({ name }) => name)
     .filter((name) => name.startsWith(prefix))
@@ -151,7 +151,6 @@ export async function setDoc (replica, path, value) {
   const ext = parseExtension(path)
   const encode = extEncodeMap[ext]
   const content = await encode(replica, path, value)
-  console.log('##', keypair, path, content)
   await replica.set(keypair, {
     format: 'es.4',
     path: resolvePath(path),

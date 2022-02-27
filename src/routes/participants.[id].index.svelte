@@ -28,6 +28,9 @@
 </script>
 
 <Layout state={state}>
+  {#if !checkIns.length}
+    <h2>No runs</h2>
+  {/if}
   {#each checkIns as [year, checkInsThisYear]}
     <h2>{year} <span class="badge">{checkInsThisYear.length}</span></h2>
     <ul class="list-plain u-gap-2px u-m-top-2">

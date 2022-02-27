@@ -25,11 +25,11 @@
   </details>
   {#if workspaces.length}
     <h2>All workspaces</h2>
-    <ul class="link-list u-m-top-2">
+    <ul class="list-plain u-gap-2px u-m-top-2">
       {#each workspaces as workspace}
-        <li>
+        <li class="row">
           <a
-            class="row"
+            class="row__left"
             href={workspace.openUrl}>
             <span class="row__primary">{workspace.name}</span>
             <span class="row__secondary">{`ID: ${workspace.id}`}</span>

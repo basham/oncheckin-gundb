@@ -36,13 +36,15 @@ export async function getParticipant (id) {
 }
 
 export async function getParticipants () {
-  const { storage } = await getWorkspace()
-  const ids = storage
-    .paths({
-      pathStartsWith: resolvePath(),
-      pathEndsWith: fileName
-    })
-    .map((path) => path.split('/')[2])
+  const { replica } = await getWorkspace()
+  const docs = await replica.queryDocs({
+    historyMode: 'latest',
+    filter: {
+      pathEndsWith: fileName,
+      pathStartsWith: resolvePath()
+    }
+  })
+  const ids = docs.map((doc) => doc.path.split('/')[2])
   const uniqueIds = Array.from(new Set(ids))
   const participantPromises = uniqueIds
     .map(getParticipant)
