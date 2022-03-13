@@ -1,9 +1,9 @@
 import { format, isToday } from 'date-fns'
-import { Crypto, FormatValidatorEs4, Peer, Replica, isErr } from 'earthstar'
-import { ReplicaDriver, localStorage, btoa } from './env.js'
+import { Crypto, FormatValidatorEs4, Peer, Replica, ReplicaDriverIndexedDB, isErr } from 'earthstar-bundle'
 import { APP, URL } from '../constants.js'
 import { createId, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
+const { btoa, localStorage } = window
 const CURRENT_AUTHOR = `${APP}-current-author`
 const CURRENT_WORKSPACE = `${APP}-current-workspace`
 const fileName = 'workspace.json'
@@ -75,7 +75,7 @@ export async function getKeypair () {
 export function getReplica (id = getCurrentWorkspaceId()) {
   return getOrCreate(cache, `replica/${id}`, () => {
     const workspaceId = createWorkspaceId(id)
-    return new Replica(workspaceId, FormatValidatorEs4, new ReplicaDriver(workspaceId))
+    return new Replica(workspaceId, FormatValidatorEs4, new ReplicaDriverIndexedDB(workspaceId))
   })
 }
 
@@ -83,9 +83,9 @@ export function getPeer (id = getCurrentWorkspaceId()) {
   return getOrCreate(cache, `peer/${id}`, async () => {
     const replica = getReplica(id)
     const peer = new Peer()
-    peer.addReplica(replica)
-    // const server = await replica.getConfig('server')
-    // peer.sync(server)
+    await peer.addReplica(replica)
+    const server = await replica.getConfig('server')
+    peer.sync(server)
     return peer
   })
 }
@@ -124,7 +124,7 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
 }
 
 export async function getWorkspaces () {
-  const prefix = 'stonesoup:database:+oncheckin.'
+  const prefix = 'earthstar:share:+oncheckin.'
   const ids = (await window.indexedDB.databases())
     .map(({ name }) => name)
     .filter((name) => name.startsWith(prefix))
