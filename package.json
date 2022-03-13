@@ -7,6 +7,7 @@
   "scripts": {
     "build": "snowpack build && npm run workbox",
     "start": "snowpack dev",
+    "start-reload": "snowpack dev --reload",
     "test": "standard",
     "workbox": "workbox generateSW workbox-config.cjs"
   },
