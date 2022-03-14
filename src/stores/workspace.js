@@ -49,7 +49,6 @@ export function createWorkspaceId (id = createId()) {
 export async function getDoc (replica, path) {
   const ext = parseExtension(path)
   const decode = extDecodeMap[ext]
-  await replica.replicaDriver.getIndexedDb()
   const doc = await replica.getLatestDocAtPath(resolvePath(path))
   return doc ? decode(doc.content) : undefined
 }
