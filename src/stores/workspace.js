@@ -103,6 +103,8 @@ export function getWorkspace (id = getCurrentWorkspaceId()) {
     const apiUrl = `${server}earthstar-api/v1/${workspaceId}/`
     const apiPathsUrl = `${apiUrl}paths`
     const apiDocumentsUrl = `${apiUrl}documents`
+    const allDocs = await replica.getLatestDocs()
+    console.log('Doc count', allDocs.length)
     return {
       apiPathsUrl,
       apiDocumentsUrl,
