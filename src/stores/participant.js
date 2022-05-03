@@ -1,18 +1,19 @@
 import { format, parseISO } from 'date-fns'
-import { getWorkspace } from './workspace.js'
+import { getWorkspace, parseDoc } from './workspace.js'
 import { createId, getOrCreate, resolvePath, sortAsc } from '../util.js'
 
 const fileName = 'participant.json'
-const participants = new Map()
+const cache = new Map()
 
 export async function createParticipant (values) {
   return await setParticipant(createId(), values)
 }
 
 export async function getParticipant (id) {
-  return getOrCreate(participants, id, async () => {
+  return getOrCreate(cache, id, async () => {
     const { get } = await getWorkspace()
-    const data = await get(`${id}/${fileName}`)
+    const path = getPath(id)
+    const data = cache.get(path) || await get(path)
     if (!data) {
       return undefined
     }
@@ -44,10 +45,11 @@ export async function getParticipants () {
       pathStartsWith: resolvePath()
     }
   })
-  const ids = docs.map((doc) => doc.path.split('/')[2])
-  const uniqueIds = Array.from(new Set(ids))
-  const participantPromises = uniqueIds
-    .map(getParticipant)
+  const participantPromises = docs.map((doc) => {
+    const id = doc.path.split('/')[2]
+    cache.set(getPath(id), parseDoc(doc))
+    return getParticipant(id)
+  })
   return (await Promise.all(participantPromises))
     .filter((item) => item)
     .sort(sortAsc('displayName'))
@@ -55,8 +57,12 @@ export async function getParticipants () {
 
 export async function setParticipant (id, values) {
   const { set } = await getWorkspace()
-  await set(`${id}/${fileName}`, values)
+  await set(getPath(id), values)
   return await getParticipant(id)
+}
+
+function getPath (id) {
+  return `${id}/${fileName}`
 }
 
 const participant = {

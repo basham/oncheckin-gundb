@@ -28,10 +28,14 @@
     const returnersCutoffDate = sub(event?.dateObj, { months: 2 })
     returnersCutoff = format(returnersCutoffDate, 'MM/dd')
 
+    // Cache participants and events, to optimize the following queries.
+    const allParticipants = await participantStore.getAll()
+    await eventStore.getAll()
+
     const checkIns = (await checkInStore.getEventCheckIns(event.id))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
-    const participantsPromises = (await participantStore.getAll())
+    const participantsPromises = allParticipants
       .map(async (p) => {
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn

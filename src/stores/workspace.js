@@ -47,10 +47,8 @@ export function createWorkspaceId (id = createId()) {
 }
 
 export async function getDoc (replica, path) {
-  const ext = parseExtension(path)
-  const decode = extDecodeMap[ext]
   const doc = await replica.getLatestDocAtPath(resolvePath(path))
-  return doc ? decode(doc.content) : undefined
+  return parseDoc(doc)
 }
 
 export function getCurrentWorkspaceId () {
@@ -136,6 +134,15 @@ export async function getWorkspaces () {
 
 export function openWorkspace (id = null) {
   localStorage.setItem(CURRENT_WORKSPACE, JSON.stringify(id))
+}
+
+export function parseDoc (doc) {
+  if (!doc) {
+    return undefined
+  }
+  const ext = parseExtension(doc.path)
+  const decode = extDecodeMap[ext]
+  return decode(doc.content)
 }
 
 export async function renameWorkspace (name) {

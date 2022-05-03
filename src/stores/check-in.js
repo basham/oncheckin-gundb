@@ -1,6 +1,6 @@
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
-import { getWorkspace } from './workspace.js'
+import { getWorkspace, parseDoc } from './workspace.js'
 import { getOrCreate, resolvePath, sortAsc, sortDesc } from '../util.js'
 
 const fileName = 'check-in.json'
@@ -20,7 +20,8 @@ export async function deleteCheckIn (eventId, participantId) {
 
 export async function getCheckIn (eventId, participantId) {
   const { get } = await getWorkspace()
-  const data = await get(`${eventId}-${participantId}/${fileName}`)
+  const path = getPath(eventId, participantId)
+  const data = cache.get(path) || await get(path)
   if (!data) {
     return undefined
   }
@@ -55,6 +56,7 @@ async function getCheckInIds () {
     })
     docs.forEach((doc) => {
       const [eventId, participantId] = doc.path.split('/')[2].split('-')
+      cache.set(getPath(eventId, participantId), parseDoc(doc))
       if (!checkInsByEventId.has(eventId)) {
         checkInsByEventId.set(eventId, new Set())
       }
@@ -102,9 +104,13 @@ export async function getParticipantCheckIns (participantId) {
   })
 }
 
+function getPath (eventId, participantId) {
+  return `${eventId}-${participantId}/${fileName}`
+}
+
 export async function setCheckIn (eventId, participantId, values) {
   const { set } = await getWorkspace()
-  return await set(`${eventId}-${participantId}/${fileName}`, values)
+  return await set(getPath(eventId, participantId), values)
 }
 
 const checkInStore = {
