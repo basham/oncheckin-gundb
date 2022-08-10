@@ -1,11 +1,8 @@
 *.log
 .DS_Store
-.snowpack
-build
 data
+dist
 npm-debug.log*
 node_modules
 package-lock.json
 radata
-snowpack.crt
-snowpack.key

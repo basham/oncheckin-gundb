@@ -2,26 +2,33 @@ import { ROUTES } from './constants.js'
 
 const params = (new URL(document.location)).searchParams
 const dynamicSlugTest = /^\[\w+\]$/
-const MATCH = 1
-const INDEX = 2
-const DYNAMIC = 3
-const NOT_FOUND = -1
+const MATCH = Symbol()
+const INDEX = Symbol()
+const DYNAMIC = Symbol()
+const NOT_FOUND = Symbol()
 
 export function getRoute () {
-  const path = params.get('p')
-  if (!path) {
-    return { component: 'index' }
-  }
-  for (const route of ROUTES) {
-    const result = testRoute(route, path)
-    if (result) {
-      return result
-    }
-  }
-  return { component: 404 }
+  const [route, params] = getRouteParams()
+  const context = new Map(Object.entries({ route, params }))
+  const file = route.replaceAll('/', '.')
+  return { context, route, file }
 }
 
-function testRoute (route, path) {
+function getRouteParams () {
+  const path = params.get('p')
+  if (!path) {
+    return ['index']
+  }
+  for (const route of ROUTES) {
+    const params = getParams(route, path)
+    if (params) {
+      return [route, params]
+    }
+  }
+  return ['404']
+}
+
+function getParams (route, path) {
   const r = route.split('/')
   const p = path.split('/')
   const candidate = r
@@ -48,10 +55,6 @@ function testRoute (route, path) {
   const paramsEntries = candidate
     .filter(([status]) => status === DYNAMIC)
     .map(([status, key, value]) => [key, value])
-  return {
-    component: route.replaceAll('/', '.'),
-    params: Object.fromEntries(paramsEntries),
-    path,
-    route
-  }
+  const params = Object.fromEntries(paramsEntries)
+  return params
 }
