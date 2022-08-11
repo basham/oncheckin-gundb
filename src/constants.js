@@ -27,7 +27,8 @@ export const ROUTES = [
   'workspaces/created/[id]',
   'workspaces/join/[code]',
   'workspaces/open/[id]',
-  'yjs'
+  'yjs/index',
+  'yjs/[id]'
 ]
 
 export const STATE_LOADING = Symbol('loading')
