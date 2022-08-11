@@ -4,7 +4,7 @@
 
 <Layout>
   <h1>Membership management for Hash&nbsp;House&nbsp;Harrier kennels</h1>
-  <ul class="list">
+  <ul class="list u-m-top-6">
     <li><strong>Attendance:</strong> Check in hashers to events, with the app or a printable roster.</li>
     <li><strong>Reports:</strong> Get summaries of individual events or yearly totals.</li>
     <li><strong>Offline first:</strong> The app works in your desktop and mobile browser. It works offline, so if there is no network connectivity, you have no limits.</li>
