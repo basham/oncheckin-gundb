@@ -1,25 +1,15 @@
 <script>
-  export let firstName = ''
-  export let lastName = ''
+  export let fullName = ''
   export let alias = ''
 </script>
 
 <div class="u-m-top-4">
-  <label for="firstNameInput">First name</label>
+  <label for="fullNameInput">Full name</label>
   <br>
   <input
-    bind:value={firstName}
-    class="input input--small"
-    id="firstNameInput"
-    type="text">
-</div>
-<div class="u-m-top-4">
-  <label for="lastNameInput">Last name</label>
-  <br>
-  <input
-    bind:value={lastName}
-    class="input input--small"
-    id="lastNameInput"
+    bind:value={fullName}
+    class="input"
+    id="fullNameInput"
     type="text">
 </div>
 <div class="u-m-top-4">
@@ -29,6 +19,6 @@
     bind:value={alias}
     class="input"
     id="aliasInput"
-    placeholder={firstName ? `Just ${firstName}` : ''}
+    placeholder={fullName ? `Just ${fullName}` : ''}
     type="text">
 </div>

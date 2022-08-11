@@ -17,8 +17,8 @@
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    const syncStatus = await workspaceStore.syncStatus()
-    unsyncedChanges = syncStatus.unsyncedChanges
+    // const syncStatus = await workspaceStore.syncStatus()
+    // unsyncedChanges = syncStatus.unsyncedChanges
     _state = STATE.LOADED
     focusOnHeading()
   })

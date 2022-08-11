@@ -19,13 +19,14 @@ export async function deleteCheckIn (eventId, participantId) {
 }
 
 export async function getCheckIn (eventId, participantId) {
-  const { get } = await getWorkspace()
-  const path = getPath(eventId, participantId)
-  const data = cache.get(path) || await get(path)
+  const { checkIns } = await getWorkspace()
   if (!data) {
     return undefined
   }
-  const { count = 0, host = false, hostCount = 0 } = data
+  const data = checkIns.get(`${eventId}-${participantId}`)
+  const count = data.get('count') ?? 0
+  const host = data.get('host') ?? false
+  const hostCount = data.get('hostCount') ?? 0
   const participant = await getParticipant(participantId)
   const specialCount = isSpecial(count)
   const specialHostCount = isSpecial(hostCount)
@@ -44,27 +45,16 @@ export async function getCheckIn (eventId, participantId) {
 
 async function getCheckInIds () {
   return getOrCreate(cache, 'ids', async () => {
-    const { replica } = await getWorkspace()
+    const { checkIns } = await getWorkspace()
     const checkInsByEventId = new Map()
     const checkInsByParticipantId = new Map()
-    const docs = await replica.queryDocs({
-      historyMode: 'latest',
-      filter: {
-        pathEndsWith: fileName,
-        pathStartsWith: resolvePath()
-      }
-    })
-    docs.forEach((doc) => {
-      const [eventId, participantId] = doc.path.split('/')[2].split('-')
-      cache.set(getPath(eventId, participantId), parseDoc(doc))
-      if (!checkInsByEventId.has(eventId)) {
-        checkInsByEventId.set(eventId, new Set())
-      }
-      checkInsByEventId.get(eventId).add(participantId)
-      if (!checkInsByParticipantId.has(participantId)) {
-        checkInsByParticipantId.set(participantId, new Set())
-      }
-      checkInsByParticipantId.get(participantId).add(eventId)
+    const keys = [...checkIns.keys()]
+    keys.forEach((key) => {
+      const [eventId, participantId] = key.split('-')
+      getOrCreate(checkInsByEventId, eventId, () => new Set())
+        .add(participantId)
+      getOrCreate(checkInsByParticipantId, participantId, () => new Set())
+        .add(eventId)
     })
     return { checkInsByEventId, checkInsByParticipantId }
   })

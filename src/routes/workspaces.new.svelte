@@ -3,53 +3,26 @@
   import Layout from '@src/layouts/public.svelte'
 
   let name = ''
-  let server = ''
 
   async function submit (e) {
     e.preventDefault()
-    const workspace = await workspaceStore.create({ name, server })
-    window.location = workspace.confirmationUrl
+    await workspaceStore.create({ name })
+    window.location = '?p=events'
   }
 </script>
 
 <Layout title="New workspace">
-  <p class="u-m-top-4">OnCheckIn does not sync with a global database. Instead, you control your own data with workspaces and pubs.</p>
-  <p class="u-m-top-4">A workspace initially exists only on the device on which it is created. It works offline, but it must sync with a pub to back up data or collaborate.</p>
-  <details class="u-m-top-6">
-    <summary>Start a pub</summary>
-    <p class="u-m-top-4">A quick and free way to start a pub is with <a href="https://glitch.com/">Glitch</a>.</p>
-    <ol>
-      <li>Create or log in to your Glitch account.</li>
-      <li><a href="https://glitch.com/edit/#!/remix/oncheckin-pub">Remix the OnCheckIn Pub</a>.</li>
-      <li>Click on the Share button at the top.</li>
-      <li>Copy the link to the live site.</li>
-      <li>Enter this link as the <a href="#serverLinkInput">Pub link</a>.</li>
-    </ol>
-    <p>Explore <a href="https://github.com/earthstar-project/earthstar-pub">Earthstar Pub</a> for additional ways to start a pub.</p>
-    <p class="u-m-top-4">Feel free to reuse pubs, since each can host multiple workspaces.</p>
-  </details>
   <form
     autocomplete="off"
     on:submit={submit}>
-    <div class="card u-m-top-6">
-      <div>
-        <label for="workspaceNameInput">Workspace name (optional)</label>
-        <br>
-        <input
-          bind:value={name}
-          class="input"
-          id="workspaceNameInput"
-          type="text">
-      </div>
-      <div class="u-m-top-6">
-        <label for="serverLinkInput">Pub link (optional)</label>
-        <br>
-        <input
-          bind:value={server}
-          class="input"
-          id="serverLinkInput"
-          type="text">
-      </div>
+    <div class="u-m-top-6">
+      <label for="workspaceNameInput">Workspace name</label>
+      <br>
+      <input
+        bind:value={name}
+        class="input"
+        id="workspaceNameInput"
+        type="text">
     </div>
     <div class="u-m-top-6">
       <button

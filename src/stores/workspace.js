@@ -1,5 +1,6 @@
 import { format, isToday } from 'date-fns'
-import { Crypto, FormatValidatorEs4, Peer, Replica, ReplicaDriverIndexedDB, isErr } from 'earthstar-bundle'
+// import { Crypto, FormatValidatorEs4, Peer, Replica, ReplicaDriverIndexedDB, isErr } from 'earthstar-bundle'
+import { createDoc, Y } from './util.js'
 import { APP, URL } from '../constants.js'
 import { createId, getOrCreate, parseExtension, randomWord, resolvePath, sortAsc } from '../util.js'
 
@@ -28,22 +29,27 @@ const extEncodeMap = {
   txt: async (replica, path, content) => content
 }
 
-export async function createWorkspace ({ name, server = null }) {
+export async function createWorkspace ({ name }) {
   const id = createId()
-  const replica = getReplica(id)
-  await setServer(id, server)
-  await setDoc(replica, fileName, { name })
-  const confirmationUrl = `?p=workspaces/created/${id}`
-  return {
-    confirmationUrl,
-    id,
-    name,
-    server
-  }
+  const { doc: workspace } = await createDoc(`${APP}-${id}`, { local: true })
+  workspace.transact(() => {
+    const data = workspace.getMap('data')
+    const settings = getOrCreate(data, 'settings', () => new Y.Map())
+    settings.set('id', id)
+    settings.set('name', name)
+  })
+  const { doc: meta } = await createDoc(`${APP}-meta`, { local: true })
+  meta.transact(() => {
+    const data = meta.getMap('data')
+    data.set('current', id)
+    const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
+    workspaces.set(id, name)
+  })
+  return { id, name }
 }
 
 export function createWorkspaceId (id = createId()) {
-  return `+${APP}.${id}`
+  return `${APP}-${id}`
 }
 
 export async function getDoc (replica, path) {
@@ -51,8 +57,9 @@ export async function getDoc (replica, path) {
   return parseDoc(doc)
 }
 
-export function getCurrentWorkspaceId () {
-  return JSON.parse(localStorage.getItem(CURRENT_WORKSPACE))
+export async function getCurrentWorkspaceId () {
+  const { doc } = await createDoc(`${APP}-meta`, { local: true })
+  return doc.getMap('data').get('current')
 }
 
 export async function getKeypair () {
@@ -87,37 +94,27 @@ export function getPeer (id = getCurrentWorkspaceId()) {
   })
 }
 
-export function getWorkspace (id = getCurrentWorkspaceId()) {
+export async function getWorkspace (id) {
+  id = id ?? await getCurrentWorkspaceId()
   return getOrCreate(cache, `workspace/${id}`, async () => {
-    const workspaceId = createWorkspaceId(id)
-    const replica = getReplica(id)
-    const peer = await getPeer(id)
-    const get = (path) => getDoc(replica, path)
-    const set = (path, content) => setDoc(replica, path, content)
-    const data = (await get(fileName)) || {}
-    const server = await replica.getConfig('server')
-    const name = data.name || '(Workspace)'
+    const { doc } = await createDoc(`${APP}-${id}`, { local: true, remote: true })
+    const data = doc.getMap('data')
+    const settings = getOrCreate(data, 'settings', () => new Y.Map())
+    const name = settings.get('name') || '(Workspace)'
+    const checkIns = getOrCreate(data, 'checkIns', () => new Y.Map())
+    const events = getOrCreate(data, 'events', () => new Y.Map())
+    const participants = getOrCreate(data, 'participants', () => new Y.Map())
     const openUrl = `?p=workspaces/open/${id}`
-    const inviteCode = btoa(JSON.stringify({ id, name, server }))
+    const inviteCode = btoa(JSON.stringify({ id, name }))
     const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
-    const apiUrl = `${server}earthstar-api/v1/${workspaceId}/`
-    const apiPathsUrl = `${apiUrl}paths`
-    const apiDocumentsUrl = `${apiUrl}documents`
-    const allDocs = await replica.getLatestDocs()
-    console.log('Doc count', allDocs.length)
     return {
-      apiPathsUrl,
-      apiDocumentsUrl,
-      get,
+      checkIns,
+      events,
       id,
       name,
       openUrl,
-      peer,
-      replica,
-      server,
-      set,
-      shareUrl,
-      workspaceId
+      participants,
+      shareUrl
     }
   })
 }

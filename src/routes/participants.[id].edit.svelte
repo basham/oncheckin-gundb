@@ -11,16 +11,14 @@
   let state = STATE.LOADING
   let participant = null
   let alias = ''
-  let firstName = ''
-  let lastName = ''
+  let fullName = ''
   let location = ''
   let notes = ''
 
   onMount(async () => {
     participant = await participantStore.get(params.id)
     alias = participant?.alias
-    firstName = participant?.firstName
-    lastName = participant?.lastName
+    fullName = participant?.fullName
     location = participant?.location
     notes = participant?.notes
     state = STATE.LOADED
@@ -30,8 +28,7 @@
     event.preventDefault()
     await participantStore.set(params.id, {
       alias,
-      firstName,
-      lastName,
+      fullName,
       location,
       notes
     })
@@ -48,9 +45,8 @@
     on:submit={submit}>
     <Fieldset legend="Name">
       <FieldsetParticipantName
-        bind:firstName={firstName}
-        bind:lastName={lastName}
-        bind:alias={alias} />
+        bind:alias={alias}
+        bind:fullName={fullName} />
     </Fieldset>
     <Fieldset legend="Details">
       <div class="u-m-top-4">

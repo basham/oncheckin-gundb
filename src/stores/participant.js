@@ -1,8 +1,8 @@
 import { format, parseISO } from 'date-fns'
-import { getWorkspace, parseDoc } from './workspace.js'
-import { createId, getOrCreate, resolvePath, sortAsc } from '../util.js'
+import { Y } from './util.js'
+import { getWorkspace } from './workspace.js'
+import { createId, getOrCreate, sortAsc } from '../util.js'
 
-const fileName = 'participant.json'
 const cache = new Map()
 
 export async function createParticipant (values) {
@@ -11,16 +11,15 @@ export async function createParticipant (values) {
 
 export async function getParticipant (id) {
   return getOrCreate(cache, id, async () => {
-    const { get } = await getWorkspace()
-    const path = getPath(id)
-    const data = cache.get(path) || await get(path)
-    if (!data) {
+    const { participants } = await getWorkspace()
+    if (!participants.has(id)) {
       return undefined
     }
-    const alias = data.alias || ''
-    const displayName = data.alias || `Just ${data.firstName}`
-    const fullName = `${data.firstName} ${data.lastName}`.trim() || '(Participant)'
-    const recordedLastCheckInDateObj = data.recordedLastCheckInDate ? parseISO(data.recordedLastCheckInDate) : null
+    const data = participants.get(id)
+    const alias = data.get('alias') || ''
+    const displayName = data.get('alias') || `Just ${data.get('fullName')}`
+    const fullName = data.get('fullName') || '(Participant)'
+    const recordedLastCheckInDateObj = data.get('recordedLastCheckInDate') ? parseISO(data.get('recordedLastCheckInDate')) : null
     const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
     const url = `?p=participants/${id}`
     return {
@@ -37,32 +36,23 @@ export async function getParticipant (id) {
 }
 
 export async function getParticipants () {
-  const { replica } = await getWorkspace()
-  const docs = await replica.queryDocs({
-    historyMode: 'latest',
-    filter: {
-      pathEndsWith: fileName,
-      pathStartsWith: resolvePath()
-    }
-  })
-  const participantPromises = docs.map((doc) => {
-    const id = doc.path.split('/')[2]
-    cache.set(getPath(id), parseDoc(doc))
-    return getParticipant(id)
-  })
-  return (await Promise.all(participantPromises))
+  const { participants } = await getWorkspace()
+  const promises = [...participants.keys()]
+    .map(getParticipant)
+  return (await Promise.all(promises))
     .filter((item) => item)
     .sort(sortAsc('displayName'))
 }
 
 export async function setParticipant (id, values) {
-  const { set } = await getWorkspace()
-  await set(getPath(id), values)
-  return await getParticipant(id)
-}
-
-function getPath (id) {
-  return `${id}/${fileName}`
+  const { participants } = await getWorkspace()
+  const participant = getOrCreate(participants, id, () => new Y.Map())
+  participant.doc.transact(() => {
+    for (const [key, value] of Object.entries(values)) {
+      participant.set(key, value)
+    }
+  })
+  return getParticipant(id)
 }
 
 const participant = {
