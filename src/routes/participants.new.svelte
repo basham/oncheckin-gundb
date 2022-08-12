@@ -5,13 +5,12 @@
 
   const title = 'New hasher'
 
-  let firstName = ''
-  let lastName = ''
+  let fullName = ''
   let alias = ''
 
   async function submit (event) {
     event.preventDefault()
-    const participant = await participantStore.create({ alias, firstName, lastName })
+    const participant = await participantStore.create({ alias, fullName })
     window.location = participant.url
   }
 </script>
@@ -22,8 +21,7 @@
     autocomplete="off"
     on:submit={submit}>
     <FieldsetParticipantName
-      bind:firstName={firstName}
-      bind:lastName={lastName}
+      bind:fullName={fullName}
       bind:alias={alias} />
     <div class="u-m-top-4">
       <button class="button button--primary" type="submit">Save</button>
