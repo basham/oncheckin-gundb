@@ -16,7 +16,9 @@ export async function getEvent (id) {
       return undefined
     }
     const data = events.get(id)
-    const dateObj = parseISO(data.get('date'))
+    const count = data.get('count') || ''
+    const date = data.get('date')
+    const dateObj = parseISO(date)
     const displayDate = format(dateObj, 'PP')
     const displayDateMedium = format(dateObj, 'E, MMM d')
     const displayDateLong = format(dateObj, 'E, PP')
@@ -24,8 +26,9 @@ export async function getEvent (id) {
     const name = data.get('name').trim() || '(Event)'
     const url = `?p=events/${id}`
     return {
-      ...data,
       id,
+      count,
+      date,
       dateObj,
       displayDate,
       displayDateMedium,

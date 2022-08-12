@@ -12,17 +12,19 @@
   let event
   let name = ''
   let date = (new Date()).toJSON().split('T')[0]
+  let count = ''
 
   onMount(async () => {
     event = await eventStore.get(params.id)
     name = event?.name
     date = event?.date
+    count = event?.count
     state = STATE.LOADED
   })
 
   async function submit (ev) {
     ev.preventDefault()
-    await eventStore.set(event.id, { name, date })
+    await eventStore.set(event.id, { name, date, count })
     window.location = event.url
   }
 </script>
@@ -37,7 +39,8 @@
     <div class="u-m-top-4">
       <FieldsetEvent
         bind:name={name}
-        bind:date={date} />
+        bind:date={date}
+        bind:count={count} />
     </div>
     <div class="u-m-top-4">
       <button class="button button--primary" type="submit">Save</button>

@@ -238,10 +238,6 @@ p {
   filter: invert(1);
 }
 
-.input--small {
-  width: 16rem;
-}
-
 .layout-content {
   margin: 0 auto;
   max-width: 40rem;
@@ -557,4 +553,28 @@ p {
 .u-ts-4 {
   font-size: var(--fs-4);
   line-height: var(--lh-4);
+}
+
+.u-mw-1 {
+  max-width: 2rem;
+}
+
+.u-mw-2 {
+  max-width: 4rem;
+}
+
+.u-mw-3 {
+  max-width: 6rem;
+}
+
+.u-mw-4 {
+  max-width: 8rem;
+}
+
+.u-mw-5 {
+  max-width: 10rem;
+}
+
+.u-mw-6 {
+  max-width: 12rem;
 }
