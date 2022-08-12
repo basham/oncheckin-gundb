@@ -13,7 +13,7 @@
 
   onMount(async () => {
     workspace = await workspaceStore.get()
-    status = await workspaceStore.syncStatus()
+    // status = await workspaceStore.syncStatus()
     state = STATE.LOADED
   })
 
@@ -22,7 +22,7 @@
       return
     }
     syncing = true
-    await workspaceStore.syncOnce()
+    // await workspaceStore.syncOnce()
     location.reload()
   }
 </script>
@@ -38,11 +38,9 @@
   <div class="card u-m-top-2">
     <p><span class="u-color-hint">Name:</span> {workspace?.name}</p>
     <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
-    <p><span class="u-color-hint">Pub link:</span> {workspace?.server || '(none)'}</p>
     <ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
       <li><a href="?p=settings/share">Share</a></li>
       <li><a href="?p=settings/rename">Rename</a></li>
-      <li><a href="?p=settings/edit-pub">Edit pub</a></li>
     </ul>
   </div>
   <h2>Data</h2>
