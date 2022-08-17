@@ -7,7 +7,7 @@
   const { id, name } = JSON.parse(window.atob(params.code))
 
   async function joinWorkspace () {
-    const workspace = await workspaceStore.get(id)
+    const workspace = await workspaceStore.create({ id, name })
     window.location = workspace.openUrl
   }
 </script>

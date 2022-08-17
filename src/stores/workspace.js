@@ -6,8 +6,7 @@ import { createId, getOrCreate, sortDesc } from '../util.js'
 const { btoa } = window
 const cache = new Map()
 
-export async function createWorkspace ({ name }) {
-  const id = createId()
+export async function createWorkspace ({ name, id = createId() }) {
   const { doc: workspace } = await createDoc(`${APP}-${id}`, { local: true })
   workspace.transact(() => {
     const data = workspace.getMap('data')
@@ -24,7 +23,8 @@ export async function createWorkspace ({ name }) {
     workspace.set('name', name)
     workspace.set('lastOpened', (new Date()).toJSON())
   })
-  return { id, name }
+  const openUrl = `?p=workspaces/open/${id}`
+  return { id, name, openUrl }
 }
 
 export function createWorkspaceId (id = createId()) {
@@ -83,7 +83,8 @@ export async function openWorkspace (id = null) {
   doc.transact(() => {
     const data = doc.getMap('data')
     data.set('current', id)
-    data.get('workspaces').get(id).set('lastOpened', (new Date()).toJSON())
+    const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
+    workspaces.get(id).set('lastOpened', (new Date()).toJSON())
   })
 }
 
