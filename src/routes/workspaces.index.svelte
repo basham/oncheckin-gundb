@@ -32,7 +32,7 @@
             class="row__left"
             href={workspace.openUrl}>
             <span class="row__primary">{workspace.name}</span>
-            <span class="row__secondary">{`ID: ${workspace.id}`}</span>
+            <span class="row__secondary">{`Last opened: ${workspace.lastOpenedDisplay}`}</span>
           </a>
         </li>
       {/each}

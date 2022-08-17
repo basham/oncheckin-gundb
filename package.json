@@ -29,7 +29,6 @@
   "dependencies": {
     "cuid": "2.1.8",
     "date-fns": "2.29.1",
-    "earthstar-bundle": "basham/earthstar-bundle#v9.3.2",
     "qrious": "4.0.2",
     "svelte": "3.49.0",
     "workbox-window": "6.5.4",

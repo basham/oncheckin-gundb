@@ -4,10 +4,9 @@
   import Layout from '@src/layouts/public.svelte'
 
   const params = getContext('params')
-  const { id, name, server } = JSON.parse(window.atob(params.code))
+  const { id, name } = JSON.parse(window.atob(params.code))
 
   async function joinWorkspace () {
-    await workspaceStore.setServer(id, server)
     const workspace = await workspaceStore.get(id)
     window.location = workspace.openUrl
   }
@@ -17,7 +16,6 @@
   <div class="group u-m-top-6">
     <h2 class="u-m-top-0">{name}</h2>
     <p class="u-m-0"><span class="u-color-hint">ID:</span> {id}</p>
-    <p class="u-m-0"><span class="u-color-hint">Pub:</span> {server}</p>
   </div>
   <div class="u-m-top-6">
     <button
