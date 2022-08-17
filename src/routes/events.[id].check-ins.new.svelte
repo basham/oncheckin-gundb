@@ -19,8 +19,7 @@
   let participants = []
   let checkInType = 'existing-participant'
   let selectedParticipant = null
-  let firstName = ''
-  let lastName = ''
+  let fullName = ''
   let alias = ''
   let host = false
 
@@ -67,7 +66,7 @@
   async function submit (e) {
     e.preventDefault()
     if (checkInType === 'new-participant') {
-      selectedParticipant = await participantStore.create({ alias, firstName, lastName })
+      selectedParticipant = await participantStore.create({ alias, fullName })
     }
     if (!selectedParticipant && checkInType === 'existing-participant') {
       focus('find-participant-input')
@@ -145,8 +144,7 @@
       <Fieldset legend="New participant">
         <div class="u-m-top-4">
           <FieldsetParticipantName
-            bind:firstName={firstName}
-            bind:lastName={lastName}
+            bind:fullName={fullName}
             bind:alias={alias} />
         </div>
       </Fieldset>

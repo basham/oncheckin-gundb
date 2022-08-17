@@ -1,10 +1,14 @@
 import { getEvent } from './event.js'
 import { getParticipant } from './participant.js'
-import { getWorkspace, parseDoc } from './workspace.js'
-import { getOrCreate, resolvePath, sortAsc, sortDesc } from '../util.js'
+import { Y } from './util.js'
+import { getWorkspace } from './workspace.js'
+import { getOrCreate, sortAsc, sortDesc } from '../util.js'
 
-const fileName = 'check-in.json'
 const cache = new Map()
+
+function getId (eventId, participantId) {
+  return `${eventId}-${participantId}`
+}
 
 function isSpecial (value) {
   return value > 0 && (value % 5 === 0 || /69$/.test(value))
@@ -15,15 +19,18 @@ export async function createCheckIn (eventId, participantId, values) {
 }
 
 export async function deleteCheckIn (eventId, participantId) {
-  return await setCheckIn(eventId, participantId, '')
+  const id = getId(eventId, participantId)
+  const { checkIns } = await getWorkspace()
+  checkIns.delete(id)
 }
 
 export async function getCheckIn (eventId, participantId) {
+  const id = getId(eventId, participantId)
   const { checkIns } = await getWorkspace()
-  if (!data) {
+  if (!checkIns.has(id)) {
     return undefined
   }
-  const data = checkIns.get(`${eventId}-${participantId}`)
+  const data = checkIns.get(id)
   const count = data.get('count') ?? 0
   const host = data.get('host') ?? false
   const hostCount = data.get('hostCount') ?? 0
@@ -94,13 +101,16 @@ export async function getParticipantCheckIns (participantId) {
   })
 }
 
-function getPath (eventId, participantId) {
-  return `${eventId}-${participantId}/${fileName}`
-}
-
 export async function setCheckIn (eventId, participantId, values) {
-  const { set } = await getWorkspace()
-  return await set(getPath(eventId, participantId), values)
+  const id = getId(eventId, participantId)
+  const { checkIns } = await getWorkspace()
+  const checkIn = getOrCreate(checkIns, id, () => new Y.Map())
+  checkIn.doc.transact(() => {
+    for (const [key, value] of Object.entries(values)) {
+      checkIn.set(key, value)
+    }
+  })
+  return getCheckIn(eventId, participantId)
 }
 
 const checkInStore = {
