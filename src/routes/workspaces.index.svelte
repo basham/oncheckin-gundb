@@ -16,8 +16,9 @@
 <Layout
   state={state}
   title="Workspaces">
-  <div class="u-m-top-6">
+  <div class="u-flex u-flex-gap-4 u-m-top-6">
     <a class="button button--primary" href="?p=workspaces/new">New workspace</a>
+    <a class="button button--secondary" href="?p=workspaces/import">Import</a>
   </div>
   <details class="u-m-top-6">
     <summary>Join a workspace</summary>

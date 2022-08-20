@@ -23,6 +23,7 @@ export const ROUTES = [
   'settings/rename',
   'settings/share',
   'workspaces/index',
+  'workspaces/import',
   'workspaces/new',
   'workspaces/created/[id]',
   'workspaces/join/[code]',

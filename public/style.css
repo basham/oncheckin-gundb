@@ -160,7 +160,8 @@ p {
   margin: 0 var(--size-2);
 }
 
-.button {
+.button,
+.input[type="file"]::file-selector-button {
   background-color: var(--color-base-80);
   border: none;
   border-radius: var(--size-1);
@@ -236,6 +237,14 @@ p {
 
 .input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+.input[type="file"] {
+  padding: var(--size-2);
+}
+
+.input[type="file"]::file-selector-button {
+  margin-right: var(--size-4);
 }
 
 .layout-content {

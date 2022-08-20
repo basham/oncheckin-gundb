@@ -51,6 +51,7 @@ export async function getWorkspace (id) {
     const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
     return {
       checkIns,
+      doc,
       events,
       id,
       name,
@@ -86,6 +87,7 @@ export async function openWorkspace (id = null) {
     const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
     workspaces.get(id).set('lastOpened', (new Date()).toJSON())
   })
+  return doc
 }
 
 export async function renameWorkspace (name) {
