@@ -14,9 +14,9 @@ export async function createWorkspace ({ name, id = createId() }) {
     settings.set('id', id)
     settings.set('name', name)
   })
-  const { doc: meta } = await createDoc(`${APP}-meta`, { local: true })
-  meta.transact(() => {
-    const data = meta.getMap('data')
+  const meta = await getMeta()
+  meta.doc.transact(() => {
+    const { data } = meta
     data.set('current', id)
     const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
     const workspace = getOrCreate(workspaces, id, () => new Y.Map())
@@ -33,8 +33,14 @@ export function createWorkspaceId (id = createId()) {
 
 export async function getCurrentWorkspaceId () {
   return getOrCreate(cache, `current-workspace`, async () => {
-    const { doc } = await createDoc(`${APP}-meta`, { local: true })
-    return doc.getMap('data').get('current')
+    const { data } = await getMeta()
+    return data.get('current')
+  })
+}
+
+export async function getMeta () {
+  return getOrCreate(cache, `meta`, async () => {
+    return await createDoc(`${APP}-meta`, { local: true })
   })
 }
 
@@ -66,8 +72,7 @@ export async function getWorkspace (id) {
 }
 
 export async function getWorkspaces () {
-  const { doc } = await createDoc(`${APP}-meta`, { local: true })
-  const data = doc.getMap('data')
+  const { data } = await getMeta()
   const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
   return [...workspaces.entries()]
     .map(([id, workspace]) => {
@@ -82,9 +87,8 @@ export async function getWorkspaces () {
 }
 
 export async function openWorkspace (id = null) {
-  const { doc } = await createDoc(`${APP}-meta`, { local: true })
+  const { data, doc } = await getMeta()
   doc.transact(() => {
-    const data = doc.getMap('data')
     data.set('current', id)
     const workspaces = getOrCreate(data, 'workspaces', () => new Y.Map())
     workspaces.get(id).set('lastOpened', (new Date()).toJSON())
@@ -95,8 +99,8 @@ export async function openWorkspace (id = null) {
 export async function renameWorkspace (name) {
   const { id, settings } = await getWorkspace()
   settings.set('name', name)
-  const { doc: meta } = await createDoc(`${APP}-meta`, { local: true })
-  meta.getMap('data').get('workspaces').get(id).set('name', name)
+  const { data } = await getMeta()
+  data.get('workspaces').get(id).set('name', name)
 }
 
 const workspaceStore = {
