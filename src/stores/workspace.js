@@ -32,8 +32,10 @@ export function createWorkspaceId (id = createId()) {
 }
 
 export async function getCurrentWorkspaceId () {
-  const { doc } = await createDoc(`${APP}-meta`, { local: true })
-  return doc.getMap('data').get('current')
+  return getOrCreate(cache, `current-workspace`, async () => {
+    const { doc } = await createDoc(`${APP}-meta`, { local: true })
+    return doc.getMap('data').get('current')
+  })
 }
 
 export async function getWorkspace (id) {
