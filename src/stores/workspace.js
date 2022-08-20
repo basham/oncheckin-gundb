@@ -47,8 +47,8 @@ export async function getMeta () {
 export async function getWorkspace (id) {
   id = id ?? await getCurrentWorkspaceId()
   return getOrCreate(cache, `workspace/${id}`, async () => {
-    const { doc } = await createDoc(`${APP}-${id}`, { local: true, remote: true })
-    const data = doc.getMap('data')
+    const document = await createDoc(`${APP}-${id}`, { local: true, remote: true })
+    const { data } = document
     const settings = getOrCreate(data, 'settings', () => new Y.Map())
     const name = settings.get('name') || '(Workspace)'
     const checkIns = getOrCreate(data, 'checkIns', () => new Y.Map())
@@ -58,8 +58,8 @@ export async function getWorkspace (id) {
     const inviteCode = btoa(JSON.stringify({ id, name }))
     const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
     return {
+      ...document,
       checkIns,
-      doc,
       events,
       id,
       name,

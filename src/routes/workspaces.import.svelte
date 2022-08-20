@@ -3,19 +3,21 @@
   import Layout from '@src/layouts/public.svelte'
 
   let files
+  let isSubmitting = false
 
   function submit (event) {
     event.preventDefault()
 
-    if (!files || !files.length) {
+    if (isSubmitting || !files || !files.length) {
       return
     }
 
+    isSubmitting = true
     const reader = new FileReader()
     reader.onload = async (e) => {
       const content = JSON.parse(e.target.result)
       await importStore.import(content)
-      // window.location = '?p=events'
+      window.location = '?p=events'
     }
     reader.readAsText(files[0])
   }
