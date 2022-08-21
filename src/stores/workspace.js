@@ -7,10 +7,9 @@ const { btoa } = window
 const cache = new Map()
 
 export async function createWorkspace ({ name, id = createId() }) {
-  const { doc: workspace } = await createDoc(`${APP}-${id}`, { local: true })
-  workspace.transact(() => {
-    const data = workspace.getMap('data')
-    const settings = getOrCreate(data, 'settings', () => new Y.Map())
+  const workspace = await getWorkspace(id)
+  workspace.doc.transact(() => {
+    const { settings } = workspace
     settings.set('id', id)
     settings.set('name', name)
   })
@@ -23,8 +22,11 @@ export async function createWorkspace ({ name, id = createId() }) {
     workspace.set('name', name)
     workspace.set('lastOpened', (new Date()).toJSON())
   })
-  const openUrl = `?p=workspaces/open/${id}`
-  return { id, name, openUrl }
+  return { ...workspace, name }
+}
+
+export async function joinWorkspace (id) {
+  const ws = await createDoc(`${APP}-${id}`, { local: true, remote: true })
 }
 
 export function createWorkspaceId (id = createId()) {
@@ -56,7 +58,7 @@ export async function getWorkspace (id) {
     const participants = getOrCreate(data, 'participants', () => new Y.Map())
     const openUrl = `?p=workspaces/open/${id}`
     const inviteCode = btoa(JSON.stringify({ id, name }))
-    const shareUrl = `${URL}?p=workspaces/join/${inviteCode}`
+    const shareUrl = `${window.location.origin}/?p=workspaces/join/${inviteCode}`
     return {
       ...document,
       checkIns,
@@ -107,6 +109,7 @@ const workspaceStore = {
   create: createWorkspace,
   get: getWorkspace,
   getAll: getWorkspaces,
+  join: joinWorkspace,
   open: openWorkspace,
   rename: renameWorkspace
 }

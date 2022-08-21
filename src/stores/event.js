@@ -18,6 +18,9 @@ export async function getEvent (id) {
     const data = events.get(id)
     const count = data.get('count') || ''
     const date = data.get('date')
+    if (!date) {
+      return undefined
+    }
     const dateObj = parseISO(date)
     const displayDate = format(dateObj, 'PP')
     const displayDateMedium = format(dateObj, 'E, MMM d')
