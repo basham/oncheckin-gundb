@@ -5,7 +5,7 @@
   import Layout from '@src/layouts/events.[id].svelte'
   import CheckInList from '@src/lib/list-check-in.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
 
   let state = STATE.LOADING
   let event = null
@@ -13,8 +13,8 @@
   let runners = []
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
-    const checkIns = (await checkInStore.getEventCheckIns(event?.id))
+    event = await eventStore.get(docId, eventId)
+    const checkIns = await checkInStore.getEventCheckIns(docId, eventId)
     hares = checkIns.filter(({ host }) => host)
     runners = checkIns.filter(({ host }) => !host)
     state = STATE.LOADED

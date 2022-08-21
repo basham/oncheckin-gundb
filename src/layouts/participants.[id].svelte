@@ -9,8 +9,8 @@
   export let state = STATE.LOADED
   export let title = ''
 
-  const params = getContext('params')
-  const route = getContext('route')
+  const { docId, participantId } = getContext('params')
+  const route = getContext('route').split('/')[3]
 
   let _title = ''
   let _state = STATE.LOADING
@@ -18,13 +18,13 @@
   let participant
 
   onMount(async () => {
-    participant = await participantStore.get(params.id)
+    participant = await participantStore.get(docId, participantId)
     _title = `${title ? `${title}: ` : ''}${participant?.displayName}`
     if (!participant) {
       _state = STATE.NOT_FOUND
       return
     }
-    const checkIns = await checkInStore.getParticipantCheckIns(participant.id)
+    const checkIns = await checkInStore.getParticipantCheckIns(docId, participantId)
     latestCheckIn = checkIns[0]
     _state = STATE.LOADED
   })
@@ -46,19 +46,19 @@
   <nav class="list-plain list-plain--inline u-border-bottom u-gap-4 u-m-top-4 u-p-bottom-4">
     <NavLink
       href={participant.url}
-      id="participants/[id]/index"
+      id="index"
       location={route}>
       Runs
     </NavLink>
     <NavLink
       href={`${participant.url}/hares`}
-      id="participants/[id]/hares"
+      id="hares"
       location={route}>
       Hares
     </NavLink>
     <NavLink
       href={`${participant.url}/edit`}
-      id="participants/[id]/edit"
+      id="edit"
       location={route}>
       Edit
     </NavLink>

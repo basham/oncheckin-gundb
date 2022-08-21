@@ -1,17 +1,18 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { participantStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Participants from '@src/lib/participants.svelte'
 
   const title = 'Hashers'
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let participants = []
 
   onMount(async () => {
-    participants = await participantStore.getAll()
+    participants = await participantStore.getAll(docId)
     state = STATE.LOADED
   })
 </script>

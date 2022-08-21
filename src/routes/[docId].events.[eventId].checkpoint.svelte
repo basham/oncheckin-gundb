@@ -5,7 +5,7 @@
   import Layout from '@src/layouts/events.[id].svelte'
   import Icon from '@src/lib/icon.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
 
   let state = STATE.LOADING
   let event = null
@@ -18,8 +18,8 @@
     .reverse()
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
-    runners = (await checkInStore.getEventCheckIns(event?.id))
+    event = await eventStore.get(docId, eventId)
+    runners = (await checkInStore.getEventCheckIns(docId, eventId))
       .filter(({ host }) => !host)
     waiting = runners
     state = STATE.LOADED

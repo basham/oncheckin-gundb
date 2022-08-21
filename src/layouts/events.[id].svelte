@@ -8,15 +8,15 @@
   export let state = STATE.LOADED
   export let title = ''
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
   const route = getContext('route')
-  const location = route.split('/')[2]
+  const location = route.split('/')[3]
 
   let event = null
   let _state = STATE.LOADING
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
+    event = await eventStore.get(docId, eventId)
     if (!event) {
       _state = STATE.NOT_FOUND
       return

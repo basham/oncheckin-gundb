@@ -17,8 +17,8 @@
   state={state}
   title="Workspaces">
   <div class="u-flex u-flex-gap-4 u-m-top-6">
-    <a class="button button--primary" href="?p=workspaces/new">New workspace</a>
-    <a class="button button--secondary" href="?p=workspaces/import">Import</a>
+    <a class="button button--primary" href="?p=new">New workspace</a>
+    <a class="button button--secondary" href="?p=import">Import</a>
   </div>
   <details class="u-m-top-6">
     <summary>Join a workspace</summary>
@@ -31,7 +31,7 @@
         <li class="row">
           <a
             class="row__left"
-            href={workspace.openUrl}>
+            href={`?p=${workspace.id}/events`}>
             <span class="row__primary">{workspace.name}</span>
             <span class="row__secondary">{`Last opened: ${workspace.lastOpenedDisplay}`}</span>
           </a>

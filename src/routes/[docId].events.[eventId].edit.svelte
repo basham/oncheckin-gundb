@@ -5,7 +5,7 @@
   import Layout from '@src/layouts/events.[id].svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
   const title = 'Edit event'
 
   let state = STATE.LOADING
@@ -15,7 +15,7 @@
   let count = ''
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
+    event = await eventStore.get(docId, eventId)
     name = event?.name
     date = event?.date
     count = event?.count
@@ -24,7 +24,7 @@
 
   async function submit (ev) {
     ev.preventDefault()
-    await eventStore.set(event.id, { name, date, count })
+    await eventStore.set(docId, eventId, { name, date, count })
     window.location = event.url
   }
 </script>

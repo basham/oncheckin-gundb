@@ -6,8 +6,9 @@
 
   async function submit (e) {
     e.preventDefault()
-    await workspaceStore.create({ name })
-    window.location = '?p=events'
+    const { id, save } = await workspaceStore.create({ name })
+    await save()
+    window.location = `?p=${id}/events`
   }
 </script>
 

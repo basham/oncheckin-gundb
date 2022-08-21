@@ -1,11 +1,12 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
   import Events from '@src/lib/events.svelte'
 
   const title = 'Events'
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let upcomingEvents = []
@@ -13,9 +14,9 @@
   let years = []
 
   onMount(async () => {
-    upcomingEvents = await eventStore.getUpcoming()
-    recentEvents = (await eventStore.getPast()).slice(0, 5)
-    const eventYears = (await eventStore.getAll())
+    upcomingEvents = await eventStore.getUpcoming(docId)
+    recentEvents = (await eventStore.getPast(docId)).slice(0, 5)
+    const eventYears = (await eventStore.getAll(docId))
       .map(({ year }) => year)
     years = [...(new Set(eventYears))].sort().reverse()
     state = STATE.LOADED
@@ -28,7 +29,7 @@
   <div class="u-flex u-flex-end u-flex-space">
     <h1>{title}</h1>
     <div>
-      <a class="button button--primary" href="?p=events/new">New event</a>
+      <a class="button button--primary" href={`?p=${docId}/events/new`}>New event</a>
     </div>
   </div>
   <h2>Upcoming events <span class="badge">{upcomingEvents.length}</span></h2>

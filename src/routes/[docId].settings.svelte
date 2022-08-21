@@ -1,10 +1,11 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
 
   const title = 'Settings'
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let status = {}
@@ -12,8 +13,7 @@
   let workspace
 
   onMount(async () => {
-    workspace = await workspaceStore.get()
-    // status = await workspaceStore.syncStatus()
+    workspace = await workspaceStore.get(docId)
     state = STATE.LOADED
   })
 
@@ -22,7 +22,6 @@
       return
     }
     syncing = true
-    // await workspaceStore.syncOnce()
     location.reload()
   }
 </script>
@@ -39,8 +38,8 @@
     <p><span class="u-color-hint">Name:</span> {workspace?.name}</p>
     <p><span class="u-color-hint">ID:</span> {workspace?.id}</p>
     <ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
-      <li><a href="?p=settings/share">Share</a></li>
-      <li><a href="?p=settings/rename">Rename</a></li>
+      <li><a href={`?p=${docId}/share`}>Share</a></li>
+      <li><a href={`?p=${docId}/rename`}>Rename</a></li>
     </ul>
   </div>
   <h2>Data</h2>

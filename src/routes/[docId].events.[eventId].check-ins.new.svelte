@@ -11,7 +11,7 @@
   import Lookup from '@src/lib/lookup.svelte'
   import RadioGroup from '@src/lib/radio-group.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
   const title = 'New check-in'
 
   let state = STATE.LOADING
@@ -24,12 +24,12 @@
   let host = false
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
+    event = await eventStore.get(docId, eventId)
 
-    const checkIns = (await checkInStore.getEventCheckIns(event.id))
+    const checkIns = (await checkInStore.getEventCheckIns(docId, eventId))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
-    participants = (await participantStore.getAll())
+    participants = (await participantStore.getAll(docId))
       .map((p) => {
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn
@@ -66,13 +66,13 @@
   async function submit (e) {
     e.preventDefault()
     if (checkInType === 'new-participant') {
-      selectedParticipant = await participantStore.create({ alias, fullName })
+      selectedParticipant = await participantStore.create(docId, { alias, fullName })
     }
     if (!selectedParticipant && checkInType === 'existing-participant') {
       focus('find-participant-input')
       return
     }
-    await checkInStore.create(event.id, selectedParticipant.id, { host })
+    await checkInStore.create(docId, eventId, selectedParticipant.id, { host })
     window.location = event.url
   }
 </script>

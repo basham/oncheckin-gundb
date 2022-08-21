@@ -5,15 +5,15 @@
   import Layout from '@src/layouts/participants.[id].svelte'
   import { pluralize } from '@src/util.js'
 
-  const params = getContext('params')
+  const { docId, participantId } = getContext('params')
 
   let state = STATE.LOADING
   let checkIns = []
   let participant
 
   onMount(async () => {
-    participant = await participantStore.get(params.id)
-    const checkInsByYear = (await checkInStore.getParticipantCheckIns(participant.id))
+    participant = await participantStore.get(docId, participantId)
+    const checkInsByYear = (await checkInStore.getParticipantCheckIns(docId, participantId))
       .reduce((yearMap, checkIn) => {
         const { year } = checkIn.event
         if (!yearMap.has(year)) {

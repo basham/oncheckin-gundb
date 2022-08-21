@@ -8,30 +8,18 @@
   export let state = STATE.LOADED
   export let title = ''
 
+  const { docId } = getContext('params')
   const route = getContext('route')
-  const location = route.split('/')[0]
+  const location = route.split('/')[1]
 
   let _state = STATE.LOADING
   let workspace
   let unsyncedChanges
 
   onMount(async () => {
-    workspace = await workspaceStore.get()
-    // const syncStatus = await workspaceStore.syncStatus()
-    // unsyncedChanges = syncStatus.unsyncedChanges
+    workspace = await workspaceStore.get(docId)
     _state = STATE.LOADED
-    focusOnHeading()
   })
-
-  function focusOnHeading () {
-    window.requestAnimationFrame(() => {
-      const heading = document.querySelector('h1')
-      if (!heading) return
-      heading.setAttribute('tabindex', '-1')
-      heading.focus()
-      heading.removeAttribute('tabindex')
-    })
-  }
 </script>
 
 <style>
@@ -69,19 +57,19 @@
           src="../icon.svg">
         <nav class="list-plain list-plain--inline u-gap-4">
           <NavLink
-            href="?p=events"
+            href={`?p=${docId}/events`}
             id="events"
             location={location}>
             Events
           </NavLink>
           <NavLink
-            href="?p=participants"
+            href={`?p=${docId}/participants`}
             id="participants"
             location={location}>
             Hashers
           </NavLink>
           <NavLink
-            href="?p=settings"
+            href={`?p=${docId}/settings`}
             id="settings"
             location={location}>
             Settings

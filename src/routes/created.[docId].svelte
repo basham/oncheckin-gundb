@@ -4,13 +4,13 @@
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/public.svelte'
 
-  const params = getContext('params')
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let workspace
 
   onMount(async () => {
-    workspace = await workspaceStore.get(params.id)
+    workspace = await workspaceStore.get(docId)
     state = STATE.LOADED
   })
 

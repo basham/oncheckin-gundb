@@ -6,7 +6,7 @@
   import Layout from '@src/layouts/page.svelte'
   import Icon from '@src/lib/icon.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId } = getContext('params')
 
   let state = STATE.LOADING
   let event = null
@@ -15,7 +15,7 @@
   let participants = []
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
+    event = await eventStore.get(docId, eventId)
 
     if (!event) {
       state = STATE.NOT_FOUND
@@ -29,17 +29,17 @@
     returnersCutoff = format(returnersCutoffDate, 'MM/dd')
 
     // Cache participants and events, to optimize the following queries.
-    const allParticipants = await participantStore.getAll()
-    await eventStore.getAll()
+    const allParticipants = await participantStore.getAll(docId)
+    await eventStore.getAll(docId)
 
-    const checkIns = (await checkInStore.getEventCheckIns(event.id))
+    const checkIns = (await checkInStore.getEventCheckIns(docId, eventId))
       .map((checkIn) => [checkIn.participant.id, checkIn])
     const checkInsMap = new Map(checkIns)
     const participantsPromises = allParticipants
       .map(async (p) => {
         const checkIn = checkInsMap.get(p.id)
         const checkedIn = !!checkIn
-        const participantCheckIns = (await checkInStore.getParticipantCheckIns(p.id))
+        const participantCheckIns = (await checkInStore.getParticipantCheckIns(docId, p.id))
           .filter((checkIn) => isBefore(checkIn.event.dateObj, event.dateObj))
         const lastCheckIn = participantCheckIns[0]
         const lastEvent = lastCheckIn?.event

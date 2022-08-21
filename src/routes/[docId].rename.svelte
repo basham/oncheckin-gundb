@@ -1,25 +1,26 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
 
   const title = 'Rename workspace'
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let workspace
   let name
 
   onMount(async () => {
-    workspace = await workspaceStore.get()
+    workspace = await workspaceStore.get(docId)
     name = workspace?.name
     state = STATE.LOADED
   })
 
   async function submit (event) {
     event.preventDefault()
-    await workspaceStore.rename(name)
-    window.location = '?p=settings'
+    await workspaceStore.rename(docId, name)
+    window.location = `?p=${docId}/settings`
   }
 </script>
 

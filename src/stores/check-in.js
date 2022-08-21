@@ -14,19 +14,19 @@ function isSpecial (value) {
   return value > 0 && (value % 5 === 0 || /69$/.test(value))
 }
 
-export async function createCheckIn (eventId, participantId, values) {
-  return await setCheckIn(eventId, participantId, values)
+export async function createCheckIn (docId, eventId, participantId, values) {
+  return await setCheckIn(docId, eventId, participantId, values)
 }
 
-export async function deleteCheckIn (eventId, participantId) {
+export async function deleteCheckIn (docId, eventId, participantId) {
   const id = getId(eventId, participantId)
-  const { checkIns } = await getWorkspace()
+  const { checkIns } = await getWorkspace(docId)
   checkIns.delete(id)
 }
 
-export async function getCheckIn (eventId, participantId) {
+export async function getCheckIn (docId, eventId, participantId) {
   const id = getId(eventId, participantId)
-  const { checkIns } = await getWorkspace()
+  const { checkIns } = await getWorkspace(docId)
   if (!checkIns.has(id)) {
     return undefined
   }
@@ -38,7 +38,7 @@ export async function getCheckIn (eventId, participantId) {
   const specialCount = isSpecial(count)
   const specialHostCount = isSpecial(hostCount)
   const readyForNaming = count >= 5 && !participant.alias
-  const url = `./?p=events/${eventId}/check-ins/${participantId}/edit`
+  const url = `./?p=${docId}/events/${eventId}/check-ins/${participantId}/edit`
   return {
     count,
     host,
@@ -50,9 +50,9 @@ export async function getCheckIn (eventId, participantId) {
   }
 }
 
-async function getCheckInIds () {
-  return getOrCreate(cache, 'ids', async () => {
-    const { checkIns } = await getWorkspace()
+async function getCheckInIds (docId) {
+  return getOrCreate(cache, `${docId}/ids`, async () => {
+    const { checkIns } = await getWorkspace(docId)
     const checkInsByEventId = new Map()
     const checkInsByParticipantId = new Map()
     const keys = [...checkIns.keys()]
@@ -67,14 +67,14 @@ async function getCheckInIds () {
   })
 }
 
-export async function getEventCheckIns (eventId) {
-  const participantIds = (await getCheckInIds())
+export async function getEventCheckIns (docId, eventId) {
+  const participantIds = (await getCheckInIds(docId))
     .checkInsByEventId
     .get(eventId) || []
   const checkInPromises = [...participantIds]
     .map(async (participantId) => {
-      const participant = await getParticipant(participantId)
-      const checkIn = await getCheckIn(eventId, participantId)
+      const participant = await getParticipant(docId, participantId)
+      const checkIn = await getCheckIn(docId, eventId, participantId)
       return [checkIn, participant]
     })
   return (await Promise.all(checkInPromises))
@@ -83,15 +83,15 @@ export async function getEventCheckIns (eventId) {
     .sort(sortAsc(({ participant }) => participant.displayName))
 }
 
-export async function getParticipantCheckIns (participantId) {
-  return getOrCreate(cache, `participant-${participantId}`, async () => {
-    const eventIds = (await getCheckInIds())
+export async function getParticipantCheckIns (docId, participantId) {
+  return getOrCreate(cache, `participant-${docId}/${participantId}`, async () => {
+    const eventIds = (await getCheckInIds(docId))
       .checkInsByParticipantId
       .get(participantId) || []
     const checkInPromises = [...eventIds]
       .map(async (eventId) => {
-        const event = await getEvent(eventId)
-        const checkIn = await getCheckIn(eventId, participantId)
+        const event = await getEvent(docId, eventId)
+        const checkIn = await getCheckIn(docId, eventId, participantId)
         return [checkIn, event]
       })
     return (await Promise.all(checkInPromises))
@@ -101,16 +101,16 @@ export async function getParticipantCheckIns (participantId) {
   })
 }
 
-export async function setCheckIn (eventId, participantId, values) {
+export async function setCheckIn (docId, eventId, participantId, values) {
   const id = getId(eventId, participantId)
-  const { checkIns } = await getWorkspace()
+  const { checkIns } = await getWorkspace(docId)
   const checkIn = getOrCreate(checkIns, id, () => new Y.Map())
   checkIn.doc.transact(() => {
     for (const [key, value] of Object.entries(values)) {
       checkIn.set(key, value)
     }
   })
-  return getCheckIn(eventId, participantId)
+  return await getCheckIn(docId, eventId, participantId)
 }
 
 const checkInStore = {

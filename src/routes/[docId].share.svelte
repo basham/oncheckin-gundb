@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/workspace.svelte'
@@ -7,13 +7,14 @@
   import Toast from '@src/lib/toast.svelte'
 
   const title = 'Share workspace'
+  const { docId } = getContext('params')
 
   let state = STATE.LOADING
   let workspace
   let toast
 
   onMount(async () => {
-    workspace = await workspaceStore.get()
+    workspace = await workspaceStore.get(docId)
     state = STATE.LOADED
   })
 

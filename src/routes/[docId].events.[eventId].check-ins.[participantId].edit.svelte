@@ -5,7 +5,7 @@
   import Layout from '@src/layouts/events.[id].svelte'
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
 
-  const params = getContext('params')
+  const { docId, eventId, participantId } = getContext('params')
   const title = 'Edit check-in'
 
   let state = STATE.LOADING
@@ -15,9 +15,9 @@
   let host = false
 
   onMount(async () => {
-    event = await eventStore.get(params.id)
-    participant = await participantStore.get(params.pid)
-    checkIn = await checkInStore.get(event.id, participant.id)
+    event = await eventStore.get(docId, eventId)
+    participant = await participantStore.get(docId, participantId)
+    checkIn = await checkInStore.get(docId, eventId, participantId)
     if (!event || !participant || !checkIn) {
       state = STATE.NOT_FOUND
       return
@@ -28,12 +28,12 @@
 
   async function submit (e) {
     e.preventDefault()
-    await checkInStore.set(event.id, participant.id, { host })
+    await checkInStore.set(docId, eventId, participantId, { host })
     window.location = event.url
   }
 
   async function deleteCheckIn () {
-    await checkInStore.delete(event.id, participant.id)
+    await checkInStore.delete(docId, eventId, participantId)
     window.location = event.url
   }
 </script>

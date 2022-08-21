@@ -6,7 +6,7 @@
   import Fieldset from '@src/lib/fieldset.svelte'
   import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
-  const params = getContext('params')
+  const { docId, participantId } = getContext('params')
 
   let state = STATE.LOADING
   let participant = null
@@ -16,7 +16,7 @@
   let notes = ''
 
   onMount(async () => {
-    participant = await participantStore.get(params.id)
+    participant = await participantStore.get(docId, participantId)
     alias = participant?.alias
     fullName = participant?.fullName
     location = participant?.location
@@ -26,7 +26,7 @@
 
   async function submit (event) {
     event.preventDefault()
-    await participantStore.set(params.id, {
+    await participantStore.set(docId, participantId, {
       alias,
       fullName,
       location,
