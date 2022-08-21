@@ -34,7 +34,7 @@ export async function getCheckIn (docId, eventId, participantId) {
   const count = data.get('count') ?? 0
   const host = data.get('host') ?? false
   const hostCount = data.get('hostCount') ?? 0
-  const participant = await getParticipant(participantId)
+  const participant = await getParticipant(docId, participantId)
   const specialCount = isSpecial(count)
   const specialHostCount = isSpecial(hostCount)
   const readyForNaming = count >= 5 && !participant.alias
