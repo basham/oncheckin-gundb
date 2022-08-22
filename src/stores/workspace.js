@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns'
-import { createDoc, Y } from './util.js'
+import { createDoc, createDoc2, Y } from './util.js'
 import { APP } from '../constants.js'
 import { createId, getOrCreate, sortDesc } from '../util.js'
 
@@ -26,7 +26,7 @@ export async function createWorkspace ({ name, id = createId() }) {
 }
 
 export async function joinWorkspace (id) {
-  const ws = await createDoc(`${APP}-${id}`, { local: true, remote: true })
+  return await createDoc2(`${APP}-${id}`, { local: true, remote: true })
 }
 
 export function createWorkspaceId (id = createId()) {

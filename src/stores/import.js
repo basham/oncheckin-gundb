@@ -14,30 +14,21 @@ export async function importWorkspace (content) {
       }
     })
   })
-  // workspace.settings.set('name', 'woot')
   workspace.doc.transact(() => {
-    workspace.settings.set('name', 'woot')
-    for (const [id, values] of Object.entries(content.events)) {
-      const event = getOrCreate(workspace.events, id, () => new Y.Map())
+    workspace.settings.set('name', name)
+    const items = ['events', 'participants', 'checkIns']
+      .map((itemType) => Object.entries(content[itemType]).map((item) => [itemType, ...item]))
+      .flat()
+    for (const [itemType, id, values] of items) {
+      const entity = getOrCreate(workspace[itemType], id, () => new Y.Map())
       for (const [key, value] of Object.entries(values)) {
-        event.set(key, value)
-      }
-    }
-    for (const [id, values] of Object.entries(content.participants)) {
-      //const participant = getOrCreate(workspace.participants, id, () => new Y.Map())
-      for (const [key, value] of Object.entries(values)) {
-        // participant.set(key, value)
-      }
-    }
-    for (const [id, values] of Object.entries(content.checkIns)) {
-      //const checkIn = getOrCreate(workspace.checkIns, id, () => new Y.Map())
-      for (const [key, value] of Object.entries(values)) {
-        // checkIn.set(key, value)
+        entity.set(key, value)
       }
     }
   }, origin)
   await didImport
   await workspace.save()
+  return workspace
 }
 
 const importStore = {

@@ -16,8 +16,8 @@
     const reader = new FileReader()
     reader.onload = async (e) => {
       const content = JSON.parse(e.target.result)
-      await importStore.import(content)
-      window.location = '?p=events'
+      const { id } = await importStore.import(content)
+      window.location = `?p=${id}/events`
     }
     reader.readAsText(files[0])
   }
