@@ -9,6 +9,9 @@
 
   onMount(async () => {
     workspaces = await workspaceStore.getAll()
+    const res = await fetch('/api/test.json')
+    const json = await res.json()
+    console.log('FETCHED!', json)
     state = STATE.LOADED
   })
 </script>

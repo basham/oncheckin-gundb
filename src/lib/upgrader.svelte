@@ -1,33 +1,26 @@
 <script>
-  import { Workbox } from 'workbox-window'
+  import { registerSW } from 'virtual:pwa-register'
   import Icon from './icon.svelte'
 
-  const states = {
-    IDLE: 'idle',
-    PROMPT: 'prompt',
-    UPGRADING: 'upgrading'
-  }
-  let state = states.IDLE
-  let wb = null
+  const IDLE = Symbol()
+  const PROMPT = Symbol()
+  const UPGRADING = Symbol()
 
-  try {
-    wb = new Workbox('./service-worker.js')
-    wb.addEventListener('waiting', (event) => {
-      state = states.PROMPT
-    })
-    wb.register()
-  } catch (e) {}
+  let state = IDLE
+
+  const updateSW = registerSW({
+    onNeedRefresh () {
+      state = PROMPT
+    }
+  })
 
   function upgrade () {
-    wb.addEventListener('controlling', (event) => {
-      window.location.reload()
-    })
-    wb.messageSkipWaiting()
-    state = states.UPGRADING
+    state = UPGRADING
+    updateSW()
   }
 
   function dismiss () {
-    state = states.IDLE
+    state = IDLE
   }
 </script>
 
@@ -52,7 +45,7 @@
   }
 </style>
 
-{#if state === states.PROMPT}
+{#if state === PROMPT}
   <div class="prompt">
     <div class="message u-ts-2">New version available</div>
     <div class="buttons">
@@ -71,8 +64,8 @@
   </div>
 {/if}
 
-{#if state === states.UPGRADING}
+{#if state === UPGRADING}
   <div class="prompt">
-    <div class="message">Upgrading&hellip;</div>
+    <div class="message u-ts-2">Upgrading&hellip;</div>
   </div>
 {/if}
