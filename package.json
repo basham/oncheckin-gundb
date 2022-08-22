@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/basham/oncheckin-app#readme",
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "1.0.1",
+    "@sveltejs/vite-plugin-svelte": "1.0.2",
     "standard": "17.0.0",
     "vite": "3.0.9",
     "workbox-cli": "6.5.4"
