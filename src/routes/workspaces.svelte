@@ -1,17 +1,15 @@
 <script>
   import { onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
-  import { workspaceStore } from '@src/stores.js'
   import Layout from '@src/layouts/public.svelte'
 
   let state = STATE.LOADING
   let workspaces = []
 
   onMount(async () => {
-    workspaces = await workspaceStore.getAll()
-    const res = await fetch('/api/test.json')
-    const json = await res.json()
-    console.log('FETCHED!', json)
+    const res = await fetch('/api/account.json')
+    const account = await res.json()
+    workspaces = account.docs
     state = STATE.LOADED
   })
 </script>
