@@ -34,6 +34,7 @@
     "workbox-window": "6.5.4",
     "y-indexeddb": "9.0.9",
     "y-webrtc": "10.2.3",
+    "y-webrtc-packets": "disarticulate/y-webrtc",
     "yjs": "13.5.41"
   }
 }
