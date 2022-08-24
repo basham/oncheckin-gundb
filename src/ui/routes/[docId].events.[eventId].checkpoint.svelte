@@ -1,0 +1,107 @@
+<script>
+  import { getContext, onMount } from 'svelte'
+  import { STATE } from '@src/constants.js'
+  import { checkInStore, eventStore } from '@src/ui/stores.js'
+  import Layout from '@src/ui/layouts/events.[id].svelte'
+  import Icon from '@src/ui/lib/icon.svelte'
+
+  const { docId, eventId } = getContext('params')
+
+  let state = STATE.LOADING
+  let event = null
+  let runners = []
+  $: runnersMap = new Map(runners.map((checkIn) => [checkIn.participant.id, checkIn]))
+  let arrivedIds = new Set()
+  $: waiting = runners.filter(({ participant }) => !arrivedIds.has(participant.id))
+  $: arrived = [...arrivedIds]
+    .map((id) => runnersMap.get(id))
+    .reverse()
+
+  onMount(async () => {
+    event = await eventStore.get(docId, eventId)
+    runners = (await checkInStore.getEventCheckIns(docId, eventId))
+      .filter(({ host }) => !host)
+    waiting = runners
+    state = STATE.LOADED
+  })
+
+  function markAsArrived (event) {
+    const { id } = event.target.dataset
+    arrivedIds.add(id)
+    arrivedIds = arrivedIds
+  }
+
+  function markAsWaiting (event) {
+    const { id } = event.target.dataset
+    arrivedIds.delete(id)
+    arrivedIds = arrivedIds
+  }
+
+  function reset () {
+    arrivedIds.clear()
+    arrivedIds = arrivedIds
+  }
+</script>
+
+<Layout state={state}>
+  <h2>Waiting <span class="badge">{waiting.length}</span></h2>
+  {#if waiting.length}
+    <ul class="list-plain u-gap-2px u-m-top-2">
+      {#each waiting as checkIn}
+        <li class="row">
+          <a
+            class="row__left"
+            href={checkIn.participant.url}
+            id={checkIn.participant.id}>
+            <span class="row__primary">{checkIn.participant.displayName}</span>
+            <span class="row__secondary">{checkIn.participant.fullName}</span>
+          </a>
+          <span class="row__right">
+            <button
+              aria-describedby={checkIn.participant.id}
+              class="button button--primary"
+              data-id={checkIn.participant.id}
+              on:click={markAsArrived}>
+              Arrived
+            </button>
+          </span>
+        </li>
+      {/each}
+    </ul>
+  {/if}
+  <div class="u-flex u-flex-end u-flex-space">
+    <h2>Arrived <span class="badge">{arrived.length}</span></h2>
+    {#if arrived.length}
+      <div class="u-m-top-2">
+        <button class="button button--plain" on:click={reset}>
+          Reset
+        </button>
+      </div>
+    {/if}
+  </div>
+  {#if arrived.length}
+    <ul class="list-plain u-gap-2px u-m-top-2">
+      {#each arrived as checkIn}
+        <li class="row">
+          <a
+            class="row__left"
+            href={checkIn.participant.url}
+            id={checkIn.participant.id}>
+            <span class="row__primary">{checkIn.participant.displayName}</span>
+            <span class="row__secondary">{checkIn.participant.fullName}</span>
+          </a>
+          <span class="row__right">
+            <button
+              aria-describedby={checkIn.participant.id}
+              class="button button--ghostx"
+              data-id={checkIn.participant.id}
+              on:click={markAsWaiting}>
+              <span class="u-sr-only">Remove</span>
+              <Icon name="close" />
+            </button>
+          </span>
+        </li>
+      {/each}
+    </ul>
+  {/if}
+</Layout>
