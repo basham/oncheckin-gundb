@@ -21,10 +21,10 @@ export default defineConfig({
       },
       filename: 'sw.js',
       injectManifest: {
-        globPatterns: ['**/*.{css,html,js,svg}']
+        globPatterns: ['**/*.{css,html,js,svg}'],
       },
       srcDir: 'src',
-      strategies: 'injectManifest',
+      strategies: 'injectManifest'
     })
   ],
   resolve: {
