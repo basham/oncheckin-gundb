@@ -14,7 +14,7 @@
   <p class="u-m-top-6">
     <a
       class="button button--primary"
-      href="?p=workspaces">
+      href="/account">
       Get started
     </a>
   </p>

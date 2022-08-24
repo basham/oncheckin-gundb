@@ -22,9 +22,11 @@
   }
 </script>
 
+<!--
 <svelte:head>
   <title>{fullTitle}</title>
 </svelte:head>
+-->
 
 <Upgrader />
 

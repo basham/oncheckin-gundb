@@ -1,32 +1,22 @@
 <script>
-  import { onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
+  import { getContext } from 'svelte'
   import Layout from '@src/ui/layouts/public.svelte'
 
-  let state = STATE.LOADING
-  let workspaces = []
-
-  onMount(async () => {
-    const res = await fetch('/api/account.json')
-    const account = await res.json()
-    workspaces = account.docs
-    state = STATE.LOADED
-  })
+  const account = getContext('account')
+  let workspaces = account.docs
 </script>
 
-<Layout
-  state={state}
-  title="Workspaces">
+<Layout title="Account">
   <div class="u-flex u-flex-gap-4 u-m-top-6">
-    <a class="button button--primary" href="?p=new">New workspace</a>
-    <a class="button button--secondary" href="?p=import">Import</a>
+    <a class="button button--primary" href="/doc/new">New document</a>
+    <a class="button button--secondary" href="/doc/import">Import</a>
   </div>
   <details class="u-m-top-6">
     <summary>Join a workspace</summary>
     <p class="u-m-top-4">Join an existing workspace with an invite link or by scanning a QR&nbsp;code on someone else's device.</p>
   </details>
   {#if workspaces.length}
-    <h2>All workspaces</h2>
+    <h2>All documents</h2>
     <ul class="list-plain u-gap-2px u-m-top-2">
       {#each workspaces as workspace}
         <li class="row">

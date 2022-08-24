@@ -2,9 +2,10 @@ import cuid from 'cuid'
 import { registerRoute } from 'workbox-routing'
 import { getAccount } from './account.js'
 import { getDoc } from './doc.js'
+import { APP_NAME } from '../constants.js'
 
 registerRoute(
-  ({ url }) => url.pathname === '/api/account.json',
+  matchPath('/api/account.json'),
   async () => {
     const data = await getAccount()
     return respondWithJSON(data)
@@ -12,7 +13,7 @@ registerRoute(
 )
 
 registerRoute(
-  ({ url }) => url.pathname === '/api/id.json',
+  matchPath('/api/id.json'),
   async () => {
     const data = { id: cuid() }
     return respondWithJSON(data)
@@ -31,11 +32,32 @@ registerRoute(
 )
 
 registerRoute(
-  ({ url }) => url.pathname === '/workspace',
+  matchPath('/account'),
   async () => {
-    const title = 'Account'
+    const title = createTitle('Account')
+    const route = 'workspaces'
     const account = await getAccount()
-    const data = { account }
+    const data = { account, route }
+    return respondWithTemplate({ title, data })
+  }
+)
+
+registerRoute(
+  matchPath('/doc/new'),
+  () => {
+    const title = createTitle('New database')
+    const route = 'new'
+    const data = { route }
+    return respondWithTemplate({ title, data })
+  }
+)
+
+registerRoute(
+  matchPath('/doc/import'),
+  () => {
+    const title = createTitle('Import database')
+    const route = 'import'
+    const data = { route }
     return respondWithTemplate({ title, data })
   }
 )
@@ -47,6 +69,14 @@ function createResponse (body, contentType) {
     }
   }
   return new Response(body, options)
+}
+
+function createTitle (title) {
+  return [title, APP_NAME].filter((t) => t).join(' - ')
+}
+
+function matchPath (pathname) {
+  return ({ url }) => url.pathname === pathname
 }
 
 function respondWithHTML (body) {
@@ -77,7 +107,7 @@ function respondWithTemplate ({ title, data }) {
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <script type="application/json">
+    <script id="data" type="application/json">
 ${JSON.stringify(data)}
     </script>
     <script type="module" crossorigin src="${entryBase}/index.js"></script>

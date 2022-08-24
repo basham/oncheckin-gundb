@@ -45,7 +45,7 @@
       </button>
     </div>
     <div class="u-m-top-6">
-      <a href="?p=workspaces">Back to workspaces</a>
+      <a href="/account">Back to account</a>
     </div>
   </form>
 </Layout>

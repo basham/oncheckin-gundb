@@ -1,9 +1,6 @@
-import { getRoute } from './ui/router.js'
-
-const routes = import.meta.glob('@src/ui/routes/*', { as: 'url' })
-console.log('R', routes)
-
-const { context, file } = getRoute()
-const Page = (await import(`./ui/routes/${file}.svelte`)).default
+const rawData = document.getElementById('data')?.text
+const data = rawData ? JSON.parse(rawData) : { route: 'index' }
+const Page = (await import(`./ui/routes/${data.route}.svelte`)).default
+const context = new Map(Object.entries(data))
 const target = document.body
 new Page({ context, target })
