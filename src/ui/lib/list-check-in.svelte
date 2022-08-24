@@ -1,5 +1,5 @@
 <script>
-  import { pluralize } from '../util.js'
+  import { pluralize } from '@src/util.js'
 
   export let checkIns = []
   export let showCheckInCount = false

@@ -1,44 +1,89 @@
 import cuid from 'cuid'
+import { registerRoute } from 'workbox-routing'
 import { getAccount } from './account.js'
 import { getDoc } from './doc.js'
+// import entry from '@src/index.js?url'
 
-self.addEventListener('fetch', (event) => {
-  if (/api\/test\.json$/.test(event.request.url)) {
-    respondWithJSON(event, () => ({ foo: 'bar', cuid: cuid() }))
+// const routes = import.meta.glob('@src/ui/routes/*', { as: 'url' })
+
+registerRoute(
+  ({ url }) => url.pathname === '/api/account.json',
+  async () => {
+    const data = await getAccount()
+    return createJSONResponse(data)
   }
+)
 
-  if (/api\/test\.html$/.test(event.request.url)) {
-    respondWithHTML(event, () => '<h1>API test</h1>')
+registerRoute(
+  ({ url }) => url.pathname === '/api/id.json',
+  async () => {
+    const data = { id: cuid() }
+    return createJSONResponse(data)
   }
+)
 
-  if (/api\/account\.json$/.test(event.request.url)) {
-    respondWithJSON(event, () => getAccount())
-  }
-
-  const re = /api\/doc\/(?<docId>[\w-]+)\.json$/
-  if (re.test(event.request.url)) {
-    const match = event.request.url.match(re)
+const docRE = new RegExp('^/api/doc/(?<docId>[\\w-]+)\.json$')
+registerRoute(
+  ({ url }) => docRE.test(url.pathname),
+  async ({ url }) => {
+    const match = url.pathname.match(docRE)
     const { docId } = match.groups
-    respondWithJSON(event, () => getDoc(docId))
+    const data = await getDoc(docId)
+    return createJSONResponse(data)
   }
-})
+)
 
-function respondWithHTML (event, getData) {
-  event.respondWith(createHTMLResponse(getData))
-}
+registerRoute(
+  ({ url }) => url.pathname === '/workspace',
+  async () => {
+    const title = 'Account'
+    const account = await getAccount()
+    const doc = account.docs[0]
+    const body = `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>${title}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Membership and event management software for Hash House Harriers.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-starturl" content="/">
+    <meta name="theme-color" content="#190f05">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <script type="module" crossorigin src="${entry}"></script>
+    <script type="application/json">
+${JSON.stringify(account)}
+    </script>
+    <script type="application/json">
+${JSON.stringify(routes)}
+    </script>
+    <script type="application/json">
+${JSON.stringify(entry)}
+    </script>
+  </head>
+  <body>
+    <h1>${title}</h1>
+    <p>${doc.name}</p>
+    <p>${doc.id}</p>
+  </body>
+</html>
+`
+    return createHTMLResponse(body)
+  }
+)
 
-function respondWithJSON (event, getData) {
-  event.respondWith(createJSONResponse(getData))
-}
-
-async function createHTMLResponse (getData) {
-  const body = await getData()
+async function createHTMLResponse (body) {
   const options = createResponseOptions('text/html')
   return new Response(body, options)
 }
 
-async function createJSONResponse (getData) {
-  const data = await getData()
+async function createJSONResponse (data) {
   const body = JSON.stringify(data)
   const options = createResponseOptions('application/json')
   return new Response(body, options)

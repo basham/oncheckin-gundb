@@ -45,7 +45,7 @@
   title={title}>
   <div class="layout">
     <header>
-      <img alt="" src="../icon.svg">
+      <img alt="" src="/icon.svg">
       <a href="/">{APP_NAME}</a>
     </header>
     <main>

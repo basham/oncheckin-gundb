@@ -5,6 +5,11 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name].js'
+      }
+    },
     target: 'esnext'
   },
   plugins: [
@@ -20,8 +25,6 @@ export default defineConfig({
       },
       srcDir: 'src',
       strategies: 'injectManifest',
-      workbox: {
-      }
     })
   ],
   resolve: {
