@@ -53,6 +53,16 @@ registerRoute(
 )
 
 registerRoute(
+  matchPath('/doc/new'),
+  async ({ request }) => {
+    const data = await request.formData()
+    const name = data.get('name')
+    return Response.redirect(`/account?name=${name}`)
+  },
+  'POST'
+)
+
+registerRoute(
   matchPath('/doc/import'),
   () => {
     const title = createTitle('Import database')
