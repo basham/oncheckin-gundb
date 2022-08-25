@@ -23,7 +23,7 @@ export default defineConfig({
       injectManifest: {
         globPatterns: ['**/*.{css,html,js,png,svg}'],
       },
-      srcDir: 'src',
+      srcDir: 'src/server',
       strategies: 'injectManifest'
     })
   ],
