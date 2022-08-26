@@ -1,8 +1,9 @@
 <script>
+  import { getContext } from 'svelte'
   import { APP_NAME, STATE } from '@src/constants.js'
   import Layout from './page.svelte'
 
-  export let title = ''
+  export let heading = getContext('heading')
   export let state = STATE.LOADED
 </script>
 
@@ -40,17 +41,15 @@
   }
 </style>
 
-<Layout
-  state={state}
-  title={title}>
+<Layout state={state}>
   <div class="layout">
     <header>
       <img alt="" src="/icon.svg">
       <a href="/">{APP_NAME}</a>
     </header>
     <main>
-      {#if title}
-        <h1>{title}</h1>
+      {#if heading}
+        <h1>{heading}</h1>
       {/if}
       <slot></slot>
     </main>

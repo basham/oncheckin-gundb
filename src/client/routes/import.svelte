@@ -1,5 +1,4 @@
 <script>
-  import { importStore } from '@src/client/stores.js'
   import Layout from '@src/client/layouts/public.svelte'
 
   let files
@@ -15,9 +14,11 @@
     isSubmitting = true
     const reader = new FileReader()
     reader.onload = async (e) => {
-      const content = JSON.parse(e.target.result)
-      const { id } = await importStore.import(content)
-      window.location = `?p=${id}/events`
+      const res = await fetch('/doc/import', {
+        body: e.target.result,
+        method: 'post'
+      })
+      window.location = res.url
     }
     reader.readAsText(files[0])
   }
@@ -28,13 +29,13 @@
     class="u-m-top-6"
     on:submit={submit}>
     <div>
-      <label for="fileField">File</label>
+      <label for="file">File</label>
       <br>
       <input
         accept=".json"
         bind:files
         class="input"
-        id="fileField"
+        id="file"
         type="file">
     </div>
     <div class="u-m-top-6">

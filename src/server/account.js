@@ -1,40 +1,54 @@
-import { format, parseISO } from 'date-fns'
-import { createYMap, createLocalStore } from './store.js'
-import { APP } from '../constants.js'
-import { getOrCreate, sortDesc } from '../util.js'
+import cuid from 'cuid'
+import { getDoc } from './doc.js'
+import { createYMap, createRemoteStore } from './store.js'
+import { getOrCreate, sortAsc } from '../util.js'
 
 const cache = new Map()
 
-export async function getAccountDB () {
-  const id = 'meta'
+export async function getAccountDB (id = cuid()) {
   return getOrCreate(cache, id, async () => {
-    const store = await createLocalStore(`${APP}-${id}`)
+    const store = await createRemoteStore(id)
     const { doc } = store
     const data = doc.getMap('data')
-    const rows = ['workspaces']
+    const rows = ['docs']
       .map((key) => [key, getOrCreate(data, key, createYMap)])
     const rowsEntries = Object.fromEntries(rows)
-    return { id, ...store, ...rowsEntries }
+    return { ...store, ...rowsEntries, data }
   })
 }
 
-export async function getAccount () {
-  const db = await getAccountDB()
+export async function getAccount (id) {
+  const db = await getAccountDB(id)
 
   if (!db) {
     return
   }
 
-  const docs = [...db.workspaces.entries()]
-    .map(([id, workspace]) => {
-      const name = workspace.get('name')
-      const lastOpened = workspace.get('lastOpened')
-      const lastOpenedObj = parseISO(lastOpened)
-      const lastOpenedDisplay = format(lastOpenedObj, 'PP, p')
-      const openUrl = `?p=open/${id}`
-      return { id, lastOpened, lastOpenedDisplay, name, openUrl }
-    })
-    .sort(sortDesc('lastOpened'))
-  return { docs }
+  const type = 'account'
+  const version = 1
+  const name = db.data.get('name')
+  const docs = [...db.docs.keys()]
+  return { id: db.id, type, version, name, docs }
 }
 
+export async function getAccountWithDocs (id) {
+  const account = await getAccount(id)
+
+  if (!account) {
+    return
+  }
+
+  const docs = []
+  for (const docId of account.docs) {
+    const doc = await getDoc(docId)
+    docs.push(doc)
+  }
+  docs.sort(sortAsc('name'))
+
+  return { ...account, docs }
+}
+
+export async function renameAccount (id, name) {
+  const db = await getAccountDB(id)
+  db.data.set('name', name)
+}

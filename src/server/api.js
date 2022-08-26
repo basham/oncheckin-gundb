@@ -1,13 +1,33 @@
 import cuid from 'cuid'
 import { registerRoute } from 'workbox-routing'
-import { getAccount } from './account.js'
-import { getDoc } from './doc.js'
+import { getAccount, renameAccount } from './account.js'
+import { addAccount, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
+import { createDoc, getDoc, importDoc } from './doc.js'
 import { APP_NAME } from '../constants.js'
+
+registerRoute(
+  matchPath('/api/device.json'),
+  async () => {
+    const data = await getDevice()
+    return respondWithJSON(data)
+  }
+)
 
 registerRoute(
   matchPath('/api/account.json'),
   async () => {
     const data = await getAccount()
+    return respondWithJSON(data)
+  }
+)
+
+const accountRE = new RegExp('^/api/account/(?<accountId>[\\w-]+)\.json$')
+registerRoute(
+  ({ url }) => accountRE.test(url.pathname),
+  async ({ url }) => {
+    const match = url.pathname.match(accountRE)
+    const { accountId } = match.groups
+    const data = await getAccount(accountId)
     return respondWithJSON(data)
   }
 )
@@ -32,12 +52,41 @@ registerRoute(
 )
 
 registerRoute(
+  matchPath('/get-started'),
+  async () => {
+    const heading = 'Get started'
+    const title = createTitle(heading)
+    const route = 'get-started'
+    const data = { route, heading }
+    return respondWithTemplate({ title, data })
+  }
+)
+
+registerRoute(
+  matchPath('/get-started'),
+  async ({ request }) => {
+    const data = await request.formData()
+    const deviceName = data.get('deviceName')
+    await renameDevice(deviceName)
+    const { id } = await getAccount()
+    const accountName = data.get('accountName')
+    await renameAccount(id, accountName)
+    await addAccount(id)
+    await setCurrentAccount(id)
+    return Response.redirect('/account')
+  },
+  'POST'
+)
+
+registerRoute(
   matchPath('/account'),
   async () => {
-    const title = createTitle('Account')
-    const route = 'workspaces'
-    const account = await getAccount()
-    const data = { account, route }
+    const heading = 'Account'
+    const title = createTitle(heading)
+    const route = 'account'
+    const id = await getCurrentAccountId()
+    const account = await getAccount(id)
+    const data = { route, heading, account }
     return respondWithTemplate({ title, data })
   }
 )
@@ -57,7 +106,8 @@ registerRoute(
   async ({ request }) => {
     const data = await request.formData()
     const name = data.get('name')
-    return Response.redirect(`/account?name=${name}`)
+    const { id } = await createDoc({ name })
+    return Response.redirect(`/doc/${id}`)
   },
   'POST'
 )
@@ -69,6 +119,28 @@ registerRoute(
     const route = 'import'
     const data = { route }
     return respondWithTemplate({ title, data })
+  }
+)
+
+registerRoute(
+  matchPath('/doc/import'),
+  async ({ request }) => {
+    const data = await request.json()
+    const { id } = await importDoc(data)
+    return Response.redirect(`/doc/${id}`)
+  },
+  'POST'
+)
+
+const docRE2 = new RegExp('^/doc/(?<docId>[\\w-]+)$')
+registerRoute(
+  ({ url }) => docRE2.test(url.pathname),
+  async ({ url }) => {
+    const match = url.pathname.match(docRE2)
+    const { docId } = match.groups
+    const route = '[docId]/events/index'
+    const data = { route, docId }
+    return respondWithTemplate({ title: 'WHAT', data })
   }
 )
 
