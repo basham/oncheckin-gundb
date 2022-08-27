@@ -1,6 +1,6 @@
 <script>
   import { getContext } from 'svelte'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
   import Events from '@src/client/lib/events.svelte'
 
   const { docId, heading, upcomingEvents, recentEvents, years } = getContext('data')

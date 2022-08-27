@@ -2,7 +2,7 @@
   import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { participantStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
   import Participants from '@src/client/lib/participants.svelte'
 
   const title = 'Hashers'

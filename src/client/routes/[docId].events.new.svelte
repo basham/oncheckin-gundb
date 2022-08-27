@@ -1,7 +1,7 @@
 <script>
   import { getContext } from 'svelte';
   import { eventStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
   import FieldsetEvent from '@src/client/lib/fieldset-event.svelte'
 
   const title = 'New event'

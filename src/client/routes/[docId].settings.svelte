@@ -2,7 +2,7 @@
   import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { workspaceStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
 
   const title = 'Settings'
   const { docId } = getContext('params')

@@ -2,7 +2,7 @@
   import { getContext, onMount } from 'svelte'
   import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
   import Events from '@src/client/lib/events.svelte'
 
   const params = getContext('params')

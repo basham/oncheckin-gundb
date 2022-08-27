@@ -3,7 +3,7 @@
   import { STATE } from '@src/constants.js'
   import { eventStore } from '@src/client/stores.js'
   import NavLink from '@src/client/lib/nav-link.svelte'
-  import Layout from './workspace.svelte'
+  import Layout from './org.svelte'
 
   export let state = STATE.LOADED
   export let title = ''

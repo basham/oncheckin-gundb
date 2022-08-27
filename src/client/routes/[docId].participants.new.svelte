@@ -1,6 +1,6 @@
 <script>
   import { participantStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
   import FieldsetParticipantName from '@src/client/lib/fieldset-participant-name.svelte'
 
   const title = 'New hasher'

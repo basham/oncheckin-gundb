@@ -4,7 +4,7 @@
   import { checkInStore, participantStore } from '@src/client/stores.js'
   import { pluralize } from '@src/util.js'
   import NavLink from '@src/client/lib/nav-link.svelte'
-  import Layout from '@src/client/layouts/workspace.svelte'
+  import Layout from '@src/client/layouts/org.svelte'
 
   export let state = STATE.LOADED
   export let title = ''
