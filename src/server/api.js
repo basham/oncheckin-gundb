@@ -93,7 +93,9 @@ registerRoute(importOrgPath, async ({ request }) => {
   return Response.redirect(url)
 }, 'POST')
 
-registerRoute(orgsPath('[orgId]'), async ({ keys, route }) => {
+const orgPath = createPath.bind(null, 'orgs', '[orgId]')
+
+registerRoute(orgPath(), async ({ keys, route }) => {
   route = `${route}.events.index`
   const heading = 'Events'
   const { orgId } = keys
@@ -102,4 +104,11 @@ registerRoute(orgsPath('[orgId]'), async ({ keys, route }) => {
   const recentEvents = []
   const years = []
   return respondWithTemplate({ route, heading, org, orgId, upcomingEvents, recentEvents, years })
+})
+
+registerRoute(orgPath('settings'), async ({ keys, route }) => {
+  const heading = 'Settings'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  return respondWithTemplate({ route, heading, org, orgId })
 })

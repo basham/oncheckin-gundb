@@ -4,8 +4,8 @@
   import NavLink from '@src/client/lib/nav-link.svelte'
   import Layout from './page.svelte'
 
-  const { org, orgId, route } = getContext('data')
-  const location = route.split('/')[1]
+  const { route, org } = getContext('data')
+  const location = route.split('.')[2]
 
   let unsyncedChanges
 </script>
@@ -43,19 +43,19 @@
           src="/icon.svg">
         <nav class="list-plain list-plain--inline u-gap-4">
           <NavLink
-            href={`/orgs/${orgId}`}
+            href={org.url}
             id="events"
             location={location}>
             Events
           </NavLink>
           <NavLink
-            href={`/orgs/${orgId}/participants`}
+            href={`${org.url}participants/`}
             id="participants"
             location={location}>
             Hashers
           </NavLink>
           <NavLink
-            href={`/orgs/${orgId}/settings`}
+            href={`${org.url}settings/`}
             id="settings"
             location={location}>
             Settings

@@ -27,7 +27,7 @@
 </style>
 
 <a
-  aria-current={location && id && location === id ? 'page' : null}
+  aria-current={location === id ? 'page' : null}
   href={href}>
   <slot></slot>
 </a>
