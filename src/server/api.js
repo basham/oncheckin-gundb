@@ -1,6 +1,6 @@
 import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
-import { createOrg, getOrg, importOrg } from './org.js'
+import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate } from './util.js'
 
 const apiPath = createPath.bind(null, 'api')
@@ -106,9 +106,29 @@ registerRoute(orgPath(), async ({ keys, route }) => {
   return respondWithTemplate({ route, heading, org, orgId, upcomingEvents, recentEvents, years })
 })
 
-registerRoute(orgPath('settings'), async ({ keys, route }) => {
+const settingsOrgPath = orgPath('settings')
+
+registerRoute(settingsOrgPath, async ({ keys, route }) => {
   const heading = 'Settings'
   const { orgId } = keys
   const org = await getOrg(orgId)
   return respondWithTemplate({ route, heading, org, orgId })
 })
+
+const renameOrgPath = orgPath('rename')
+
+registerRoute(renameOrgPath, async ({ keys, route }) => {
+  const heading = 'Rename organization'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  return respondWithTemplate({ route, heading, org, orgId })
+})
+
+registerRoute(renameOrgPath, async ({ keys, request }) => {
+  const { orgId } = keys
+  const data = await request.formData()
+  const name = data.get('name')
+  await renameOrg(orgId, name)
+  const org = await getOrg(orgId)
+  return Response.redirect(`${org.url}settings`)
+}, 'POST')

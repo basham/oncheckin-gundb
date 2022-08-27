@@ -70,3 +70,8 @@ export async function importOrg (content) {
   await db.save()
   return db
 }
+
+export async function renameOrg (id, name) {
+  const db = await getOrgDB(id)
+  db.settings.set('name', name)
+}
