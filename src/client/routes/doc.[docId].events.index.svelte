@@ -1,18 +1,11 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { eventStore } from '@src/client/stores.js'
+  import { getContext } from 'svelte'
   import Layout from '@src/client/layouts/workspace.svelte'
   import Events from '@src/client/lib/events.svelte'
 
-  const title = 'Events'
-  const { docId } = getContext('params')
+  const { docId, heading, upcomingEvents, recentEvents, years } = getContext('data')
 
-  let state = STATE.LOADING
-  let upcomingEvents = []
-  let recentEvents = []
-  let years = []
-
+  /*
   onMount(async () => {
     upcomingEvents = await eventStore.getUpcoming(docId)
     recentEvents = (await eventStore.getPast(docId)).slice(0, 5)
@@ -21,15 +14,14 @@
     years = [...(new Set(eventYears))].sort().reverse()
     state = STATE.LOADED
   })
+  */
 </script>
 
-<Layout
-  state={state}
-  title={title}>
+<Layout>
   <div class="u-flex u-flex-end u-flex-space">
-    <h1>{title}</h1>
+    <h1>{heading}</h1>
     <div>
-      <a class="button button--primary" href={`?p=${docId}/events/new`}>New event</a>
+      <a class="button button--primary" href={`/doc/${docId}/events/new`}>New event</a>
     </div>
   </div>
   <h2>Upcoming events <span class="badge">{upcomingEvents.length}</span></h2>
@@ -42,7 +34,7 @@
       <li class="row">
         <a
           class="row__left u-text-num"
-          href={`?p=events/past/${year}`}>
+          href={`/doc/${docId}/events/past/${year}`}>
           <span class="row__primary">{year}</span>
         </a>
       </li>

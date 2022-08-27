@@ -2,9 +2,8 @@
   import { getContext } from 'svelte'
   import Layout from '@src/client/layouts/public.svelte'
 
-  const account = getContext('account')
-  const device = getContext('device')
-  let workspaces = account.docs
+  const { device, account } = getContext('data')
+  const workspaces = account.docs
 </script>
 
 <Layout title="Account">

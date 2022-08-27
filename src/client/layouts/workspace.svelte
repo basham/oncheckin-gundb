@@ -1,25 +1,13 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { APP_NAME, STATE } from '@src/constants.js'
-  import { workspaceStore } from '@src/client/stores.js'
+  import { getContext } from 'svelte'
+  import { APP_NAME } from '@src/constants.js'
   import NavLink from '@src/client/lib/nav-link.svelte'
   import Layout from './page.svelte'
 
-  export let state = STATE.LOADED
-  export let title = ''
-
-  const { docId } = getContext('params')
-  const route = getContext('route')
+  const { doc, docId, route } = getContext('data')
   const location = route.split('/')[1]
 
-  let _state = STATE.LOADING
-  let workspace
   let unsyncedChanges
-
-  onMount(async () => {
-    workspace = await workspaceStore.get(docId)
-    _state = STATE.LOADED
-  })
 </script>
 
 <style>
@@ -45,9 +33,7 @@
   }
 </style>
 
-<Layout
-  state={[state, _state]}
-  title={[title, workspace?.name]}>
+<Layout>
   <header class="u-border-bottom">
     <div class="header layout-content">
       <span class="nav">
@@ -57,19 +43,19 @@
           src="../icon.svg">
         <nav class="list-plain list-plain--inline u-gap-4">
           <NavLink
-            href={`?p=${docId}/events`}
+            href={`/doc/${docId}`}
             id="events"
             location={location}>
             Events
           </NavLink>
           <NavLink
-            href={`?p=${docId}/participants`}
+            href={`/doc/${docId}/participants`}
             id="participants"
             location={location}>
             Hashers
           </NavLink>
           <NavLink
-            href={`?p=${docId}/settings`}
+            href={`/doc/${docId}/settings`}
             id="settings"
             location={location}>
             Settings
@@ -77,7 +63,7 @@
         </nav>
       </span>
       <span class="u-ts-2">
-        {workspace?.name}
+        {doc.name}
         {#if unsyncedChanges}
           <strong
             aria-hidden="true"

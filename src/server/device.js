@@ -1,5 +1,5 @@
 import cuid from 'cuid'
-import { getAccount } from './account.js'
+import { getAccount, getAccountDB } from './account.js'
 import { createYMap, createLocalStore } from './store.js'
 import { getOrCreate, sortAsc } from '../util.js'
 
@@ -8,6 +8,12 @@ const cache = new Map()
 export async function addAccount (id) {
   const db = await getDeviceDB()
   db.accounts.set(id, true)
+}
+
+export async function addDoc (docId) {
+  const accountId = await getCurrentAccountId()
+  const account = await getAccountDB(accountId)
+  account.docs.set(docId, true)
 }
 
 export async function getCurrentAccountId () {

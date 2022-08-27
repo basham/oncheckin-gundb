@@ -1,7 +1,7 @@
 import cuid from 'cuid'
 import { registerRoute } from 'workbox-routing'
 import { getAccount, renameAccount } from './account.js'
-import { addAccount, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
+import { addAccount, addDoc, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
 import { createDoc, getDoc, importDoc } from './doc.js'
 import { APP_NAME } from '../constants.js'
 
@@ -113,6 +113,7 @@ registerRoute(
     const data = await request.formData()
     const name = data.get('name')
     const { id } = await createDoc({ name })
+    await addDoc(id)
     return Response.redirect(`/doc/${id}`)
   },
   'POST'
@@ -145,9 +146,15 @@ registerRoute(
   async ({ url }) => {
     const match = url.pathname.match(docRE2)
     const { docId } = match.groups
-    const route = '[docId]/events/index'
-    const data = { route, docId }
-    return respondWithTemplate({ title: 'WHAT', data })
+    const route = 'doc.[docId].events.index'
+    const heading = 'Events'
+    const title = createTitle(heading)
+    const doc = await getDoc(docId)
+    const upcomingEvents = []
+    const recentEvents = []
+    const years = []
+    const data = { route, heading, doc, docId, upcomingEvents, recentEvents, years }
+    return respondWithTemplate({ title, data })
   }
 )
 
