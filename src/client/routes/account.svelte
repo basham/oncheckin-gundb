@@ -10,12 +10,12 @@
 <Layout title="Account">
   <div class="u-m-top-4">{account.name} ({device.name})</div>
   <div class="u-flex u-flex-gap-4 u-m-top-6">
-    <a class="button button--primary" href="/doc/new">New document</a>
+    <a class="button button--primary" href="/doc/new">New database</a>
     <a class="button button--secondary" href="/doc/import">Import</a>
   </div>
   <details class="u-m-top-6">
     <summary>Join a workspace</summary>
-    <p class="u-m-top-4">Join an existing workspace with an invite link or by scanning a QR&nbsp;code on someone else's device.</p>
+    <p class="u-m-top-4">Add an existing workspace with an invite link or by scanning a QR&nbsp;code on someone else's device.</p>
   </details>
   {#if workspaces.length}
     <h2>All documents</h2>

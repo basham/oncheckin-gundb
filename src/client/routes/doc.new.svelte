@@ -2,16 +2,16 @@
   import Layout from '@src/client/layouts/public.svelte'
 </script>
 
-<Layout title="New workspace">
+<Layout>
   <form
     autocomplete="off"
     method="post">
     <div class="u-m-top-6">
-      <label for="workspaceNameInput">Workspace name</label>
+      <label for="databaseNameInput">Database name</label>
       <br>
       <input
         class="input"
-        id="workspaceNameInput"
+        id="databaseNameInput"
         name="name"
         type="text">
     </div>
@@ -19,7 +19,7 @@
       <button
         class="button button--primary"
         type="submit">
-        Create workspace
+        Save
       </button>
     </div>
     <div class="u-m-top-6">

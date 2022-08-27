@@ -54,6 +54,10 @@ registerRoute(
 registerRoute(
   matchPath('/get-started'),
   async () => {
+    const device = await getDevice()
+    if (device.state === 'active') {
+      return Response.redirect('/account')
+    }
     const heading = 'Get started'
     const title = createTitle(heading)
     const route = 'get-started'
@@ -95,9 +99,10 @@ registerRoute(
 registerRoute(
   matchPath('/doc/new'),
   () => {
-    const title = createTitle('New database')
-    const route = 'new'
-    const data = { route }
+    const heading = 'New database'
+    const title = createTitle(heading)
+    const route = 'doc.new'
+    const data = { route, heading }
     return respondWithTemplate({ title, data })
   }
 )
@@ -116,9 +121,10 @@ registerRoute(
 registerRoute(
   matchPath('/doc/import'),
   () => {
-    const title = createTitle('Import database')
-    const route = 'import'
-    const data = { route }
+    const heading = 'Import database'
+    const title = createTitle(heading)
+    const route = 'doc.import'
+    const data = { route, heading }
     return respondWithTemplate({ title, data })
   }
 )
