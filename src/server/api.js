@@ -1,7 +1,7 @@
 import { getAccount, getAccountWithDocs, renameAccount } from './account.js'
 import { addAccount, addDoc, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
 import { createDoc, getDoc, importDoc } from './doc.js'
-import { createId, createTitle, registerRoute, respondWithJSON, respondWithTemplate } from './util.js'
+import { createId, registerRoute, respondWithJSON, respondWithTemplate } from './util.js'
 
 registerRoute('/api/device.json', async () => {
   const data = await getDevice()
