@@ -37,9 +37,7 @@ registerRoute('/get-started/', async ({ route }) => {
     return Response.redirect('/orgs')
   }
   const heading = 'Get started'
-  const title = createTitle(heading)
-  const data = { route, heading }
-  return respondWithTemplate({ title, data })
+  return respondWithTemplate({ route, heading })
 })
 
 registerRoute('/get-started/', async ({ request }) => {
@@ -56,19 +54,15 @@ registerRoute('/get-started/', async ({ request }) => {
 
 registerRoute('/orgs/', async ({ route }) => {
   const heading = 'Organizations'
-  const title = createTitle(heading)
   const device = await getDevice()
   const id = await getCurrentAccountId()
   const account = await getAccountWithDocs(id)
-  const data = { route, heading, device, account }
-  return respondWithTemplate({ title, data })
+  return respondWithTemplate({ route, heading, device, account })
 })
 
 registerRoute('/orgs/new/', ({ route }) => {
   const heading = 'New organization'
-  const title = createTitle(heading)
-  const data = { route, heading }
-  return respondWithTemplate({ title, data })
+  return respondWithTemplate({ route, heading })
 })
 
 registerRoute('/orgs/new/', async ({ request }) => {
@@ -81,9 +75,7 @@ registerRoute('/orgs/new/', async ({ request }) => {
 
 registerRoute('/orgs/import/', ({ route }) => {
   const heading = 'Import organization'
-  const title = createTitle(heading)
-  const data = { route, heading }
-  return respondWithTemplate({ title, data })
+  return respondWithTemplate({ route, heading })
 })
 
 registerRoute('/orgs/import/', async ({ request }) => {
@@ -93,14 +85,12 @@ registerRoute('/orgs/import/', async ({ request }) => {
 }, 'POST')
 
 registerRoute('/orgs/[orgId]/', async ({ keys, route }) => {
-  const { orgId } = keys
   route = `${route}.events.index`
   const heading = 'Events'
-  const title = createTitle(heading)
+  const { orgId } = keys
   const org = await getDoc(orgId)
   const upcomingEvents = []
   const recentEvents = []
   const years = []
-  const data = { route, heading, org, orgId, upcomingEvents, recentEvents, years }
-  return respondWithTemplate({ title, data })
+  return respondWithTemplate({ route, heading, org, orgId, upcomingEvents, recentEvents, years })
 })

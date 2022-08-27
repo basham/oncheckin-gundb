@@ -53,8 +53,9 @@ export function respondWithJSON (data) {
   return createResponse(body, 'application/json')
 }
 
-export function respondWithTemplate ({ title, data }) {
+export function respondWithTemplate (data) {
   const entryBase = import.meta.env.DEV ? '/src/client' : ''
+  const { title = createTitle(data.heading) } = data
   const body = `
 <!DOCTYPE html>
 <html lang="en">
