@@ -40,7 +40,7 @@
         <img
           alt={APP_NAME}
           class="logo"
-          src="../icon.svg">
+          src="/icon.svg">
         <nav class="list-plain list-plain--inline u-gap-4">
           <NavLink
             href={`/doc/${docId}`}
