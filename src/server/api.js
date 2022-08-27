@@ -1,6 +1,6 @@
 import cuid from 'cuid'
 import { registerRoute } from 'workbox-routing'
-import { getAccount, renameAccount } from './account.js'
+import { getAccount, getAccountWithDocs, renameAccount } from './account.js'
 import { addAccount, addDoc, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
 import { createDoc, getDoc, importDoc } from './doc.js'
 import { APP_NAME } from '../constants.js'
@@ -21,7 +21,7 @@ registerRoute(
   }
 )
 
-const accountRE = new RegExp('^/api/account/(?<accountId>[\\w-]+)\.json$')
+const accountRE = new RegExp('^/api/accounts/(?<accountId>[\\w-]+)\.json$')
 registerRoute(
   ({ url }) => accountRE.test(url.pathname),
   async ({ url }) => {
@@ -40,7 +40,7 @@ registerRoute(
   }
 )
 
-const docRE = new RegExp('^/api/doc/(?<docId>[\\w-]+)\.json$')
+const docRE = new RegExp('^/api/docs/(?<docId>[\\w-]+)\.json$')
 registerRoute(
   ({ url }) => docRE.test(url.pathname),
   async ({ url }) => {
@@ -90,63 +90,63 @@ registerRoute(
     const route = 'account'
     const device = await getDevice()
     const id = await getCurrentAccountId()
-    const account = await getAccount(id)
+    const account = await getAccountWithDocs(id)
     const data = { route, heading, device, account }
     return respondWithTemplate({ title, data })
   }
 )
 
 registerRoute(
-  matchPath('/doc/new'),
+  matchPath('/docs/new'),
   () => {
     const heading = 'New database'
     const title = createTitle(heading)
-    const route = 'doc.new'
+    const route = 'docs.new'
     const data = { route, heading }
     return respondWithTemplate({ title, data })
   }
 )
 
 registerRoute(
-  matchPath('/doc/new'),
+  matchPath('/docs/new'),
   async ({ request }) => {
     const data = await request.formData()
     const name = data.get('name')
     const { id } = await createDoc({ name })
     await addDoc(id)
-    return Response.redirect(`/doc/${id}`)
+    return Response.redirect(`/docs/${id}`)
   },
   'POST'
 )
 
 registerRoute(
-  matchPath('/doc/import'),
+  matchPath('/docs/import'),
   () => {
     const heading = 'Import database'
     const title = createTitle(heading)
-    const route = 'doc.import'
+    const route = 'docs.import'
     const data = { route, heading }
     return respondWithTemplate({ title, data })
   }
 )
 
 registerRoute(
-  matchPath('/doc/import'),
+  matchPath('/docs/import'),
   async ({ request }) => {
     const data = await request.json()
     const { id } = await importDoc(data)
-    return Response.redirect(`/doc/${id}`)
+    return Response.redirect(`/docs/${id}`)
   },
   'POST'
 )
 
-const docRE2 = new RegExp('^/doc/(?<docId>[\\w-]+)$')
+const docRE2 = new RegExp('^/docs/(?<docId>[\\w-]+)$')
 registerRoute(
   ({ url }) => docRE2.test(url.pathname),
   async ({ url }) => {
     const match = url.pathname.match(docRE2)
     const { docId } = match.groups
-    const route = 'doc.[docId].events.index'
+    const route = 'docs.[docId].events.index'
     const heading = 'Events'
     const title = createTitle(heading)
     const doc = await getDoc(docId)

@@ -3,7 +3,7 @@
   import { APP_NAME, STATE } from '@src/constants.js'
   import Layout from './page.svelte'
 
-  export let heading = getContext('heading')
+  export let heading = getContext('data').heading
   export let state = STATE.LOADED
 </script>
 

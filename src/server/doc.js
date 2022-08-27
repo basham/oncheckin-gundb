@@ -29,14 +29,16 @@ export async function getDoc (id) {
   }
 
   const name = db.settings.get('name') || '(Workspace)'
-  const openUrl = `?p=open/${id}`
+  const url = `/docs/${id}`
+  const openUrl = `${url}/open`
   const inviteCode = self.btoa(JSON.stringify({ id, name }))
-  const shareUrl = `${self.location.origin}/?p=join/${inviteCode}`
+  const shareUrl = `${self.location.origin}/docs/join/${inviteCode}`
   return {
     id,
     name,
     openUrl,
-    shareUrl
+    shareUrl,
+    url
   }
 }
 
