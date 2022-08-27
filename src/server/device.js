@@ -1,6 +1,6 @@
-import cuid from 'cuid'
 import { getAccount, getAccountDB } from './account.js'
 import { createYMap, createLocalStore } from './store.js'
+import { createId } from './util.js'
 import { getOrCreate, sortAsc } from '../util.js'
 
 const cache = new Map()
@@ -10,10 +10,10 @@ export async function addAccount (id) {
   db.accounts.set(id, true)
 }
 
-export async function addDoc (docId) {
+export async function addOrg (orgId) {
   const accountId = await getCurrentAccountId()
   const account = await getAccountDB(accountId)
-  account.docs.set(docId, true)
+  account.orgs.set(orgId, true)
 }
 
 export async function getCurrentAccountId () {
@@ -27,7 +27,7 @@ export async function getDeviceDB () {
     const store = await createLocalStore(id)
     const { doc } = store
     const data = doc.getMap('data')
-    getOrCreate(data, 'id', cuid)
+    getOrCreate(data, 'id', createId)
     const rows = ['accounts']
       .map((key) => [key, getOrCreate(data, key, createYMap)])
     const rowsEntries = Object.fromEntries(rows)

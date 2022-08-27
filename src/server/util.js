@@ -6,6 +6,11 @@ export function createId () {
   return cuid()
 }
 
+export function createPath (...args) {
+  const includeTail = args.length && !args[args.length - 1].includes('.')
+  return `/${args.join('/')}${includeTail ? '/' : ''}`
+}
+
 export function createResponse (body, contentType) {
   const options = {
     headers: {

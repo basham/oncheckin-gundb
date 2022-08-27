@@ -5,6 +5,7 @@
 
   const { docId, heading, upcomingEvents, recentEvents, years } = getContext('data')
 
+
   /*
   onMount(async () => {
     upcomingEvents = await eventStore.getUpcoming(docId)

@@ -3,14 +3,14 @@
   import Layout from '@src/client/layouts/public.svelte'
 
   const { device, account } = getContext('data')
-  const { docs: orgs } = account
+  const { orgs } = account
 </script>
 
 <Layout>
   <div class="u-m-top-4">{account.name} ({device.name})</div>
   <div class="u-flex u-flex-gap-4 u-m-top-6">
-    <a class="button button--primary" href="/orgs/new">New organization</a>
-    <a class="button button--secondary" href="/orgs/import">Import</a>
+    <a class="button button--primary" href="/orgs/new/">New organization</a>
+    <a class="button button--secondary" href="/orgs/import/">Import</a>
   </div>
   <details class="u-m-top-6">
     <summary>Add an existing organization</summary>

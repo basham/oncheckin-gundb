@@ -14,7 +14,7 @@
     isSubmitting = true
     const reader = new FileReader()
     reader.onload = async (e) => {
-      const res = await fetch('/orgs/import', {
+      const res = await fetch(window.location.pathname, {
         body: e.target.result,
         method: 'post'
       })
@@ -46,7 +46,7 @@
       </button>
     </div>
     <div class="u-m-top-6">
-      <a href="/orgs">Back to organizations</a>
+      <a href="/orgs/">Back to organizations</a>
     </div>
   </form>
 </Layout>

@@ -23,7 +23,7 @@
       </button>
     </div>
     <div class="u-m-top-6">
-      <a href="/orgs">Back to organizations</a>
+      <a href="/orgs/">Back to organizations</a>
     </div>
   </form>
 </Layout>
