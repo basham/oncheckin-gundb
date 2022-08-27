@@ -84,9 +84,10 @@ registerRoute(
     const heading = 'Account'
     const title = createTitle(heading)
     const route = 'account'
+    const device = await getDevice()
     const id = await getCurrentAccountId()
     const account = await getAccount(id)
-    const data = { route, heading, account }
+    const data = { route, heading, device, account }
     return respondWithTemplate({ title, data })
   }
 )
