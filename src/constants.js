@@ -26,9 +26,7 @@ export const ROUTES = [
   '[docId]/participants/[participantId]/hares',
   '[docId]/rename',
   '[docId]/settings',
-  '[docId]/share',
-  'yjs/index',
-  'yjs/[id]'
+  '[docId]/share'
 ]
 
 export const STATE_LOADING = Symbol('loading')
