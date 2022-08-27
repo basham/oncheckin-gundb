@@ -14,7 +14,7 @@
     isSubmitting = true
     const reader = new FileReader()
     reader.onload = async (e) => {
-      const res = await fetch('/doc/import', {
+      const res = await fetch('/orgs/import', {
         body: e.target.result,
         method: 'post'
       })
@@ -24,7 +24,7 @@
   }
 </script>
 
-<Layout title="Import workspace">
+<Layout>
   <form
     class="u-m-top-6"
     on:submit={submit}>
@@ -46,7 +46,7 @@
       </button>
     </div>
     <div class="u-m-top-6">
-      <a href="/account">Back to account</a>
+      <a href="/orgs">Back to organizations</a>
     </div>
   </form>
 </Layout>

@@ -34,7 +34,11 @@ export function registerRoute (path, handler, method) {
     ({ url }) => re.test(url.pathname),
     (options) => {
       const keys = options.url.pathname.match(re).groups
-      return handler({ ...options, keys })
+      const route = path
+        .replace(/^\//, '')
+        .replace(/\/$/, '')
+        .replace(/\//g, '.')
+      return handler({ ...options, keys, route })
     },
     method
   )

@@ -25,20 +25,19 @@ registerRoute('/api/id.json', async () => {
   return respondWithJSON(data)
 })
 
-registerRoute('/api/docs/[docId].json', async ({ keys }) => {
-  const { docId } = keys
-  const data = await getDoc(docId)
+registerRoute('/api/orgs/[orgId].json', async ({ keys }) => {
+  const { orgId } = keys
+  const data = await getDoc(orgId)
   return respondWithJSON(data)
 })
 
-registerRoute('/get-started/', async () => {
+registerRoute('/get-started/', async ({ route }) => {
   const device = await getDevice()
   if (device.state === 'active') {
-    return Response.redirect('/account')
+    return Response.redirect('/orgs')
   }
   const heading = 'Get started'
   const title = createTitle(heading)
-  const route = 'get-started'
   const data = { route, heading }
   return respondWithTemplate({ title, data })
 })
@@ -52,13 +51,12 @@ registerRoute('/get-started/', async ({ request }) => {
   await renameAccount(id, accountName)
   await addAccount(id)
   await setCurrentAccount(id)
-  return Response.redirect('/account')
+  return Response.redirect('/orgs')
 }, 'POST')
 
-registerRoute('/account/', async () => {
-  const heading = 'Account'
+registerRoute('/orgs/', async ({ route }) => {
+  const heading = 'Organizations'
   const title = createTitle(heading)
-  const route = 'account'
   const device = await getDevice()
   const id = await getCurrentAccountId()
   const account = await getAccountWithDocs(id)
@@ -66,45 +64,43 @@ registerRoute('/account/', async () => {
   return respondWithTemplate({ title, data })
 })
 
-registerRoute('/docs/new/', () => {
-  const heading = 'New database'
+registerRoute('/orgs/new/', ({ route }) => {
+  const heading = 'New organization'
   const title = createTitle(heading)
-  const route = 'docs.new'
   const data = { route, heading }
   return respondWithTemplate({ title, data })
 })
 
-registerRoute('/docs/new/', async ({ request }) => {
+registerRoute('/orgs/new/', async ({ request }) => {
   const data = await request.formData()
   const name = data.get('name')
   const { id } = await createDoc({ name })
   await addDoc(id)
-  return Response.redirect(`/docs/${id}`)
+  return Response.redirect(`/orgs/${id}`)
 }, 'POST')
 
-registerRoute('/docs/import/', () => {
-  const heading = 'Import database'
+registerRoute('/orgs/import/', ({ route }) => {
+  const heading = 'Import organization'
   const title = createTitle(heading)
-  const route = 'docs.import'
   const data = { route, heading }
   return respondWithTemplate({ title, data })
 })
 
-registerRoute('/docs/import/', async ({ request }) => {
+registerRoute('/orgs/import/', async ({ request }) => {
   const data = await request.json()
   const { id } = await importDoc(data)
-  return Response.redirect(`/docs/${id}`)
+  return Response.redirect(`/orgs/${id}`)
 }, 'POST')
 
-registerRoute('/docs/[docId]/', async ({ keys }) => {
-  const { docId } = keys
-  const route = 'docs.[docId].events.index'
+registerRoute('/orgs/[orgId]/', async ({ keys, route }) => {
+  const { orgId } = keys
+  route = `${route}.events.index`
   const heading = 'Events'
   const title = createTitle(heading)
-  const doc = await getDoc(docId)
+  const org = await getDoc(orgId)
   const upcomingEvents = []
   const recentEvents = []
   const years = []
-  const data = { route, heading, doc, docId, upcomingEvents, recentEvents, years }
+  const data = { route, heading, org, orgId, upcomingEvents, recentEvents, years }
   return respondWithTemplate({ title, data })
 })

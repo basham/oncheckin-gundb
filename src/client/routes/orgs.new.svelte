@@ -7,11 +7,11 @@
     autocomplete="off"
     method="post">
     <div class="u-m-top-6">
-      <label for="databaseNameInput">Database name</label>
+      <label for="orgNameInput">Organization name</label>
       <br>
       <input
         class="input"
-        id="databaseNameInput"
+        id="orgNameInput"
         name="name"
         type="text">
     </div>
@@ -23,7 +23,7 @@
       </button>
     </div>
     <div class="u-m-top-6">
-      <a href="/account">Back to account</a>
+      <a href="/orgs">Back to organizations</a>
     </div>
   </form>
 </Layout>
