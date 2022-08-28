@@ -208,6 +208,16 @@ registerRoute(editEventPath, async ({ keys, request }) => {
   return Response.redirect(url)
 }, 'POST')
 
+const participantsPath = orgPath.bind(null, 'participants')
+
+registerRoute(participantsPath(), async ({ keys, route }) => {
+  const h1 = 'Hashers'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  const participants = []
+  return respondWithTemplate({ route, h1, org, participants })
+})
+
 const settingsOrgPath = orgPath('settings')
 
 registerRoute(settingsOrgPath, async ({ keys, route }) => {
