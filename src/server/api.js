@@ -132,3 +132,10 @@ registerRoute(renameOrgPath, async ({ keys, request }) => {
   const org = await getOrg(orgId)
   return Response.redirect(`${org.url}settings`)
 }, 'POST')
+
+registerRoute(orgPath('share'), async ({ keys, route }) => {
+  const heading = 'Share organization'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  return respondWithTemplate({ route, heading, org })
+})

@@ -1,22 +1,13 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { workspaceStore } from '@src/client/stores.js'
+  import { getContext } from 'svelte'
   import Layout from '@src/client/layouts/org.svelte'
   import QRCode from '@src/client/lib/qr-code.svelte'
   import Toast from '@src/client/lib/toast.svelte'
 
   const title = 'Share workspace'
-  const { docId } = getContext('params')
+  const { org, heading } = getContext('data')
 
-  let state = STATE.LOADING
-  let workspace
   let toast
-
-  onMount(async () => {
-    workspace = await workspaceStore.get(docId)
-    state = STATE.LOADED
-  })
 
   function copyShareLink (event) {
     const text = document.getElementById('share-link-input')
@@ -35,11 +26,9 @@
   }
 </style>
 
-<Layout
-  state={state}
-  title={title}>
-  <h1>{title}</h1>
-  <p class="u-m-top-4">Invite others to collaborate in this workspace as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
+<Layout>
+  <h1>{heading}</h1>
+  <p class="u-m-top-4">Invite others to collaborate in this organization as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
   <div class="card u-m-top-6 u-flex u-flex-wrap u-flex-gap-2">
     <input
       aria-label="Share link"
@@ -47,7 +36,7 @@
       id="share-link-input"
       readonly
       type="text"
-      value={workspace?.shareUrl} />
+      value={org.shareUrl} />
     <button
       class="button button--primary"
       on:click={copyShareLink}>
@@ -55,7 +44,7 @@
     </button>
   </div>
   <div class="card u-m-top-6">
-    <QRCode code={workspace?.shareUrl} />
+    <QRCode code={org.shareUrl} />
   </div>
   <Toast bind:this={toast} />
 </Layout>
