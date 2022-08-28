@@ -4,17 +4,6 @@
   import Events from '@src/client/lib/events.svelte'
 
   const { heading, org, upcomingEvents, recentEvents, years } = getContext('data')
-
-  /*
-  onMount(async () => {
-    upcomingEvents = await eventStore.getUpcoming(docId)
-    recentEvents = (await eventStore.getPast(docId)).slice(0, 5)
-    const eventYears = (await eventStore.getAll(docId))
-      .map(({ year }) => year)
-    years = [...(new Set(eventYears))].sort().reverse()
-    state = STATE.LOADED
-  })
-  */
 </script>
 
 <Layout>
@@ -34,7 +23,7 @@
       <li class="row">
         <a
           class="row__left u-text-num"
-          href={`${org.url}events/past/${year}`}>
+          href={`${org.url}events/year/${year}/`}>
           <span class="row__primary">{year}</span>
         </a>
       </li>

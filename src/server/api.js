@@ -1,6 +1,6 @@
 import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
-import { createEvent, getEvent, getEventYears, getPastEvents, getUpcomingEvents } from './event.js'
+import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
@@ -31,6 +31,18 @@ registerRoute(apiPath('id.json'), async () => {
 registerRoute(apiPath('orgs', '[orgId].json'), async ({ keys }) => {
   const { orgId } = keys
   const data = await getOrg(orgId)
+  return respondWithJSON(data)
+})
+
+registerRoute(apiPath('orgs', '[orgId]', 'events.json'), async ({ keys }) => {
+  const { orgId } = keys
+  const data = await getEvents(orgId)
+  return respondWithJSON(data)
+})
+
+registerRoute(apiPath('orgs', '[orgId]', 'events', 'upcoming.json'), async ({ keys }) => {
+  const { orgId } = keys
+  const data = await getUpcomingEvents(orgId)
   return respondWithJSON(data)
 })
 
@@ -133,6 +145,14 @@ registerRoute(newEventPath, async ({ keys, request }) => {
   const { url } = await createEvent(orgId, { name, date, count})
   return Response.redirect(url)
 }, 'POST')
+
+registerRoute(orgPath('events', 'year', '[year]'), async ({ keys, route }) => {
+  const { orgId, year } = keys
+  const heading = `Events in ${year}`
+  const org = await getOrg(orgId)
+  const events = await getEventsByYear(orgId, year)
+  return respondWithTemplate({ route, heading, org, events })
+})
 
 const settingsOrgPath = orgPath('settings')
 

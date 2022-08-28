@@ -74,7 +74,15 @@ export async function getEventYears (orgId) {
   return [...(new Set(years))].sort().reverse()
 }
 
+export async function getEventsByYear (orgId, year) {
+  return (await getEvents(orgId))
+    .filter((event) => event.year === year)
+    .reverse()
+}
+
 export async function setEvent (orgId, eventId, values) {
+  cache.delete(`${orgId}/events`)
+  cache.delete(`${orgId}/${eventId}`)
   const { events } = await getOrgDB(orgId)
   const event = getOrCreate(events, eventId, createYMap)
   event.doc.transact(() => {
