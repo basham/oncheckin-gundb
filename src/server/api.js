@@ -251,6 +251,19 @@ registerRoute(newParticipantsPath, async ({ keys, request }) => {
   return Response.redirect(url)
 }, 'POST')
 
+const participantPath = participantsPath.bind(null, '[participantId]')
+
+registerRoute(participantPath(), async ({ keys, route }) => {
+  route = `${route}.check-ins`
+  const { orgId, participantId } = keys
+  const org = await getOrg(orgId)
+  const participant = await getParticipant(orgId, participantId)
+  const h1 = participant.displayName
+  const checkIns = []
+  const latestCheckIn = null
+  return respondWithTemplate({ route, h1, org, participant, checkIns, latestCheckIn })
+})
+
 const settingsOrgPath = orgPath('settings')
 
 registerRoute(settingsOrgPath, async ({ keys, route }) => {
