@@ -1,29 +1,16 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/events.[id].svelte'
+  import { getContext } from 'svelte'
+  import Layout from '@src/client/layouts/event.svelte'
   import Icon from '@src/client/lib/icon.svelte'
 
-  const { docId, eventId } = getContext('params')
+  const { runners } = getContext('data')
+  const runnersMap = new Map(runners.map((checkIn) => [checkIn.participant.id, checkIn]))
 
-  let state = STATE.LOADING
-  let event = null
-  let runners = []
-  $: runnersMap = new Map(runners.map((checkIn) => [checkIn.participant.id, checkIn]))
   let arrivedIds = new Set()
   $: waiting = runners.filter(({ participant }) => !arrivedIds.has(participant.id))
   $: arrived = [...arrivedIds]
     .map((id) => runnersMap.get(id))
     .reverse()
-
-  onMount(async () => {
-    event = await eventStore.get(docId, eventId)
-    runners = (await checkInStore.getEventCheckIns(docId, eventId))
-      .filter(({ host }) => !host)
-    waiting = runners
-    state = STATE.LOADED
-  })
 
   function markAsArrived (event) {
     const { id } = event.target.dataset
@@ -43,7 +30,7 @@
   }
 </script>
 
-<Layout state={state}>
+<Layout>
   <h2>Waiting <span class="badge">{waiting.length}</span></h2>
   {#if waiting.length}
     <ul class="list-plain u-gap-2px u-m-top-2">

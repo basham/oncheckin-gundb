@@ -167,6 +167,16 @@ registerRoute(eventPath(), async ({ keys, route }) => {
   return respondWithTemplate({ route, h1, org, event, hares, runners })
 })
 
+registerRoute(eventPath('checkpoint'), async ({ keys, route }) => {
+  const { orgId, eventId } = keys
+  const org = await getOrg(orgId)
+  const event = await getEvent(orgId, eventId)
+  const h1 = event.name
+  const h2 = 'Checkpoint'
+  const runners = []
+  return respondWithTemplate({ route, h1, h2, org, event, runners })
+})
+
 const editEventPath = eventPath('edit')
 
 registerRoute(editEventPath, async ({ keys, route }) => {
