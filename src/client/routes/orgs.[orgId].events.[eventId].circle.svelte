@@ -1,44 +1,26 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore } from '@src/client/stores.js'
+  import { getContext } from 'svelte'
   import { sortAsc } from '@src/util.js'
-  import Layout from '@src/client/layouts/events.[id].svelte'
+  import Layout from '@src/client/layouts/event.svelte'
   import CheckInList from '@src/client/lib/list-check-in.svelte'
 
-  const { docId, eventId } = getContext('params')
-
-  let state = STATE.LOADING
-  let event = null
-  let hosts = []
-  let specialHosts = []
-  let specialRuns = []
-  let visitors = []
-  let virgins = []
-  let namings = []
-
-  onMount(async () => {
-    event = await eventStore.get(docId, eventId)
-    const checkIns = (await checkInStore.getEventCheckIns(docId, eventId))
-    hosts = checkIns
-      .filter(({ host }) => host)
-    specialHosts = hosts
-      .filter(({ specialHostCount }) => specialHostCount)
-      .sort(sortAsc('hostCount'))
-    specialRuns = checkIns
-      .filter(({ specialCount }) => specialCount)
-      .sort(sortAsc('count'))
-    virgins = checkIns
-      .filter(({ count }) => count === 1)
-    namings = checkIns
-      .filter(({ readyForNaming }) => readyForNaming)
-    state = STATE.LOADED
-  })
+  const { checkIns } = getContext('data')
+  const hosts = checkIns
+    .filter(({ host }) => host)
+  const specialHosts = hosts
+    .filter(({ specialHostCount }) => specialHostCount)
+    .sort(sortAsc('hostCount'))
+  const specialRuns = checkIns
+    .filter(({ specialCount }) => specialCount)
+    .sort(sortAsc('count'))
+  const virgins = checkIns
+    .filter(({ count }) => count === 1)
+  const namings = checkIns
+    .filter(({ readyForNaming }) => readyForNaming)
+  const visitors = []
 </script>
 
-<Layout
-  state={state}
-  title="Circle">
+<Layout>
   <h2>Hares <span class="badge">{hosts.length}</span></h2>
   {#if hosts.length}
     <div class="u-m-top-2">
