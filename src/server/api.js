@@ -1,6 +1,6 @@
 import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
-import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents } from './event.js'
+import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents, setEvent } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
@@ -142,7 +142,7 @@ registerRoute(newEventPath, async ({ keys, request }) => {
   const name = data.get('name')
   const date = data.get('date')
   const count = data.get('count')
-  const { url } = await createEvent(orgId, { name, date, count})
+  const { url } = await createEvent(orgId, { name, date, count })
   return Response.redirect(url)
 }, 'POST')
 
@@ -167,7 +167,9 @@ registerRoute(eventPath(), async ({ keys, route }) => {
   return respondWithTemplate({ route, h1, org, event, hares, runners })
 })
 
-registerRoute(eventPath('edit'), async ({ keys, route }) => {
+const editEventPath = eventPath('edit')
+
+registerRoute(editEventPath, async ({ keys, route }) => {
   const { orgId, eventId } = keys
   const org = await getOrg(orgId)
   const event = await getEvent(orgId, eventId)
@@ -175,6 +177,16 @@ registerRoute(eventPath('edit'), async ({ keys, route }) => {
   const h2 = 'Edit event'
   return respondWithTemplate({ route, h1, h2, org, event })
 })
+
+registerRoute(editEventPath, async ({ keys, request }) => {
+  const { orgId, eventId } = keys
+  const data = await request.formData()
+  const name = data.get('name')
+  const date = data.get('date')
+  const count = data.get('count')
+  const { url } = await setEvent(orgId, eventId, { name, date, count })
+  return Response.redirect(url)
+}, 'POST')
 
 const settingsOrgPath = orgPath('settings')
 
