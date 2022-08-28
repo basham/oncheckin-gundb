@@ -1,5 +1,5 @@
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
-import './api.js'
+import './routes.js'
 
 cleanupOutdatedCaches()
 precacheAndRoute(self.__WB_MANIFEST)
