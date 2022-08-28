@@ -1,36 +1,25 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/events.[id].svelte'
+  import { getContext } from 'svelte'
+  import Layout from '@src/client/layouts/event.svelte'
   import CheckInList from '@src/client/lib/list-check-in.svelte'
 
-  const { docId, eventId } = getContext('params')
+  const { event, hares, runners } = getContext('data')
 
-  let state = STATE.LOADING
-  let event = null
-  let hares = []
-  let runners = []
-
-  onMount(async () => {
-    event = await eventStore.get(docId, eventId)
-    const checkIns = await checkInStore.getEventCheckIns(docId, eventId)
-    hares = checkIns.filter(({ host }) => host)
-    runners = checkIns.filter(({ host }) => !host)
-    state = STATE.LOADED
-  })
+  // const checkIns = await checkInStore.getEventCheckIns(docId, eventId)
+  // hares = checkIns.filter(({ host }) => host)
+  // runners = checkIns.filter(({ host }) => !host)
 </script>
 
-<Layout state={state}>
+<Layout>
   <div class="u-flex u-flex-gap-4 u-m-top-6">
     <a
       class="button button--primary"
-      href={`${event.url}/check-ins/new`}>
+      href={`${event.url}check-ins/new`}>
       New check-in
     </a>
     <a
       class="button"
-      href={`${event.url}/roster`}>
+      href={`${event.url}roster`}>
       Print roster
     </a>
   </div>

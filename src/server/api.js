@@ -115,14 +115,14 @@ registerRoute(importOrgPath, async ({ request }) => {
 const orgPath = createPath.bind(null, 'orgs', '[orgId]')
 
 registerRoute(orgPath(), async ({ keys, route }) => {
-  route = `${route}.events.index`
+  route = `${route}.events`
   const heading = 'Events'
   const { orgId } = keys
   const org = await getOrg(orgId)
   const upcomingEvents = await getUpcomingEvents(orgId)
   const recentEvents = (await getPastEvents(orgId)).slice(0, 5)
   const years = await getEventYears(orgId)
-  return respondWithTemplate({ route, heading, org, orgId, upcomingEvents, recentEvents, years })
+  return respondWithTemplate({ route, heading, org, upcomingEvents, recentEvents, years })
 })
 
 const eventsPath = orgPath.bind(null, 'events')
@@ -152,6 +152,17 @@ registerRoute(orgPath('events', 'year', '[year]'), async ({ keys, route }) => {
   const org = await getOrg(orgId)
   const events = await getEventsByYear(orgId, year)
   return respondWithTemplate({ route, heading, org, events })
+})
+
+registerRoute(eventsPath('[eventId]'), async ({ keys, route }) => {
+  route = `${route}.check-ins`
+  const { orgId, eventId } = keys
+  const org = await getOrg(orgId)
+  const event = await getEvent(orgId, eventId)
+  const heading = event.name
+  const hares = []
+  const runners = []
+  return respondWithTemplate({ route, heading, org, event, hares, runners })
 })
 
 const settingsOrgPath = orgPath('settings')
