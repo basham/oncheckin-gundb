@@ -4,10 +4,10 @@ import { getOrCreate } from '../util.js'
 
 const cache = new Map()
 
-export async function createOrg ({ name }) {
-  const db = await getOrgDB()
+export async function createOrg ({ id = createId(), name }) {
+  const db = await getOrgDB(id)
   db.settings.set('name', name)
-  return db
+  return await getOrg(id)
 }
 
 export async function getOrgDB (id = createId()) {
@@ -34,13 +34,15 @@ export async function getOrg (id) {
   const inviteCode = self.btoa(JSON.stringify({ id, name }))
   const shareUrl = `${self.location.origin}/orgs/join/${inviteCode}`
   const events = [...db.events.keys()]
+  const participants = [...db.participants.keys()]
   return {
     id,
     name,
     openUrl,
     shareUrl,
     url,
-    events
+    events,
+    participants
   }
 }
 

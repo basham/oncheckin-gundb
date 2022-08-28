@@ -46,14 +46,14 @@ export async function getEvent (orgId, eventId) {
 }
 
 export async function getEvents (orgId) {
-  return getOrCreate(cache, `${orgId}/events`, async () => {
+  return getOrCreate(cache, `${orgId}/all`, async () => {
     const db = await getOrgDB(orgId)
-    const events = []
+    const all = []
     for (const eventId of [...db.events.keys()]) {
       const event = await getEvent(orgId, eventId)
-      events.push(event)
+      all.push(event)
     }
-    return events.sort(sortDesc('dateObj'))
+    return all.sort(sortDesc('dateObj'))
   })
 }
 
@@ -81,7 +81,7 @@ export async function getEventsByYear (orgId, year) {
 }
 
 export async function setEvent (orgId, eventId, values) {
-  cache.delete(`${orgId}/events`)
+  cache.delete(`${orgId}/all`)
   cache.delete(`${orgId}/${eventId}`)
   const { events } = await getOrgDB(orgId)
   const event = getOrCreate(events, eventId, createYMap)

@@ -4,21 +4,22 @@
 </script>
 
 <div class="u-m-top-4">
-  <label for="fullNameInput">Full name</label>
+  <label for="fullNameField">Full name</label>
   <br>
   <input
-    bind:value={fullName}
     class="input"
-    id="fullNameInput"
-    type="text">
+    id="fullNameField"
+    name="fullName"
+    type="text"
+    value={fullName}>
 </div>
 <div class="u-m-top-4">
-  <label for="aliasInput">Hash name</label>
+  <label for="aliasField">Hash name</label>
   <br>
   <input
-    bind:value={alias}
     class="input"
-    id="aliasInput"
-    placeholder={fullName ? `Just ${fullName}` : ''}
-    type="text">
+    id="aliasField"
+    name="alias"
+    type="text"
+    value={alias}>
 </div>

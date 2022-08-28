@@ -2,6 +2,7 @@ import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
 import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents, setEvent } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
+import { createParticipant, getParticipant, getParticipants } from './participant.js'
 import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
 const apiPath = createPath.bind(null, 'api')
@@ -34,21 +35,35 @@ registerRoute(apiPath('orgs', '[orgId].json'), async ({ keys }) => {
   return respondWithJSON(data)
 })
 
-registerRoute(apiPath('orgs', '[orgId]', 'events.json'), async ({ keys }) => {
+const apiOrgPath = apiPath.bind(null, 'orgs', '[orgId]')
+
+registerRoute(apiOrgPath('events.json'), async ({ keys }) => {
   const { orgId } = keys
   const data = await getEvents(orgId)
   return respondWithJSON(data)
 })
 
-registerRoute(apiPath('orgs', '[orgId]', 'events', 'upcoming.json'), async ({ keys }) => {
+registerRoute(apiOrgPath('events', 'upcoming.json'), async ({ keys }) => {
   const { orgId } = keys
   const data = await getUpcomingEvents(orgId)
   return respondWithJSON(data)
 })
 
-registerRoute(apiPath('orgs', '[orgId]', 'events', '[eventId].json'), async ({ keys }) => {
+registerRoute(apiOrgPath('events', '[eventId].json'), async ({ keys }) => {
   const { orgId, eventId } = keys
   const data = await getEvent(orgId, eventId)
+  return respondWithJSON(data)
+})
+
+registerRoute(apiOrgPath('participants.json'), async ({ keys }) => {
+  const { orgId } = keys
+  const data = await getParticipants(orgId)
+  return respondWithJSON(data)
+})
+
+registerRoute(apiOrgPath('participants', '[participantId].json'), async ({ keys }) => {
+  const { orgId, participantId } = keys
+  const data = await getParticipant(orgId, participantId)
   return respondWithJSON(data)
 })
 
@@ -214,9 +229,27 @@ registerRoute(participantsPath(), async ({ keys, route }) => {
   const h1 = 'Hashers'
   const { orgId } = keys
   const org = await getOrg(orgId)
-  const participants = []
+  const participants = await getParticipants(orgId)
   return respondWithTemplate({ route, h1, org, participants })
 })
+
+const newParticipantsPath = participantsPath('new')
+
+registerRoute(newParticipantsPath, async ({ keys, route }) => {
+  const h1 = 'New hasher'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  return respondWithTemplate({ route, h1, org })
+})
+
+registerRoute(newParticipantsPath, async ({ keys, request }) => {
+  const { orgId } = keys
+  const data = await request.formData()
+  const fullName = data.get('fullName')
+  const alias = data.get('alias')
+  const { url } = await createParticipant(orgId, { fullName, alias })
+  return Response.redirect(url)
+}, 'POST')
 
 const settingsOrgPath = orgPath('settings')
 
