@@ -33,12 +33,14 @@ export async function getOrg (id) {
   const openUrl = `${url}open/`
   const inviteCode = self.btoa(JSON.stringify({ id, name }))
   const shareUrl = `${self.location.origin}/orgs/join/${inviteCode}`
+  const events = [...db.events.keys()]
   return {
     id,
     name,
     openUrl,
     shareUrl,
-    url
+    url,
+    events
   }
 }
 

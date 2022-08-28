@@ -8,27 +8,30 @@
   <label for="nameInput">Name</label>
   <br>
   <input
-    bind:value={name}
     class="input"
     id="nameInput"
-    type="text">
+    name="name"
+    type="text"
+    value={name}>
 </div>
 <div class="u-m-top-4">
   <label for="dateInput">Date</label>
   <br>
   <input
-    bind:value={date}
     class="input u-mw-5"
     id="dateInput"
-    type="date">
+    name="date"
+    type="date"
+    value={date}>
 </div>
 <div class="u-m-top-4">
   <label for="countInput">Count</label>
   <br>
   <input
-    bind:value={count}
     class="input u-mw-5"
     id="countInput"
     min="1"
-    type="number">
+    name="count"
+    type="number"
+    value={count}>
 </div>

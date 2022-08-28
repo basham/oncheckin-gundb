@@ -3,8 +3,7 @@
   import Layout from '@src/client/layouts/org.svelte'
   import Events from '@src/client/lib/events.svelte'
 
-  const { docId, heading, upcomingEvents, recentEvents, years } = getContext('data')
-
+  const { heading, org, upcomingEvents, recentEvents, years } = getContext('data')
 
   /*
   onMount(async () => {
@@ -22,7 +21,7 @@
   <div class="u-flex u-flex-end u-flex-space">
     <h1>{heading}</h1>
     <div>
-      <a class="button button--primary" href={`/doc/${docId}/events/new`}>New event</a>
+      <a class="button button--primary" href={`${org.url}events/new`}>New event</a>
     </div>
   </div>
   <h2>Upcoming events <span class="badge">{upcomingEvents.length}</span></h2>
@@ -35,7 +34,7 @@
       <li class="row">
         <a
           class="row__left u-text-num"
-          href={`/doc/${docId}/events/past/${year}`}>
+          href={`${org.url}events/past/${year}`}>
           <span class="row__primary">{year}</span>
         </a>
       </li>

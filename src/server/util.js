@@ -89,3 +89,9 @@ ${JSON.stringify(data)}
 `
   return respondWithHTML(body)
 }
+
+export function todayDate () {
+  const now = new Date()
+  now.setHours(0, 0, 0)
+  return now.toJSON().split('T')[0]
+}

@@ -1,7 +1,8 @@
 import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
+import { createEvent, getEvent, getEventYears, getPastEvents, getUpcomingEvents } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
-import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate } from './util.js'
+import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
 const apiPath = createPath.bind(null, 'api')
 
@@ -30,6 +31,12 @@ registerRoute(apiPath('id.json'), async () => {
 registerRoute(apiPath('orgs', '[orgId].json'), async ({ keys }) => {
   const { orgId } = keys
   const data = await getOrg(orgId)
+  return respondWithJSON(data)
+})
+
+registerRoute(apiPath('orgs', '[orgId]', 'events', '[eventId].json'), async ({ keys }) => {
+  const { orgId, eventId } = keys
+  const data = await getEvent(orgId, eventId)
   return respondWithJSON(data)
 })
 
@@ -100,11 +107,32 @@ registerRoute(orgPath(), async ({ keys, route }) => {
   const heading = 'Events'
   const { orgId } = keys
   const org = await getOrg(orgId)
-  const upcomingEvents = []
-  const recentEvents = []
-  const years = []
+  const upcomingEvents = await getUpcomingEvents(orgId)
+  const recentEvents = (await getPastEvents(orgId)).slice(0, 5)
+  const years = await getEventYears(orgId)
   return respondWithTemplate({ route, heading, org, orgId, upcomingEvents, recentEvents, years })
 })
+
+const eventsPath = orgPath.bind(null, 'events')
+const newEventPath = eventsPath('new')
+
+registerRoute(newEventPath, async ({ keys, route }) => {
+  const heading = 'New event'
+  const { orgId } = keys
+  const org = await getOrg(orgId)
+  const date = todayDate()
+  return respondWithTemplate({ route, heading, org, date })
+})
+
+registerRoute(newEventPath, async ({ keys, request }) => {
+  const { orgId } = keys
+  const data = await request.formData()
+  const name = data.get('name')
+  const date = data.get('date')
+  const count = data.get('count')
+  const { url } = await createEvent(orgId, { name, date, count})
+  return Response.redirect(url)
+}, 'POST')
 
 const settingsOrgPath = orgPath('settings')
 
