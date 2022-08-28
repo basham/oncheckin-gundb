@@ -3,12 +3,12 @@
   import Layout from '@src/client/layouts/org.svelte'
   import Events from '@src/client/lib/events.svelte'
 
-  const { heading, org, upcomingEvents, recentEvents, years } = getContext('data')
+  const { h1, org, upcomingEvents, recentEvents, years } = getContext('data')
 </script>
 
 <Layout>
   <div class="u-flex u-flex-end u-flex-space">
-    <h1>{heading}</h1>
+    <h1>{h1}</h1>
     <div>
       <a class="button button--primary" href={`${org.url}events/new`}>New event</a>
     </div>

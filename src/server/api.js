@@ -77,18 +77,18 @@ registerRoute(getStartedPath, async ({ request }) => {
 }, 'POST')
 
 registerRoute(orgsPath(), async ({ route }) => {
-  const heading = 'Organizations'
+  const h1 = 'Organizations'
   const device = await getDevice()
   const id = await getCurrentAccountId()
   const account = await getAccountWithOrgs(id)
-  return respondWithTemplate({ route, heading, device, account })
+  return respondWithTemplate({ route, h1, device, account })
 })
 
 const newOrgPath = orgsPath('new')
 
 registerRoute(newOrgPath, ({ route }) => {
-  const heading = 'New organization'
-  return respondWithTemplate({ route, heading })
+  const h1 = 'New organization'
+  return respondWithTemplate({ route, h1 })
 })
 
 registerRoute(newOrgPath, async ({ request }) => {
@@ -102,8 +102,8 @@ registerRoute(newOrgPath, async ({ request }) => {
 const importOrgPath = orgsPath('import')
 
 registerRoute(importOrgPath, ({ route }) => {
-  const heading = 'Import organization'
-  return respondWithTemplate({ route, heading })
+  const h1 = 'Import organization'
+  return respondWithTemplate({ route, h1 })
 })
 
 registerRoute(importOrgPath, async ({ request }) => {
@@ -116,24 +116,24 @@ const orgPath = createPath.bind(null, 'orgs', '[orgId]')
 
 registerRoute(orgPath(), async ({ keys, route }) => {
   route = `${route}.events`
-  const heading = 'Events'
+  const h1 = 'Events'
   const { orgId } = keys
   const org = await getOrg(orgId)
   const upcomingEvents = await getUpcomingEvents(orgId)
   const recentEvents = (await getPastEvents(orgId)).slice(0, 5)
   const years = await getEventYears(orgId)
-  return respondWithTemplate({ route, heading, org, upcomingEvents, recentEvents, years })
+  return respondWithTemplate({ route, h1, org, upcomingEvents, recentEvents, years })
 })
 
 const eventsPath = orgPath.bind(null, 'events')
 const newEventPath = eventsPath('new')
 
 registerRoute(newEventPath, async ({ keys, route }) => {
-  const heading = 'New event'
+  const h1 = 'New event'
   const { orgId } = keys
   const org = await getOrg(orgId)
   const date = todayDate()
-  return respondWithTemplate({ route, heading, org, date })
+  return respondWithTemplate({ route, h1, org, date })
 })
 
 registerRoute(newEventPath, async ({ keys, request }) => {
@@ -148,39 +148,50 @@ registerRoute(newEventPath, async ({ keys, request }) => {
 
 registerRoute(orgPath('events', 'year', '[year]'), async ({ keys, route }) => {
   const { orgId, year } = keys
-  const heading = `Events in ${year}`
+  const h1 = `Events in ${year}`
   const org = await getOrg(orgId)
   const events = await getEventsByYear(orgId, year)
-  return respondWithTemplate({ route, heading, org, events })
+  return respondWithTemplate({ route, h1, org, events })
 })
 
-registerRoute(eventsPath('[eventId]'), async ({ keys, route }) => {
+const eventPath = eventsPath.bind(null, '[eventId]')
+
+registerRoute(eventPath(), async ({ keys, route }) => {
   route = `${route}.check-ins`
   const { orgId, eventId } = keys
   const org = await getOrg(orgId)
   const event = await getEvent(orgId, eventId)
-  const heading = event.name
+  const h1 = event.name
   const hares = []
   const runners = []
-  return respondWithTemplate({ route, heading, org, event, hares, runners })
+  return respondWithTemplate({ route, h1, org, event, hares, runners })
+})
+
+registerRoute(eventPath('edit'), async ({ keys, route }) => {
+  const { orgId, eventId } = keys
+  const org = await getOrg(orgId)
+  const event = await getEvent(orgId, eventId)
+  const h1 = event.name
+  const h2 = 'Edit event'
+  return respondWithTemplate({ route, h1, h2, org, event })
 })
 
 const settingsOrgPath = orgPath('settings')
 
 registerRoute(settingsOrgPath, async ({ keys, route }) => {
-  const heading = 'Settings'
+  const h1 = 'Settings'
   const { orgId } = keys
   const org = await getOrg(orgId)
-  return respondWithTemplate({ route, heading, org, orgId })
+  return respondWithTemplate({ route, h1, org, orgId })
 })
 
 const renameOrgPath = orgPath('rename')
 
 registerRoute(renameOrgPath, async ({ keys, route }) => {
-  const heading = 'Rename organization'
+  const h1 = 'Rename organization'
   const { orgId } = keys
   const org = await getOrg(orgId)
-  return respondWithTemplate({ route, heading, org, orgId })
+  return respondWithTemplate({ route, h1, org, orgId })
 })
 
 registerRoute(renameOrgPath, async ({ keys, request }) => {
@@ -193,8 +204,8 @@ registerRoute(renameOrgPath, async ({ keys, request }) => {
 }, 'POST')
 
 registerRoute(orgPath('share'), async ({ keys, route }) => {
-  const heading = 'Share organization'
+  const h1 = 'Share organization'
   const { orgId } = keys
   const org = await getOrg(orgId)
-  return respondWithTemplate({ route, heading, org })
+  return respondWithTemplate({ route, h1, org })
 })

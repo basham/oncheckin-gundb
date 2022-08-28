@@ -4,8 +4,7 @@
   import QRCode from '@src/client/lib/qr-code.svelte'
   import Toast from '@src/client/lib/toast.svelte'
 
-  const title = 'Share workspace'
-  const { org, heading } = getContext('data')
+  const { h1, org } = getContext('data')
 
   let toast
 
@@ -27,7 +26,7 @@
 </style>
 
 <Layout>
-  <h1>{heading}</h1>
+  <h1>{h1}</h1>
   <p class="u-m-top-4">Invite others to collaborate in this organization as editors. (There is no read-only mode.) Either copy and share the invite link, or ask others scan the QR&nbsp;code.</p>
   <div class="card u-m-top-6 u-flex u-flex-wrap u-flex-gap-2">
     <input

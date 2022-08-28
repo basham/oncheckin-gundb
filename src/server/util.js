@@ -20,8 +20,8 @@ export function createResponse (body, contentType) {
   return new Response(body, options)
 }
 
-export function createTitle (title) {
-  return [title, APP_NAME].filter((t) => t).join(' - ')
+export function createTitle (h1, h2) {
+  return [h2, h1, APP_NAME].filter((t) => t).join(' - ')
 }
 
 export function regexFromPath (path) {
@@ -60,7 +60,7 @@ export function respondWithJSON (data) {
 
 export function respondWithTemplate (data) {
   const entryBase = import.meta.env.DEV ? '/src/client' : ''
-  const { title = createTitle(data.heading) } = data
+  const { title = createTitle(data.h1, data.h2) } = data
   const body = `
 <!DOCTYPE html>
 <html lang="en">

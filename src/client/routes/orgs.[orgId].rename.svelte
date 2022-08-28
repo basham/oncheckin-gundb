@@ -2,11 +2,11 @@
   import { getContext } from 'svelte'
   import Layout from '@src/client/layouts/org.svelte'
 
-  const { heading, org } = getContext('data')
+  const { h1, org } = getContext('data')
 </script>
 
 <Layout>
-  <h1>{heading}</h1>
+  <h1>{h1}</h1>
   <form
     autocomplete="off"
     method="post">

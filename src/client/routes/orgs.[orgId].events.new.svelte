@@ -3,11 +3,11 @@
   import Layout from '@src/client/layouts/org.svelte'
   import FieldsetEvent from '@src/client/lib/fieldset-event.svelte'
 
-  const { heading, date } = getContext('data')
+  const { h1, date } = getContext('data')
 </script>
 
 <Layout>
-  <h1>{heading}</h1>
+  <h1>{h1}</h1>
   <form
     autocomplete="off"
     method="post">
