@@ -20,6 +20,8 @@ export async function getParticipant (orgId, participantId) {
     const alias = data.get('alias') || ''
     const displayName = data.get('alias') || `Just ${data.get('fullName')}`
     const fullName = data.get('fullName') || '(Participant)'
+    const location = data.get('location') || ''
+    const notes = data.get('notes') || ''
     // const recordedLastCheckInDateObj = data.get('recordedLastCheckInDate') ? parseISO(data.get('recordedLastCheckInDate')) : null
     // const recordedLastCheckInDateDisplay = recordedLastCheckInDateObj ? format(recordedLastCheckInDateObj, 'PP') : ''
     const url = `${org.url}participants/${participantId}/`
@@ -28,6 +30,8 @@ export async function getParticipant (orgId, participantId) {
       alias,
       displayName,
       fullName,
+      location,
+      notes,
       // recordedLastCheckInDateDisplay,
       // recordedLastCheckInDateObj,
       url

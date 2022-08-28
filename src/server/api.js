@@ -2,7 +2,7 @@ import { getAccount, getAccountWithOrgs, renameAccount } from './account.js'
 import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCurrentAccount } from './device.js'
 import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents, setEvent } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
-import { createParticipant, getParticipant, getParticipants } from './participant.js'
+import { createParticipant, getParticipant, getParticipants, setParticipant } from './participant.js'
 import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
 const apiPath = createPath.bind(null, 'api')
@@ -263,6 +263,28 @@ registerRoute(participantPath(), async ({ keys, route }) => {
   const latestCheckIn = null
   return respondWithTemplate({ route, h1, org, participant, checkIns, latestCheckIn })
 })
+
+const editParticipantPath = participantPath('edit')
+
+registerRoute(editParticipantPath, async ({ keys, route }) => {
+  const { orgId, participantId } = keys
+  const org = await getOrg(orgId)
+  const participant = await getParticipant(orgId, participantId)
+  const h1 = participant.displayName
+  const h2 = 'Edit participant'
+  return respondWithTemplate({ route, h1, h2, org, participant })
+})
+
+registerRoute(editParticipantPath, async ({ keys, request }) => {
+  const { orgId, participantId } = keys
+  const data = await request.formData()
+  const fullName = data.get('fullName')
+  const alias = data.get('alias')
+  const location = data.get('location')
+  const notes = data.get('notes')
+  const { url } = await setParticipant(orgId, participantId, { fullName, alias, location, notes })
+  return Response.redirect(url)
+}, 'POST')
 
 const settingsOrgPath = orgPath('settings')
 
