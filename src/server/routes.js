@@ -5,11 +5,12 @@ import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createParticipant, getParticipant, getParticipants, setParticipant } from './participant.js'
 import { createPath, registerRoute, registerRoute2, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
-const modules = import.meta.glob('./api/**/*.js', { eager: true })
+const modules = import.meta.glob('./pages/**/*.js', { eager: true })
 
-for (const [url, mod] of Object.entries(modules)) {
+// Reverse the list of modules so dynamic `[key]` folders and files are resolved last.
+for (const [url, mod] of Object.entries(modules).reverse()) {
   const path = url
-    .replace(/^\./, '')
+    .replace(/^\.\/pages/, '')
     .replace(/\.js$/, '')
   const { get, post } = mod
   if (get) {
@@ -20,6 +21,7 @@ for (const [url, mod] of Object.entries(modules)) {
   }
 }
 
+/*
 const apiPath = createPath.bind(null, 'api')
 
 registerRoute(apiPath('orgs', '[orgId].json'), async ({ keys }) => {
@@ -84,54 +86,9 @@ registerRoute(getStartedPath, async ({ request }) => {
   return Response.redirect(orgsPath())
 }, 'POST')
 
-registerRoute(orgsPath(), async ({ route }) => {
-  const h1 = 'Organizations'
-  const device = await getDevice()
-  const id = await getCurrentAccountId()
-  const account = await getAccountWithOrgs(id)
-  return respondWithTemplate({ route, h1, device, account })
-})
-
 const newOrgPath = orgsPath('new')
 
-registerRoute(newOrgPath, ({ route }) => {
-  const h1 = 'New organization'
-  return respondWithTemplate({ route, h1 })
-})
-
-registerRoute(newOrgPath, async ({ request }) => {
-  const data = await request.formData()
-  const name = data.get('name')
-  const { id, url } = await createOrg({ name })
-  await addOrg(id)
-  return Response.redirect(url)
-}, 'POST')
-
-const importOrgPath = orgsPath('import')
-
-registerRoute(importOrgPath, ({ route }) => {
-  const h1 = 'Import organization'
-  return respondWithTemplate({ route, h1 })
-})
-
-registerRoute(importOrgPath, async ({ request }) => {
-  const data = await request.json()
-  const { url } = await importOrg(data)
-  return Response.redirect(url)
-}, 'POST')
-
 const orgPath = createPath.bind(null, 'orgs', '[orgId]')
-
-registerRoute(orgPath(), async ({ keys, route }) => {
-  route = `${route}/events`
-  const h1 = 'Events'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  const upcomingEvents = await getUpcomingEvents(orgId)
-  const recentEvents = (await getPastEvents(orgId)).slice(0, 5)
-  const years = await getEventYears(orgId)
-  return respondWithTemplate({ route, h1, org, upcomingEvents, recentEvents, years })
-})
 
 const eventsPath = orgPath.bind(null, 'events')
 const newEventPath = eventsPath('new')
@@ -312,3 +269,4 @@ registerRoute(orgPath('share'), async ({ keys, route }) => {
   const org = await getOrg(orgId)
   return respondWithTemplate({ route, h1, org })
 })
+*/

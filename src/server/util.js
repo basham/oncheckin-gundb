@@ -28,9 +28,10 @@ export function regexFromPath (path) {
   const p = path
     // Replace `[key]` with a group of the name name.
     .replace(/\[(\w+)\]/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
-    // Make trailing `/` optional.
-    .replace(/\/$/, '/?')
-  return new RegExp(`^${p}$`)
+    // Remove the "/index" file name.
+    .replace(/\/index$/, '')
+  // Make trailing `/` optional.
+  return new RegExp(`^${p}/?$`)
 }
 
 export function registerRoute (path, handler, method) {
@@ -56,7 +57,7 @@ export function registerRoute2 (path, handler, method) {
       const keys = options.url.pathname.match(re).groups
       const route = path
         .replace(/^\//, '')
-        .replace(/\/$/, '')
+        .replace(/\/index$/, '')
       const data = await handler({ ...options, keys, route })
       if (data.html) {
         return respondWithHTML(data.html)

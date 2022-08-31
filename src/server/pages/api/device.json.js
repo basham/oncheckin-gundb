@@ -1,4 +1,4 @@
-import { getDevice } from '../device.js'
+import { getDevice } from '@src/server/device.js'
 
 export async function get () {
   const json = await getDevice()
