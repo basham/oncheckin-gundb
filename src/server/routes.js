@@ -3,31 +3,24 @@ import { addAccount, addOrg, getCurrentAccountId, getDevice, renameDevice, setCu
 import { createEvent, getEvent, getEvents, getEventsByYear, getEventYears, getPastEvents, getUpcomingEvents, setEvent } from './event.js'
 import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createParticipant, getParticipant, getParticipants, setParticipant } from './participant.js'
-import { createId, createPath, registerRoute, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
+import { createPath, registerRoute, registerRoute2, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
+
+const modules = import.meta.glob('./api/**/*.js', { eager: true })
+
+for (const [url, mod] of Object.entries(modules)) {
+  const path = url
+    .replace(/^\./, '')
+    .replace(/\.js$/, '')
+  const { get, post } = mod
+  if (get) {
+    registerRoute2(path, get)
+  }
+  if (post) {
+    registerRoute2(path, post, 'POST')
+  }
+}
 
 const apiPath = createPath.bind(null, 'api')
-
-registerRoute(apiPath('device.json'), async () => {
-  const data = await getDevice()
-  return respondWithJSON(data)
-})
-
-registerRoute(apiPath('account.json'), async () => {
-  const id = await getCurrentAccountId()
-  const data = await getAccount(id)
-  return respondWithJSON(data)
-})
-
-registerRoute(apiPath('accounts', '[accountId].json'), async ({ keys }) => {
-  const { accountId } = keys
-  const data = await getAccount(accountId)
-  return respondWithJSON(data)
-})
-
-registerRoute(apiPath('id.json'), async () => {
-  const data = { id: createId() }
-  return respondWithJSON(data)
-})
 
 registerRoute(apiPath('orgs', '[orgId].json'), async ({ keys }) => {
   const { orgId } = keys

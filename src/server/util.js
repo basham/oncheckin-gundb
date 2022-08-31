@@ -48,6 +48,30 @@ export function registerRoute (path, handler, method) {
   )
 }
 
+export function registerRoute2 (path, handler, method) {
+  const re = regexFromPath(path)
+  originalRegisterRoute(
+    ({ url }) => re.test(url.pathname),
+    async (options) => {
+      const keys = options.url.pathname.match(re).groups
+      const route = path
+        .replace(/^\//, '')
+        .replace(/\/$/, '')
+      const data = await handler({ ...options, keys, route })
+      if (data.html) {
+        return respondWithHTML(data.html)
+      }
+      if (data.json) {
+        return respondWithJSON(data.json)
+      }
+      if (data.template) {
+        return respondWithTemplate(data.template)
+      }
+    },
+    method
+  )
+}
+
 export function respondWithHTML (body) {
   return createResponse(body, 'text/html')
 }
