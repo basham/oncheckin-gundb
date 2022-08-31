@@ -42,7 +42,6 @@ export function registerRoute (path, handler, method) {
       const route = path
         .replace(/^\//, '')
         .replace(/\/$/, '')
-        .replace(/\//g, '.')
       return handler({ ...options, keys, route })
     },
     method

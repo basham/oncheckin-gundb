@@ -130,7 +130,7 @@ registerRoute(importOrgPath, async ({ request }) => {
 const orgPath = createPath.bind(null, 'orgs', '[orgId]')
 
 registerRoute(orgPath(), async ({ keys, route }) => {
-  route = `${route}.events`
+  route = `${route}/events`
   const h1 = 'Events'
   const { orgId } = keys
   const org = await getOrg(orgId)
@@ -172,7 +172,7 @@ registerRoute(orgPath('events', 'year', '[year]'), async ({ keys, route }) => {
 const eventPath = eventsPath.bind(null, '[eventId]')
 
 registerRoute(eventPath(), async ({ keys, route }) => {
-  route = `${route}.check-ins`
+  route = `${route}/check-ins`
   const { orgId, eventId } = keys
   const org = await getOrg(orgId)
   const event = await getEvent(orgId, eventId)
@@ -254,7 +254,7 @@ registerRoute(newParticipantsPath, async ({ keys, request }) => {
 const participantPath = participantsPath.bind(null, '[participantId]')
 
 registerRoute(participantPath(), async ({ keys, route }) => {
-  route = `${route}.check-ins`
+  route = `${route}/check-ins`
   const { orgId, participantId } = keys
   const org = await getOrg(orgId)
   const participant = await getParticipant(orgId, participantId)
