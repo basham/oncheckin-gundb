@@ -1,5 +1,5 @@
 <script>
-  import { APP_NAME, STATE } from '@src/constants.js'
+  import { STATE } from '@src/constants.js'
   import Upgrader from '@src/lib/upgrader.svelte'
 
   export let state = STATE.LOADED
@@ -8,7 +8,6 @@
   const NOT_FOUND_TITLE = 'Page not found'
 
   $: [_state, _title] = getState(state)
-  $: fullTitle = [_title, APP_NAME].flat(Infinity).filter((v) => v).join(' \u00b7 ')
 
   function getState (source) {
     const all = [source].flat(Infinity)
@@ -21,12 +20,6 @@
     return [STATE.LOADED, title]
   }
 </script>
-
-<!--
-<svelte:head>
-  <title>{fullTitle}</title>
-</svelte:head>
--->
 
 <Upgrader />
 
