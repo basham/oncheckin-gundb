@@ -1,5 +1,5 @@
 <script>
-  import Layout from '@src/pages/layout.svelte'
+  import Layout from './layout.svelte'
 </script>
 
 <Layout>

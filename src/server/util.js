@@ -68,6 +68,9 @@ export function registerRoute2 (path, handler, method) {
       if (data.template) {
         return respondWithTemplate(data.template)
       }
+      if (data.redirect) {
+        return Response.redirect(data.redirect)
+      }
     },
     method
   )

@@ -1,5 +1,5 @@
 <script>
-  import Layout from '@src/pages/layout.svelte'
+  import Layout from './layout.svelte'
 </script>
 
 <Layout>
@@ -14,7 +14,7 @@
   <p class="u-m-top-6">
     <a
       class="button button--primary"
-      href="/get-started/">
+      href="/start/">
       Get started
     </a>
   </p>
