@@ -14,12 +14,12 @@
   <div class="u-flex u-flex-gap-4 u-m-top-6">
     <a
       class="button button--primary"
-      href={`${event.url}check-ins/new`}>
+      href={`${event.url}check-ins/new/`}>
       New check-in
     </a>
     <a
       class="button"
-      href={`${event.url}roster`}>
+      href={`${event.url}roster/`}>
       Print roster
     </a>
   </div>

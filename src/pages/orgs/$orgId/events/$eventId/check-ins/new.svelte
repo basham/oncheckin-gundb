@@ -1,28 +1,23 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
+  import { getContext } from 'svelte'
   import { focus } from '@src/util.js'
-  import Layout from '@src/client/layouts/events.[id].svelte'
   import Fieldset from '@src/lib/fieldset.svelte'
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
   import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
   import Icon from '@src/lib/icon.svelte'
   import Lookup from '@src/lib/lookup.svelte'
   import RadioGroup from '@src/lib/radio-group.svelte'
+  import Layout from '../layout.svelte'
 
-  const { docId, eventId } = getContext('params')
-  const title = 'New check-in'
+  const { h2, event, participants } = getContext('data')
 
-  let state = STATE.LOADING
-  let event = null
-  let participants = []
   let checkInType = 'existing-participant'
   let selectedParticipant = null
   let fullName = ''
   let alias = ''
   let host = false
 
+  /*
   onMount(async () => {
     event = await eventStore.get(docId, eventId)
 
@@ -42,6 +37,7 @@
 
     state = STATE.LOADED
   })
+  */
 
   function filterResult (query, participant) {
     const terms = [participant.fullName, participant.displayName].join(' ')
@@ -50,7 +46,7 @@
 
   function selectParticipant (participant) {
     if (participant.checkedIn) {
-      window.location = participant.checkIn.url
+      // window.location = participant.checkIn.url
       return
     }
 
@@ -65,6 +61,7 @@
 
   async function submit (e) {
     e.preventDefault()
+    /*
     if (checkInType === 'new-participant') {
       selectedParticipant = await participantStore.create(docId, { alias, fullName })
     }
@@ -74,6 +71,7 @@
     }
     await checkInStore.create(docId, eventId, selectedParticipant.id, { host })
     window.location = event.url
+    */
   }
 </script>
 
@@ -93,10 +91,8 @@
   }
 </style>
 
-<Layout
-  state={state}
-  title={title}>
-  <h2>{title}</h2>
+<Layout>
+  <h2>{h2}</h2>
   <form
     autocomplete="off"
     on:submit={submit}>

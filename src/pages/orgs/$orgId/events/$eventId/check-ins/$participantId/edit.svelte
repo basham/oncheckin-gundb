@@ -1,14 +1,11 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/events.[id].svelte'
+  import { getContext } from 'svelte'
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
+  import Layout from '@src/pages/orgs/$orgId/events/$eventId/layout.svelte'
 
-  const { docId, eventId, participantId } = getContext('params')
-  const title = 'Edit check-in'
+  const { h2, event, participant, host } = getContext('data')
 
-  let state = STATE.LOADING
+  /*
   let event = null
   let participant = null
   let checkIn = null
@@ -31,17 +28,15 @@
     await checkInStore.set(docId, eventId, participantId, { host })
     window.location = event.url
   }
-
+  */
   async function deleteCheckIn () {
-    await checkInStore.delete(docId, eventId, participantId)
-    window.location = event.url
+    // await checkInStore.delete(docId, eventId, participantId)
+    // window.location = event.url
   }
 </script>
 
-<Layout
-  state={state}
-  title={title}>
-  <h2>{title}</h2>
+<Layout>
+  <h2>{h2}</h2>
   <p aria-label="Participant" class="card u-m-top-4" role="group">
     <a class="u-ts-3" href={participant.url}>{participant.displayName}</a>
     <br>
@@ -49,8 +44,8 @@
   </p>
   <form
     autocomplete="off"
-    on:submit={submit}>
-    <FieldsetCheckIn bind:host={host} />
+    method="post">
+    <FieldsetCheckIn host={host} />
     <div class="u-m-top-6">
       <button
         class="button button--primary"

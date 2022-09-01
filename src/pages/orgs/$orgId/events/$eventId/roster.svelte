@@ -1,19 +1,11 @@
 <script>
-  import { format, isBefore, sub } from 'date-fns'
-  import { getContext, onMount } from 'svelte'
-  import { STATE } from '@src/constants.js'
-  import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
-  import Layout from '@src/client/layouts/page.svelte'
+  import { getContext } from 'svelte'
   import Icon from '@src/lib/icon.svelte'
+  import Layout from '@src/pages/page.svelte'
 
-  const { docId, eventId } = getContext('params')
+  const { event, returnersCutoff, participants } = getContext('data')
 
-  let state = STATE.LOADING
-  let event = null
-  let title = ''
-  let returnersCutoff = ''
-  let participants = []
-
+  /*
   onMount(async () => {
     event = await eventStore.get(docId, eventId)
 
@@ -85,6 +77,7 @@
 
     state = STATE.LOADED
   })
+  */
 </script>
 
 <style>
@@ -152,12 +145,10 @@
   }
 </style>
 
-<Layout
-  state={state}
-  title={title}>
+<Layout>
   <div class="header">
-    <h1 class="u-ts-2 u-text-bold">{event?.name}</h1>
-    <p class="u-m-0">{event?.displayDateLong}</p>
+    <h1 class="u-ts-2 u-text-bold">{event.name}</h1>
+    <p class="u-m-0">{event.displayDateLong}</p>
   </div>
   <div class="content u-m-top-2">
     <table>
