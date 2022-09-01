@@ -1,7 +1,7 @@
 <script>
   import { getContext } from 'svelte'
-  import Layout from '@src/client/layouts/participant.svelte'
   import { pluralize } from '@src/util.js'
+  import Layout from './layout.svelte'
 
   const { checkIns } = getContext('data')
 

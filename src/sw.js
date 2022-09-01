@@ -1,5 +1,5 @@
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
-import { registerRoute2 } from './server/util.js'
+import { registerRoute } from './server/util.js'
 
 cleanupOutdatedCaches()
 precacheAndRoute(self.__WB_MANIFEST)
@@ -19,9 +19,9 @@ for (const [url, mod] of Object.entries(modules).reverse()) {
     .replace(/\.js$/, '')
   const { get, post } = mod
   if (get) {
-    registerRoute2(path, get)
+    registerRoute(path, get)
   }
   if (post) {
-    registerRoute2(path, post, 'POST')
+    registerRoute(path, post, 'POST')
   }
 }

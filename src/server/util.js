@@ -38,21 +38,6 @@ export function registerRoute (path, handler, method) {
   const re = regexFromPath(path)
   originalRegisterRoute(
     ({ url }) => re.test(url.pathname),
-    (options) => {
-      const keys = options.url.pathname.match(re).groups
-      const route = path
-        .replace(/^\//, '')
-        .replace(/\/$/, '')
-      return handler({ ...options, keys, route })
-    },
-    method
-  )
-}
-
-export function registerRoute2 (path, handler, method) {
-  const re = regexFromPath(path)
-  originalRegisterRoute(
-    ({ url }) => re.test(url.pathname),
     async (options) => {
       const keys = options.url.pathname.match(re).groups
       const route = path
