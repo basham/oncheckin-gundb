@@ -65,27 +65,6 @@ registerRoute(apiOrgPath('participants', '[participantId].json'), async ({ keys 
 const orgsPath = createPath.bind(null, 'orgs')
 const getStartedPath = createPath('get-started')
 
-registerRoute(getStartedPath, async ({ route }) => {
-  const device = await getDevice()
-  if (device.state === 'active') {
-    return Response.redirect(orgsPath())
-  }
-  const heading = 'Get started'
-  return respondWithTemplate({ route, heading })
-})
-
-registerRoute(getStartedPath, async ({ request }) => {
-  const data = await request.formData()
-  const deviceName = data.get('deviceName')
-  await renameDevice(deviceName)
-  const { id } = await getAccount()
-  const accountName = data.get('accountName')
-  await renameAccount(id, accountName)
-  await addAccount(id)
-  await setCurrentAccount(id)
-  return Response.redirect(orgsPath())
-}, 'POST')
-
 const newOrgPath = orgsPath('new')
 
 const orgPath = createPath.bind(null, 'orgs', '[orgId]')
@@ -235,38 +214,4 @@ registerRoute(editParticipantPath, async ({ keys, request }) => {
   const { url } = await setParticipant(orgId, participantId, { fullName, alias, location, notes })
   return Response.redirect(url)
 }, 'POST')
-
-const settingsOrgPath = orgPath('settings')
-
-registerRoute(settingsOrgPath, async ({ keys, route }) => {
-  const h1 = 'Settings'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  return respondWithTemplate({ route, h1, org, orgId })
-})
-
-const renameOrgPath = orgPath('rename')
-
-registerRoute(renameOrgPath, async ({ keys, route }) => {
-  const h1 = 'Rename organization'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  return respondWithTemplate({ route, h1, org, orgId })
-})
-
-registerRoute(renameOrgPath, async ({ keys, request }) => {
-  const { orgId } = keys
-  const data = await request.formData()
-  const name = data.get('name')
-  await renameOrg(orgId, name)
-  const org = await getOrg(orgId)
-  return Response.redirect(`${org.url}settings`)
-}, 'POST')
-
-registerRoute(orgPath('share'), async ({ keys, route }) => {
-  const h1 = 'Share organization'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  return respondWithTemplate({ route, h1, org })
-})
 */
