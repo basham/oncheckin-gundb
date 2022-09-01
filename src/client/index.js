@@ -1,7 +1,7 @@
 const rawData = document.getElementById('data')?.text
 const data = rawData ? JSON.parse(rawData) : { route: 'index' }
-const pages = import.meta.glob(`./pages/**/*.svelte`)
-const key = (part) => `./pages/${part}.svelte`
+const pages = import.meta.glob(`../pages/**/*.svelte`)
+const key = (part) => `../pages/${part}.svelte`
 const module = pages[key(data.route)] || pages[key(`${data.route}/index`)]
 
 if (module) {

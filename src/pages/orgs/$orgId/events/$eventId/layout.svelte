@@ -1,7 +1,7 @@
 <script>
   import { getContext } from 'svelte'
   import NavLink from '@src/client/lib/nav-link.svelte'
-  import Layout from './org.svelte'
+  import Layout from '@src/pages/orgs/$orgId/layout.svelte'
 
   const { route, event } = getContext('data')
   const location = route.split('.')[4]

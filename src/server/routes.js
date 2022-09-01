@@ -5,12 +5,12 @@ import { createOrg, getOrg, importOrg, renameOrg } from './org.js'
 import { createParticipant, getParticipant, getParticipants, setParticipant } from './participant.js'
 import { createPath, registerRoute, registerRoute2, respondWithJSON, respondWithTemplate, todayDate } from './util.js'
 
-const modules = import.meta.glob('./pages/**/*.js', { eager: true })
+const modules = import.meta.glob('../pages/**/*.js', { eager: true })
 
 // Reverse the list of modules so dynamic `[key]` folders and files are resolved last.
 for (const [url, mod] of Object.entries(modules).reverse()) {
   const path = url
-    .replace(/^\.\/pages/, '')
+    .replace(/^\.\.\/pages/, '')
     .replace(/\.js$/, '')
   const { get, post } = mod
   if (get) {

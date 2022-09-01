@@ -1,5 +1,5 @@
 <script>
-  import Layout from '@src/client/layouts/public.svelte'
+  import Layout from '@src/pages/layout.svelte'
 
   let files
   let isSubmitting = false

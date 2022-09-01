@@ -2,7 +2,7 @@
   import { getContext } from 'svelte'
   import { pluralize } from '@src/util.js'
   import NavLink from '@src/client/lib/nav-link.svelte'
-  import Layout from '@src/client/layouts/org.svelte'
+  import Layout from '@src/pages/orgs/$orgId/layout.svelte'
 
   const { route, participant, latestCheckIn } = getContext('data')
   const location = route.split('.')[4]

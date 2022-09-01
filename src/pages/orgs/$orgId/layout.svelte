@@ -2,7 +2,7 @@
   import { getContext } from 'svelte'
   import { APP_NAME } from '@src/constants.js'
   import NavLink from '@src/client/lib/nav-link.svelte'
-  import Layout from './page.svelte'
+  import Layout from '@src/pages/page.svelte'
 
   const { route, org } = getContext('data')
   const location = route.split('.')[2]
