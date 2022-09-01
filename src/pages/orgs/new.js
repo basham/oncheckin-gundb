@@ -10,7 +10,7 @@ export async function get () {
 export async function post ({ request }) {
   const data = await request.formData()
   const name = data.get('name')
-  const { id, url } = await createOrg({ name })
+  const { id, url: redirect } = await createOrg({ name })
   await addOrg(id)
-  return Response.redirect(url)
+  return { redirect }
 }

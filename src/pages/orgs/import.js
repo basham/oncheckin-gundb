@@ -8,6 +8,6 @@ export function get () {
 
 export async function post ({ request }) {
   const data = await request.json()
-  const { url } = await importOrg(data)
-  return Response.redirect(url)
+  const { url: redirect } = await importOrg(data)
+  return { redirect }
 }
