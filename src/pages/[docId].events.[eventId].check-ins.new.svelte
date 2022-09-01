@@ -4,12 +4,12 @@
   import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
   import { focus } from '@src/util.js'
   import Layout from '@src/client/layouts/events.[id].svelte'
-  import Fieldset from '@src/client/lib/fieldset.svelte'
-  import FieldsetCheckIn from '@src/client/lib/fieldset-check-in.svelte'
-  import FieldsetParticipantName from '@src/client/lib/fieldset-participant-name.svelte'
-  import Icon from '@src/client/lib/icon.svelte'
-  import Lookup from '@src/client/lib/lookup.svelte'
-  import RadioGroup from '@src/client/lib/radio-group.svelte'
+  import Fieldset from '@src/lib/fieldset.svelte'
+  import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
+  import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
+  import Icon from '@src/lib/icon.svelte'
+  import Lookup from '@src/lib/lookup.svelte'
+  import RadioGroup from '@src/lib/radio-group.svelte'
 
   const { docId, eventId } = getContext('params')
   const title = 'New check-in'

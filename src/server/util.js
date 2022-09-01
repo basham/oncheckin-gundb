@@ -83,7 +83,7 @@ export function respondWithJSON (data) {
 }
 
 export function respondWithTemplate (data) {
-  const entryBase = import.meta.env.DEV ? '/src/client' : ''
+  const entryBase = import.meta.env.DEV ? '/src' : ''
   const { title = createTitle(data.h1, data.h2) } = data
   const body = `
 <!DOCTYPE html>

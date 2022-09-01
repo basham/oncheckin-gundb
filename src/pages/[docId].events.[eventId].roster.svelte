@@ -4,7 +4,7 @@
   import { STATE } from '@src/constants.js'
   import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
   import Layout from '@src/client/layouts/page.svelte'
-  import Icon from '@src/client/lib/icon.svelte'
+  import Icon from '@src/lib/icon.svelte'
 
   const { docId, eventId } = getContext('params')
 

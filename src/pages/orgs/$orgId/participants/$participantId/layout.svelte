@@ -1,7 +1,7 @@
 <script>
   import { getContext } from 'svelte'
   import { pluralize } from '@src/util.js'
-  import NavLink from '@src/client/lib/nav-link.svelte'
+  import NavLink from '@src/lib/nav-link.svelte'
   import Layout from '@src/pages/orgs/$orgId/layout.svelte'
 
   const { route, participant, latestCheckIn } = getContext('data')

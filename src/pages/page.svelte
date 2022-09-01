@@ -1,6 +1,6 @@
 <script>
   import { APP_NAME, STATE } from '@src/constants.js'
-  import Upgrader from '@src/client/lib/upgrader.svelte'
+  import Upgrader from '@src/lib/upgrader.svelte'
 
   export let state = STATE.LOADED
   export let title = ''

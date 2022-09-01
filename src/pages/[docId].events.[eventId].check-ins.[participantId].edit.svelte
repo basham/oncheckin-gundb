@@ -3,7 +3,7 @@
   import { STATE } from '@src/constants.js'
   import { checkInStore, eventStore, participantStore } from '@src/client/stores.js'
   import Layout from '@src/client/layouts/events.[id].svelte'
-  import FieldsetCheckIn from '@src/client/lib/fieldset-check-in.svelte'
+  import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
 
   const { docId, eventId, participantId } = getContext('params')
   const title = 'Edit check-in'

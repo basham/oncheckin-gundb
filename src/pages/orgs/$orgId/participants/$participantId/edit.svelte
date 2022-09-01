@@ -1,8 +1,8 @@
 <script>
   import { getContext } from 'svelte'
   import Layout from '@src/client/layouts/participant.svelte'
-  import Fieldset from '@src/client/lib/fieldset.svelte'
-  import FieldsetParticipantName from '@src/client/lib/fieldset-participant-name.svelte'
+  import Fieldset from '@src/lib/fieldset.svelte'
+  import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
   const { h2, participant } = getContext('data')
   const { alias, fullName, location, notes } = participant

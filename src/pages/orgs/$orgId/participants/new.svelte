@@ -1,7 +1,7 @@
 <script>
   import { getContext } from 'svelte'
   import Layout from '@src/pages/orgs/$orgId/layout.svelte'
-  import FieldsetParticipantName from '@src/client/lib/fieldset-participant-name.svelte'
+  import FieldsetParticipantName from '@src/lib/fieldset-participant-name.svelte'
 
   const { h1 } = getContext('data')
 </script>

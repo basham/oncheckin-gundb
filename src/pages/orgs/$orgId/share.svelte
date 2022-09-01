@@ -1,8 +1,8 @@
 <script>
   import { getContext } from 'svelte'
   import Layout from '@src/pages/orgs/$orgId/layout.svelte'
-  import QRCode from '@src/client/lib/qr-code.svelte'
-  import Toast from '@src/client/lib/toast.svelte'
+  import QRCode from '@src/lib/qr-code.svelte'
+  import Toast from '@src/lib/toast.svelte'
 
   const { h1, org } = getContext('data')
 
