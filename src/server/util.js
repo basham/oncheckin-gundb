@@ -26,8 +26,8 @@ export function createTitle (h1, h2) {
 
 export function regexFromPath (path) {
   const p = path
-    // Replace `[key]` with a group of the name name.
-    .replace(/\[(\w+)\]/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
+    // Replace `$key` with a group of the name name.
+    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
     // Remove the "/index" file name.
     .replace(/\/index$/, '')
   // Make trailing `/` optional.
