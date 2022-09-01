@@ -3,13 +3,13 @@ import { addAccount, getDevice, renameDevice, setCurrentAccount } from '@src/ser
 
 const redirect = '/orgs/'
 
-export async function get ({ route }) {
+export async function get () {
   const device = await getDevice()
   if (device.state === 'active') {
     return { redirect }
   }
   const h1 = 'Get started'
-  const template = { route, h1 }
+  const template = { h1 }
   return { template }
 }
 

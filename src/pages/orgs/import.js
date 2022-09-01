@@ -1,8 +1,8 @@
 import { importOrg } from '@src/server/org.js'
 
-export function get ({ route }) {
+export function get () {
   const h1 = 'Import organization'
-  const template = { route, h1 }
+  const template = { h1 }
   return { template }
 }
 

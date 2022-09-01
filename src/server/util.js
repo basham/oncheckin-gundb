@@ -66,7 +66,7 @@ export function registerRoute2 (path, handler, method) {
         return respondWithJSON(data.json)
       }
       if (data.template) {
-        return respondWithTemplate(data.template)
+        return respondWithTemplate({ route, ...data.template })
       }
       if (data.redirect) {
         return Response.redirect(data.redirect)

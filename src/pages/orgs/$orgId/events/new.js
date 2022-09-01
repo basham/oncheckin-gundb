@@ -2,12 +2,12 @@ import { createEvent } from '@src/server/event.js'
 import { getOrg } from '@src/server/org.js'
 import { todayDate } from '@src/server/util.js'
 
-export async function get ({ keys, route }) {
+export async function get ({ keys }) {
   const h1 = 'New event'
   const { orgId } = keys
   const org = await getOrg(orgId)
   const date = todayDate()
-  const template = { route, h1, org, date }
+  const template = { h1, org, date }
   return { template }
 }
 
