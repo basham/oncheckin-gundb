@@ -1,8 +1,8 @@
 <script>
   import { getContext } from 'svelte'
   import { sortAsc } from '@src/util.js'
-  import Layout from '@src/client/layouts/event.svelte'
   import CheckInList from '@src/lib/list-check-in.svelte'
+  import Layout from './layout.svelte'
 
   const { checkIns } = getContext('data')
   const hosts = checkIns

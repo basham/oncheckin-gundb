@@ -5,7 +5,7 @@
   import Layout from '@src/pages/page.svelte'
 
   const { route, org } = getContext('data')
-  const location = route.split('.')[2]
+  const location = route.split('/')[2]
 
   let unsyncedChanges
 </script>

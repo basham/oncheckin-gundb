@@ -4,7 +4,7 @@
   import Layout from '@src/pages/orgs/$orgId/layout.svelte'
 
   const { route, event } = getContext('data')
-  const location = route.split('.')[4]
+  const location = route.split('/')[4]
 </script>
 
 <Layout>
@@ -13,7 +13,6 @@
   <nav class="list-plain list-plain--inline u-border-bottom u-gap-4 u-m-top-4 u-p-bottom-4">
     <NavLink
       href={event.url}
-      id="check-ins"
       location={location}>
       Check-ins
     </NavLink>
