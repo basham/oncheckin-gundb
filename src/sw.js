@@ -13,15 +13,9 @@ self.addEventListener('message', (event) => {
 const modules = import.meta.glob('./pages/**/*.js', { eager: true })
 
 // Reverse the list of modules so dynamic `[key]` folders and files are resolved last.
-for (const [url, mod] of Object.entries(modules).reverse()) {
+for (const [url, module] of Object.entries(modules).reverse()) {
   const path = url
     .replace(/^\.\/pages/, '')
     .replace(/\.js$/, '')
-  const { get, post } = mod
-  if (get) {
-    registerRoute(path, get)
-  }
-  if (post) {
-    registerRoute(path, post, 'POST')
-  }
+  registerRoute(path, module)
 }

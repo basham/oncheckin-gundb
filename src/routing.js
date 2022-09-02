@@ -1,7 +1,17 @@
 import { registerRoute as originalRegisterRoute } from 'workbox-routing'
 import { APP_NAME } from './constants.js'
 
-export function registerRoute (path, handler, method) {
+export function registerRoute (path, methods) {
+  const { get, post } = methods
+  if (get) {
+    registerRouteMethod(path, get)
+  }
+  if (post) {
+    registerRouteMethod(path, post, 'POST')
+  }
+}
+
+function registerRouteMethod (path, handler, method) {
   const re = regexFromPath(path)
   originalRegisterRoute(
     ({ url }) => re.test(url.pathname),
@@ -44,7 +54,7 @@ function createTitle (h1, h2) {
 function regexFromPath (path) {
   const p = path
     // Replace `$key` with a group of the name name.
-    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
+    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>\\w+)`)
     // Remove the `/index` file name.
     .replace(/\/index$/, '')
   // Make trailing `/` optional.
