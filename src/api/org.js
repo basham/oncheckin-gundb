@@ -7,6 +7,16 @@ export async function createOrg ({ id = createId(), name }) {
   return await getOrg(id)
 }
 
+export async function getOrCreateEvent (orgId, eventId) {
+  const { events } = await getOrgDB(orgId)
+  return getOrCreate(events, eventId, createYMap)
+}
+
+export async function getOrCreateParticipant (orgId, participantId) {
+  const { participants } = await getOrgDB(orgId)
+  return getOrCreate(participants, participantId, createYMap)
+}
+
 export async function getOrgDB (id = createId()) {
   return getOrCreate(cache, `org:${id}`, async () => {
     const store = await createRemoteStore(id)
@@ -41,6 +51,16 @@ export async function getOrg (id) {
     events,
     participants
   }
+}
+
+export async function hasEvent (orgId, eventId) {
+  const { events } = await getOrgDB(orgId)
+  return events.has(eventId)
+}
+
+export async function hasParticipant (orgId, participantId) {
+  const { participants } = await getOrgDB(orgId)
+  return participants.has(participantId)
 }
 
 export async function importOrg (content) {
