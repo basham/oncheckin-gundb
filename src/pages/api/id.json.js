@@ -1,4 +1,4 @@
-import { createId } from '@src/server/util.js'
+import { createId } from '@src/api.js'
 
 export async function get () {
   const json = { id: createId() }

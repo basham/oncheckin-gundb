@@ -1,4 +1,4 @@
-import { importOrg } from '@src/server/org.js'
+import { importOrg } from '@src/api.js'
 
 export function get () {
   const h1 = 'Import organization'

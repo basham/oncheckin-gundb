@@ -1,5 +1,4 @@
-import { getAccount, renameAccount } from '@src/server/account.js'
-import { addAccount, getDevice, renameDevice, setCurrentAccount } from '@src/server/device.js'
+import { addAccount, getAccount, getDevice, renameAccount, renameDevice, setCurrentAccount } from '@src/api.js'
 
 const redirect = '/orgs/'
 

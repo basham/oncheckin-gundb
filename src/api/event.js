@@ -1,17 +1,14 @@
-import { format, isFuture, isPast, isToday, parseISO } from 'date-fns'
+import { format, parseISO } from 'date-fns'
+import { getOrCreate } from '@src/util.js'
 import { getOrg, getOrgDB } from './org.js'
-import { createYMap } from './store.js'
-import { createId } from './util.js'
-import { getOrCreate, sortDesc } from '@src/util.js'
-
-const cache = new Map()
+import { cache, createId, createYMap } from './store.js'
 
 export async function createEvent (orgId, values) {
   return await setEvent(orgId, createId(), values)
 }
 
 export async function getEvent (orgId, eventId) {
-  return getOrCreate(cache, `${orgId}/${eventId}`, async () => {
+  return getOrCreate(cache, `event:${orgId}/${eventId}`, async () => {
     const { events } = await getOrgDB(orgId)
     if (!events.has(eventId)) {
       return undefined
@@ -45,44 +42,9 @@ export async function getEvent (orgId, eventId) {
   })
 }
 
-export async function getEvents (orgId) {
-  return getOrCreate(cache, `${orgId}/all`, async () => {
-    const db = await getOrgDB(orgId)
-    const all = []
-    for (const eventId of [...db.events.keys()]) {
-      const event = await getEvent(orgId, eventId)
-      all.push(event)
-    }
-    return all.sort(sortDesc('dateObj'))
-  })
-}
-
-export async function getPastEvents (orgId) {
-  return (await getEvents(orgId))
-    .filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
-}
-
-export async function getUpcomingEvents (orgId) {
-  return (await getEvents(orgId))
-    .filter(({ dateObj }) => isToday(dateObj) || isFuture(dateObj))
-    .reverse()
-}
-
-export async function getEventYears (orgId) {
-  const years = (await getEvents(orgId))
-    .map(({ year }) => year)
-  return [...(new Set(years))].sort().reverse()
-}
-
-export async function getEventsByYear (orgId, year) {
-  return (await getEvents(orgId))
-    .filter((event) => event.year === year)
-    .reverse()
-}
-
 export async function setEvent (orgId, eventId, values) {
-  cache.delete(`${orgId}/all`)
-  cache.delete(`${orgId}/${eventId}`)
+  cache.delete(`events:${orgId}`)
+  cache.delete(`event:${orgId}/${eventId}`)
   const { events } = await getOrgDB(orgId)
   const event = getOrCreate(events, eventId, createYMap)
   event.doc.transact(() => {
@@ -96,9 +58,6 @@ export async function setEvent (orgId, eventId, values) {
 const event = {
   create: createEvent,
   get: getEvent,
-  getAll: getEvents,
-  getPast: getPastEvents,
-  getUpcoming: getUpcomingEvents,
   set: setEvent
 }
 

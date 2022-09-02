@@ -1,16 +1,13 @@
+import { getOrCreate } from '@src/util.js'
 import { getOrg, getOrgDB } from './org.js'
-import { createYMap } from './store.js'
-import { createId } from './util.js'
-import { getOrCreate, sortAsc } from '@src/util.js'
-
-const cache = new Map()
+import { cache, createId, createYMap } from './store.js'
 
 export async function createParticipant (orgId, values) {
   return await setParticipant(orgId, createId(), values)
 }
 
 export async function getParticipant (orgId, participantId) {
-  return getOrCreate(cache, `${orgId}/${participantId}`, async () => {
+  return getOrCreate(cache, `participant:${orgId}/${participantId}`, async () => {
     const { participants } = await getOrgDB(orgId)
     if (!participants.has(participantId)) {
       return undefined
@@ -39,21 +36,9 @@ export async function getParticipant (orgId, participantId) {
   })
 }
 
-export async function getParticipants (orgId) {
-  return getOrCreate(cache, `${orgId}/all`, async () => {
-    const db = await getOrgDB(orgId)
-    const all = []
-    for (const participantId of [...db.participants.keys()]) {
-      const participant = await getParticipant(orgId, participantId)
-      all.push(participant)
-    }
-    return all.sort(sortAsc('displayName'))
-  })
-}
-
 export async function setParticipant (orgId, participantId, values) {
-  cache.delete(`${orgId}/all`)
-  cache.delete(`${orgId}/${participantId}`)
+  cache.delete(`participants:${orgId}`)
+  cache.delete(`participant:${orgId}/${participantId}`)
   const { participants } = await getOrgDB(orgId)
   const participant = getOrCreate(participants, participantId, createYMap)
   participant.doc.transact(() => {
@@ -63,11 +48,3 @@ export async function setParticipant (orgId, participantId, values) {
   })
   return await getParticipant(orgId, participantId)
 }
-
-const participant = {
-  create: createParticipant,
-  get: getParticipant,
-  set: setParticipant
-}
-
-export default participant

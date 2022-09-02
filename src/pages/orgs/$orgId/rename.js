@@ -1,4 +1,4 @@
-import { getOrg, renameOrg } from '@src/server/org.js'
+import { getOrg, renameOrg } from '@src/api.js'
 
 export async function get ({ keys }) {
   const h1 = 'Rename organization'

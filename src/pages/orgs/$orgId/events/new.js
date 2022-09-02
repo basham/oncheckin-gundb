@@ -1,6 +1,5 @@
-import { createEvent } from '@src/server/event.js'
-import { getOrg } from '@src/server/org.js'
-import { todayDate } from '@src/server/util.js'
+import { createEvent, getOrg } from '@src/api.js'
+import { todayDate } from '@src/util.js'
 
 export async function get ({ keys }) {
   const h1 = 'New event'

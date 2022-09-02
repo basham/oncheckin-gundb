@@ -1,6 +1,9 @@
 <script>
-  import { STATE_NOT_FOUND } from '@src/constants.js'
-  import Layout from '@src/pages/layout.svelte'
+  import Layout from './page.svelte'
 </script>
 
-<Layout state={STATE_NOT_FOUND} />
+<Layout>
+  <main class="u-p-8">
+    <h1>Page not found</h1>
+  </main>
+</Layout>

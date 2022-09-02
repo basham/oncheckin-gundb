@@ -1,5 +1,4 @@
-import { getOrg } from '@src/server/org.js'
-import { createParticipant } from '@src/server/participant.js'
+import { createParticipant, getOrg } from '@src/api.js'
 
 export async function get ({ keys }) {
   const h1 = 'New hasher'

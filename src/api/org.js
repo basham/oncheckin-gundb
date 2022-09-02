@@ -1,8 +1,5 @@
-import { createYMap, createRemoteStore } from './store.js'
-import { createId } from './util.js'
-import { getOrCreate } from '../util.js'
-
-const cache = new Map()
+import { getOrCreate } from '@src/util.js'
+import { cache, createId, createYMap, createRemoteStore } from './store.js'
 
 export async function createOrg ({ id = createId(), name }) {
   const db = await getOrgDB(id)
@@ -11,7 +8,7 @@ export async function createOrg ({ id = createId(), name }) {
 }
 
 export async function getOrgDB (id = createId()) {
-  return getOrCreate(cache, id, async () => {
+  return getOrCreate(cache, `org:${id}`, async () => {
     const store = await createRemoteStore(id)
     const data = store.doc.getMap('data')
     const rows = ['settings', 'checkIns', 'events', 'participants']

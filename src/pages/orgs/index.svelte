@@ -2,8 +2,7 @@
   import { getContext } from 'svelte'
   import Layout from '@src/pages/layout.svelte'
 
-  const { device, account } = getContext('data')
-  const { orgs } = account
+  const { device, account, orgs } = getContext('data')
 </script>
 
 <Layout>

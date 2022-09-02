@@ -1,10 +1,3 @@
-import cuid from 'cuid'
-import { APP } from './constants.js'
-
-export function createId () {
-  return cuid()
-}
-
 export function debounce (fn, timeout = 100) {
   let timer
   return (...args) => {
@@ -32,42 +25,8 @@ export function getOrCreate (cache, key, createCallback) {
   return cache.get(key)
 }
 
-export function nextFrame () {
-  return new Promise((resolve) => window.requestAnimationFrame(() => resolve()))
-}
-
-export function parseExtension (path, defaultExtension = 'txt') {
-  const extGroup = path.match(/\.(.+)$/)
-  return extGroup ? extGroup[1] : defaultExtension
-}
-
 export function pluralize (count, singular, plural = `${singular}s`) {
   return count === 1 ? singular : plural
-}
-
-// Safe character set inspired by:
-// https://github.com/CyberAP/nanoid-dictionary
-const numbersSafe = '256789'
-const lowercaseSafe = 'bcdfghjkmnpqrstwyz'
-const numbersLowercaseSafe = `${numbersSafe}${lowercaseSafe}`
-
-export function randomLetter () {
-  return randomString(1, lowercaseSafe)
-}
-
-export function randomString (length, dictionary = numbersLowercaseSafe) {
-  return Array.from({ length }, () =>
-    dictionary[Math.floor(Math.random() * dictionary.length)]
-  ).join('')
-}
-
-export function randomWord (length = 1) {
-  return `${randomLetter()}${randomString(length - 1)}`
-}
-
-export function resolvePath (path = '') {
-  const prefix = `/${APP}/`
-  return path.startsWith(prefix) ? path : `${prefix}${path}`
 }
 
 export function sort (selectorOrKey, multiplier) {
@@ -90,6 +49,12 @@ export function sortAsc (key) {
 
 export function sortDesc (key) {
   return sort(key, -1)
+}
+
+export function todayDate () {
+  const now = new Date()
+  now.setHours(0, 0, 0)
+  return now.toJSON().split('T')[0]
 }
 
 export function waitForElement (id, callback = () => {}, retry = 180) {

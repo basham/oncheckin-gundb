@@ -1,38 +1,5 @@
-import cuid from 'cuid'
 import { registerRoute as originalRegisterRoute } from 'workbox-routing'
-import { APP_NAME } from '../constants.js'
-
-export function createId () {
-  return cuid()
-}
-
-export function createPath (...args) {
-  const includeTail = args.length && !args[args.length - 1].includes('.')
-  return `/${args.join('/')}${includeTail ? '/' : ''}`
-}
-
-export function createResponse (body, contentType) {
-  const options = {
-    headers: {
-      'Content-Type': contentType
-    }
-  }
-  return new Response(body, options)
-}
-
-export function createTitle (h1, h2) {
-  return [h2, h1, APP_NAME].filter((t) => t).join(' - ')
-}
-
-export function regexFromPath (path) {
-  const p = path
-    // Replace `$key` with a group of the name name.
-    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
-    // Remove the "/index" file name.
-    .replace(/\/index$/, '')
-  // Make trailing `/` optional.
-  return new RegExp(`^${p}/?$`)
-}
+import { APP_NAME } from './constants.js'
 
 export function registerRoute (path, handler, method) {
   const re = regexFromPath(path)
@@ -61,16 +28,39 @@ export function registerRoute (path, handler, method) {
   )
 }
 
-export function respondWithHTML (body) {
+function createResponse (body, contentType) {
+  const options = {
+    headers: {
+      'Content-Type': contentType
+    }
+  }
+  return new Response(body, options)
+}
+
+function createTitle (h1, h2) {
+  return [h2, h1, APP_NAME].filter((t) => t).join(' - ')
+}
+
+function regexFromPath (path) {
+  const p = path
+    // Replace `$key` with a group of the name name.
+    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
+    // Remove the `/index` file name.
+    .replace(/\/index$/, '')
+  // Make trailing `/` optional.
+  return new RegExp(`^${p}/?$`)
+}
+
+function respondWithHTML (body) {
   return createResponse(body, 'text/html')
 }
 
-export function respondWithJSON (data) {
+function respondWithJSON (data) {
   const body = JSON.stringify(data)
   return createResponse(body, 'application/json')
 }
 
-export function respondWithTemplate (data) {
+function respondWithTemplate (data) {
   const entryBase = import.meta.env.DEV ? '/src' : ''
   const { title = createTitle(data.h1, data.h2) } = data
   const body = `
@@ -100,10 +90,4 @@ ${JSON.stringify(data)}
 </html>
 `
   return respondWithHTML(body)
-}
-
-export function todayDate () {
-  const now = new Date()
-  now.setHours(0, 0, 0)
-  return now.toJSON().split('T')[0]
 }

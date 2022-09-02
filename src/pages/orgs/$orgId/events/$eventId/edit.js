@@ -1,5 +1,4 @@
-import { getEvent, setEvent } from '@src/server/event.js'
-import { getOrg } from '@src/server/org.js'
+import { getEvent, getOrg, setEvent } from '@src/api.js'
 
 export async function get ({ keys }) {
   const { orgId, eventId } = keys

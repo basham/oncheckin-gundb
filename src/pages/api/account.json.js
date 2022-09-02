@@ -1,5 +1,4 @@
-import { getAccount } from '@src/server/account.js'
-import { getCurrentAccountId } from '@src/server/device.js'
+import { getCurrentAccountId, getAccount } from '@src/api.js'
 
 export async function get () {
   const id = await getCurrentAccountId()

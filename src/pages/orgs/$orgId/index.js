@@ -1,5 +1,4 @@
-import { getEventYears, getPastEvents, getUpcomingEvents } from '@src/server/event.js'
-import { getOrg } from '@src/server/org.js'
+import { getOrg, getEventYears, getPastEvents, getUpcomingEvents } from '@src/api.js'
 
 export async function get ({ keys, route }) {
   route = `${route}/events`

@@ -1,9 +1,8 @@
 <script>
-  import cuid from 'cuid'
   import Icon from './icon.svelte'
 
   export let filter = () => true
-  export let id = cuid()
+  export let id = 'lookup'
   export let isSelected = () => false
   export let label = ''
   export let onSelected = () => {}

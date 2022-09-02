@@ -1,5 +1,4 @@
-import { getOrg } from '@src/server/org.js'
-import { getParticipants } from '@src/server/participant.js'
+import { getOrg, getParticipants } from '@src/api.js'
 
 export async function get ({ keys }) {
   const h1 = 'Hashers'

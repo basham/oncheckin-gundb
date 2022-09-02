@@ -1,6 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { createDoc, Y } from './util.js'
-import { APP } from '@src/constants.js'
+import { APP_ID } from '@src/constants.js'
 import { createId, getOrCreate, sortDesc } from '@src/util.js'
 
 const { btoa } = window
@@ -26,11 +26,11 @@ export async function createWorkspace ({ name, id = createId() }) {
 }
 
 export async function joinWorkspace (id) {
-  return await createDoc(`${APP}-${id}`, { local: true, remote: true })
+  return await createDoc(`${APP_ID}-${id}`, { local: true, remote: true })
 }
 
 export function createWorkspaceId (id = createId()) {
-  return `${APP}-${id}`
+  return `${APP_ID}-${id}`
 }
 
 export async function getCurrentWorkspaceId () {
@@ -42,7 +42,7 @@ export async function getCurrentWorkspaceId () {
 
 export async function getMeta () {
   return getOrCreate(cache, `meta`, async () => {
-    return await createDoc(`${APP}-meta`, { local: true })
+    return await createDoc(`${APP_ID}-meta`, { local: true })
   })
 }
 
@@ -50,7 +50,7 @@ export async function getWorkspace (docId) {
   // To do: If the id does not exist in the account,
   // return undefined.
   return getOrCreate(cache, `workspace/${docId}`, async () => {
-    const document = await createDoc(`${APP}-${docId}`, { local: true, remote: true })
+    const document = await createDoc(`${APP_ID}-${docId}`, { local: true, remote: true })
     const { data } = document
     const settings = getOrCreate(data, 'settings', () => new Y.Map())
     const name = settings.get('name') || '(Workspace)'

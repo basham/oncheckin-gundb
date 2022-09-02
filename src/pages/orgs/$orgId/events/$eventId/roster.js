@@ -1,6 +1,5 @@
 import { format, isBefore, sub } from 'date-fns'
-import { getEvent } from '@src/server/event.js'
-import { getOrg } from '@src/server/org.js'
+import { getEvent, getOrg } from '@src/api.js'
 
 export async function get ({ keys }) {
   const { orgId, eventId } = keys
