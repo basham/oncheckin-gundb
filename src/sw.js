@@ -12,7 +12,7 @@ self.addEventListener('message', (event) => {
 
 const modules = import.meta.glob('./pages/**/*.js', { eager: true })
 
-// Reverse the list of modules so dynamic `[key]` folders and files are resolved last.
+// Reverse the list of modules so dynamic `$key` folders and files are resolved last.
 for (const [url, module] of Object.entries(modules).reverse()) {
   const path = url
     .replace(/^\.\/pages/, '')
