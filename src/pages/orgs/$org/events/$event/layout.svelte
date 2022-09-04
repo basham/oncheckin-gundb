@@ -13,6 +13,7 @@
   <nav class="list-plain list-plain--inline u-border-bottom u-gap-4 u-m-top-4 u-p-bottom-4">
     <NavLink
       href={event.url}
+      id={location && 'check-ins'}
       location={location}>
       Check-ins
     </NavLink>

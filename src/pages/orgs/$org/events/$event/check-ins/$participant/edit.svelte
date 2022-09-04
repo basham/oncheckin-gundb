@@ -3,8 +3,8 @@
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
   import Layout from '@src/pages/orgs/$org/events/$event/layout.svelte'
 
-  const { h2, event, participant, host } = getContext('data')
-
+  const { h2, event, participant, checkIn } = getContext('data')
+  const { host } = checkIn
   /*
   let event = null
   let participant = null
