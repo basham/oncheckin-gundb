@@ -48,12 +48,12 @@ function registerRouteMethod (path, handler, method) {
 
 async function getParams (source = {}) {
   const paramMap = {
-    orgId: getOrgFromParams,
-    eventId: getEventFromParams,
-    participantId: getParticipantFromParams
+    org: getOrgFromParams,
+    event: getEventFromParams,
+    participant: getParticipantFromParams
   }
   const paramPromises = [...Object.entries(source)]
-    .map(([k, v]) => paramMap[k] ? paramMap[k](source) : [k, v])
+    .map(([k, v]) => paramMap[k] ? paramMap[k](k, source) : [k, v])
   const mapedParams = await Promise.all(paramPromises)
   const someNotFound = mapedParams.some((v) => !v)
   if (someNotFound) {
@@ -69,22 +69,22 @@ async function getParams (source = {}) {
   }
 }
 
-async function getOrgFromParams ({ orgId }) {
+async function getOrgFromParams (key, { org: oid }) {
   const accountId = await getCurrentAccountId()
-  if (await hasOrg(accountId, orgId)) {
-    return ['org', await getOrg(orgId)]
+  if (await hasOrg(accountId, oid)) {
+    return [key, await getOrg(oid)]
   }
 }
 
-async function getEventFromParams ({ orgId, eventId }) {
-  if (await hasEvent(orgId, eventId)) {
-    return ['event', await getEvent(orgId, eventId)]
+async function getEventFromParams (key, { org: oid, event: eid }) {
+  if (await hasEvent(oid, eid)) {
+    return [key, await getEvent(oid, eid)]
   }
 }
 
-async function getParticipantFromParams ({ orgId, participantId }) {
-  if (await hasParticipant(orgId, participantId)) {
-    return ['participant', await getParticipant(orgId, participantId)]
+async function getParticipantFromParams (key, { org: oid, participant: pid }) {
+  if (await hasParticipant(oid, pid)) {
+    return [key, await getParticipant(oid, pid)]
   }
 }
 

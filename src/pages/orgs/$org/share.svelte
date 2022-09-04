@@ -1,6 +1,6 @@
 <script>
   import { getContext } from 'svelte'
-  import Layout from '@src/pages/orgs/$orgId/layout.svelte'
+  import Layout from '@src/pages/orgs/$org/layout.svelte'
   import QRCode from '@src/lib/qr-code.svelte'
   import Toast from '@src/lib/toast.svelte'
 
