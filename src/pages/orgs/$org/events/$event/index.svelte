@@ -4,10 +4,6 @@
   import Layout from './layout.svelte'
 
   const { event, hares, runners } = getContext('data')
-
-  // const checkIns = await checkInStore.getEventCheckIns(docId, eventId)
-  // hares = checkIns.filter(({ host }) => host)
-  // runners = checkIns.filter(({ host }) => !host)
 </script>
 
 <Layout>

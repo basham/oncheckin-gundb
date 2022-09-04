@@ -9,5 +9,6 @@
   <Checkbox
     bind:checked={host}
     id="host"
-    label="Host of this event" />
+    label="Host of this event"
+    name="host" />
 </Fieldset>

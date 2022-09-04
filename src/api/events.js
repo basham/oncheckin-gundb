@@ -1,12 +1,12 @@
 import { isFuture, isPast, isToday } from 'date-fns'
 import { getOrCreate, sortDesc } from '@src/util.js'
 import { getEvent } from './event.js'
-import { getOrg } from './org.js'
+import { getOrgEvents } from './org.js'
 import { cache } from './store.js'
 
 export async function getEvents (orgId) {
   return getOrCreate(cache, `events:${orgId}`, async () => {
-    const { events } = await getOrg(orgId)
+    const events = await getOrgEvents(orgId)
     const all = []
     for (const eventId of events) {
       const event = await getEvent(orgId, eventId)

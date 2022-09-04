@@ -7,6 +7,16 @@ export async function createOrg ({ id = createId(), name }) {
   return await getOrg(id)
 }
 
+export async function deleteCheckIn (orgId, eventId, participantId) {
+  const { checkIns } = await getOrgDB(orgId)
+  checkIns.delete(`${eventId}-${participantId}`)
+}
+
+export async function getOrCreateCheckIn (orgId, eventId, participantId) {
+  const { checkIns } = await getOrgDB(orgId)
+  return getOrCreate(checkIns, `${eventId}-${participantId}`, createYMap)
+}
+
 export async function getOrCreateEvent (orgId, eventId) {
   const { events } = await getOrgDB(orgId)
   return getOrCreate(events, eventId, createYMap)
@@ -40,17 +50,48 @@ export async function getOrg (id) {
   const openUrl = `${url}open/`
   const inviteCode = self.btoa(JSON.stringify({ id, name }))
   const shareUrl = `${self.location.origin}/orgs/join/${inviteCode}`
-  const events = [...db.events.keys()]
-  const participants = [...db.participants.keys()]
   return {
     id,
     name,
     openUrl,
     shareUrl,
-    url,
-    events,
-    participants
+    url
   }
+}
+
+export async function getOrgCheckIns (id) {
+  const db = await getOrgDB(id)
+
+  if (!db) {
+    return
+  }
+
+  return [...db.checkIns.keys()]
+}
+
+export async function getOrgEvents (id) {
+  const db = await getOrgDB(id)
+
+  if (!db) {
+    return
+  }
+
+  return [...db.events.keys()]
+}
+
+export async function getOrgParticipants (id) {
+  const db = await getOrgDB(id)
+
+  if (!db) {
+    return
+  }
+
+  return [...db.participants.keys()]
+}
+
+export async function hasCheckIn (orgId, eventId, participantId) {
+  const { checkIns } = await getOrgDB(orgId)
+  return checkIns.has(`${eventId}-${participantId}`)
 }
 
 export async function hasEvent (orgId, eventId) {

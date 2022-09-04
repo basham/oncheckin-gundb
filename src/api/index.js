@@ -1,4 +1,6 @@
 export * from './account.js'
+export * from './check-in.js'
+export * from './check-ins.js'
 export * from './device.js'
 export * from './event.js'
 export * from './events.js'

@@ -4,6 +4,7 @@
   export let checked = false
   export let id = ''
   export let label = ''
+  export let name = ''
 </script>
 
 <style>
@@ -60,6 +61,7 @@
     bind:checked={checked}
     class="u-sr-only"
     id={id}
+    name={name}
     type="checkbox">
   <label
     class="u-m-0"

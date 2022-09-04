@@ -13,31 +13,6 @@
 
   let checkInType = 'existing-participant'
   let selectedParticipant = null
-  let fullName = ''
-  let alias = ''
-  let host = false
-
-  /*
-  onMount(async () => {
-    event = await eventStore.get(docId, eventId)
-
-    const checkIns = (await checkInStore.getEventCheckIns(docId, eventId))
-      .map((checkIn) => [checkIn.participant.id, checkIn])
-    const checkInsMap = new Map(checkIns)
-    participants = (await participantStore.getAll(docId))
-      .map((p) => {
-        const checkIn = checkInsMap.get(p.id)
-        const checkedIn = !!checkIn
-        return {
-          ...p,
-          checkIn,
-          checkedIn
-        }
-      })
-
-    state = STATE.LOADED
-  })
-  */
 
   function filterResult (query, participant) {
     const terms = [participant.fullName, participant.displayName].join(' ')
@@ -46,7 +21,7 @@
 
   function selectParticipant (participant) {
     if (participant.checkedIn) {
-      // window.location = participant.checkIn.url
+      window.location = participant.checkIn.url
       return
     }
 
@@ -59,19 +34,11 @@
     focus('find-participant-input')
   }
 
-  async function submit (e) {
-    e.preventDefault()
-    /*
-    if (checkInType === 'new-participant') {
-      selectedParticipant = await participantStore.create(docId, { alias, fullName })
-    }
+  function submit (e) {
     if (!selectedParticipant && checkInType === 'existing-participant') {
+      e.preventDefault()
       focus('find-participant-input')
-      return
     }
-    await checkInStore.create(docId, eventId, selectedParticipant.id, { host })
-    window.location = event.url
-    */
   }
 </script>
 
@@ -95,11 +62,12 @@
   <h2>{h2}</h2>
   <form
     autocomplete="off"
+    method="post"
     on:submit={submit}>
     <RadioGroup
       bind:value={checkInType}
       legend="Check in"
-      name="checkin"
+      name="checkInType"
       options={['Existing participant', 'New participant']} />
     {#if checkInType === 'existing-participant'}
       {#if !selectedParticipant}
@@ -123,6 +91,7 @@
               <div class="u-ts-2">{selectedParticipant.displayName}</div>
               <div>{selectedParticipant.fullName}</div>
             </div>
+            <input type="hidden" name="selectedParticipant" value={selectedParticipant.id}>
             <button
               aria-label="Unselect"
               aria-describedby="selectedParticipantName"
@@ -139,13 +108,11 @@
     {#if checkInType === 'new-participant'}
       <Fieldset legend="New participant">
         <div class="u-m-top-4">
-          <FieldsetParticipantName
-            bind:fullName={fullName}
-            bind:alias={alias} />
+          <FieldsetParticipantName />
         </div>
       </Fieldset>
     {/if}
-    <FieldsetCheckIn bind:host={host} />
+    <FieldsetCheckIn />
     <div class="u-m-top-4">
       <button
         class="button button--primary"
