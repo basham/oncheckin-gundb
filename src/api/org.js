@@ -10,6 +10,10 @@ export async function createOrg ({ id = createId(), name }) {
 export async function deleteCheckIn (orgId, eventId, participantId) {
   const { checkIns } = await getOrgDB(orgId)
   checkIns.delete(`${eventId}-${participantId}`)
+  cache.delete(`checkIns:${orgId}`)
+  cache.delete(`checkIns:${orgId}/${eventId}`)
+  cache.delete(`checkIns:${orgId}/${participantId}`)
+  cache.delete(`checkIn:${orgId}/${eventId}/${participantId}`)
 }
 
 export async function getOrCreateCheckIn (orgId, eventId, participantId) {

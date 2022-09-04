@@ -5,34 +5,6 @@
 
   const { h2, event, participant, checkIn } = getContext('data')
   const { host } = checkIn
-  /*
-  let event = null
-  let participant = null
-  let checkIn = null
-  let host = false
-
-  onMount(async () => {
-    event = await eventStore.get(docId, eventId)
-    participant = await participantStore.get(docId, participantId)
-    checkIn = await checkInStore.get(docId, eventId, participantId)
-    if (!event || !participant || !checkIn) {
-      state = STATE.NOT_FOUND
-      return
-    }
-    host = checkIn?.host
-    state = STATE.LOADED
-  })
-
-  async function submit (e) {
-    e.preventDefault()
-    await checkInStore.set(docId, eventId, participantId, { host })
-    window.location = event.url
-  }
-  */
-  async function deleteCheckIn () {
-    // await checkInStore.delete(docId, eventId, participantId)
-    // window.location = event.url
-  }
 </script>
 
 <Layout>
@@ -42,9 +14,8 @@
     <br>
     {participant.fullName}
   </p>
-  <form
-    autocomplete="off"
-    method="post">
+  <form method="post">
+    <input type="hidden" name="action" value="edit">
     <FieldsetCheckIn host={host} />
     <div class="u-m-top-6">
       <button
@@ -53,14 +24,16 @@
         Save
       </button>
     </div>
+  </form>
+  <form method="post">
+    <input type="hidden" name="action" value="delete">
     <div class="u-m-top-4">
       <button
         class="button"
-        on:click={deleteCheckIn}
-        type="button">
+        type="submit">
         Delete
       </button>
     </div>
-    <p class="u-m-top-6"><a href={event.url}>Back</a></p>
   </form>
+  <p class="u-m-top-6"><a href={event.url}>Back</a></p>
 </Layout>

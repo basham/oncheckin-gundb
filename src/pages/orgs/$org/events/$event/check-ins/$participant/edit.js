@@ -1,4 +1,4 @@
-import { getCheckIn, setCheckIn } from '@src/api.js'
+import { deleteCheckIn, getCheckIn, setCheckIn } from '@src/api.js'
 
 export async function get ({ data }) {
   const { org, event, participant } = data
@@ -12,7 +12,13 @@ export async function get ({ data }) {
 export async function post ({ data, request }) {
   const { org, event, participant } = data
   const formData = await request.formData()
-  const host = formData.get('host')
-  await setCheckIn(org.id, event.id, participant.id, { host })
+  const action = formData.get('action')
+  if (action === 'edit') {
+    const host = formData.get('host')
+    await setCheckIn(org.id, event.id, participant.id, { host })
+  }
+  if (action === 'delete') {
+    await deleteCheckIn(org.id, event.id, participant.id)
+  }
   return { redirect: event.url }
 }
