@@ -1,12 +1,8 @@
-import { getEvent, getOrg } from '@src/api.js'
-
-export async function get ({ keys }) {
-  const { orgId, eventId } = keys
-  const org = await getOrg(orgId)
-  const event = await getEvent(orgId, eventId)
+export async function get ({ data }) {
+  const { event } = data
   const h1 = event.name
   const h2 = 'Circle'
   const checkIns = []
-  const template = { h1, h2, org, event, checkIns }
+  const template = { h1, h2, checkIns }
   return { template }
 }

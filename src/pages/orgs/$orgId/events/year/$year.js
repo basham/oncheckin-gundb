@@ -1,10 +1,9 @@
-import { getEventsByYear, getOrg } from '@src/api.js'
+import { getEventsByYear } from '@src/api.js'
 
-export async function get ({ keys }) {
-  const { orgId, year } = keys
+export async function get ({ data }) {
+  const { org, year } = data
   const h1 = `Events in ${year}`
-  const org = await getOrg(orgId)
-  const events = await getEventsByYear(orgId, year)
-  const template = { h1, org, events }
+  const events = await getEventsByYear(org.id, year)
+  const template = { h1, events }
   return { template }
 }

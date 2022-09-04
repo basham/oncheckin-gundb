@@ -1,19 +1,16 @@
-import { getOrg, renameOrg } from '@src/api.js'
+import { renameOrg } from '@src/api.js'
 
-export async function get ({ keys }) {
+export async function get () {
   const h1 = 'Rename organization'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  const template = { h1, org, orgId }
+  const template = { h1 }
   return { template }
 }
 
-export async function post ({ keys, request }) {
-  const { orgId } = keys
-  const data = await request.formData()
-  const name = data.get('name')
-  await renameOrg(orgId, name)
-  const org = await getOrg(orgId)
+export async function post ({ data, request }) {
+  const { org } = data
+  const formData = await request.formData()
+  const name = formData.get('name')
+  await renameOrg(org.id, name)
   const redirect = `${org.url}settings`
   return { redirect }
 }

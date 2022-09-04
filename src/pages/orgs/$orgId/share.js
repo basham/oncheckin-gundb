@@ -1,9 +1,5 @@
-import { getOrg } from '@src/api.js'
-
-export async function get ({ keys }) {
+export async function get () {
   const h1 = 'Share organization'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  const template = { h1, org }
+  const template = { h1 }
   return { template }
 }

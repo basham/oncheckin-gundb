@@ -1,9 +1,9 @@
-import { addAccount, getAccount, getDevice, renameAccount, renameDevice, setCurrentAccount } from '@src/api.js'
+import { addAccount, renameAccount, renameDevice, setCurrentAccount } from '@src/api.js'
 
 const redirect = '/orgs/'
 
-export async function get () {
-  const device = await getDevice()
+export async function get ({ data }) {
+  const { device } = data
   if (device.state === 'active') {
     return { redirect }
   }
@@ -12,14 +12,14 @@ export async function get () {
   return { template }
 }
 
-export async function post ({ request }) {
-  const data = await request.formData()
-  const deviceName = data.get('deviceName')
+export async function post ({ request, data }) {
+  const { account } = data
+  const formData = await request.formData()
+  const deviceName = formData.get('deviceName')
   await renameDevice(deviceName)
-  const { id } = await getAccount()
-  const accountName = data.get('accountName')
-  await renameAccount(id, accountName)
-  await addAccount(id)
-  await setCurrentAccount(id)
+  const accountName = formData.get('accountName')
+  await renameAccount(account.id, accountName)
+  await addAccount(account.id)
+  await setCurrentAccount(account.id)
   return { redirect }
 }

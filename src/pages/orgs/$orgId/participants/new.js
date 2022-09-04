@@ -1,18 +1,16 @@
-import { createParticipant, getOrg } from '@src/api.js'
+import { createParticipant } from '@src/api.js'
 
-export async function get ({ keys }) {
+export async function get () {
   const h1 = 'New hasher'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  const template = { h1, org }
+  const template = { h1 }
   return { template }
 }
 
-export async function post ({ keys, request }) {
-  const { orgId } = keys
-  const data = await request.formData()
-  const fullName = data.get('fullName')
-  const alias = data.get('alias')
-  const { url: redirect } = await createParticipant(orgId, { fullName, alias })
+export async function post ({ data, request }) {
+  const { org } = data
+  const formData = await request.formData()
+  const fullName = formData.get('fullName')
+  const alias = formData.get('alias')
+  const { url: redirect } = await createParticipant(org.id, { fullName, alias })
   return { redirect }
 }

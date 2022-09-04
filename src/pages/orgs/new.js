@@ -1,4 +1,4 @@
-import { addOrg, createOrg, getCurrentAccountId } from '@src/api.js'
+import { addOrg, createOrg } from '@src/api.js'
 
 export async function get () {
   const h1 = 'New organization'
@@ -6,11 +6,11 @@ export async function get () {
   return { template }
 }
 
-export async function post ({ request }) {
-  const data = await request.formData()
-  const name = data.get('name')
+export async function post ({ data, request }) {
+  const { account } = data
+  const formData = await request.formData()
+  const name = formData.get('name')
   const { id, url: redirect } = await createOrg({ name })
-  const accountId = await getCurrentAccountId()
-  await addOrg(accountId, id)
+  await addOrg(account.id, id)
   return { redirect }
 }

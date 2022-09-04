@@ -1,4 +1,5 @@
 import { registerRoute as originalRegisterRoute } from 'workbox-routing'
+import { getAccount, getCurrentAccountId, getDevice, getEvent, getOrg, getParticipant, hasEvent, hasOrg, hasParticipant } from './api.js'
 import { APP_NAME } from './constants.js'
 
 export function registerRoute (path, methods) {
@@ -16,26 +17,75 @@ function registerRouteMethod (path, handler, method) {
   originalRegisterRoute(
     ({ url }) => re.test(url.pathname),
     async (options) => {
-      const keys = options.url.pathname.match(re).groups
+      const params = await getParams(options.url.pathname.match(re).groups)
+      if (!params) {
+        const h1 = 'Page not found'
+        const route = '404'
+        const data = { h1, route }
+        return respondWithTemplate(data)
+      }
       const route = path
         .replace(/^\//, '')
         .replace(/\/index$/, '')
-      const data = await handler({ ...options, keys, route })
-      if (data.html) {
-        return respondWithHTML(data.html)
+      const data = { route, ...params }
+      const { html, json, template, redirect } = await handler({ ...options, data })
+      if (html) {
+        return respondWithHTML(html)
       }
-      if (data.json) {
-        return respondWithJSON(data.json)
+      if (json) {
+        return respondWithJSON(json)
       }
-      if (data.template) {
-        return respondWithTemplate({ route, ...data.template })
+      if (template) {
+        return respondWithTemplate({ ...data, ...template })
       }
-      if (data.redirect) {
-        return Response.redirect(data.redirect)
+      if (redirect) {
+        return Response.redirect(redirect)
       }
     },
     method
   )
+}
+
+async function getParams (source = {}) {
+  const paramMap = {
+    orgId: getOrgFromParams,
+    eventId: getEventFromParams,
+    participantId: getParticipantFromParams
+  }
+  const paramPromises = [...Object.entries(source)]
+    .map(([k, v]) => paramMap[k] ? paramMap[k](source) : [k, v])
+  const mapedParams = await Promise.all(paramPromises)
+  const someNotFound = mapedParams.some((v) => !v)
+  if (someNotFound) {
+    return
+  }
+  const device = await getDevice()
+  const accountId = await getCurrentAccountId()
+  const account = await getAccount(accountId)
+  return {
+    device,
+    account,
+    ...Object.fromEntries(mapedParams)
+  }
+}
+
+async function getOrgFromParams ({ orgId }) {
+  const accountId = await getCurrentAccountId()
+  if (await hasOrg(accountId, orgId)) {
+    return ['org', await getOrg(orgId)]
+  }
+}
+
+async function getEventFromParams ({ orgId, eventId }) {
+  if (await hasEvent(orgId, eventId)) {
+    return ['event', await getEvent(orgId, eventId)]
+  }
+}
+
+async function getParticipantFromParams ({ orgId, participantId }) {
+  if (await hasParticipant(orgId, participantId)) {
+    return ['participant', await getParticipant(orgId, participantId)]
+  }
 }
 
 function createResponse (body, contentType) {
@@ -54,7 +104,7 @@ function createTitle (h1, h2) {
 function regexFromPath (path) {
   const p = path
     // Replace `$key` with a group of the name name.
-    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>\\w+)`)
+    .replace(/\$(\w+)/g, (match, p1) => `(?<${p1}>[\\w-]+)`)
     // Remove the `/index` file name.
     .replace(/\/index$/, '')
   // Make trailing `/` optional.

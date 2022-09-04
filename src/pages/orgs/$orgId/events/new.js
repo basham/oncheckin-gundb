@@ -1,21 +1,19 @@
-import { createEvent, getOrg } from '@src/api.js'
+import { createEvent } from '@src/api.js'
 import { todayDate } from '@src/util.js'
 
-export async function get ({ keys }) {
+export async function get () {
   const h1 = 'New event'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
   const date = todayDate()
-  const template = { h1, org, date }
+  const template = { h1, date }
   return { template }
 }
 
-export async function post ({ keys, request }) {
-  const { orgId } = keys
-  const data = await request.formData()
-  const name = data.get('name')
-  const date = data.get('date')
-  const count = data.get('count')
-  const { url: redirect } = await createEvent(orgId, { name, date, count })
+export async function post ({ data, request }) {
+  const { org } = data
+  const formData = await request.formData()
+  const name = formData.get('name')
+  const date = formData.get('date')
+  const count = formData.get('count')
+  const { url: redirect } = await createEvent(org.id, { name, date, count })
   return { redirect }
 }

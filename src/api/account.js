@@ -33,6 +33,11 @@ export async function getAccount (id) {
   return { id: db.id, type, version, name, orgs, url }
 }
 
+export async function hasOrg (accountId, orgId) {
+  const { orgs } = await getAccountDB(accountId)
+  return orgs.has(orgId)
+}
+
 export async function renameAccount (id, name) {
   const db = await getAccountDB(id)
   db.data.set('name', name)

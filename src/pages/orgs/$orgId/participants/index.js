@@ -1,10 +1,9 @@
-import { getOrg, getParticipants } from '@src/api.js'
+import { getParticipants } from '@src/api.js'
 
-export async function get ({ keys }) {
+export async function get ({ data }) {
+  const { org } = data
   const h1 = 'Hashers'
-  const { orgId } = keys
-  const org = await getOrg(orgId)
-  const participants = await getParticipants(orgId)
-  const template = { h1, org, participants }
+  const participants = await getParticipants(org.id)
+  const template = { h1, participants }
   return { template }
 }
