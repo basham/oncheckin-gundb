@@ -23,12 +23,10 @@ export async function get ({ data }) {
       const lastEventDate = lastEvent ? format(lastEvent.dateObj, 'MM/dd/yy') : ''
       const highlightLastEventDate = lastEvent && isBefore(lastEvent.dateObj, returnersCutoffDate)
       const lastEventCutoff = lastEvent && isBefore(lastEvent.dateObj, lastEventCutoffDate)
-      const displayName = p.alias ? p.displayName : `${p.displayName} (${p.fullName})`
       return {
         ...p,
         checkIn,
         checkedIn,
-        displayName,
         highlightLastEventDate,
         latestCheckIn: checkIn || lastCheckIn,
         lastCheckIn,
