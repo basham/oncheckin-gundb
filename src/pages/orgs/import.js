@@ -1,4 +1,4 @@
-import { importOrg } from '@src/api.js'
+import { addOrg, importOrg } from '@src/api.js'
 
 export function get () {
   const h1 = 'Import organization'
@@ -6,8 +6,10 @@ export function get () {
   return { template }
 }
 
-export async function post ({ request }) {
-  const data = await request.json()
-  const { url: redirect } = await importOrg(data)
+export async function post ({ data, request }) {
+  const { account } = data
+  const json = await request.json()
+  const { id, url: redirect } = await importOrg(json)
+  await addOrg(account.id, id)
   return { redirect }
 }

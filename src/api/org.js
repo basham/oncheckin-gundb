@@ -112,6 +112,7 @@ export async function importOrg (content) {
   const { name } = content.settings
   const db = await getOrgDB()
   const origin = 'importer'
+  console.log('Im', db, content)
   const didImport = new Promise((resolve) => {
     db.doc.on('afterTransaction', function (transaction) {
       if (transaction.origin === origin) {
@@ -134,7 +135,7 @@ export async function importOrg (content) {
   }, origin)
   await didImport
   await db.save()
-  return db
+  return await getOrg(db.id)
 }
 
 export async function renameOrg (id, name) {
