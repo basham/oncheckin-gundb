@@ -1,9 +1,7 @@
 import { getOrCreate } from '@src/util.js'
 import { cache, createId, createYMap, createRemoteStore } from './store.js'
 
-export async function createOrg ({ id = createId(), name }) {
-  const db = await getOrgDB(id)
-  db.settings.set('name', name)
+export async function createOrg (id = createId()) {
   return await getOrg(id)
 }
 
@@ -53,7 +51,7 @@ export async function getOrg (id) {
   const url = `/orgs/${id}/`
   const openUrl = `${url}open/`
   const inviteCode = self.btoa(JSON.stringify({ id, name }))
-  const shareUrl = `${self.location.origin}/orgs/join/${inviteCode}`
+  const shareUrl = `${self.location.origin}/join/${inviteCode}`
   return {
     id,
     name,

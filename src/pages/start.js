@@ -1,4 +1,4 @@
-import { addAccount, renameAccount, renameDevice, setCurrentAccount } from '@src/api.js'
+import { addAccount, createAccount, renameAccount, renameDevice, setCurrentAccount } from '@src/api.js'
 
 const redirect = '/orgs/'
 
@@ -13,11 +13,11 @@ export async function get ({ data }) {
 }
 
 export async function post ({ request, data }) {
-  const { account } = data
   const formData = await request.formData()
   const deviceName = formData.get('deviceName')
   await renameDevice(deviceName)
   const accountName = formData.get('accountName')
+  const account = await createAccount()
   await renameAccount(account.id, accountName)
   await addAccount(account.id)
   await setCurrentAccount(account.id)

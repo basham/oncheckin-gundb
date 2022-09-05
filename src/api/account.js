@@ -6,6 +6,10 @@ export async function addOrg (accountId, orgId) {
   account.orgs.set(orgId, true)
 }
 
+export async function createAccount (id = createId()) {
+  return await getAccount(id)
+}
+
 export async function getAccountDB (id = createId()) {
   return getOrCreate(cache, `account:${id}`, async () => {
     const store = await createRemoteStore(id)
@@ -19,6 +23,10 @@ export async function getAccountDB (id = createId()) {
 }
 
 export async function getAccount (id) {
+  if (!id) {
+    return
+  }
+
   const db = await getAccountDB(id)
 
   if (!db) {
