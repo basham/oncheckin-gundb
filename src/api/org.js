@@ -1,4 +1,5 @@
 import { getOrCreate } from '@src/util.js'
+import { getOrCreateAsync } from '../util.js'
 import { cache, createId, createYMap, createRemoteStore } from './store.js'
 
 export async function createOrg (id = createId()) {
@@ -30,14 +31,14 @@ export async function getOrCreateParticipant (orgId, participantId) {
 }
 
 export async function getOrgDB (id = createId()) {
-  return getOrCreate(cache, `org:${id}`, async () => {
+  //return getOrCreate(cache, `org:${id}`, async () => {
     const store = await createRemoteStore(id)
     const data = store.doc.getMap('data')
     const rows = ['settings', 'checkIns', 'events', 'participants']
       .map((key) => [key, getOrCreate(data, key, createYMap)])
     const rowsEntries = Object.fromEntries(rows)
     return { ...store, ...rowsEntries }
-  })
+  //})
 }
 
 export async function getOrg (id) {

@@ -13,7 +13,7 @@ export async function getCurrentAccountId () {
 
 export async function getDeviceDB () {
   const id = 'device'
-  return getOrCreate(cache, id, async () => {
+  //return getOrCreate(cache, id, async () => {
     const store = await createLocalStore(id)
     const { doc } = store
     const data = doc.getMap('data')
@@ -22,7 +22,7 @@ export async function getDeviceDB () {
       .map((key) => [key, getOrCreate(data, key, createYMap)])
     const rowsEntries = Object.fromEntries(rows)
     return { ...store, ...rowsEntries, data }
-  })
+  //})
 }
 
 export async function getDevice () {

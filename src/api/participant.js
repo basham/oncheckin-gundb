@@ -7,7 +7,7 @@ export async function createParticipant (orgId, values) {
 }
 
 export async function getParticipant (orgId, participantId) {
-  return getOrCreate(cache, `participant:${orgId}/${participantId}`, async () => {
+  //return getOrCreate(cache, `participant:${orgId}/${participantId}`, async () => {
     if (!(await hasParticipant(orgId, participantId))) {
       return undefined
     }
@@ -32,7 +32,7 @@ export async function getParticipant (orgId, participantId) {
       // recordedLastCheckInDateObj,
       url
     }
-  })
+  //})
 }
 
 export async function setParticipant (orgId, participantId, values) {

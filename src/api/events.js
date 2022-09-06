@@ -5,7 +5,7 @@ import { getOrgEvents } from './org.js'
 import { cache } from './store.js'
 
 export async function getEvents (orgId) {
-  return getOrCreate(cache, `events:${orgId}`, async () => {
+  //return getOrCreate(cache, `events:${orgId}`, async () => {
     const events = await getOrgEvents(orgId)
     const all = []
     for (const eventId of events) {
@@ -13,7 +13,7 @@ export async function getEvents (orgId) {
       all.push(event)
     }
     return all.sort(sortDesc('dateObj'))
-  })
+  //})
 }
 
 export async function getPastEvents (orgId) {

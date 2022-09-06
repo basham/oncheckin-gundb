@@ -8,7 +8,7 @@ export async function createEvent (orgId, values) {
 }
 
 export async function getEvent (orgId, eventId) {
-  return getOrCreate(cache, `event:${orgId}/${eventId}`, async () => {
+  //return getOrCreate(cache, `event:${orgId}/${eventId}`, async () => {
     if (!(await hasEvent(orgId, eventId))) {
       return undefined
     }
@@ -38,7 +38,7 @@ export async function getEvent (orgId, eventId) {
       url,
       year
     }
-  })
+  //})
 }
 
 export async function setEvent (orgId, eventId, values) {

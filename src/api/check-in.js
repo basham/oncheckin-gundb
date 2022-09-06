@@ -9,7 +9,7 @@ export async function createCheckIn (orgId, eventId, participantId, values) {
 }
 
 export async function getCheckIn (orgId, eventId, participantId) {
-  return getOrCreate(cache, `checkIn:${orgId}/${eventId}/${participantId}`, async () => {
+  //return getOrCreate(cache, `checkIn:${orgId}/${eventId}/${participantId}`, async () => {
     if (!(await hasCheckIn(orgId, eventId, participantId))) {
       return undefined
     }
@@ -36,7 +36,7 @@ export async function getCheckIn (orgId, eventId, participantId) {
       specialHostCount,
       url
     }
-  })
+  //})
 }
 
 export async function setCheckIn (orgId, eventId, participantId, values) {

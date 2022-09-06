@@ -6,7 +6,7 @@ import { getParticipant } from './participant.js'
 import { cache } from './store.js'
 
 async function getCheckInIds (orgId) {
-  return getOrCreate(cache, `checkIns:${orgId}`, async () => {
+  //return getOrCreate(cache, `checkIns:${orgId}`, async () => {
     const checkIns = await getOrgCheckIns(orgId)
     const checkInsByEventId = new Map()
     const checkInsByParticipantId = new Map()
@@ -18,7 +18,7 @@ async function getCheckInIds (orgId) {
         .add(eventId)
     })
     return { checkInsByEventId, checkInsByParticipantId }
-  })
+  //})
 }
 
 export async function getEventCheckIns (orgId, eventId) {
@@ -38,7 +38,7 @@ export async function getEventCheckIns (orgId, eventId) {
 }
 
 export async function getParticipantCheckIns (orgId, participantId) {
-  return getOrCreate(cache, `checkIns:${orgId}/${participantId}`, async () => {
+  //return getOrCreate(cache, `checkIns:${orgId}/${participantId}`, async () => {
     const eventIds = (await getCheckInIds(orgId))
       .checkInsByParticipantId
       .get(participantId) || []
@@ -52,5 +52,5 @@ export async function getParticipantCheckIns (orgId, participantId) {
       .filter((source) => source.every((i) => i))
       .map(([checkIn, event]) => ({ ...checkIn, event }))
       .sort(sortDesc(({ event }) => event.dateObj))
-  })
+  //})
 }

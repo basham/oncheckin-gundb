@@ -11,7 +11,7 @@ export async function createAccount (id = createId()) {
 }
 
 export async function getAccountDB (id = createId()) {
-  return getOrCreate(cache, `account:${id}`, async () => {
+  //return getOrCreate(cache, `account:${id}`, async () => {
     const store = await createRemoteStore(id)
     const { doc } = store
     const data = doc.getMap('data')
@@ -19,7 +19,7 @@ export async function getAccountDB (id = createId()) {
       .map((key) => [key, getOrCreate(data, key, createYMap)])
     const rowsEntries = Object.fromEntries(rows)
     return { ...store, ...rowsEntries, data }
-  })
+  //})
 }
 
 export async function getAccount (id) {

@@ -25,6 +25,14 @@ export function getOrCreate (cache, key, createCallback) {
   return cache.get(key)
 }
 
+export async function getOrCreateAsync (cache, key, createCallback) {
+  if (!cache.has(key)) {
+    const data = await createCallback()
+    cache.set(key, data)
+  }
+  return cache.get(key)
+}
+
 export function pluralize (count, singular, plural = `${singular}s`) {
   return count === 1 ? singular : plural
 }
