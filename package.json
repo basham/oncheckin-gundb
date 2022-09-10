@@ -32,7 +32,7 @@
     "cuid": "2.1.8",
     "date-fns": "2.29.2",
     "qrious": "4.0.2",
-    "svelte": "3.50.0",
+    "svelte": "3.50.1",
     "y-indexeddb": "9.0.9",
     "y-webrtc": "10.2.3",
     "y-webrtc-packets": "disarticulate/y-webrtc",
