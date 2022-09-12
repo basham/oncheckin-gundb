@@ -1,8 +1,6 @@
 <script>
-  import { getContext } from 'svelte'
+  import { h1, org } from '@src/data.js'
   import Layout from '@src/pages/orgs/$org/layout.svelte'
-
-  const { h1, org } = getContext('data')
 </script>
 
 <Layout>

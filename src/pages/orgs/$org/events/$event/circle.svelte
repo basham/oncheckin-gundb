@@ -1,10 +1,9 @@
 <script>
-  import { getContext } from 'svelte'
+  import { checkIns } from '@src/data.js'
   import { sortAsc } from '@src/util.js'
   import CheckInList from '@src/lib/list-check-in.svelte'
   import Layout from './layout.svelte'
 
-  const { checkIns } = getContext('data')
   const hosts = checkIns
     .filter(({ host }) => host)
   const specialHosts = hosts

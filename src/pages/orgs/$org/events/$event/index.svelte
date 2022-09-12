@@ -1,9 +1,7 @@
 <script>
-  import { getContext } from 'svelte'
+  import { event, hares, runners } from '@src/data.js'
   import CheckInList from '@src/lib/list-check-in.svelte'
   import Layout from './layout.svelte'
-
-  const { event, hares, runners } = getContext('data')
 </script>
 
 <Layout>

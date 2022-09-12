@@ -1,8 +1,6 @@
 <script>
-  import { getContext } from 'svelte'
+  import { org } from '@src/data.js'
   import Layout from '@src/pages/layout.svelte'
-
-  const { org } = getContext('data')
 
   document.addEventListener('doc-synced', (event) => {
     if (event.detail.id === org.id) {

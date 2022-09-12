@@ -1,12 +1,11 @@
 <script>
-  import { getContext, onMount } from 'svelte'
+  import { onMount } from 'svelte'
   import { Doc as YDoc } from 'yjs'
   import { WebrtcProvider } from 'y-webrtc-packets'
+  import { account, device, org } from '@src/data.js'
   import Upgrader from '@src/lib/upgrader.svelte'
   import { createBroadcastProvider } from '@src/broadcast-provider.js'
   import { APP_ID } from '@src/constants.js'
-
-  const { account, device, org } = getContext('data')
 
   onMount(async () => {
     if (!account || !device || !org) {

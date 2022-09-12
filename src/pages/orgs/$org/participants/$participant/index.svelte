@@ -1,9 +1,7 @@
 <script>
-  import { getContext } from 'svelte'
+  import { checkIns } from '@src/data.js'
   import { pluralize } from '@src/util.js'
   import Layout from './layout.svelte'
-
-  const { checkIns } = getContext('data')
 
   /*
   const checkInsByYear = (await checkInStore.getParticipantCheckIns(docId, participantId))

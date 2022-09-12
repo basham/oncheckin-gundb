@@ -1,9 +1,7 @@
 <script>
-  import { getContext } from 'svelte'
+  import { event, returnersCutoff, participants } from '@src/data.js'
   import Icon from '@src/lib/icon.svelte'
   import Layout from '@src/pages/page.svelte'
-
-  const { event, returnersCutoff, participants } = getContext('data')
 </script>
 
 <style>

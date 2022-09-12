@@ -1,9 +1,7 @@
 <script>
-  import { getContext } from 'svelte';
+  import { h1, date } from '@src/data.js'
   import Layout from '@src/pages/orgs/$org/layout.svelte'
   import FieldsetEvent from '@src/lib/fieldset-event.svelte'
-
-  const { h1, date } = getContext('data')
 </script>
 
 <Layout>

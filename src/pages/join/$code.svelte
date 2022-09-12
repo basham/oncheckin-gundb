@@ -1,8 +1,7 @@
 <script>
-  import { getContext } from 'svelte'
+  import { code } from '@src/data.js'
   import Layout from '@src/pages/layout.svelte'
 
-  const { code } = getContext('data')
   const { id, name } = code
 </script>
 

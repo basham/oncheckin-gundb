@@ -1,9 +1,8 @@
 <script>
-  import { getContext } from 'svelte'
+  import { runners } from '@src/data.js'
   import Icon from '@src/lib/icon.svelte'
   import Layout from './layout.svelte'
 
-  const { runners } = getContext('data')
   const runnersMap = new Map(runners.map((checkIn) => [checkIn.participant.id, checkIn]))
 
   let arrivedIds = new Set()

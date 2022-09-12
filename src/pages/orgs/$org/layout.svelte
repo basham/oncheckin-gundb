@@ -1,12 +1,10 @@
 <script>
-  import { getContext } from 'svelte'
+  import { route, org } from '@src/data.js'
   import { APP_NAME } from '@src/constants.js'
   import NavLink from '@src/lib/nav-link.svelte'
   import Layout from '@src/pages/page.svelte'
 
-  const { route, org } = getContext('data')
   const location = route.split('/')[2]
-
   let unsyncedChanges
 </script>
 

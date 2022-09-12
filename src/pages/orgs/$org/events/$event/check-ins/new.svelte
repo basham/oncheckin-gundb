@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from 'svelte'
+  import { h2, event, participants } from '@src/data.js'
   import { focus } from '@src/util.js'
   import Fieldset from '@src/lib/fieldset.svelte'
   import FieldsetCheckIn from '@src/lib/fieldset-check-in.svelte'
@@ -8,8 +8,6 @@
   import Lookup from '@src/lib/lookup.svelte'
   import RadioGroup from '@src/lib/radio-group.svelte'
   import Layout from '../layout.svelte'
-
-  const { h2, event, participants } = getContext('data')
 
   let checkInType = 'existing-participant'
   let selectedParticipant = null
