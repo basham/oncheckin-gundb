@@ -6,6 +6,11 @@ export async function createOrg (id = createId()) {
   return await getOrg(id)
 }
 
+export async function deleteOrg (id) {
+  const { clearData } = await getOrgDB(id)
+  await clearData()
+}
+
 export async function deleteCheckIn (orgId, eventId, participantId) {
   const { checkIns } = await getOrgDB(orgId)
   checkIns.delete(`${eventId}-${participantId}`)

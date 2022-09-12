@@ -10,6 +10,11 @@ export async function createAccount (id = createId()) {
   return await getAccount(id)
 }
 
+export async function removeOrg (accountId, orgId) {
+  const account = await getAccountDB(accountId)
+  account.orgs.delete(orgId)
+}
+
 export async function getAccountDB (id = createId()) {
   //return getOrCreate(cache, `account:${id}`, async () => {
     const store = await createRemoteStore(id)

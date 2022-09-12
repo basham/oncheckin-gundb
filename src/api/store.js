@@ -23,31 +23,33 @@ export function createMemoryStore () {
 }
 
 export async function createLocalStore (id) {
-  return await getOrCreateAsync(cache, `local-store:${id}`, async () => {
+  const cacheKey = `local-store:${id}`
+  return await getOrCreateAsync(cache, cacheKey, async () => {
     const store = createMemoryStore()
     const storeId = `${APP_ID}-${id}`
     const { doc } = store
     const localProvider = new IndexeddbPersistence(storeId, doc)
+    const clearData = async () => {
+      await localProvider.clearData()
+      cache.delete(cacheKey)
+    }
     const save = () => storeState(localProvider)
     await localProvider.whenSynced
-    return { ...store, id, storeId, save }
+    return { ...store, id, storeId, clearData, save }
   })
 }
 
 export async function createRemoteStore (id) {
-  return await getOrCreateAsync(cache, `remote-store:${id}`, async () => {
+  const cacheKey = `remote-store:${id}`
+  return await getOrCreateAsync(cache, cacheKey, async () => {
     const store = await createLocalStore(id)
     const { storeId, doc } = store
-    createBroadcastProvider(storeId, doc)
-    return { ...store }
+    const { close } = createBroadcastProvider(storeId, doc)
+    const clearData = async () => {
+      await store.clearData()
+      close()
+      cache.delete(cacheKey)
+    }
+    return { ...store, clearData }
   })
-
-  /*
-  const remoteProvider = new WebrtcProvider(storeId, doc, options)
-  const { awareness } = remoteProvider
-  awareness.on('change', (changes) => {
-    console.log(Array.from(awareness.getStates().values()))
-  })
-  console.log('SYNCING to room', storeId)
-  */
 }

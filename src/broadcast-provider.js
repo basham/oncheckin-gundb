@@ -27,6 +27,10 @@ export function createBroadcastProvider (name, ydoc) {
     }
   }
 
+  function close () {
+    broadcast.close()
+  }
+
   // Pushing is telling the remote to pull.
   function push () {
     return new Promise((resolve) => {
@@ -77,5 +81,5 @@ export function createBroadcastProvider (name, ydoc) {
     broadcast.postMessage([id, data])
   }
 
-  return { pull, push, sync }
+  return { close, pull, push, sync }
 }
