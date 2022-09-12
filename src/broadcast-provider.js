@@ -27,12 +27,6 @@ export function createBroadcastProvider (name, ydoc) {
     }
   }
 
-  ydoc.on('update', (update, origin) => {
-    if (origin !== providerId) {
-      push()
-    }
-  })
-
   // Pushing is telling the remote to pull.
   function push () {
     return new Promise((resolve) => {

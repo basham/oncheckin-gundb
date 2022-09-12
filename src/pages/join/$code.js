@@ -11,7 +11,8 @@ export async function post ({ data, request }) {
   const { account } = data
   const formData = await request.formData()
   const id = formData.get('id')
-  const { url: redirect } = await createOrg(id)
+  const { url } = await createOrg(id)
   await addOrg(account.id, id)
+  const redirect = `${url}sync/`
   return { redirect }
 }

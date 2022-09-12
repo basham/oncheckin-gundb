@@ -23,19 +23,26 @@
     //account.orgs.forEach(async (orgId) => {
       const doc = new YDoc()
       const storeId = `${APP_ID}-${orgId}`
-      const { pull } = createBroadcastProvider(storeId, doc)
+      const { pull, push } = createBroadcastProvider(storeId, doc)
       await pull()
+      doc.on('update', async (update, origin) => {
+        // If origin.peerId exists, then assume it is a Room instance from y-webrtc.
+        // When the push is complete, the doc is ready.
+        if (!Object.hasOwn(origin, 'peerId')) {
+          return
+        }
+        await push()
+        const id = orgId
+        const detail = { id }
+        const event = new CustomEvent('doc-synced', { detail })
+        document.dispatchEvent(event)
+      })
       const remoteProvider = new WebrtcProvider(storeId, doc)
       const { awareness } = remoteProvider
       awareness.on('change', (changes) => {
         console.log('Awareness', storeId, Array.from(awareness.getStates().values()))
       })
       awareness.setLocalStateField('user', user)
-      //console.log('Setting user', storeId, user)
-      //doc.on('update', async (update, origin) => {
-        // await storeState(localProvider)
-      //  console.log('Updated doc', update, origin)
-      //})
     //})
   })
 </script>
