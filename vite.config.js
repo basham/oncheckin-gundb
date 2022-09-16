@@ -4,32 +4,32 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: '[name].js'
-      }
-    },
-    target: 'esnext'
-  },
-  plugins: [
-    svelte(),
-    VitePWA({
-      devOptions: {
-        enabled: true,
-        type: 'module'
-      },
-      filename: 'sw.js',
-      injectManifest: {
-        globPatterns: ['**/*.{css,html,js,png,svg}'],
-      },
-      srcDir: 'src',
-      strategies: 'injectManifest'
-    })
-  ],
-  resolve: {
-    alias: {
-      '@src': path.resolve(__dirname, 'src')
-    }
-  }
+	build: {
+		rollupOptions: {
+			output: {
+				entryFileNames: '[name].js',
+			},
+		},
+		target: 'esnext',
+	},
+	plugins: [
+		svelte(),
+		VitePWA({
+			devOptions: {
+				enabled: true,
+				type: 'module',
+			},
+			filename: 'sw.js',
+			injectManifest: {
+				globPatterns: ['**/*.{css,html,js,png,svg}'],
+			},
+			srcDir: 'src',
+			strategies: 'injectManifest',
+		}),
+	],
+	resolve: {
+		alias: {
+			'@src': path.resolve(__dirname, 'src'),
+		},
+	},
 });

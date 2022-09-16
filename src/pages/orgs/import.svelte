@@ -1,52 +1,41 @@
 <script>
-  import Layout from '@src/pages/layout.svelte'
+	import Layout from '@src/pages/layout.svelte';
 
-  let files
-  let isSubmitting = false
+	let files;
+	let isSubmitting = false;
 
-  function submit (event) {
-    event.preventDefault()
+	function submit(event) {
+		event.preventDefault();
 
-    if (isSubmitting || !files || !files.length) {
-      return
-    }
+		if (isSubmitting || !files || !files.length) {
+			return;
+		}
 
-    isSubmitting = true
-    const reader = new FileReader()
-    reader.onload = async (e) => {
-      const res = await fetch(window.location.pathname, {
-        body: e.target.result,
-        method: 'post'
-      })
-      window.location = res.url
-    }
-    reader.readAsText(files[0])
-  }
+		isSubmitting = true;
+		const reader = new FileReader();
+		reader.onload = async (e) => {
+			const res = await fetch(window.location.pathname, {
+				body: e.target.result,
+				method: 'post',
+			});
+			window.location = res.url;
+		};
+		reader.readAsText(files[0]);
+	}
 </script>
 
 <Layout>
-  <form
-    class="u-m-top-6"
-    on:submit={submit}>
-    <div>
-      <label for="file">File</label>
-      <br>
-      <input
-        accept=".json"
-        bind:files
-        class="input"
-        id="file"
-        type="file">
-    </div>
-    <div class="u-m-top-6">
-      <button
-        class="button button--primary"
-        type="submit">
-        Import
-      </button>
-    </div>
-    <div class="u-m-top-6">
-      <a href="/orgs/">Back to organizations</a>
-    </div>
-  </form>
+	<form class="u-m-top-6" on:submit={submit}>
+		<div>
+			<label for="file">File</label>
+			<br />
+			<input accept=".json" bind:files class="input" id="file" type="file" />
+		</div>
+		<div class="u-m-top-6">
+			<button class="button button--primary" type="submit">Import</button>
+		</div>
+		<div class="u-m-top-6">
+			<a href="/orgs/">Back to organizations</a>
+		</div>
+	</form>
 </Layout>

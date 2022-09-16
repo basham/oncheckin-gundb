@@ -1,6 +1,6 @@
-import { createId } from '@src/api.js'
+import { createId } from '@src/api.js';
 
-export async function get () {
-  const json = { id: createId() }
-  return { json }
+export async function get() {
+	const json = { id: createId() };
+	return { json };
 }

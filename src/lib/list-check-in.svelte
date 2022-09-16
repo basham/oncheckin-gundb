@@ -1,28 +1,35 @@
 <script>
-  import { pluralize } from '@src/util.js'
+	import { pluralize } from '@src/util.js';
 
-  export let checkIns = []
-  export let showCheckInCount = false
-  export let showHostCount = false
+	export let checkIns = [];
+	export let showCheckInCount = false;
+	export let showHostCount = false;
 </script>
 
 {#if checkIns.length}
-  <ul class="list-plain u-gap-2px">
-    {#each checkIns as checkIn}
-      <li class="row">
-        <a class="row__left" href={checkIn.url}>
-          <span class="row__primary">{checkIn.participant.displayName}</span>
-          <span class="row__secondary">{checkIn.participant.fullName}</span>
-          <span class="row__tertiary u-right u-text-num">
-            {#if showHostCount && checkIn.host}
-              <span class="u-block">{`${checkIn.hostCount || '?'} ${pluralize(checkIn.hostCount, 'hare')}`}</span>
-            {/if}
-            {#if showCheckInCount}
-              <span class="u-block">{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}</span>
-            {/if}
-          </span>
-        </a>
-      </li>
-    {/each}
-  </ul>
+	<ul class="list-plain u-gap-2px">
+		{#each checkIns as checkIn}
+			<li class="row">
+				<a class="row__left" href={checkIn.url}>
+					<span class="row__primary">{checkIn.participant.displayName}</span>
+					<span class="row__secondary">{checkIn.participant.fullName}</span>
+					<span class="row__tertiary u-right u-text-num">
+						{#if showHostCount && checkIn.host}
+							<span class="u-block">
+								{`${checkIn.hostCount || '?'} ${pluralize(
+									checkIn.hostCount,
+									'hare'
+								)}`}
+							</span>
+						{/if}
+						{#if showCheckInCount}
+							<span class="u-block">
+								{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}
+							</span>
+						{/if}
+					</span>
+				</a>
+			</li>
+		{/each}
+	</ul>
 {/if}
