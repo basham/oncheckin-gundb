@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
+		"format": "prettier --write .",
 		"start": "vite --open",
 		"test": "standard"
 	},
