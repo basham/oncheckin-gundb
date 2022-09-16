@@ -6,11 +6,12 @@ import {
 	setCurrentAccount,
 } from '@src/api.js';
 
-const redirect = '/orgs/';
+const orgsPath = '/orgs/';
 
 export async function get({ data }) {
 	const { device } = data;
 	if (device.state === 'active') {
+		const redirect = orgsPath;
 		return { redirect };
 	}
 	const h1 = 'Get started';
@@ -27,5 +28,6 @@ export async function post({ request, data }) {
 	await renameAccount(account.id, accountName);
 	await addAccount(account.id);
 	await setCurrentAccount(account.id);
+	const redirect = data.join ? `/join/${data.join}/` : orgsPath;
 	return { redirect };
 }
