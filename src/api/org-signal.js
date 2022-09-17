@@ -18,7 +18,8 @@ async function calc(orgId) {
 	});
 	const $data = computed(() => $Data.value[0]);
 	const $org = computed(() => getOrg(orgId, $data));
-	const $events = computed(() => getEvents($data, $org));
+	const $orgUrl = computed(() => $org.value.url)
+	const $events = computed(() => getEvents($data, $orgUrl));
 	const $pastEvents = computed(() =>
 		$events.value.filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
 	);
@@ -70,16 +71,16 @@ function getOrg(id, $data) {
 	};
 }
 
-function getEvents($data, $org) {
+function getEvents($data, $orgUrl) {
 	const all = [];
 	for (const [id, data] of $data.value.get('events')) {
-		const event = getEvent(id, data, $org);
+		const event = getEvent(id, data, $orgUrl);
 		all.push(event);
 	}
 	return all.sort(sortDesc('dateObj'));
 }
 
-function getEvent(id, data, $org) {
+function getEvent(id, data, $orgUrl) {
 	const count = data.get('count') || '';
 	const date = data.get('date');
 	if (!date) {
@@ -91,7 +92,7 @@ function getEvent(id, data, $org) {
 	const displayDateLong = format(dateObj, 'E, PP');
 	const year = format(dateObj, 'y');
 	const name = data.get('name').trim() || '(Event)';
-	const url = `${$org.value.url}events/${id}/`;
+	const url = `${$orgUrl.value}events/${id}/`;
 	return {
 		id,
 		count,
