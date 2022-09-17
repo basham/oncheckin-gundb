@@ -18,7 +18,10 @@ async function calc(orgId) {
 	const $data = computed(() => $Data.value[0]);
 	const $org = computed(() => getOrg(orgId, $data));
 	const $orgUrl = computed(() => $org.value.url);
-	const $events = computed(() => getEvents($data, $orgUrl));
+	const $eventsById = computed(() => getEventsById($data, $orgUrl));
+	const $events = computed(() =>
+		[...$eventsById.value.values()].sort(sortDesc('dateObj'))
+	);
 	const $pastEvents = computed(() =>
 		$events.value.filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
 	);
@@ -28,11 +31,11 @@ async function calc(orgId) {
 			.reverse()
 	);
 	const $eventsByYear = computed(() =>
-		$events.value.reduce((m, event) => {
+		$events.value.reduce((map, event) => {
 			const { year } = event;
-			const thisYear = getOrCreate(m, year, () => []);
-			thisYear.unshift(event);
-			return m;
+			const yearEvents = getOrCreate(map, year, () => []);
+			yearEvents.unshift(event);
+			return map;
 		}, new Map())
 	);
 	const $eventYears = computed(() =>
@@ -40,6 +43,7 @@ async function calc(orgId) {
 	);
 	return signalsToGetters({
 		$org,
+		$eventsById,
 		$events,
 		$pastEvents,
 		$upcomingEvents,
@@ -85,15 +89,15 @@ function getOrg(id, $data) {
 	};
 }
 
-function getEvents($data, $orgUrl) {
-	const all = [];
+function getEventsById($data, $orgUrl) {
+	const map = new Map();
 	for (const [id, data] of $data.value.get('events')) {
 		const event = getEvent(id, data, $orgUrl);
 		if (event) {
-			all.push(event);
+			map.set(id, event);
 		}
 	}
-	return all.sort(sortDesc('dateObj'));
+	return map;
 }
 
 function getEvent(id, data, $orgUrl) {
