@@ -5,9 +5,8 @@ import { getOrCreate, sortDesc } from '@src/util.js';
 
 const cache = new Map();
 
-export async function computeOrg(orgId) {
-	const out = await getOrCreate(cache, orgId, () => calc(orgId));
-	return out();
+export function computeOrg(orgId) {
+	return getOrCreate(cache, orgId, () => calc(orgId));
 }
 
 async function calc(orgId) {
@@ -18,7 +17,7 @@ async function calc(orgId) {
 	});
 	const $data = computed(() => $Data.value[0]);
 	const $org = computed(() => getOrg(orgId, $data));
-	const $orgUrl = computed(() => $org.value.url)
+	const $orgUrl = computed(() => $org.value.url);
 	const $events = computed(() => getEvents($data, $orgUrl));
 	const $pastEvents = computed(() =>
 		$events.value.filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
@@ -39,21 +38,36 @@ async function calc(orgId) {
 	const $eventYears = computed(() =>
 		[...$eventsByYear.value.keys()].sort().reverse()
 	);
-	const signals = {
+	return signalsToGetters({
 		$org,
 		$events,
 		$pastEvents,
 		$upcomingEvents,
 		$eventsByYear,
 		$eventYears,
-	};
-	return () => {
-		const entries = Object.entries(signals).map(([k, v]) => [
-			k.slice(1),
-			v.value,
-		]);
-		return Object.fromEntries(entries);
-	};
+	});
+}
+
+function signalsToGetters(signals) {
+	return objectToGetters(
+		signals,
+		(k) => k.slice(1),
+		(s) => s.value
+	);
+}
+
+function objectToGetters(source, getKey, getValue) {
+	const entries = Object.entries(source).map(([k, v]) => [
+		getKey(k),
+		{
+			get() {
+				return getValue(v);
+			},
+		},
+	]);
+	const values = {};
+	Object.defineProperties(values, Object.fromEntries(entries));
+	return values;
 }
 
 function getOrg(id, $data) {
