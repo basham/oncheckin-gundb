@@ -75,7 +75,9 @@ function getEvents($data, $orgUrl) {
 	const all = [];
 	for (const [id, data] of $data.value.get('events')) {
 		const event = getEvent(id, data, $orgUrl);
-		all.push(event);
+		if (event) {
+			all.push(event);
+		}
 	}
 	return all.sort(sortDesc('dateObj'));
 }
