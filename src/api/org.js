@@ -44,7 +44,7 @@ export async function getOrgDB(id = createId()) {
 		getOrCreate(data, key, createYMap),
 	]);
 	const rowsEntries = Object.fromEntries(rows);
-	return { ...store, ...rowsEntries };
+	return { ...store, data, ...rowsEntries };
 	//})
 }
 

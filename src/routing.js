@@ -34,7 +34,7 @@ function registerRouteMethod(path, handler, method) {
 				const data = { h1, route };
 				return respondWithTemplate(data);
 			}
-			const searchParams = Object.fromEntries(options.url.searchParams)
+			const searchParams = Object.fromEntries(options.url.searchParams);
 			const route = path.replace(/^\//, '').replace(/\/index$/, '');
 			const data = { ...searchParams, route, ...params };
 			const { html, json, template, redirect } = await handler({

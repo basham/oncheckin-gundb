@@ -12,7 +12,7 @@ export async function get({ data }) {
 			}
 			yearMap.set(year, [...yearMap.get(year), checkIn]);
 			return yearMap;
-		}, new Map())
+		}, new Map());
 	const checkIns = [...checkInsByYear];
 	const template = { h1, checkIns };
 	return { template };

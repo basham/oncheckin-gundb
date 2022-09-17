@@ -3,7 +3,6 @@ export * from './check-in.js';
 export * from './check-ins.js';
 export * from './device.js';
 export * from './event.js';
-export * from './events.js';
 export * from './org.js';
 export * from './orgs.js';
 export * from './participant.js';
