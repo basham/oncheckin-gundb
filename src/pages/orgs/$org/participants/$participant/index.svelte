@@ -2,19 +2,6 @@
 	import { checkIns } from '@src/data.js';
 	import { pluralize } from '@src/util.js';
 	import Layout from './layout.svelte';
-
-	/*
-  const checkInsByYear = (await checkInStore.getParticipantCheckIns(docId, participantId))
-    .reduce((yearMap, checkIn) => {
-      const { year } = checkIn.event
-      if (!yearMap.has(year)) {
-        yearMap.set(year, [])
-      }
-      yearMap.set(year, [...yearMap.get(year), checkIn])
-      return yearMap
-    }, new Map())
-  checkIns = [...checkInsByYear]
-  */
 </script>
 
 <Layout>
