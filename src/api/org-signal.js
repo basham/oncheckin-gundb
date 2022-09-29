@@ -97,7 +97,9 @@ function getEvents(data, orgUrl, eventCount) {
 	const events = [];
 	for (const [id, e] of data.get('events')) {
 		const event = getEvent(id, e, orgUrl);
-		events.push(event);
+		if (event) {
+			events.push(event);
+		}
 	}
 	return events
 		.sort(sortDesc('dateObj'))
