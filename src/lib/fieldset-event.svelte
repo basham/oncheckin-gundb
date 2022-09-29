@@ -1,7 +1,6 @@
 <script>
 	export let name = '';
 	export let date = '';
-	export let count = '';
 </script>
 
 <div class="u-m-top-4">
@@ -18,17 +17,5 @@
 		name="date"
 		type="date"
 		value={date}
-	/>
-</div>
-<div class="u-m-top-4">
-	<label for="countInput">Count</label>
-	<br />
-	<input
-		class="input u-mw-5"
-		id="countInput"
-		min="1"
-		name="count"
-		type="number"
-		value={count}
 	/>
 </div>

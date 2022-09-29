@@ -3,14 +3,14 @@
 	import FieldsetEvent from '@src/lib/fieldset-event.svelte';
 	import Layout from './layout.svelte';
 
-	const { name, date, count } = event;
+	const { name, date } = event;
 </script>
 
 <Layout>
 	<h2>{h2}</h2>
 	<form autocomplete="off" method="post">
 		<div class="u-m-top-4">
-			<FieldsetEvent {name} {date} {count} />
+			<FieldsetEvent {name} {date} />
 		</div>
 		<div class="u-m-top-4">
 			<button class="button button--primary" type="submit">Save</button>
