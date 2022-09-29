@@ -3,10 +3,7 @@ import {
 	getAccount,
 	getCurrentAccountId,
 	getDevice,
-	getParticipant,
-	hasEvent,
-	hasOrg,
-	hasParticipant,
+	hasOrg
 } from './api.js';
 import { computeOrg } from '@src/api/org-signal.js';
 import { APP_NAME } from './constants.js';
@@ -90,16 +87,18 @@ async function getOrgFromParams(key, { org: oid }) {
 }
 
 async function getEventFromParams(key, { org: oid, event: eid }) {
-	if (await hasEvent(oid, eid)) {
-		const { eventsById } = await computeOrg(oid);
+	const { eventsById } = await computeOrg(oid);
+	if (eventsById.has(eid)) {
 		const event = eventsById.get(eid);
 		return [key, event];
 	}
 }
 
 async function getParticipantFromParams(key, { org: oid, participant: pid }) {
-	if (await hasParticipant(oid, pid)) {
-		return [key, await getParticipant(oid, pid)];
+	const { participantsById } = await computeOrg(oid);
+	if (participantsById.has(pid)) {
+		const participant = participantsById.get(pid);
+		return [key, participant];
 	}
 }
 

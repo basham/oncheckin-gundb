@@ -1,9 +1,9 @@
 import { format, isBefore, sub } from 'date-fns';
 import {
 	getEventCheckIns,
-	getParticipantCheckIns,
-	getParticipants,
+	getParticipantCheckIns
 } from '@src/api.js';
+import { computeOrg } from '@src/api/org-signal.js';
 
 export async function get({ data }) {
 	const { org, event } = data;
@@ -12,7 +12,7 @@ export async function get({ data }) {
 	const lastEventCutoffDate = sub(event.dateObj, { months: 12 });
 	const returnersCutoffDate = sub(event.dateObj, { months: 2 });
 	const returnersCutoff = format(returnersCutoffDate, 'MM/dd');
-	const allParticipants = await getParticipants(org.id);
+	const { participants: allParticipants } = await computeOrg(org.id);
 	const checkIns = (await getEventCheckIns(org.id, event.id)).map((checkIn) => [
 		checkIn.participant.id,
 		checkIn,

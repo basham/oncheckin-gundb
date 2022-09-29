@@ -1,7 +1,7 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns';
 import { computed, signal } from 'usignal';
 import { getOrgDB } from './org';
-import { getOrCreate, sortDesc } from '@src/util.js';
+import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
 
 const cache = new Map();
 
@@ -20,7 +20,7 @@ async function calc(orgId) {
 	const eventCount$ = computed(() => org$.value.eventCount);
 	const events$ = computed(() => getEvents(data$.value, orgUrl$.value, eventCount$.value));
 	const eventsById$ = computed(() => {
-		const entries = events$.value.map((event) => [event.id, event]);
+		const entries = events$.value.map((e) => [e.id, e]);
 		return new Map(entries);
 	});
 	const pastEvents$ = computed(() =>
@@ -42,6 +42,11 @@ async function calc(orgId) {
 	const eventYears$ = computed(() =>
 		[...eventsByYear$.value.keys()].sort().reverse()
 	);
+	const participants$ = computed(() => getParticipants(data$.value, orgUrl$.value));
+	const participantsById$ = computed(() => {
+		const entries = participants$.value.map((p) => [p.id, p]);
+		return new Map(entries);
+	});
 	return signalsToGetters({
 		org$,
 		eventsById$,
@@ -50,6 +55,8 @@ async function calc(orgId) {
 		upcomingEvents$,
 		eventsByYear$,
 		eventYears$,
+		participants$,
+		participantsById$
 	});
 }
 
@@ -130,6 +137,37 @@ function getEvent(id, data, orgUrl) {
 		displayDateLong,
 		name,
 		url,
-		year,
+		year
+	};
+}
+
+function getParticipants(data, orgUrl) {
+	const participants = [];
+	for (const [id, p] of data.get('participants')) {
+		const participant = getParticipant(id, p, orgUrl);
+		participants.push(participant);
+	}
+	return participants.sort(sortAsc('displayName'));
+}
+
+function getParticipant(id, data, orgUrl) {
+	const alias = data.get('alias') || '';
+	const displayName = data.get('alias') || `Just ${data.get('fullName')}`;
+	const fullName = data.get('fullName') || '(Participant)';
+	const location = data.get('location') || '';
+	const notes = data.get('notes') || '';
+	const runCount = data.get('runCount') || 0;
+	const hostCount = data.get('hostCount') || 0;
+	const url = `${orgUrl}participants/${id}/`;
+	return {
+		id,
+		alias,
+		displayName,
+		fullName,
+		location,
+		notes,
+		runCount,
+		hostCount,
+		url
 	};
 }
