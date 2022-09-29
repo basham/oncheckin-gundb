@@ -11,51 +11,52 @@ export function computeOrg(orgId) {
 
 async function calc(orgId) {
 	const db = await getOrgDB(orgId);
-	const $Data = signal([db.data]);
-	db.data.observe(() => {
-		$Data.value = [db.data];
+	const data$ = signal(db.data, { equals: false });
+	db.data.observeDeep(() => {
+		data$.value = db.data;
 	});
-	const $data = computed(() => $Data.value[0]);
-	const $org = computed(() => getOrg(orgId, $data));
-	const $orgUrl = computed(() => $org.value.url);
-	const $eventsById = computed(() => getEventsById($data, $orgUrl));
-	const $events = computed(() =>
-		[...$eventsById.value.values()].sort(sortDesc('dateObj'))
+	const org$ = computed(() => getOrg(orgId, data$.value));
+	const orgUrl$ = computed(() => org$.value.url);
+	const eventCount$ = computed(() => org$.value.eventCount);
+	const events$ = computed(() => getEvents(data$.value, orgUrl$.value, eventCount$.value));
+	const eventsById$ = computed(() => {
+		const entries = events$.value.map((event) => [event.id, event]);
+		return new Map(entries);
+	});
+	const pastEvents$ = computed(() =>
+		events$.value.filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
 	);
-	const $pastEvents = computed(() =>
-		$events.value.filter(({ dateObj }) => !isToday(dateObj) && isPast(dateObj))
-	);
-	const $upcomingEvents = computed(() =>
-		$events.value
+	const upcomingEvents$ = computed(() =>
+		events$.value
 			.filter(({ dateObj }) => isToday(dateObj) || isFuture(dateObj))
 			.reverse()
 	);
-	const $eventsByYear = computed(() =>
-		$events.value.reduce((map, event) => {
+	const eventsByYear$ = computed(() =>
+		events$.value.reduce((map, event) => {
 			const { year } = event;
 			const yearEvents = getOrCreate(map, year, () => []);
 			yearEvents.unshift(event);
 			return map;
 		}, new Map())
 	);
-	const $eventYears = computed(() =>
-		[...$eventsByYear.value.keys()].sort().reverse()
+	const eventYears$ = computed(() =>
+		[...eventsByYear$.value.keys()].sort().reverse()
 	);
 	return signalsToGetters({
-		$org,
-		$eventsById,
-		$events,
-		$pastEvents,
-		$upcomingEvents,
-		$eventsByYear,
-		$eventYears,
+		org$,
+		eventsById$,
+		events$,
+		pastEvents$,
+		upcomingEvents$,
+		eventsByYear$,
+		eventYears$,
 	});
 }
 
 function signalsToGetters(signals) {
 	return objectToGetters(
 		signals,
-		(k) => k.slice(1),
+		(k) => k.slice(0, -1),
 		(s) => s.value
 	);
 }
@@ -74,8 +75,10 @@ function objectToGetters(source, getKey, getValue) {
 	return values;
 }
 
-function getOrg(id, $data) {
-	const name = $data.value.get('settings').get('name') || '(Organization)';
+function getOrg(id, data) {
+	const settings = data.get('settings');
+	const name = settings.get('name') || '(Organization)';
+	const eventCount = settings.get('eventCount') || 0;
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -83,25 +86,28 @@ function getOrg(id, $data) {
 	return {
 		id,
 		name,
+		eventCount,
 		openUrl,
 		shareUrl,
 		url,
 	};
 }
 
-function getEventsById($data, $orgUrl) {
-	const map = new Map();
-	for (const [id, data] of $data.value.get('events')) {
-		const event = getEvent(id, data, $orgUrl);
-		if (event) {
-			map.set(id, event);
-		}
+function getEvents(data, orgUrl, eventCount) {
+	const events = [];
+	for (const [id, e] of data.get('events')) {
+		const event = getEvent(id, e, orgUrl);
+		events.push(event);
 	}
-	return map;
+	return events
+		.sort(sortDesc('dateObj'))
+		.map((event, i) => {
+			const count = eventCount - i;
+			return { ...event, count };
+		});
 }
 
-function getEvent(id, data, $orgUrl) {
-	const count = data.get('count') || '';
+function getEvent(id, data, orgUrl) {
 	const date = data.get('date');
 	if (!date) {
 		return undefined;
@@ -112,10 +118,9 @@ function getEvent(id, data, $orgUrl) {
 	const displayDateLong = format(dateObj, 'E, PP');
 	const year = format(dateObj, 'y');
 	const name = data.get('name').trim() || '(Event)';
-	const url = `${$orgUrl.value}events/${id}/`;
+	const url = `${orgUrl}events/${id}/`;
 	return {
 		id,
-		count,
 		date,
 		dateObj,
 		displayDate,

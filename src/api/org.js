@@ -115,10 +115,9 @@ export async function hasParticipant(orgId, participantId) {
 }
 
 export async function importOrg(content) {
-	const { name } = content.settings;
+	const { eventCount = 0, name } = content.settings;
 	const db = await getOrgDB();
 	const origin = 'importer';
-	console.log('Im', db, content);
 	const didImport = new Promise((resolve) => {
 		db.doc.on('afterTransaction', function (transaction) {
 			if (transaction.origin === origin) {
@@ -128,6 +127,7 @@ export async function importOrg(content) {
 		});
 	});
 	db.doc.transact(() => {
+		db.settings.set('eventCount', eventCount);
 		db.settings.set('name', name);
 		const items = ['events', 'participants', 'checkIns']
 			.map((itemType) =>

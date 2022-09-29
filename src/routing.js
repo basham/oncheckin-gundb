@@ -3,13 +3,12 @@ import {
 	getAccount,
 	getCurrentAccountId,
 	getDevice,
-	getEvent,
-	getOrg,
 	getParticipant,
 	hasEvent,
 	hasOrg,
 	hasParticipant,
 } from './api.js';
+import { computeOrg } from '@src/api/org-signal.js';
 import { APP_NAME } from './constants.js';
 
 export function registerRoute(path, methods) {
@@ -85,13 +84,16 @@ async function getParams(source = {}) {
 async function getOrgFromParams(key, { org: oid }) {
 	const accountId = await getCurrentAccountId();
 	if (await hasOrg(accountId, oid)) {
-		return [key, await getOrg(oid)];
+		const { org } = await computeOrg(oid);
+		return [key, org];
 	}
 }
 
 async function getEventFromParams(key, { org: oid, event: eid }) {
 	if (await hasEvent(oid, eid)) {
-		return [key, await getEvent(oid, eid)];
+		const { eventsById } = await computeOrg(oid);
+		const event = eventsById.get(eid);
+		return [key, event];
 	}
 }
 
