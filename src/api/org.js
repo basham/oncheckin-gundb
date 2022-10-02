@@ -153,5 +153,5 @@ export async function renameOrg(id, name) {
 
 export async function editEventCount(id, count) {
 	const db = await getOrgDB(id);
-	db.settings.set('eventCount', count);
+	db.settings.set('eventCount', parseInt(count));
 }
