@@ -150,3 +150,8 @@ export async function renameOrg(id, name) {
 	const db = await getOrgDB(id);
 	db.settings.set('name', name);
 }
+
+export async function editEventCount(id, count) {
+	const db = await getOrgDB(id);
+	db.settings.set('eventCount', count);
+}

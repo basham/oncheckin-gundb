@@ -24,4 +24,13 @@
 			<li><a href={`${org.url}delete/`}>Delete</a></li>
 		</ul>
 	</div>
+	<div class="card u-m-top-2">
+		<p>
+			<span class="u-color-hint">Event count:</span>
+			{org.eventCount}
+		</p>
+		<ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
+			<li><a href={`${org.url}event-count/`}>Edit event count</a></li>
+		</ul>
+	</div>
 </Layout>
