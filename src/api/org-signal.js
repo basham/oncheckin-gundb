@@ -47,6 +47,7 @@ async function calc(orgId) {
 		const entries = participants$.value.map((p) => [p.id, p]);
 		return new Map(entries);
 	});
+	const checkIns$ = computed(() => getCheckIns(data$.value, orgUrl$.value));
 	return signalsToGetters({
 		org$,
 		eventsById$,
@@ -170,4 +171,79 @@ function getParticipant(id, data, orgUrl) {
 		hostCount,
 		url
 	};
+}
+
+function getCheckIns(data) {
+	const byId = new Map();
+	const byEventId = new Map();
+	const byParticipantId = new Map();
+
+	for (const [id, c] of data.get('checkIns')) {
+		const [eid, pid] = id.split('-');
+		byId.set(id, c);
+		getOrCreate(byEventId, eid, () => new Set()).add(pid);
+		getOrCreate(byParticipantId, pid, () => new Set()).add(eid);
+	}
+
+	return { byId, byEventId, byParticipantId };
+}
+
+function getParticipantCheckIns(eventsById, participantsById, checkInsById, pid) {
+	const participant = participantsById.get(pid);
+	const eventIds = checkIns.byParticipantId.get(pid);
+	if (!eventIds.size) {
+		return [];
+	}
+	const checkIns = [...eventIds]
+		.map((eid) => eventsById.get(eid))
+		.sort(sortAsc(({ count }) => count))
+		.reduce((arr, event) => {
+			const prev = arr.at(-1);
+			const checkIn = getCheckInA(event, participant, checkInsById, prev);
+			arr.push(checkIn);
+			return arr;
+		}, [])
+		.reverse();
+	const latest = checkIns[0];
+	const missingRunCount = participant.runCount - latest.runCount || 0;
+	const missingHostCount = participant.hostCount - latest.hostCount || 0;
+	return checkIns.map((checkIn) => getCheckInB(checkIn, missingRunCount, missingHostCount, participant));
+}
+
+function getCheckInA(event, participant, checkInsById, prev) {
+	const id = `${event.id}-${participant.id}`;
+	const data = checkInsById.get(id);
+	const host = data.get('host') ?? false;
+	const runCount = (prev?.runCount ?? 0) + 1;
+	const hostCount = (prev?.hostCount ?? 0) + (host ? 1 : 0);
+	const url = `${event.url}check-ins/${participant.id}/edit/`;
+	return {
+		id,
+		eventId: event.id,
+		participantId: participant.id,
+		host,
+		hostCount,
+		runCount,
+		url
+	};
+}
+
+function getCheckInB(checkIn, missingRunCount, missingHostCount, participant) {
+	const runCount = checkIn.runCount + missingRunCount;
+	const hostCount = checkIn.hostCount + missingHostCount;
+	const specialRunCount = isSpecial(runCount);
+	const specialHostCount = isSpecial(hostCount);
+	const readyForNaming = runCount >= 5 && !participant.alias;
+	return {
+		...checkIn,
+		hostCount,
+		readyForNaming,
+		runCount,
+		specialHostCount,
+		specialRunCount
+	};
+}
+
+function isSpecial(value) {
+	return value > 0 && (value % 5 === 0 || /69$/.test(value));
 }
