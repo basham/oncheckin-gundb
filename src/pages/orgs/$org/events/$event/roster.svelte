@@ -45,7 +45,7 @@
 							class="u-text-num u-text-right"
 							class:highlight={p.latestCheckIn.specialCount}
 						>
-							{p.latestCheckIn.count}
+							{p.latestCheckIn.runCount}
 						</td>
 						<td class:highlight={p.latestCheckIn.readyForNaming}>
 							{p.displayName}

@@ -1,7 +1,6 @@
 import {
 	createCheckIn,
-	createParticipant,
-	getEventCheckIns
+	createParticipant
 } from '@src/api.js';
 import { computeOrg } from '@src/api/org-signal.js';
 
@@ -9,12 +8,12 @@ export async function get({ data }) {
 	const { org, event } = data;
 	const h1 = event.name;
 	const h2 = 'New check-in';
-	const checkIns = (await getEventCheckIns(org.id, event.id)).map((checkIn) => [
+	const { participants: allParticipants, checkInsByEventId } = await computeOrg(org.id);
+	const checkIns = checkInsByEventId.get(event.id).map((checkIn) => [
 		checkIn.participant.id,
 		checkIn,
 	]);
 	const checkInsMap = new Map(checkIns);
-	const { participants: allParticipants } = await computeOrg(org.id);
 	const participants = allParticipants.map((p) => {
 		const checkIn = checkInsMap.get(p.id);
 		const checkedIn = !!checkIn;

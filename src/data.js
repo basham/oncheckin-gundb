@@ -6,6 +6,7 @@ export const {
 	account,
 	checkIn,
 	checkIns,
+	checkInsByYear,
 	code,
 	date,
 	device,

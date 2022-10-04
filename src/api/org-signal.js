@@ -1,5 +1,5 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns';
-import { computed, signal } from 'usignal';
+import { computed, signal, effect } from 'usignal';
 import { getOrgDB } from './org';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
 
@@ -47,7 +47,11 @@ async function calc(orgId) {
 		const entries = participants$.value.map((p) => [p.id, p]);
 		return new Map(entries);
 	});
-	const checkIns$ = computed(() => getCheckIns(data$.value, orgUrl$.value));
+	const checkIns$ = computed(() => getCheckIns(data$.value, eventsById$.value, participants$.value));
+	effect(() => console.log(checkIns$.value));
+	const checkInsById$ = computed(() => checkIns$.value.checkInsById);
+	const checkInsByEventId$ = computed(() => checkIns$.value.checkInsByEventId);
+	const checkInsByParticipantId$ = computed(() => checkIns$.value.checkInsByParticipantId);
 	return signalsToGetters({
 		org$,
 		eventsById$,
@@ -57,7 +61,11 @@ async function calc(orgId) {
 		eventsByYear$,
 		eventYears$,
 		participants$,
-		participantsById$
+		participantsById$,
+		checkIns$,
+		checkInsById$,
+		checkInsByEventId$,
+		checkInsByParticipantId$
 	});
 }
 
@@ -173,25 +181,54 @@ function getParticipant(id, data, orgUrl) {
 	};
 }
 
-function getCheckIns(data) {
-	const byId = new Map();
+function getCheckIns(data, eventsById, participants) {
+	const indexes = getCheckInIndexes(data);
+
+	const aEntries = participants
+		.map((p) => [p.id, getParticipantCheckIns(eventsById, indexes, p)]);
+	const checkInsByParticipantId = new Map(aEntries);
+
+	const bEntries = aEntries
+		.map(([pid, checkIns]) => checkIns)
+		.flat()
+		.map((checkIn) => [checkIn.id, checkIn]);
+	const checkInsById = new Map(bEntries);
+
+	const cEntries = [...indexes.byEventId.entries()]
+		.map(([eid, pidSet]) => {
+			const pids = [...pidSet.values()]
+				.map((pid) => encodeCheckInId(eid, pid))
+				.map((id) => checkInsById.get(id))
+				.sort(sortAsc((checkIn) => checkIn.participant.displayName));
+			return [eid, pids];
+		});
+	const checkInsByEventId = new Map(cEntries);
+
+	return {
+		checkInsById,
+		checkInsByEventId,
+		checkInsByParticipantId
+	};
+}
+
+function getCheckInIndexes(data) {
+	const byCheckInId = new Map();
 	const byEventId = new Map();
 	const byParticipantId = new Map();
 
 	for (const [id, c] of data.get('checkIns')) {
-		const [eid, pid] = id.split('-');
-		byId.set(id, c);
+		const { eventId: eid, participantId: pid } = decodeCheckInId(id);
+		byCheckInId.set(id, c);
 		getOrCreate(byEventId, eid, () => new Set()).add(pid);
 		getOrCreate(byParticipantId, pid, () => new Set()).add(eid);
 	}
 
-	return { byId, byEventId, byParticipantId };
+	return { byCheckInId, byEventId, byParticipantId };
 }
 
-function getParticipantCheckIns(eventsById, participantsById, checkInsById, pid) {
-	const participant = participantsById.get(pid);
-	const eventIds = checkIns.byParticipantId.get(pid);
-	if (!eventIds.size) {
+function getParticipantCheckIns(eventsById, indexes, participant) {
+	const eventIds = indexes.byParticipantId.get(participant.id);
+	if (!eventIds?.size) {
 		return [];
 	}
 	const checkIns = [...eventIds]
@@ -199,27 +236,29 @@ function getParticipantCheckIns(eventsById, participantsById, checkInsById, pid)
 		.sort(sortAsc(({ count }) => count))
 		.reduce((arr, event) => {
 			const prev = arr.at(-1);
-			const checkIn = getCheckInA(event, participant, checkInsById, prev);
+			const checkIn = getCheckInA(event, participant, indexes, prev);
 			arr.push(checkIn);
 			return arr;
 		}, [])
 		.reverse();
 	const latest = checkIns[0];
-	const missingRunCount = participant.runCount - latest.runCount || 0;
-	const missingHostCount = participant.hostCount - latest.hostCount || 0;
+	const missingRunCount = participant.runCount ? participant.runCount - latest.runCount : 0;
+	const missingHostCount = participant.hostCount ? participant.hostCount - latest.hostCount : 0;
 	return checkIns.map((checkIn) => getCheckInB(checkIn, missingRunCount, missingHostCount, participant));
 }
 
-function getCheckInA(event, participant, checkInsById, prev) {
-	const id = `${event.id}-${participant.id}`;
-	const data = checkInsById.get(id);
+function getCheckInA(event, participant, indexes, prev) {
+	const id = encodeCheckInId(event.id, participant.id);
+	const data = indexes.byCheckInId.get(id);
 	const host = data.get('host') ?? false;
 	const runCount = (prev?.runCount ?? 0) + 1;
 	const hostCount = (prev?.hostCount ?? 0) + (host ? 1 : 0);
 	const url = `${event.url}check-ins/${participant.id}/edit/`;
 	return {
 		id,
+		event,
 		eventId: event.id,
+		participant,
 		participantId: participant.id,
 		host,
 		hostCount,
@@ -242,6 +281,17 @@ function getCheckInB(checkIn, missingRunCount, missingHostCount, participant) {
 		specialHostCount,
 		specialRunCount
 	};
+}
+
+const checkInIdDelimiter = '-';
+
+function encodeCheckInId(eventId, participantId) {
+	return [eventId, participantId].join(checkInIdDelimiter);
+}
+
+function decodeCheckInId(id) {
+	const [eventId, participantId] = id.split(checkInIdDelimiter);
+	return { eventId, participantId };
 }
 
 function isSpecial(value) {

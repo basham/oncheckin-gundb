@@ -1,8 +1,4 @@
 import { format, isBefore, sub } from 'date-fns';
-import {
-	getEventCheckIns,
-	getParticipantCheckIns
-} from '@src/api.js';
 import { computeOrg } from '@src/api/org-signal.js';
 
 export async function get({ data }) {
@@ -12,8 +8,12 @@ export async function get({ data }) {
 	const lastEventCutoffDate = sub(event.dateObj, { months: 12 });
 	const returnersCutoffDate = sub(event.dateObj, { months: 2 });
 	const returnersCutoff = format(returnersCutoffDate, 'MM/dd');
-	const { participants: allParticipants } = await computeOrg(org.id);
-	const checkIns = (await getEventCheckIns(org.id, event.id)).map((checkIn) => [
+	const {
+		participants: allParticipants,
+		checkInsByEventId,
+		checkInsByParticipantId
+	} = await computeOrg(org.id);
+	const checkIns = checkInsByEventId.get(event.id).map((checkIn) => [
 		checkIn.participant.id,
 		checkIn,
 	]);
@@ -21,9 +21,8 @@ export async function get({ data }) {
 	const participantsPromises = allParticipants.map(async (p) => {
 		const checkIn = checkInsMap.get(p.id);
 		const checkedIn = !!checkIn;
-		const participantCheckIns = (
-			await getParticipantCheckIns(org.id, p.id)
-		).filter((checkIn) => isBefore(checkIn.event.dateObj, event.dateObj));
+		const participantCheckIns = checkInsByParticipantId.get(p.id)
+			.filter((checkIn) => isBefore(checkIn.event.dateObj, event.dateObj));
 		const lastCheckIn = participantCheckIns[0];
 		const lastEvent = lastCheckIn?.event;
 		const lastEventDate = lastEvent

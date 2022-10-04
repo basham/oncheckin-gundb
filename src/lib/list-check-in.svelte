@@ -24,7 +24,7 @@
 						{/if}
 						{#if showCheckInCount}
 							<span class="u-block">
-								{`${checkIn.count || '?'} ${pluralize(checkIn.count, 'run')}`}
+								{`${checkIn.runCount || '?'} ${pluralize(checkIn.runCount, 'run')}`}
 							</span>
 						{/if}
 					</span>

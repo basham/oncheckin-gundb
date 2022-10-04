@@ -1,20 +1,20 @@
 <script>
-	import { checkIns } from '@src/data.js';
+	import { checkInsByYear } from '@src/data.js';
 	import { pluralize } from '@src/util.js';
 	import Layout from './layout.svelte';
 </script>
 
 <Layout>
-	{#if !checkIns.length}
+	{#if !checkInsByYear.length}
 		<h2>No hares</h2>
 	{/if}
-	{#each checkIns as [year, checkInsThisYear]}
+	{#each checkInsByYear as [year, checkIns]}
 		<h2>
 			{year}
-			<span class="badge">{checkInsThisYear.length}</span>
+			<span class="badge">{checkIns.length}</span>
 		</h2>
 		<ul class="list-plain u-gap-2px u-m-top-2">
-			{#each checkInsThisYear as checkIn}
+			{#each checkIns as checkIn}
 				<li class="row">
 					<a class="row__left" href={checkIn.event.url}>
 						<span class="row__primary">{checkIn.event.name}</span>

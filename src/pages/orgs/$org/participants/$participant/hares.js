@@ -1,19 +1,20 @@
-import { getParticipantCheckIns } from '@src/api.js';
+import { computeOrg } from '@src/api/org-signal.js';
+import { getOrCreate } from '@src/util.js';
 
 export async function get({ data }) {
 	const { org, participant } = data;
 	const h1 = participant.displayName;
-	const checkInsByYear = (await getParticipantCheckIns(org.id, participant.id))
+	const { checkInsByParticipantId } = await computeOrg(org.id);
+	const checkIns = checkInsByParticipantId.get(participant.id);
+	const checkInsByYearMap = checkIns
 		.filter(({ host }) => host)
 		.reduce((yearMap, checkIn) => {
 			const { year } = checkIn.event;
-			if (!yearMap.has(year)) {
-				yearMap.set(year, []);
-			}
-			yearMap.set(year, [...yearMap.get(year), checkIn]);
+			const values = getOrCreate(yearMap, year, () => []);
+			yearMap.set(year, [...values, checkIn]);
 			return yearMap;
 		}, new Map());
-	const checkIns = [...checkInsByYear];
-	const template = { h1, checkIns };
+	const checkInsByYear = [...checkInsByYearMap];
+	const template = { h1, checkInsByYear };
 	return { template };
 }
