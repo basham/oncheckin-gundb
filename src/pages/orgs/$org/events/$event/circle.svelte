@@ -9,9 +9,9 @@
 		.filter(({ specialHostCount }) => specialHostCount)
 		.sort(sortAsc('hostCount'));
 	const specialRuns = checkIns
-		.filter(({ specialCount }) => specialCount)
-		.sort(sortAsc('count'));
-	const virgins = checkIns.filter(({ count }) => count === 1);
+		.filter(({ specialRunCount }) => specialRunCount)
+		.sort(sortAsc('runCount'));
+	const virgins = checkIns.filter(({ runCount }) => runCount === 1);
 	const namings = checkIns.filter(({ readyForNaming }) => readyForNaming);
 	const visitors = [];
 </script>
