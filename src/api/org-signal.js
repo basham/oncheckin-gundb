@@ -194,8 +194,9 @@ function getCheckIns(data, eventsById, participants) {
 		.map((checkIn) => [checkIn.id, checkIn]);
 	const checkInsById = new Map(bEntries);
 
-	const cEntries = [...indexes.byEventId.entries()]
-		.map(([eid, pidSet]) => {
+	const cEntries = [...eventsById.keys()]
+		.map((eid) => {
+			const pidSet = indexes.byEventId.get(eid) || new Set();
 			const pids = [...pidSet.values()]
 				.map((pid) => encodeCheckInId(eid, pid))
 				.map((id) => checkInsById.get(id))

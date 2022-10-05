@@ -13,7 +13,6 @@ export async function post({ data, request }) {
 	const formData = await request.formData();
 	const name = formData.get('name');
 	const date = formData.get('date');
-	const count = formData.get('count');
-	const { url: redirect } = await createEvent(org.id, { name, date, count });
+	const { url: redirect } = await createEvent(org.id, { name, date });
 	return { redirect };
 }

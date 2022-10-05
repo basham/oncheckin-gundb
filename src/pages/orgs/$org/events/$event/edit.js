@@ -13,11 +13,9 @@ export async function post({ data, request }) {
 	const formData = await request.formData();
 	const name = formData.get('name');
 	const date = formData.get('date');
-	const count = formData.get('count');
 	const { url: redirect } = await setEvent(org.id, event.id, {
 		name,
-		date,
-		count,
+		date
 	});
 	return { redirect };
 }

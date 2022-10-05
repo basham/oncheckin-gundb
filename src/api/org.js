@@ -1,9 +1,20 @@
 import { getOrCreate } from '@src/util.js';
-import { getOrCreateAsync } from '../util.js';
-import { cache, createId, createYMap, createRemoteStore } from './store.js';
+import { createId, createYMap, createRemoteStore } from './store.js';
+
+export async function createCheckIn(orgId, eventId, participantId, values) {
+	return await setCheckIn(orgId, eventId, participantId, values);
+}
+
+export async function createEvent(orgId, values) {
+	return await setEvent(orgId, createId(), values);
+}
 
 export async function createOrg(id = createId()) {
 	return await getOrg(id);
+}
+
+export async function createParticipant(orgId, values) {
+	return await setParticipant(orgId, createId(), values);
 }
 
 export async function deleteOrg(id) {
@@ -14,10 +25,11 @@ export async function deleteOrg(id) {
 export async function deleteCheckIn(orgId, eventId, participantId) {
 	const { checkIns } = await getOrgDB(orgId);
 	checkIns.delete(`${eventId}-${participantId}`);
-	cache.delete(`checkIns:${orgId}`);
-	cache.delete(`checkIns:${orgId}/${eventId}`);
-	cache.delete(`checkIns:${orgId}/${participantId}`);
-	cache.delete(`checkIn:${orgId}/${eventId}/${participantId}`);
+}
+
+export async function editEventCount(id, count) {
+	const db = await getOrgDB(id);
+	db.settings.set('eventCount', parseInt(count));
 }
 
 export async function getOrCreateCheckIn(orgId, eventId, participantId) {
@@ -36,7 +48,6 @@ export async function getOrCreateParticipant(orgId, participantId) {
 }
 
 export async function getOrgDB(id = createId()) {
-	//return getOrCreate(cache, `org:${id}`, async () => {
 	const store = await createRemoteStore(id);
 	const data = store.doc.getMap('data');
 	const rows = ['settings', 'checkIns', 'events', 'participants'].map((key) => [
@@ -45,7 +56,6 @@ export async function getOrgDB(id = createId()) {
 	]);
 	const rowsEntries = Object.fromEntries(rows);
 	return { ...store, data, ...rowsEntries };
-	//})
 }
 
 export async function getOrg(id) {
@@ -151,7 +161,33 @@ export async function renameOrg(id, name) {
 	db.settings.set('name', name);
 }
 
-export async function editEventCount(id, count) {
-	const db = await getOrgDB(id);
-	db.settings.set('eventCount', parseInt(count));
+export async function setCheckIn(orgId, eventId, participantId, values) {
+	const checkIn = await getOrCreateCheckIn(orgId, eventId, participantId);
+	checkIn.doc.transact(() => {
+		for (const [key, value] of Object.entries(values)) {
+			checkIn.set(key, value);
+		}
+	});
+}
+
+export async function setEvent(orgId, eventId, values) {
+	const event = await getOrCreateEvent(orgId, eventId);
+	event.doc.transact(() => {
+		for (const [key, value] of Object.entries(values)) {
+			event.set(key, value);
+		}
+	});
+	const url = `/orgs/${orgId}/events/${eventId}/`
+	return { id: eventId, url };
+}
+
+export async function setParticipant(orgId, participantId, values) {
+	const participant = await getOrCreateParticipant(orgId, participantId);
+	participant.doc.transact(() => {
+		for (const [key, value] of Object.entries(values)) {
+			participant.set(key, value);
+		}
+	});
+	const url = `/orgs/${orgId}/participants/${participantId}/`
+	return { id: participantId, url };
 }
