@@ -4,15 +4,24 @@ import { encodeCheckInId } from './util.js';
 
 export async function createCheckIn(orgId, eventId, participantId, values) {
 	const db = await getOrgDB(orgId);
+	const p = db.participants.get(participantId);
+	if (p.has('runCount')) {
+		p.set('runCount', p.get('runCount') + 1);
+	}
+	if (p.has('hostCount') && Object.hasOwn(values, 'host') && values.host) {
+		p.set('hostCount', p.get('hostCount') + 1);
+	}
 	const id = encodeCheckInId(eventId, participantId);
 	db.checkIns.set(id, createYMap());
-	return await setCheckIn(orgId, eventId, participantId, values);
+	return await updateCheckIn(orgId, eventId, participantId, values);
 }
 
 export async function createEvent(orgId, values) {
 	const db = await getOrgDB(orgId);
-	const count = db.settings.get('eventCount');
-	db.settings.set('eventCount', count + 1);
+	if (db.settings.has('eventCount')) {
+		const count = db.settings.get('eventCount');
+		db.settings.set('eventCount', count + 1);
+	}
 	const id = createId();
 	db.events.set(id, createYMap());
 	return await setEvent(orgId, id, values);
@@ -35,9 +44,17 @@ export async function deleteOrg(id) {
 }
 
 export async function deleteCheckIn(orgId, eventId, participantId) {
-	const { checkIns } = await getOrgDB(orgId);
+	const db = await getOrgDB(orgId);
 	const id = encodeCheckInId(eventId, participantId);
-	checkIns.delete(id);
+	const checkIn = db.checkIns.get(id);
+	const p = db.participants.get(participantId);
+	if (p.has('runCount')) {
+		p.set('runCount', p.get('runCount') - 1);
+	}
+	if (p.has('hostCount') && checkIn.get('host')) {
+		p.set('hostCount', p.get('hostCount') - 1);
+	}
+	db.checkIns.delete(id);
 }
 
 export async function editEventCount(id, count) {
@@ -114,12 +131,18 @@ export async function renameOrg(id, name) {
 
 export async function setCheckIn(orgId, eventId, participantId, values) {
 	const id = encodeCheckInId(eventId, participantId);
-	const { checkIns } = await getOrgDB(orgId);
-	if (!checkIns.has(id)) {
+	const db = await getOrgDB(orgId);
+	if (!db.checkIns.has(id)) {
 		return;
 	}
-	const checkIn = checkIns.get(id);
-	checkIn.doc.transact(() => setMapFromObject(checkIn, values));
+	const checkIn = db.checkIns.get(id);
+	if (Object.hasOwn(values, 'host') && checkIn.get('host') !== values.host) {
+		const p = db.participants.get(participantId);
+		if (p.has('hostCount')) {
+			p.set('hostCount', p.get('hostCount') + (values.host ? 1 : -1));
+		}
+	}
+	await updateCheckIn(orgId, eventId, participantId, values);
 }
 
 export async function setEvent(orgId, eventId, values) {
@@ -142,4 +165,14 @@ export async function setParticipant(orgId, participantId, values) {
 	participant.doc.transact(() => setMapFromObject(participant, values));
 	const url = `/orgs/${orgId}/participants/${participantId}/`
 	return { id: participantId, url };
+}
+
+export async function updateCheckIn(orgId, eventId, participantId, values) {
+	const id = encodeCheckInId(eventId, participantId);
+	const { checkIns } = await getOrgDB(orgId);
+	if (!checkIns.has(id)) {
+		return;
+	}
+	const checkIn = checkIns.get(id);
+	checkIn.doc.transact(() => setMapFromObject(checkIn, values));
 }
