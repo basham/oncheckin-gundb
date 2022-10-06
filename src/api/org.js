@@ -6,6 +6,9 @@ export async function createCheckIn(orgId, eventId, participantId, values) {
 }
 
 export async function createEvent(orgId, values) {
+	const db = await getOrgDB(orgId);
+	const count = db.settings.get('eventCount');
+	db.settings.set('eventCount', count + 1);
 	return await setEvent(orgId, createId(), values);
 }
 
