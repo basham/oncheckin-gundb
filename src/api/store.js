@@ -3,7 +3,7 @@ import * as Y from 'yjs';
 import { IndexeddbPersistence, storeState } from 'y-indexeddb';
 import { createBroadcastProvider } from '../broadcast-provider.js';
 import { APP_ID } from '../constants.js';
-import { getOrCreateAsync } from '../util.js';
+import { getOrCreate } from '../util.js';
 
 export { Y };
 
@@ -22,9 +22,9 @@ export function createMemoryStore() {
 	return { doc };
 }
 
-export async function createLocalStore(id) {
+export function createLocalStore(id) {
 	const cacheKey = `local-store:${id}`;
-	return await getOrCreateAsync(cache, cacheKey, async () => {
+	return getOrCreate(cache, cacheKey, async () => {
 		const store = createMemoryStore();
 		const storeId = `${APP_ID}-${id}`;
 		const { doc } = store;
@@ -39,9 +39,9 @@ export async function createLocalStore(id) {
 	});
 }
 
-export async function createRemoteStore(id) {
+export function createRemoteStore(id) {
 	const cacheKey = `remote-store:${id}`;
-	return await getOrCreateAsync(cache, cacheKey, async () => {
+	return getOrCreate(cache, cacheKey, async () => {
 		const store = await createLocalStore(id);
 		const { storeId, doc } = store;
 		const { close } = createBroadcastProvider(storeId, doc);
