@@ -2,8 +2,6 @@
 	import { checkInsByYear } from '@src/data.js';
 	import { pluralize } from '@src/util.js';
 	import Layout from './layout.svelte';
-
-	console.log('>>', checkInsByYear);
 </script>
 
 <Layout>

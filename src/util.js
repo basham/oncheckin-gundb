@@ -37,6 +37,12 @@ export function pluralize(count, singular, plural = `${singular}s`) {
 	return count === 1 ? singular : plural;
 }
 
+export function setMapFromObject (map, object) {
+	for (const [key, value] of Object.entries(object)) {
+		map.set(key, value);
+	}
+}
+
 export function sort(selectorOrKey, multiplier) {
 	const type = typeof selectorOrKey;
 	const typeMap = {

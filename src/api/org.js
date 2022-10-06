@@ -1,7 +1,11 @@
-import { getOrCreate } from '@src/util.js';
+import { getOrCreate, setMapFromObject } from '@src/util.js';
 import { createId, createYMap, createRemoteStore } from './store.js';
+import { encodeCheckInId } from './util.js';
 
 export async function createCheckIn(orgId, eventId, participantId, values) {
+	const db = await getOrgDB(orgId);
+	const id = encodeCheckInId(eventId, participantId);
+	db.checkIns.set(id, createYMap());
 	return await setCheckIn(orgId, eventId, participantId, values);
 }
 
@@ -9,7 +13,9 @@ export async function createEvent(orgId, values) {
 	const db = await getOrgDB(orgId);
 	const count = db.settings.get('eventCount');
 	db.settings.set('eventCount', count + 1);
-	return await setEvent(orgId, createId(), values);
+	const id = createId();
+	db.events.set(id, createYMap());
+	return await setEvent(orgId, id, values);
 }
 
 export async function createOrg(id = createId()) {
@@ -17,7 +23,10 @@ export async function createOrg(id = createId()) {
 }
 
 export async function createParticipant(orgId, values) {
-	return await setParticipant(orgId, createId(), values);
+	const db = await getOrgDB(orgId);
+	const id = createId();
+	db.participants.set(id, createYMap());
+	return await setParticipant(orgId, id, values);
 }
 
 export async function deleteOrg(id) {
@@ -27,27 +36,13 @@ export async function deleteOrg(id) {
 
 export async function deleteCheckIn(orgId, eventId, participantId) {
 	const { checkIns } = await getOrgDB(orgId);
-	checkIns.delete(`${eventId}-${participantId}`);
+	const id = encodeCheckInId(eventId, participantId);
+	checkIns.delete(id);
 }
 
 export async function editEventCount(id, count) {
 	const db = await getOrgDB(id);
 	db.settings.set('eventCount', parseInt(count));
-}
-
-export async function getOrCreateCheckIn(orgId, eventId, participantId) {
-	const { checkIns } = await getOrgDB(orgId);
-	return getOrCreate(checkIns, `${eventId}-${participantId}`, createYMap);
-}
-
-export async function getOrCreateEvent(orgId, eventId) {
-	const { events } = await getOrgDB(orgId);
-	return getOrCreate(events, eventId, createYMap);
-}
-
-export async function getOrCreateParticipant(orgId, participantId) {
-	const { participants } = await getOrgDB(orgId);
-	return getOrCreate(participants, participantId, createYMap);
 }
 
 export async function getOrgDB(id = createId()) {
@@ -104,9 +99,7 @@ export async function importOrg(content) {
 			.flat();
 		for (const [itemType, id, values] of items) {
 			const entity = getOrCreate(db[itemType], id, createYMap);
-			for (const [key, value] of Object.entries(values)) {
-				entity.set(key, value);
-			}
+			setMapFromObject(entity, values);
 		}
 	}, origin);
 	await didImport;
@@ -120,32 +113,33 @@ export async function renameOrg(id, name) {
 }
 
 export async function setCheckIn(orgId, eventId, participantId, values) {
-	const checkIn = await getOrCreateCheckIn(orgId, eventId, participantId);
-	checkIn.doc.transact(() => {
-		for (const [key, value] of Object.entries(values)) {
-			checkIn.set(key, value);
-		}
-	});
+	const id = encodeCheckInId(eventId, participantId);
+	const { checkIns } = await getOrgDB(orgId);
+	if (!checkIns.has(id)) {
+		return;
+	}
+	const checkIn = checkIns.get(id);
+	checkIn.doc.transact(() => setMapFromObject(checkIn, values));
 }
 
 export async function setEvent(orgId, eventId, values) {
-	const event = await getOrCreateEvent(orgId, eventId);
-	event.doc.transact(() => {
-		for (const [key, value] of Object.entries(values)) {
-			event.set(key, value);
-		}
-	});
+	const { events } = await getOrgDB(orgId);
+	if (!events.has(eventId)) {
+		return;
+	}
+	const event = events.get(eventId);
+	event.doc.transact(() => setMapFromObject(event, values));
 	const url = `/orgs/${orgId}/events/${eventId}/`
 	return { id: eventId, url };
 }
 
 export async function setParticipant(orgId, participantId, values) {
-	const participant = await getOrCreateParticipant(orgId, participantId);
-	participant.doc.transact(() => {
-		for (const [key, value] of Object.entries(values)) {
-			participant.set(key, value);
-		}
-	});
+	const { participants } = await getOrgDB(orgId);
+	if (!participants.has(participantId)) {
+		return;
+	}
+	const participant = participants.get(participantId);
+	participant.doc.transact(() => setMapFromObject(participant, values));
 	const url = `/orgs/${orgId}/participants/${participantId}/`
 	return { id: participantId, url };
 }

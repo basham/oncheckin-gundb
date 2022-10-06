@@ -1,7 +1,8 @@
 import { format, isFuture, isPast, isToday, parseISO } from 'date-fns';
 import { computed, signal, effect } from 'usignal';
-import { getOrgDB } from './org';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
+import { getOrgDB } from './org';
+import { decodeCheckInId, encodeCheckInId } from './util.js';
 
 const cache = new Map();
 
@@ -48,7 +49,6 @@ async function calc(orgId) {
 		return new Map(entries);
 	});
 	const checkIns$ = computed(() => getCheckIns(data$.value, eventsById$.value, participants$.value));
-	effect(() => console.log(checkIns$.value));
 	const checkInsById$ = computed(() => checkIns$.value.checkInsById);
 	const checkInsByEventId$ = computed(() => checkIns$.value.checkInsByEventId);
 	const checkInsByParticipantId$ = computed(() => checkIns$.value.checkInsByParticipantId);
@@ -282,17 +282,6 @@ function getCheckInB(checkIn, missingRunCount, missingHostCount, participant) {
 		specialHostCount,
 		specialRunCount
 	};
-}
-
-const checkInIdDelimiter = '-';
-
-function encodeCheckInId(eventId, participantId) {
-	return [eventId, participantId].join(checkInIdDelimiter);
-}
-
-function decodeCheckInId(id) {
-	const [eventId, participantId] = id.split(checkInIdDelimiter);
-	return { eventId, participantId };
 }
 
 function isSpecial(value) {
