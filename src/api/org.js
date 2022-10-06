@@ -82,51 +82,6 @@ export async function getOrg(id) {
 	};
 }
 
-export async function getOrgCheckIns(id) {
-	const db = await getOrgDB(id);
-
-	if (!db) {
-		return;
-	}
-
-	return [...db.checkIns.keys()];
-}
-
-export async function getOrgEvents(id) {
-	const db = await getOrgDB(id);
-
-	if (!db) {
-		return;
-	}
-
-	return [...db.events.keys()];
-}
-
-export async function getOrgParticipants(id) {
-	const db = await getOrgDB(id);
-
-	if (!db) {
-		return;
-	}
-
-	return [...db.participants.keys()];
-}
-
-export async function hasCheckIn(orgId, eventId, participantId) {
-	const { checkIns } = await getOrgDB(orgId);
-	return checkIns.has(`${eventId}-${participantId}`);
-}
-
-export async function hasEvent(orgId, eventId) {
-	const { events } = await getOrgDB(orgId);
-	return events.has(eventId);
-}
-
-export async function hasParticipant(orgId, participantId) {
-	const { participants } = await getOrgDB(orgId);
-	return participants.has(participantId);
-}
-
 export async function importOrg(content) {
 	const { eventCount = 0, name } = content.settings;
 	const db = await getOrgDB();
