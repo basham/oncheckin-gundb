@@ -1,12 +1,13 @@
 import { deleteCheckIn, setCheckIn } from '@src/api.js';
 import { computeOrg } from '@src/api/org-signal.js';
+import { encodeCheckInId } from '@src/api/util.js';
 
 export async function get({ data }) {
 	const { org, event, participant } = data;
 	const h1 = event.name;
 	const h2 = 'Edit check-in';
 	const { checkInsById } = await computeOrg(org.id);
-	const id = [event.id, participant.id].join('-');
+	const id = encodeCheckInId(event.id, participant.id);
 	const checkIn = checkInsById.get(id);
 	const template = { h1, h2, checkIn };
 	return { template };
