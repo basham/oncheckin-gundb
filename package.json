@@ -24,7 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "1.0.8",
 		"prettier": "2.7.1",
 		"prettier-plugin-svelte": "2.7.1",
-		"vite": "3.1.4",
+		"vite": "3.1.5",
 		"vite-plugin-pwa": "0.13.1",
 		"workbox-precaching": "6.5.4",
 		"workbox-routing": "6.5.4",
