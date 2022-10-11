@@ -152,7 +152,7 @@ function respondWithTemplate(data) {
     <link rel="manifest" href="/manifest.json">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="stylesheet" href="/style.css">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon preload" href="/icon.svg" type="image/svg+xml" as="image">
     <link rel="apple-touch-icon" href="/icon-192.png">
     <script id="data" type="application/json">
 ${JSON.stringify(data)}
