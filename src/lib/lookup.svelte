@@ -74,7 +74,8 @@
 		{label}
 	</label>
 	<div
-		aria-expanded={false}
+		aria-controls={listboxId}
+		aria-expanded={!!query.length}
 		aria-haspopup="listbox"
 		aria-owns={listboxId}
 		role="combobox"
@@ -82,7 +83,6 @@
 		<input
 			aria-activedescendant={`${optionId}-${selectedIndex}`}
 			aria-autocomplete="list"
-			aria-controls={listboxId}
 			autocomplete="off"
 			class="input"
 			id={inputId}
