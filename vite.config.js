@@ -5,6 +5,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
 	build: {
+		commonjsOptions: {
+			transformMixedEsModules: true
+		},
+		modulePreload: false,
 		rollupOptions: {
 			output: {
 				entryFileNames: '[name].js',
@@ -13,7 +17,9 @@ export default defineConfig({
 		target: 'esnext',
 	},
 	plugins: [
-		svelte(),
+		svelte({
+			emitCss: false
+		}),
 		VitePWA({
 			devOptions: {
 				enabled: true,
@@ -23,6 +29,7 @@ export default defineConfig({
 			injectManifest: {
 				globPatterns: ['**/*.{css,html,js,png,svg}'],
 			},
+			injectRegister: 'inline',
 			srcDir: 'src',
 			strategies: 'injectManifest',
 		}),
