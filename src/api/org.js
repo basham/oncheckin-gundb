@@ -65,12 +65,7 @@ export async function editEventCount(id, count) {
 export async function getOrgDB(id = createId()) {
 	const store = await createRemoteStore(id);
 	const data = store.doc.getMap('data');
-	const rows = ['settings', 'checkIns', 'events', 'participants'].map((key) => [
-		key,
-		getOrCreate(data, key, createYMap),
-	]);
-	const rowsEntries = Object.fromEntries(rows);
-	return { ...store, data, ...rowsEntries };
+	return { ...store, data };
 }
 
 export async function getOrg(id) {
@@ -80,7 +75,7 @@ export async function getOrg(id) {
 		return;
 	}
 
-	const name = db.settings.get('name') || '(Organization)';
+	const name = db.data.get('org').name || '(Organization)';
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -94,28 +89,21 @@ export async function getOrg(id) {
 	};
 }
 
-export async function importOrg(content) {
-	const { eventCount = 0, name } = content.settings;
+export async function importOrg(data) {
 	const db = await getOrgDB();
 	const origin = 'importer';
 	const didImport = new Promise((resolve) => {
-		db.doc.on('afterTransaction', function (transaction) {
+		db.doc.on('afterTransaction', (transaction) => {
 			if (transaction.origin === origin) {
 				db.doc.off('afterTransaction', this);
 				resolve(transaction);
 			}
 		});
 	});
+	console.log('D', data)
 	db.doc.transact(() => {
-		db.settings.set('eventCount', eventCount);
-		db.settings.set('name', name);
-		const items = ['events', 'participants', 'checkIns']
-			.map((itemType) =>
-				Object.entries(content[itemType]).map((item) => [itemType, ...item])
-			)
-			.flat();
-		for (const [itemType, id, values] of items) {
-			const entity = getOrCreate(db[itemType], id, createYMap);
+		for (const [key, values] of Object.entries(data)) {
+			const entity = getOrCreate(db.data, key, createYMap);
 			setMapFromObject(entity, values);
 		}
 	}, origin);

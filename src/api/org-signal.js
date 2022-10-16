@@ -1,5 +1,5 @@
-import { format, isFuture, isPast, isToday, parseISO } from 'date-fns';
-import { computed, signal, effect } from 'usignal';
+import { format, isAfter, isFuture, isPast, isToday, parseISO } from 'date-fns';
+import { computed, signal } from 'usignal';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
 import { getOrgDB } from './org';
 import { decodeCheckInId, encodeCheckInId } from './util.js';
@@ -92,9 +92,9 @@ function objectToGetters(source, getKey, getValue) {
 }
 
 function getOrg(id, data) {
-	const settings = data.get('settings');
-	const name = settings.get('name') || '(Organization)';
-	const eventCount = settings.get('eventCount') || 0;
+	const entity = data.get('org');
+	const { name = '(Organization)' } = entity.get('org');
+	const eventCount = data.get('org|event').get('count');
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -111,22 +111,31 @@ function getOrg(id, data) {
 
 function getEvents(data, orgUrl, eventCount) {
 	const events = [];
-	for (const [id, e] of data.get('events')) {
-		const event = getEvent(id, e, orgUrl);
+	for (const [id, entity] of data) {
+		const event = getEvent(id, entity, orgUrl);
 		if (event) {
 			events.push(event);
 		}
 	}
+	const eventCountDate = parseISO(eventCount.date);
+	const eventsAfter = events
+		.filter(({ dateObj }) => isAfter(dateObj, eventCountDate))
+		.length;
+	const eventCountValue = eventsAfter + eventCount.value;
 	return events
 		.sort(sortDesc('dateObj'))
 		.map((event, i) => {
-			const count = eventCount - i;
+			const count = eventCountValue - i;
 			return { ...event, count };
 		});
 }
 
-function getEvent(id, data, orgUrl) {
-	const date = data.get('date');
+function getEvent(id, entity, orgUrl) {
+	const event = entity.get('event');
+	if (!event) {
+		return undefined;
+	}
+	const date = event.date;
 	if (!date) {
 		return undefined;
 	}
@@ -135,7 +144,7 @@ function getEvent(id, data, orgUrl) {
 	const displayDateMedium = format(dateObj, 'E, MMM d');
 	const displayDateLong = format(dateObj, 'E, PP');
 	const year = format(dateObj, 'y');
-	const name = data.get('name').trim() || '(Event)';
+	const name = event.name.trim() || '(Event)';
 	const url = `${orgUrl}events/${id}/`;
 	return {
 		id,
