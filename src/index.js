@@ -11,6 +11,9 @@ const joinRedirect = () => {
 registerSW({
 	onOfflineReady() {
 		joinRedirect();
+	},
+	onRegisteredSW() {
+		joinRedirect();
 	}
 });
 

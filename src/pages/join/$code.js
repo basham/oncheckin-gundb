@@ -1,4 +1,4 @@
-import { addOrg, createOrg } from '@src/api.js';
+import { addOrg, createRemoteStore } from '@src/api.js';
 
 export async function get({ data }) {
 	const { device } = data;
@@ -16,8 +16,8 @@ export async function post({ data, request }) {
 	const { account } = data;
 	const formData = await request.formData();
 	const id = formData.get('id');
-	const { url } = await createOrg(id);
+	await createRemoteStore(id);
 	await addOrg(account.id, id);
-	const redirect = `${url}sync/`;
+	const redirect = `/sync/${id}/`;
 	return { redirect };
 }
