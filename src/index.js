@@ -1,5 +1,9 @@
 import { registerSW } from 'virtual:pwa-register';
 
+// Export this, so then `upgrader.svelte` can import it.
+// This is an ugly solution to prevent a circular dependency.
+window.registerSW = registerSW;
+
 const params = new URLSearchParams(window.location.search);
 const isJoinRedirect = window.location.pathname === '/' && params.has('join');
 const joinRedirect = () => {
