@@ -75,7 +75,7 @@ export async function getOrg(id) {
 		return;
 	}
 
-	const name = db.data.get('org').name || '(Organization)';
+	const name = db.data.get('org').get('org').name || '(Organization)';
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));

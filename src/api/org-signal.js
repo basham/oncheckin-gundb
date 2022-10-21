@@ -133,11 +133,11 @@ function getEvents(data, orgUrl, eventCount) {
 function getEvent(id, entity, orgUrl) {
 	const event = entity.get('event');
 	if (!event) {
-		return undefined;
+		return;
 	}
 	const date = event.date;
 	if (!date) {
-		return undefined;
+		return;
 	}
 	const dateObj = parseISO(date);
 	const displayDate = format(dateObj, 'PP');
@@ -161,28 +161,33 @@ function getEvent(id, entity, orgUrl) {
 
 function getParticipants(data, orgUrl) {
 	const participants = [];
-	for (const [id, p] of data.get('participants')) {
-		const participant = getParticipant(id, p, orgUrl);
-		participants.push(participant);
+	for (const [id, entity] of data) {
+		const participant = getParticipant(id, entity, orgUrl);
+		if (participant) {
+			participants.push(participant);
+		}
 	}
 	return participants.sort(sortAsc('displayName'));
 }
 
-function getParticipant(id, data, orgUrl) {
-	const alias = data.get('alias') || '';
-	const displayName = data.get('alias') || `Just ${data.get('fullName')}`;
-	const fullName = data.get('fullName') || '(Participant)';
-	const location = data.get('location') || '';
-	const notes = data.get('notes') || '';
-	const runCount = data.get('runCount') || 0;
-	const hostCount = data.get('hostCount') || 0;
+function getParticipant(id, entity, orgUrl) {
+	if (!entity.has('person')) {
+		return;
+	}
+	const person = entity.get('person');
+	const { notes = '' } = person;
+	const member = entity.get('member') || {};
+	const { name: alias = '' } = member;
+	const fullName = person.name || '(Participant)';
+	const displayName = alias || `Just ${fullName}`;
+	const runCount = entity.get('runCount') || 0;
+	const hostCount = entity.get('hostCount') || 0;
 	const url = `${orgUrl}participants/${id}/`;
 	return {
 		id,
 		alias,
 		displayName,
 		fullName,
-		location,
 		notes,
 		runCount,
 		hostCount,
