@@ -1,3 +1,19 @@
+import { registerSW } from 'virtual:pwa-register';
+
+const params = new URLSearchParams(window.location.search);
+const isJoinRedirect = window.location.pathname === '/' && params.has('join');
+const joinRedirect = () => {
+	if (isJoinRedirect) {
+		window.location = window.location = `/join/${params.get('join')}/`;
+	}
+}
+
+registerSW({
+	onOfflineReady() {
+		joinRedirect();
+	}
+});
+
 const raw = document.getElementById('data')?.text;
 const data = raw ? JSON.parse(raw) : { route: 'index' };
 const { route } = data;

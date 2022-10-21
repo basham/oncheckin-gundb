@@ -98,7 +98,7 @@ function getOrg(id, data) {
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
-	const shareUrl = `${self.location.origin}/join/${inviteCode}/`;
+	const shareUrl = `${self.location.origin}/?join=${inviteCode}`;
 	return {
 		id,
 		name,
