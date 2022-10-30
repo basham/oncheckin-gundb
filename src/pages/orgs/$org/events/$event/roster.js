@@ -32,6 +32,12 @@ export async function get({ data }) {
 			lastEvent && isBefore(lastEvent.dateObj, returnersCutoffDate);
 		const lastEventCutoff =
 			lastEvent && isBefore(lastEvent.dateObj, lastEventCutoffDate);
+		const latestCheckIn = checkIn || lastCheckIn || {};
+		const { hostCount = 0 } = latestCheckIn;
+		const runCount = latestCheckIn.runCount + (checkedIn ? 0 : 1);
+		const specialHostCount = !!latestCheckIn.specialHostCount && checkedIn && checkIn.host;
+		const specialRunCount = isSpecial(runCount);
+		const readyForNaming = runCount >= 5 && !p.alias;
 		return {
 			...p,
 			checkIn,
@@ -41,6 +47,11 @@ export async function get({ data }) {
 			lastCheckIn,
 			lastEventCutoff,
 			lastEventDate,
+			hostCount,
+			runCount,
+			specialHostCount,
+			specialRunCount,
+			readyForNaming
 		};
 	});
 	const participants = (await Promise.all(participantsPromises))
@@ -70,4 +81,8 @@ export async function get({ data }) {
 		});
 	const template = { h1, h2, returnersCutoff, participants };
 	return { template };
+}
+
+function isSpecial(value) {
+	return value > 0 && (value % 5 === 0 || /69$/.test(value));
 }

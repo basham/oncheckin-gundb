@@ -7,7 +7,7 @@
 <Layout>
 	<div class="header">
 		<h1 class="u-ts-2 u-text-bold">{event.name}</h1>
-		<p class="u-m-0">{event.displayDateLong}</p>
+		<p class="u-m-0">{`#${event.count}: ${event.displayDateLong}`}</p>
 	</div>
 	<div class="content u-m-top-2">
 		<table>
@@ -38,16 +38,18 @@
 								</span>
 							{/if}
 						</td>
-						<td class="u-text-num u-text-right">
-							{p.latestCheckIn.hostCount > 0 ? p.latestCheckIn.hostCount : ''}
+						<td
+							class="u-text-num u-text-right"
+							class:highlight={p.specialHostCount}>
+							{p.hostCount > 0 ? p.hostCount : ''}
 						</td>
 						<td
 							class="u-text-num u-text-right"
-							class:highlight={p.latestCheckIn.specialCount}
+							class:highlight={p.specialRunCount}
 						>
-							{p.latestCheckIn.runCount}
+							{p.runCount}
 						</td>
-						<td class:highlight={p.latestCheckIn.readyForNaming}>
+						<td class:highlight={p.readyForNaming}>
 							{p.displayName}
 						</td>
 						<td class="u-text-num" class:highlight={p.highlightLastEventDate}>
