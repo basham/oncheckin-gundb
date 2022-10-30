@@ -1,10 +1,10 @@
-const checkInIdDelimiter = '-';
+const checkInIdDelimiter = '|';
 
 export function decodeCheckInId(id) {
-	const [eventId, participantId] = id.split(checkInIdDelimiter);
-	return { eventId, participantId };
+	const [participantId, eventId] = id.split(checkInIdDelimiter);
+	return { participantId, eventId };
 }
 
-export function encodeCheckInId(eventId, participantId) {
-	return [eventId, participantId].join(checkInIdDelimiter);
+export function encodeCheckInId(participantId, eventId) {
+	return [participantId, eventId].join(checkInIdDelimiter);
 }

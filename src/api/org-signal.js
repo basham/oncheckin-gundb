@@ -2,7 +2,7 @@ import { format, isAfter, isFuture, isPast, isToday, parseISO } from 'date-fns';
 import { computed, signal } from 'usignal';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
 import { getOrgDB } from './org';
-import { decodeCheckInId, encodeCheckInId } from './util.js';
+import { encodeCheckInId } from './util.js';
 
 const cache = new Map();
 
@@ -212,7 +212,7 @@ function getCheckIns(data, eventsById, participants) {
 		.map((eid) => {
 			const pidSet = indexes.byEventId.get(eid) || new Set();
 			const pids = [...pidSet.values()]
-				.map((pid) => encodeCheckInId(eid, pid))
+				.map((pid) => encodeCheckInId(pid, eid))
 				.map((id) => checkInsById.get(id))
 				.sort(sortAsc((checkIn) => checkIn.participant.displayName));
 			return [eid, pids];
@@ -231,11 +231,13 @@ function getCheckInIndexes(data) {
 	const byEventId = new Map();
 	const byParticipantId = new Map();
 
-	for (const [id, c] of data.get('checkIns')) {
-		const { eventId: eid, participantId: pid } = decodeCheckInId(id);
-		byCheckInId.set(id, c);
-		getOrCreate(byEventId, eid, () => new Set()).add(pid);
-		getOrCreate(byParticipantId, pid, () => new Set()).add(eid);
+	for (const [id, entity] of data) {
+		if (entity.has('rel') && entity.has('attends')) {
+			const { source: pid, target: eid } = entity.get('rel');
+			byCheckInId.set(id, entity);
+			getOrCreate(byEventId, eid, () => new Set()).add(pid);
+			getOrCreate(byParticipantId, pid, () => new Set()).add(eid);
+		}
 	}
 
 	return { byCheckInId, byEventId, byParticipantId };
@@ -263,9 +265,9 @@ function getParticipantCheckIns(eventsById, indexes, participant) {
 }
 
 function getCheckInA(event, participant, indexes, prev) {
-	const id = encodeCheckInId(event.id, participant.id);
-	const data = indexes.byCheckInId.get(id);
-	const host = data.get('host') ?? false;
+	const id = encodeCheckInId(participant.id, event.id);
+	const entity = indexes.byCheckInId.get(id);
+	const host = entity.has('organizes');
 	const runCount = (prev?.runCount ?? 0) + 1;
 	const hostCount = (prev?.hostCount ?? 0) + (host ? 1 : 0);
 	const url = `${event.url}check-ins/${participant.id}/edit/`;
