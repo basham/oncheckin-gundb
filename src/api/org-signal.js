@@ -199,7 +199,7 @@ function getCheckIns(data, eventsById, participants) {
 	const indexes = getCheckInIndexes(data);
 
 	const aEntries = participants
-		.map((p) => [p.id, getParticipantCheckIns(eventsById, indexes, p)]);
+		.map((p) => [p.id, getParticipantCheckIns(data, eventsById, indexes, p)]);
 	const checkInsByParticipantId = new Map(aEntries);
 
 	const bEntries = aEntries
@@ -243,11 +243,15 @@ function getCheckInIndexes(data) {
 	return { byCheckInId, byEventId, byParticipantId };
 }
 
-function getParticipantCheckIns(eventsById, indexes, participant) {
+function getParticipantCheckIns(data, eventsById, indexes, participant) {
 	const eventIds = indexes.byParticipantId.get(participant.id);
 	if (!eventIds?.size) {
 		return [];
 	}
+
+	const attendsCount = getAttendsCount(data, eventIds, eventsById, participant);
+	const organizesCount = getOrganizesCount(data, eventIds, eventsById, participant, checkInsById);
+
 	const checkIns = [...eventIds]
 		.map((eid) => eventsById.get(eid))
 		.sort(sortAsc(({ count }) => count))
@@ -262,6 +266,37 @@ function getParticipantCheckIns(eventsById, indexes, participant) {
 	const missingRunCount = participant.runCount ? participant.runCount - latest.runCount : 0;
 	const missingHostCount = participant.hostCount ? participant.hostCount - latest.hostCount : 0;
 	return checkIns.map((checkIn) => getCheckInB(checkIn, missingRunCount, missingHostCount, participant));
+}
+
+function getAttendsCount(data, eventIds, eventsById, participant) {
+	const id = `${participant.id}|attends`;
+	if (!data.has(id)) {
+		return eventIds.size;
+	}
+	const count = data.get(id).get('count');
+	const countAfter = [...eventIds]
+		.map((eid) => eventsById.get(eid))
+		.filter(({ dateObj }) => isAfter(dateObj, count.date))
+		.length;
+	return count.value + countAfter;
+}
+
+function getOrganizesCount(data, eventIds, eventsById, participant, checkInsById) {
+	const target = 'organizes';
+	const id = `${participant.id}|${target}`;
+	const organizes = [...eventIds].filter((eid) => {
+		const checkInId = encodeCheckInId(participant.id, eid);
+		return checkInsById.get(checkInId).has(target);
+	});
+	if (!data.has(id)) {
+		return organizes.length;
+	}
+	const count = data.get(id).get('count');
+	const countAfter = organizes
+		.map((eid) => eventsById.get(eid))
+		.filter(({ dateObj }) => isAfter(dateObj, count.date))
+		.length;
+	return count.value + countAfter;
 }
 
 function getCheckInA(event, participant, indexes, prev) {
