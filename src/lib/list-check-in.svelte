@@ -4,6 +4,7 @@
 	export let checkIns = [];
 	export let showCheckInCount = false;
 	export let showHostCount = false;
+	export let showLastEventDate = false;
 </script>
 
 {#if checkIns.length}
@@ -25,6 +26,11 @@
 						{#if showCheckInCount}
 							<span class="u-block">
 								{`${checkIn.runCount || '?'} ${pluralize(checkIn.runCount, 'run')}`}
+							</span>
+						{/if}
+						{#if showLastEventDate}
+							<span class="u-block">
+								{checkIn.lastEvent.displayDateLong}
 							</span>
 						{/if}
 					</span>

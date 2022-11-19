@@ -1,6 +1,6 @@
 <script>
 	import { checkIns } from '@src/data.js';
-	import { sortAsc } from '@src/util.js';
+	import { sortAsc, sortDesc } from '@src/util.js';
 	import CheckInList from '@src/lib/list-check-in.svelte';
 	import Layout from './layout.svelte';
 
@@ -13,6 +13,9 @@
 		.sort(sortAsc('runCount'));
 	const virgins = checkIns.filter(({ runCount }) => runCount === 1);
 	const namings = checkIns.filter(({ readyForNaming }) => readyForNaming);
+	const returners = checkIns
+		.filter(({ specialLastEventDate }) => specialLastEventDate)
+		.sort(sortDesc((checkIn) => checkIn.lastEvent.dateObj));
 	const visitors = [];
 </script>
 
@@ -39,6 +42,14 @@
 	{#if specialRuns.length}
 		<div class="u-m-top-2">
 			<CheckInList checkIns={specialRuns} showCheckInCount={true} />
+		</div>
+	{/if}
+	<h2>
+		Returners <span class="badge">{returners.length}</span>
+	</h2>
+	{#if returners.length}
+		<div class="u-m-top-2">
+			<CheckInList checkIns={returners} showLastEventDate={true} />
 		</div>
 	{/if}
 	<h2>

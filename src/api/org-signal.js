@@ -1,4 +1,4 @@
-import { format, isAfter, isFuture, isPast, isToday, parseISO } from 'date-fns';
+import { format, isAfter, isBefore, isFuture, isPast, isToday, parseISO, sub } from 'date-fns';
 import { computed, signal } from 'usignal';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
 import { getOrgDB } from './org';
@@ -256,25 +256,29 @@ function getParticipantCheckIns(data, eventsById, indexes, participant) {
 		return [];
 	}
 
-	let attendsCount = getAttendsCount(data, eventIds, eventsById, participant);
-	let organizesCount = getOrganizesCount(data, eventIds, eventsById, participant, indexes);
+	let attendsCount = getInitAttendsCount(data, eventIds, eventsById, participant);
+	let organizesCount = getInitOrganizesCount(data, eventIds, eventsById, participant, indexes);
+	let lastEvent = null;
 
 	return [...eventIds]
 		.map((eid) => eventsById.get(eid))
-		.sort(sortDesc(({ count }) => count))
+		.sort(sortAsc(({ count }) => count))
 		.map((event) => {
 			const id = encodeCheckInId(participant.id, event.id);
 			const entity = indexes.byCheckInId.get(id);
 			const host = entity.has('organizes');
+			attendsCount += 1;
+			organizesCount += host ? 1 : 0;
 			const runCount = attendsCount;
 			const hostCount = organizesCount;
 			const url = `${event.url}check-ins/${participant.id}/edit/`;
 			const specialRunCount = isSpecial(runCount);
 			const specialHostCount = isSpecial(hostCount);
 			const readyForNaming = runCount >= 5 && !participant.alias;
-			attendsCount = attendsCount - 1;
-			organizesCount = organizesCount - (host ? 1 : 0);
-			return {
+			const returnersCutoffDate = sub(event.dateObj, { months: 2 });
+			const specialLastEventDate =
+				lastEvent ? isBefore(lastEvent.dateObj, returnersCutoffDate) : false;
+			const checkIn = {
 				id,
 				event,
 				eventId: event.id,
@@ -288,15 +292,20 @@ function getParticipantCheckIns(data, eventsById, indexes, participant) {
 				readyForNaming,
 				runCount,
 				specialHostCount,
-				specialRunCount
+				specialRunCount,
+				specialLastEventDate,
+				lastEvent
 			};
-		});
+			lastEvent = event;
+			return checkIn;
+		})
+		.reverse();
 }
 
-function getAttendsCount(data, eventIds, eventsById, participant) {
+function getInitAttendsCount(data, eventIds, eventsById, participant) {
 	const id = `${participant.id}|attends`;
 	if (!data.has(id)) {
-		return eventIds.size;
+		return 0;
 	}
 	const count = data.get(id).get('count');
 	const date = parseISO(count.date);
@@ -304,26 +313,27 @@ function getAttendsCount(data, eventIds, eventsById, participant) {
 		.map((eid) => eventsById.get(eid))
 		.filter(({ dateObj }) => isAfter(dateObj, date))
 		.length;
-	return count.value + countAfter;
+	return count.value + countAfter - eventIds.size;
 }
 
-function getOrganizesCount(data, eventIds, eventsById, participant, indexes) {
+function getInitOrganizesCount(data, eventIds, eventsById, participant, indexes) {
 	const target = 'organizes';
 	const id = `${participant.id}|${target}`;
-	const organizes = [...eventIds].filter((eid) => {
-		const checkInId = encodeCheckInId(participant.id, eid);
-		return indexes.byCheckInId.get(checkInId).has(target);
-	});
 	if (!data.has(id)) {
-		return organizes.length;
+		return 0;
 	}
+	const organizes = [...eventIds]
+		.filter((eid) => {
+			const checkInId = encodeCheckInId(participant.id, eid);
+			return indexes.byCheckInId.get(checkInId).has(target);
+		});
 	const count = data.get(id).get('count');
 	const date = parseISO(count.date);
 	const countAfter = organizes
 		.map((eid) => eventsById.get(eid))
 		.filter(({ dateObj }) => isAfter(dateObj, date))
 		.length;
-	return count.value + countAfter;
+	return count.value + countAfter - organizes.length;
 }
 
 function isSpecial(value) {
