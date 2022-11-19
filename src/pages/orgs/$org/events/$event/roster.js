@@ -56,7 +56,7 @@ export async function get({ data }) {
 	});
 	const participants = (await Promise.all(participantsPromises))
 		.filter(
-			({ lastCheckIn, lastEventCutoff }) => lastCheckIn && !lastEventCutoff
+			({ checkedIn, lastCheckIn, lastEventCutoff }) => checkedIn || (lastCheckIn && !lastEventCutoff)
 		)
 		.sort((a, b) => {
 			if (a.checkIn?.host && !b.checkIn?.host) {
