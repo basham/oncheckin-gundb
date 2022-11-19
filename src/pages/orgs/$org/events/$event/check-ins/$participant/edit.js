@@ -7,7 +7,7 @@ export async function get({ data }) {
 	const h1 = event.name;
 	const h2 = 'Edit check-in';
 	const { checkInsById } = await computeOrg(org.id);
-	const id = encodeCheckInId(event.id, participant.id);
+	const id = encodeCheckInId(participant.id, event.id);
 	const checkIn = checkInsById.get(id);
 	const template = { h1, h2, checkIn };
 	return { template };

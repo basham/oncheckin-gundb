@@ -38,12 +38,15 @@
 								</span>
 							{/if}
 						</td>
-						<td class="u-text-num u-text-right">
+						<td
+							class="u-text-num u-text-right"
+							class:highlight={p.checkedIn && p.checkIn.host && p.latestCheckIn.specialHostCount}
+						>
 							{p.latestCheckIn.hostCount > 0 ? p.latestCheckIn.hostCount : ''}
 						</td>
 						<td
 							class="u-text-num u-text-right"
-							class:highlight={p.latestCheckIn.specialCount}
+							class:highlight={p.latestCheckIn.specialRunCount}
 						>
 							{p.latestCheckIn.runCount}
 						</td>

@@ -249,23 +249,41 @@ function getParticipantCheckIns(data, eventsById, indexes, participant) {
 		return [];
 	}
 
-	const attendsCount = getAttendsCount(data, eventIds, eventsById, participant);
-	const organizesCount = getOrganizesCount(data, eventIds, eventsById, participant, checkInsById);
+	let attendsCount = getAttendsCount(data, eventIds, eventsById, participant);
+	let organizesCount = getOrganizesCount(data, eventIds, eventsById, participant, indexes);
 
-	const checkIns = [...eventIds]
+	return [...eventIds]
 		.map((eid) => eventsById.get(eid))
-		.sort(sortAsc(({ count }) => count))
-		.reduce((arr, event) => {
-			const prev = arr.at(-1);
-			const checkIn = getCheckInA(event, participant, indexes, prev);
-			arr.push(checkIn);
-			return arr;
-		}, [])
-		.reverse();
-	const latest = checkIns[0];
-	const missingRunCount = participant.runCount ? participant.runCount - latest.runCount : 0;
-	const missingHostCount = participant.hostCount ? participant.hostCount - latest.hostCount : 0;
-	return checkIns.map((checkIn) => getCheckInB(checkIn, missingRunCount, missingHostCount, participant));
+		.sort(sortDesc(({ count }) => count))
+		.map((event) => {
+			const id = encodeCheckInId(participant.id, event.id);
+			const entity = indexes.byCheckInId.get(id);
+			const host = entity.has('organizes');
+			const runCount = attendsCount;
+			const hostCount = organizesCount;
+			const url = `${event.url}check-ins/${participant.id}/edit/`;
+			const specialRunCount = isSpecial(runCount);
+			const specialHostCount = isSpecial(hostCount);
+			const readyForNaming = runCount >= 5 && !participant.alias;
+			attendsCount = attendsCount - 1;
+			organizesCount = organizesCount - (host ? 1 : 0);
+			return {
+				id,
+				event,
+				eventId: event.id,
+				participant,
+				participantId: participant.id,
+				host,
+				hostCount,
+				runCount,
+				url,
+				hostCount,
+				readyForNaming,
+				runCount,
+				specialHostCount,
+				specialRunCount
+			};
+		});
 }
 
 function getAttendsCount(data, eventIds, eventsById, participant) {
@@ -274,65 +292,31 @@ function getAttendsCount(data, eventIds, eventsById, participant) {
 		return eventIds.size;
 	}
 	const count = data.get(id).get('count');
+	const date = parseISO(count.date);
 	const countAfter = [...eventIds]
 		.map((eid) => eventsById.get(eid))
-		.filter(({ dateObj }) => isAfter(dateObj, count.date))
+		.filter(({ dateObj }) => isAfter(dateObj, date))
 		.length;
 	return count.value + countAfter;
 }
 
-function getOrganizesCount(data, eventIds, eventsById, participant, checkInsById) {
+function getOrganizesCount(data, eventIds, eventsById, participant, indexes) {
 	const target = 'organizes';
 	const id = `${participant.id}|${target}`;
 	const organizes = [...eventIds].filter((eid) => {
 		const checkInId = encodeCheckInId(participant.id, eid);
-		return checkInsById.get(checkInId).has(target);
+		return indexes.byCheckInId.get(checkInId).has(target);
 	});
 	if (!data.has(id)) {
 		return organizes.length;
 	}
 	const count = data.get(id).get('count');
+	const date = parseISO(count.date);
 	const countAfter = organizes
 		.map((eid) => eventsById.get(eid))
-		.filter(({ dateObj }) => isAfter(dateObj, count.date))
+		.filter(({ dateObj }) => isAfter(dateObj, date))
 		.length;
 	return count.value + countAfter;
-}
-
-function getCheckInA(event, participant, indexes, prev) {
-	const id = encodeCheckInId(participant.id, event.id);
-	const entity = indexes.byCheckInId.get(id);
-	const host = entity.has('organizes');
-	const runCount = (prev?.runCount ?? 0) + 1;
-	const hostCount = (prev?.hostCount ?? 0) + (host ? 1 : 0);
-	const url = `${event.url}check-ins/${participant.id}/edit/`;
-	return {
-		id,
-		event,
-		eventId: event.id,
-		participant,
-		participantId: participant.id,
-		host,
-		hostCount,
-		runCount,
-		url
-	};
-}
-
-function getCheckInB(checkIn, missingRunCount, missingHostCount, participant) {
-	const runCount = checkIn.runCount + missingRunCount;
-	const hostCount = checkIn.hostCount + missingHostCount;
-	const specialRunCount = isSpecial(runCount);
-	const specialHostCount = isSpecial(hostCount);
-	const readyForNaming = runCount >= 5 && !participant.alias;
-	return {
-		...checkIn,
-		hostCount,
-		readyForNaming,
-		runCount,
-		specialHostCount,
-		specialRunCount
-	};
 }
 
 function isSpecial(value) {
