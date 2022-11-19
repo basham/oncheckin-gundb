@@ -28,15 +28,19 @@ export async function createParticipant(orgId, values) {
 	return await setParticipant(orgId, id, values);
 }
 
+export async function deleteEntity(orgId, id) {
+	const { data } = await getOrgDB(orgId);
+	data.delete(id);
+}
+
 export async function deleteOrg(id) {
 	const { clearData } = await getOrgDB(id);
 	await clearData();
 }
 
 export async function deleteCheckIn(orgId, participantId, eventId) {
-	const { data } = await getOrgDB(orgId);
 	const id = encodeCheckInId(participantId, eventId);
-	data.delete(id);
+	await deleteEntity(orgId, id);
 }
 
 export async function editEventCount(id, count) {
@@ -56,13 +60,8 @@ async function getEntity(orgId, id) {
 }
 
 export async function getOrg(id) {
-	const db = await getOrgDB(id);
-
-	if (!db) {
-		return;
-	}
-
-	const name = db.data.get('org').get('org').name || '(Organization)';
+	const entity = await getEntity(id, 'org');
+	const name = entity?.get('org').name || '(Organization)';
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -100,8 +99,7 @@ export async function importOrg(data) {
 
 export async function renameOrg(id, name) {
 	const entity = await getEntity(id, 'org');
-	const org = getOrCreate(entity, 'org', () => ({}));
-	entity.set('org', { ...org, name });
+	setComponent(entity, 'org', { name });
 }
 
 export async function setCheckIn(orgId, participantId, eventId, { organizes = false }) {
@@ -122,7 +120,7 @@ export async function setEvent(orgId, id, { name, date }) {
 	if (!entity) {
 		return;
 	}
-	entity.set('event', { name, date });
+	setComponent(entity, 'event', { name, date });
 	const url = `/orgs/${orgId}/events/${id}/`;
 	return { id, url };
 }
@@ -134,20 +132,23 @@ export async function setParticipant(orgId, id, { personName, memberName }) {
 	}
 	entity.doc.transact(() => {
 		if (personName) {
-			const person = getOrCreate(entity, 'person', () => ({}));
-			entity.set('person', { ...person, name: personName });
+			setComponent(entity, 'person', { name: personName });
 		}
 		if (memberName) {
-			const member = getOrCreate(entity, 'member', () => ({}));
-			entity.set('member', { ...member, name: memberName });
+			setComponent(entity, 'member', { name: memberName });
 		}
 	});
 	const url = `/orgs/${orgId}/participants/${id}/`;
 	return { id, url };
 }
 
+function setComponent(entity, name, value) {
+	const component = getOrCreate(entity, name, () => ({}));
+	entity.set(name, { ...component, ...value });
+}
+
 function setRel(entity, source, target) {
-	entity.set('rel', { source, target });
+	setComponent(entity, 'rel', { source, target });
 }
 
 function setTag(entity, name, value) {
