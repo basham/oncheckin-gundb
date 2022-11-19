@@ -18,8 +18,7 @@ async function calc(orgId) {
 	});
 	const org$ = computed(() => getOrg(orgId, data$.value));
 	const orgUrl$ = computed(() => org$.value.url);
-	const eventCount$ = computed(() => org$.value.eventCount);
-	const events$ = computed(() => getEvents(data$.value, orgUrl$.value, eventCount$.value));
+	const events$ = computed(() => getEvents(data$.value, orgUrl$.value));
 	const eventsById$ = computed(() => {
 		const entries = events$.value.map((e) => [e.id, e]);
 		return new Map(entries);
@@ -93,8 +92,7 @@ function objectToGetters(source, getKey, getValue) {
 
 function getOrg(id, data) {
 	const entity = data.get('org');
-	const { name = '(Organization)' } = entity.get('org');
-	const eventCount = data.get('org|event').get('count');
+	const { name = '(Organization)' } = entity.get('org') || {};
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -102,14 +100,13 @@ function getOrg(id, data) {
 	return {
 		id,
 		name,
-		eventCount,
 		openUrl,
 		shareUrl,
 		url,
 	};
 }
 
-function getEvents(data, orgUrl, eventCount) {
+function getEvents(data, orgUrl) {
 	const events = [];
 	for (const [id, entity] of data) {
 		const event = getEvent(id, entity, orgUrl);
@@ -117,15 +114,11 @@ function getEvents(data, orgUrl, eventCount) {
 			events.push(event);
 		}
 	}
-	const eventCountDate = parseISO(eventCount.date);
-	const eventsAfter = events
-		.filter(({ dateObj }) => isAfter(dateObj, eventCountDate))
-		.length;
-	const eventCountValue = eventsAfter + eventCount.value;
+	const eventCount = getEventCount(data, events);
 	return events
 		.sort(sortDesc('dateObj'))
 		.map((event, i) => {
-			const count = eventCountValue - i;
+			const count = eventCount - i;
 			return { ...event, count };
 		});
 }
@@ -157,6 +150,19 @@ function getEvent(id, entity, orgUrl) {
 		url,
 		year
 	};
+}
+
+function getEventCount(data, events) {
+	const id = 'org|event';
+	if (!data.has(id)) {
+		return events.length;
+	}
+	const count = data.get(id).get('count');
+	const date = parseISO(count.date);
+	const countAfter = events
+		.filter(({ dateObj }) => isAfter(dateObj, date))
+		.length;
+	return count.value + countAfter;
 }
 
 function getParticipants(data, orgUrl) {

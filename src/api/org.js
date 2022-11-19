@@ -19,7 +19,10 @@ export async function createEvent(orgId, values) {
 	return await setEvent(orgId, id, values);
 }
 
-export async function createOrg(id = createId()) {
+export async function createOrg(name) {
+	const id = createId();
+	await createEntity(id, 'org');
+	await renameOrg(id, name);
 	return await getOrg(id);
 }
 
