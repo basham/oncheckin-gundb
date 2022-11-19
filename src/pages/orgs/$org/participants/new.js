@@ -9,11 +9,11 @@ export async function get() {
 export async function post({ data, request }) {
 	const { org } = data;
 	const formData = await request.formData();
-	const fullName = formData.get('fullName');
-	const alias = formData.get('alias');
+	const personName = formData.get('fullName');
+	const memberName = formData.get('alias');
 	const { url: redirect } = await createParticipant(org.id, {
-		fullName,
-		alias,
+		personName,
+		memberName,
 	});
 	return { redirect };
 }

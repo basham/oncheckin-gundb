@@ -33,12 +33,12 @@ export async function post({ data, request }) {
 	const checkInType = formData.get('checkInType');
 	let participantId = formData.get('selectedParticipant');
 	if (checkInType === 'new-participant') {
-		const alias = formData.get('alias');
-		const fullName = formData.get('fullName');
-		const participant = await createParticipant(org.id, { alias, fullName });
+		const personName = formData.get('fullName');
+		const memberName = formData.get('alias');
+		const participant = await createParticipant(org.id, { personName, memberName });
 		participantId = participant.id;
 	}
-	const host = formData.get('host');
-	await createCheckIn(org.id, event.id, participantId, { host });
+	const organizes = formData.get('host');
+	await createCheckIn(org.id, participantId, event.id, { organizes });
 	return { redirect: event.url };
 }

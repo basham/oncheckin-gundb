@@ -18,11 +18,11 @@ export async function post({ data, request }) {
 	const formData = await request.formData();
 	const action = formData.get('action');
 	if (action === 'edit') {
-		const host = formData.get('host');
-		await setCheckIn(org.id, event.id, participant.id, { host });
+		const organizes = formData.get('host');
+		await setCheckIn(org.id, participant.id, event.id, { organizes });
 	}
 	if (action === 'delete') {
-		await deleteCheckIn(org.id, event.id, participant.id);
+		await deleteCheckIn(org.id, participant.id, event.id);
 	}
 	return { redirect: event.url };
 }
