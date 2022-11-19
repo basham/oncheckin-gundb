@@ -181,7 +181,7 @@ function getParticipant(id, entity, orgUrl) {
 		return;
 	}
 	const person = entity.get('person');
-	const { notes = '' } = person;
+	const { location = '', notes = '' } = person;
 	const member = entity.get('member') || {};
 	const { name: alias = '' } = member;
 	const fullName = person.name || '(Participant)';
@@ -194,6 +194,7 @@ function getParticipant(id, entity, orgUrl) {
 		alias,
 		displayName,
 		fullName,
+		location,
 		notes,
 		runCount,
 		hostCount,

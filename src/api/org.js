@@ -128,14 +128,14 @@ export async function setEvent(orgId, id, { name, date }) {
 	return { id, url };
 }
 
-export async function setParticipant(orgId, id, { personName, memberName }) {
+export async function setParticipant(orgId, id, { personName, memberName, location, notes }) {
 	const entity = await getEntity(orgId, id);
 	if (!entity) {
 		return;
 	}
 	entity.doc.transact(() => {
 		if (personName) {
-			setComponent(entity, 'person', { name: personName });
+			setComponent(entity, 'person', { name: personName, location, notes });
 		}
 		if (memberName) {
 			setComponent(entity, 'member', { name: memberName });
