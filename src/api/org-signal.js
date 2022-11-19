@@ -273,7 +273,7 @@ function getParticipantCheckIns(data, eventsById, indexes, participant) {
 			const hostCount = organizesCount;
 			const url = `${event.url}check-ins/${participant.id}/edit/`;
 			const specialRunCount = isSpecial(runCount);
-			const specialHostCount = isSpecial(hostCount);
+			const specialHostCount = host && isSpecial(hostCount);
 			const readyForNaming = runCount >= 5 && !participant.alias;
 			const returnersCutoffDate = sub(event.dateObj, { months: 2 });
 			const specialLastEventDate =
