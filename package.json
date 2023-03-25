@@ -39,8 +39,7 @@
 		"svelte": "3.53.1",
 		"usignal": "0.8.9",
 		"y-indexeddb": "9.0.9",
-		"y-webrtc": "10.2.3",
-		"y-webrtc-packets": "disarticulate/y-webrtc",
+		"y-websocket": "1.5.0",
 		"yjs": "13.5.42"
 	}
 }

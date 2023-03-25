@@ -1,11 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Doc as YDoc } from 'yjs';
-	import { WebrtcProvider } from 'y-webrtc-packets';
+	import { WebsocketProvider } from 'y-websocket';
 	import { account, device, org } from '@src/data.js';
 	import Upgrader from '@src/lib/upgrader.svelte';
 	import { createBroadcastProvider } from '@src/broadcast-provider.js';
-	import { APP_ID } from '@src/constants.js';
+	import { APP_ID, SERVER_URL } from '@src/constants.js';
 
 	onMount(async () => {
 		if (!account || !device || !org) {
@@ -25,18 +25,13 @@
 		const { pull, push } = createBroadcastProvider(storeId, doc);
 		await pull();
 		doc.on('update', async (update, origin) => {
-			// If origin.peerId exists, then assume it is a Room instance from y-webrtc.
-			// When the push is complete, the doc is ready.
-			if (!Object.hasOwn(origin, 'peerId')) {
-				return;
-			}
 			await push();
 			const id = orgId;
 			const detail = { id };
 			const event = new CustomEvent('doc-synced', { detail });
 			document.dispatchEvent(event);
 		});
-		const remoteProvider = new WebrtcProvider(storeId, doc);
+		const remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
 		const { awareness } = remoteProvider;
 		awareness.on('change', (changes) => {
 			console.log(
