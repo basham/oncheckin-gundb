@@ -8,7 +8,11 @@ export async function get({ data }) {
 	const { org, event } = data;
 	const h1 = event.name;
 	const h2 = 'New check-in';
-	const { participants: allParticipants, checkInsByEventId } = await computeOrg(org.id);
+	const {
+		participants: allParticipants,
+		checkInsByEventId,
+		checkInsByParticipantId
+	} = await computeOrg(org.id);
 	const checkIns = checkInsByEventId.get(event.id).map((checkIn) => [
 		checkIn.participant.id,
 		checkIn,
@@ -17,10 +21,12 @@ export async function get({ data }) {
 	const participants = allParticipants.map((p) => {
 		const checkIn = checkInsMap.get(p.id);
 		const checkedIn = !!checkIn;
+		const latestCheckIn = checkInsByParticipantId.get(p.id)[0]
 		return {
 			...p,
 			checkIn,
 			checkedIn,
+			latestCheckIn
 		};
 	});
 	const template = { h1, h2, participants };

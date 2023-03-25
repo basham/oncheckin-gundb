@@ -1,4 +1,5 @@
 <script>
+	import StringComparison from 'hermetrics/dist/hermetrics/jaro_winkler.js'
 	import { h2, event, participants } from '@src/data.js';
 	import { focus } from '@src/util.js';
 	import Fieldset from '@src/lib/fieldset.svelte';
@@ -12,9 +13,31 @@
 	let checkInType = 'existing-participant';
 	let selectedParticipant = null;
 
-	function filterResult(query, participant) {
-		const terms = [participant.fullName, participant.displayName].join(' ');
-		return terms.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+	const compare = new StringComparison();
+
+	const presortedParticipants = [...participants]
+		.sort((a, b) => {
+			const aSort = a.latestCheckIn?.event.dateObj
+			const bSort = b.latestCheckIn?.event.dateObj
+			if (aSort === undefined) {
+				return -1;
+			}
+			return bSort > aSort ? 1 : bSort < aSort ? -1 : 0
+		});
+
+	function scoreResult(query, participant) {
+		const terms = [participant.fullName, participant.displayName]
+			.join(' ')
+			.split(' ')
+			.filter((t) => t !== '(Participant)')
+			.map((t) => t.toLowerCase());
+		const uniqueTerms = [...new Set(terms)];
+		const score = query
+			.split(' ')
+			.map((q) => q.toLowerCase())
+			.map((q) => Math.max(...uniqueTerms.map((t) => compare.similarity(q, t))))
+			.reduce((total, s) => total + s);
+		return score
 	}
 
 	function selectParticipant(participant) {
@@ -54,14 +77,14 @@
 				<Fieldset>
 					<Lookup
 						class="find-participant"
-						filter={filterResult}
 						id="find-participant"
 						isSelected={({ checkedIn }) => checkedIn}
 						label="Find participant"
 						onSelected={selectParticipant}
-						options={participants}
+						options={presortedParticipants}
 						render={({ displayName, fullName }) =>
 							`${displayName} (${fullName})`}
+						score={scoreResult}
 					/>
 				</Fieldset>
 			{:else}

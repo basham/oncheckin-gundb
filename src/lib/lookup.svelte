@@ -1,13 +1,13 @@
 <script>
 	import Icon from './icon.svelte';
 
-	export let filter = () => true;
 	export let id = 'lookup';
 	export let isSelected = () => false;
 	export let label = '';
 	export let onSelected = () => {};
 	export let options = [];
 	export let render = () => {};
+	export let score = () => 1;
 
 	const inputId = `${id}-input`;
 	const labelId = `${id}-label`;
@@ -24,7 +24,10 @@
 	function handleInput(event) {
 		const { value } = event.target;
 		results = options
-			.filter((option) => filter(value.trim(), option))
+			.map((option) => [score(value.trim(), option), option])
+			.filter(([score]) => score > 0)
+			.sort(([a], [b]) => b - a)
+			.map(([score, option]) => option)
 			.slice(0, maxResults);
 		query = value;
 		selectedIndex = 0;
