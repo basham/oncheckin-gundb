@@ -40,6 +40,17 @@
 		return score
 	}
 
+	function renderParticipantOption(participant) {
+		const { alias, displayName, fullName } = participant;
+		if (!alias) {
+			return fullName;
+		}
+		if (fullName === '(Participant)') {
+			return alias;
+		}
+		return `${displayName} (${fullName})`
+	}
+
 	function selectParticipant(participant) {
 		if (participant.checkedIn) {
 			window.location = participant.checkIn.url;
@@ -82,8 +93,7 @@
 						label="Find participant"
 						onSelected={selectParticipant}
 						options={presortedParticipants}
-						render={({ displayName, fullName }) =>
-							`${displayName} (${fullName})`}
+						render={renderParticipantOption}
 						score={scoreResult}
 					/>
 				</Fieldset>
