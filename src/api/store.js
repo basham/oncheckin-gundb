@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import cuid from '@paralleldrive/cuid2';
 import * as Y from 'yjs';
 import { IndexeddbPersistence, storeState } from 'y-indexeddb';
 import { createBroadcastProvider } from '../broadcast-provider.js';
@@ -10,7 +10,7 @@ export { Y };
 export const cache = new Map();
 
 export function createId() {
-	return cuid();
+	return cuid.createId();
 }
 
 export function createYMap() {
