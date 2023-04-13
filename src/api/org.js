@@ -128,21 +128,31 @@ export async function setEvent(orgId, id, { name, date }) {
 	return { id, url };
 }
 
-export async function setParticipant(orgId, id, { personName, memberName, location, notes }) {
+export async function setParticipant(orgId, id, value) {
 	const entity = await getEntity(orgId, id);
 	if (!entity) {
 		return;
 	}
+	const personName = value.personName.trim();
+	const memberName = value.memberName.trim();
+	const location = value.location.trim();
+	const notes = value.location.trim();
 	entity.doc.transact(() => {
 		if (personName) {
 			setComponent(entity, 'person', { name: personName, location, notes });
 		}
 		if (memberName) {
 			setComponent(entity, 'member', { name: memberName });
+		} else {
+			deleteComponent(entity, 'member');
 		}
 	});
 	const url = `/orgs/${orgId}/participants/${id}/`;
 	return { id, url };
+}
+
+function deleteComponent(entity, name) {
+	entity.delete(name);
 }
 
 function setComponent(entity, name, value) {
