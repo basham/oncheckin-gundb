@@ -133,10 +133,10 @@ export async function setParticipant(orgId, id, value) {
 	if (!entity) {
 		return;
 	}
-	const personName = value.personName.trim();
-	const memberName = value.memberName.trim();
-	const location = value.location.trim();
-	const notes = value.location.trim();
+	const personName = value.personName?.trim();
+	const memberName = value.memberName?.trim();
+	const location = value.location?.trim();
+	const notes = value.location?.trim();
 	entity.doc.transact(() => {
 		if (personName) {
 			setComponent(entity, 'person', { name: personName, location, notes });
