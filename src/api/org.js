@@ -136,7 +136,7 @@ export async function setParticipant(orgId, id, value) {
 	const personName = value.personName?.trim();
 	const memberName = value.memberName?.trim();
 	const location = value.location?.trim();
-	const notes = value.location?.trim();
+	const notes = value.notes?.trim();
 	entity.doc.transact(() => {
 		if (personName) {
 			setComponent(entity, 'person', { name: personName, location, notes });
