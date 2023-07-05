@@ -40,9 +40,12 @@ import * as __vite_glob_0_23 from './pages/orgs/$org/participants/new.js';
 import * as __vite_glob_0_24 from './pages/orgs/$org/rename.js';
 import * as __vite_glob_0_25 from './pages/orgs/$org/settings.js';
 import * as __vite_glob_0_26 from './pages/orgs/$org/share.js';
+import * as __vite_glob_0_34 from './pages/orgs/add.js';
+import * as __vite_glob_0_32 from './pages/orgs/code.js';
 import * as __vite_glob_0_28 from './pages/orgs/import.js';
 import * as __vite_glob_0_29 from './pages/orgs/index.js';
 import * as __vite_glob_0_30 from './pages/orgs/new.js';
+import * as __vite_glob_0_33 from './pages/orgs/scan.js';
 import * as __vite_glob_0_27 from './pages/sync/$orgId.js';
 import * as __vite_glob_0_31 from './pages/start.js';
 const modules = {
@@ -74,9 +77,12 @@ const modules = {
 	'./pages/orgs/$org/rename.js': __vite_glob_0_24,
 	'./pages/orgs/$org/settings.js': __vite_glob_0_25,
 	'./pages/orgs/$org/share.js': __vite_glob_0_26,
+	'./pages/orgs/add.js': __vite_glob_0_34,
+	'./pages/orgs/code.js': __vite_glob_0_32,
 	'./pages/orgs/import.js': __vite_glob_0_28,
 	'./pages/orgs/index.js': __vite_glob_0_29,
 	'./pages/orgs/new.js': __vite_glob_0_30,
+	'./pages/orgs/scan.js': __vite_glob_0_33,
 	'./pages/sync/$orgId.js': __vite_glob_0_27,
 	'./pages/start.js': __vite_glob_0_31,
 };

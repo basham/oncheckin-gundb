@@ -71,6 +71,7 @@ export async function getOrg(id) {
 	const shareUrl = `${self.location.origin}/?join=${inviteCode}`;
 	return {
 		id,
+		inviteCode,
 		name,
 		openUrl,
 		shareUrl,

@@ -587,3 +587,7 @@ p {
 .u-mw-6 {
 	max-width: 12rem;
 }
+
+.u-mw-full {
+	max-width: 100%;
+}

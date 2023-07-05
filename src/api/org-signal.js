@@ -99,6 +99,7 @@ function getOrg(id, data) {
 	const shareUrl = `${self.location.origin}/?join=${inviteCode}`;
 	return {
 		id,
+		inviteCode,
 		name,
 		openUrl,
 		shareUrl,
