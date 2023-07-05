@@ -98,6 +98,7 @@
 	{#if resultsCount && query.length}
 		<ul aria-labelledby={labelId} class="listbox" id={listboxId} role="listbox">
 			{#each results as option, i}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 				<li
 					aria-selected={i === selectedIndex}
