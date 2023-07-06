@@ -140,27 +140,28 @@ function respondWithTemplate(data) {
 	const body = `
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>${title}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Membership and event management software for Hash House Harriers.">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="msapplication-starturl" content="/">
-    <meta name="theme-color" content="#190f05">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="icon preload" href="/icon.svg" type="image/svg+xml" as="image">
-    <link rel="apple-touch-icon" href="/icon-192.png">
-    <script id="data" type="application/json">
-${JSON.stringify(data)}
-    </script>
-    <script type="module" crossorigin src="${entryBase}/index.js"></script>
-    </head>
-  <body>
-  </body>
+	<head>
+		<title>${title}</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Membership and event management software for Hash House Harriers.">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="msapplication-starturl" content="/">
+		<meta name="theme-color" content="#190f05">
+		<link rel="manifest" href="/manifest.json">
+		<link rel="manifest" href="/manifest.webmanifest">
+		<link rel="stylesheet" href="/style.css">
+		<link rel="icon" href="/icon.svg" type="image/svg+xml">
+		<link rel="apple-touch-icon" href="/icon-192.png">
+
+		<script id="data" type="application/json">
+	${JSON.stringify(data)}
+		</script>
+		<script type="module" crossorigin src="${entryBase}/index.js"></script>
+		</head>
+	<body>
+	</body>
 </html>
 `;
 	return respondWithHTML(body);
