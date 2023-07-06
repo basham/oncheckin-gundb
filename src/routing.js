@@ -154,7 +154,7 @@ function respondWithTemplate(data) {
 		<link rel="stylesheet" href="/style.css">
 		<link rel="icon" href="/icon.svg" type="image/svg+xml">
 		<link rel="apple-touch-icon" href="/icon-192.png">
-
+		<link rel="preload" as="image" href="/icon.svg">
 		<script id="data" type="application/json">
 	${JSON.stringify(data)}
 		</script>
