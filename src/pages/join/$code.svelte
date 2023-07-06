@@ -3,6 +3,15 @@
 	import Layout from '@src/pages/layout.svelte';
 
 	const { id, name } = code;
+
+	const IDLE = Symbol('idle');
+	const PENDING = Symbol('pending');
+	let state = IDLE;
+	$: pending = state === PENDING;
+
+	function submit () {
+		state = PENDING;
+	}
 </script>
 
 <Layout>
@@ -13,12 +22,23 @@
 			{id}
 		</p>
 	</div>
-	<form method="post">
+	<form
+		class:u-sr-only={pending}
+		method="post"
+		on:submit={submit}
+	>
 		<input type="hidden" name="id" value={id} />
 		<div class="u-m-top-6">
-			<button class="button button--primary" type="submit">
+			<button
+				class="button button--primary"
+				disabled={pending}
+				type="submit"
+			>
 				Join organization
 			</button>
 		</div>
 	</form>
+	{#if pending}
+		<p class="u-m-top-4 u-ts-2">Syncing…</p>
+	{/if}
 </Layout>

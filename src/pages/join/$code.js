@@ -16,8 +16,11 @@ export async function post({ data, request }) {
 	const { account } = data;
 	const formData = await request.formData();
 	const id = formData.get('id');
-	await createRemoteStore(id);
 	await addOrg(account.id, id);
-	const redirect = `/sync/${id}/`;
+	const store = await createRemoteStore(id);
+	await new Promise((resolve) => {
+		store.doc.on('update', () => resolve());
+	});
+	const redirect = `/orgs/${id}/`;
 	return { redirect };
 }

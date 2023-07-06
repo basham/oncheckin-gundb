@@ -1,8 +1,8 @@
 import cuid from '@paralleldrive/cuid2';
 import * as Y from 'yjs';
 import { IndexeddbPersistence, storeState } from 'y-indexeddb';
-import { createBroadcastProvider } from '../broadcast-provider.js';
-import { APP_ID } from '../constants.js';
+import { WebsocketProvider } from 'y-websocket';
+import { APP_ID, SERVER_URL } from '../constants.js';
 import { getOrCreate } from '../util.js';
 
 export { Y };
@@ -44,10 +44,10 @@ export function createRemoteStore(id) {
 	return getOrCreate(cache, cacheKey, async () => {
 		const store = await createLocalStore(id);
 		const { storeId, doc } = store;
-		const { close } = createBroadcastProvider(storeId, doc);
+		const remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
 		const clearData = async () => {
 			await store.clearData();
-			close();
+			remoteProvider.destroy();
 			cache.delete(cacheKey);
 		};
 		return { ...store, clearData };
