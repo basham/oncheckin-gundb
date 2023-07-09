@@ -2,11 +2,11 @@
   <defs>
     <style>
       .a {
-        fill: #573311;
+        fill: oklch(35% 0.09 60);
       }
       .b, .c {
         fill: none;
-        stroke: #ff8c00;
+        stroke: oklch(75% 0.2 60);
         stroke-width: 2px;
       }
       .b {

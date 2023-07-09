@@ -22,7 +22,7 @@
 		read-only mode.) Either copy and share the invite code, or ask others scan
 		the QR&nbsp;code.
 	</p>
-	<div class="card u-m-top-6 u-flex u-flex-wrap u-flex-gap-2">
+	<div class="card u-m-top-6 u-flex u-flex-wrap u-gap-2">
 		<input
 			aria-label="Share link"
 			class="input invite-code-input"

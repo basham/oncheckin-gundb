@@ -5,7 +5,7 @@
 </script>
 
 <Layout>
-	<div class="u-flex u-flex-gap-4 u-m-top-6">
+	<div class="u-flex u-gap-4 u-m-top-6">
 		<a class="button button--primary" href={`${event.url}check-ins/new/`}>
 			New check-in
 		</a>

@@ -1,33 +1,28 @@
-/*
- * https://codepen.io/basham/pen/OpNybO
- */
 :root {
-	--color-base-0: #ffffff;
-	--color-base-5: #ffecd9;
-	--color-base-10: #ffd9b4;
-	--color-base-15: #ffc68f;
-	--color-base-20: #ffb36a;
-	--color-base-25: #ffa143;
-	--color-base-30: #ff8e0c;
-	--color-base-30: darkorange; /* #ff8c00 */
-	--color-base-35: #ed8206;
-	--color-base-40: #d9780b;
-	--color-base-45: #c56d0e;
-	--color-base-50: #b26311;
-	--color-base-55: #9f5912;
-	--color-base-60: #8c4f12;
-	--color-base-65: #7a4513;
-	--color-base-70: #683c12;
-	--color-base-75: #573311;
-	--color-base-80: #462a10;
-	--color-base-85: #36210e;
-	--color-base-90: #27180a;
-	--color-base-95: #190f05;
-	--color-base-98: #0f0803;
-	--color-base-100: #000000;
-	/* coral, cornflowerblue, darkorange, darkseagreen, dodgerblue, orangered, orange, lightcoral */
+	--color-base-hue: 60;
+	--color-base-0: oklch(100% 0 var(--color-base-hue));
+	--color-base-5: oklch(95% 0.03 var(--color-base-hue));
+	--color-base-10: oklch(90% 0.08 var(--color-base-hue));
+	--color-base-15: oklch(85% 0.12 var(--color-base-hue));
+	--color-base-20: oklch(80% 0.17 var(--color-base-hue));
+	--color-base-25: oklch(75% 0.2 var(--color-base-hue));
+	--color-base-30: oklch(70% 0.18 var(--color-base-hue));
+	--color-base-35: oklch(65% 0.17 var(--color-base-hue));
+	--color-base-40: oklch(60% 0.16 var(--color-base-hue));
+	--color-base-50: oklch(50% 0.13 var(--color-base-hue));
+	--color-base-55: oklch(45% 0.12 var(--color-base-hue));
+	--color-base-60: oklch(40% 0.1 var(--color-base-hue));
+	--color-base-65: oklch(35% 0.09 var(--color-base-hue));
+	--color-base-70: oklch(30% 0.08 var(--color-base-hue));
+	--color-base-75: oklch(25% 0.06 var(--color-base-hue));
+	--color-base-80: oklch(20% 0.05 var(--color-base-hue));
+	--color-base-85: oklch(15% 0.04 var(--color-base-hue));
+	--color-base-90: oklch(10% 0.02 var(--color-base-hue));
+	--color-base-95: oklch(5% 0.01 var(--color-base-hue));
+	--color-base-100: oklch(0% 0 var(--color-base-hue));
+
 	--color-hint: var(--color-base-15);
-	--color-ix: var(--color-base-30);
+	--color-ix: var(--color-base-25);
 	--color-green: limegreen;
 	--color-red: orangered;
 
@@ -77,8 +72,12 @@
 	color: var(--color-base-95);
 }
 
+[hidden] {
+	display: none !important;
+}
+
 html {
-	background-color: var(--color-base-90);
+	background-color: var(--color-base-85);
 	color: var(--color-base-5);
 	-webkit-text-size-adjust: 100%;
 }
@@ -144,10 +143,6 @@ a {
 	color: var(--color-ix);
 }
 
-a:hover {
-	color: var(--color-base-15);
-}
-
 p {
 	margin: 0;
 }
@@ -162,7 +157,7 @@ p {
 
 .button,
 .input[type='file']::file-selector-button {
-	background-color: var(--color-base-80);
+	background-color: var(--color-base-70);
 	border: none;
 	border-radius: var(--size-1);
 	color: var(--color-ix);
@@ -177,7 +172,7 @@ p {
 }
 
 .button:hover {
-	background-color: var(--color-base-75);
+	background-color: var(--color-base-65);
 	color: var(--color-base-25);
 }
 
@@ -199,7 +194,7 @@ p {
 }
 
 .button--primary:hover {
-	background-color: var(--color-base-25);
+	background-color: var(--color-base-20);
 	color: var(--color-base-95);
 }
 
@@ -274,7 +269,7 @@ p {
 }
 
 .row {
-	background-color: var(--color-base-80);
+	background-color: var(--color-base-70);
 	border-radius: var(--size-1);
 	display: flex;
 }
@@ -298,7 +293,7 @@ p {
 }
 
 .row__left:hover {
-	background-color: var(--color-base-75);
+	background-color: var(--color-base-65);
 }
 
 .row__left:focus {
@@ -307,13 +302,14 @@ p {
 
 .row__primary {
 	color: var(--color-ix);
+	color: var(--color-base-5);
 	display: block;
 	font-size: var(--fs-2);
 	grid-area: primary;
 }
 
 .row__secondary {
-	color: var(--color-hint);
+	color: var(--color-base-15);
 	grid-area: secondary;
 	line-height: var(--lh-1);
 }
@@ -353,7 +349,7 @@ p {
 }
 
 .u-border-bottom {
-	border-bottom: var(--px-2) solid var(--color-base-80);
+	border-bottom: var(--px-2) solid var(--color-base-70);
 }
 
 .u-color-hint {
@@ -376,15 +372,11 @@ p {
 	gap: var(--px-2);
 }
 
-.u-gap-4 {
-	gap: var(--size-4);
-}
-
-.u-flex-gap-2 {
+.u-gap-2 {
 	gap: var(--size-2);
 }
 
-.u-flex-gap-4 {
+.u-gap-4 {
 	gap: var(--size-4);
 }
 
