@@ -10,19 +10,22 @@
 
 <style>
 	a {
-		_font-weight: bold;
+		color: var(--color-hint);
+		font-weight: bold;
+		line-height: 1;
+		padding: var(--size-2) 0;
 		text-decoration: none;
-		text-decoration-thickness: var(--px-2);
-		text-underline-offset: var(--size-5);
+	}
+
+	a:hover,
+	a[aria-current] {
+		color: inherit;
 	}
 
 	a[aria-current] {
-		color: inherit;
 		text-decoration: underline;
-	}
-
-	a:hover {
-		text-decoration: underline;
-		_color: var(--color-base-15);
+		text-decoration-color: var(--color-ix);
+		text-decoration-thickness: var(--px-2);
+		text-underline-offset: var(--size-2);
 	}
 </style>

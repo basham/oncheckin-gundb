@@ -1,28 +1,116 @@
 :root {
 	--color-base-hue: 60;
-	--color-base-0: oklch(100% 0 var(--color-base-hue));
-	--color-base-5: oklch(95% 0.03 var(--color-base-hue));
-	--color-base-10: oklch(90% 0.08 var(--color-base-hue));
-	--color-base-15: oklch(85% 0.12 var(--color-base-hue));
-	--color-base-20: oklch(80% 0.17 var(--color-base-hue));
-	--color-base-25: oklch(75% 0.2 var(--color-base-hue));
-	--color-base-30: oklch(70% 0.18 var(--color-base-hue));
-	--color-base-35: oklch(65% 0.17 var(--color-base-hue));
-	--color-base-40: oklch(60% 0.16 var(--color-base-hue));
-	--color-base-50: oklch(50% 0.13 var(--color-base-hue));
-	--color-base-55: oklch(45% 0.12 var(--color-base-hue));
-	--color-base-60: oklch(40% 0.1 var(--color-base-hue));
-	--color-base-65: oklch(35% 0.09 var(--color-base-hue));
-	--color-base-70: oklch(30% 0.08 var(--color-base-hue));
-	--color-base-75: oklch(25% 0.06 var(--color-base-hue));
-	--color-base-80: oklch(20% 0.05 var(--color-base-hue));
-	--color-base-85: oklch(15% 0.04 var(--color-base-hue));
-	--color-base-90: oklch(10% 0.02 var(--color-base-hue));
-	--color-base-95: oklch(5% 0.01 var(--color-base-hue));
-	--color-base-100: oklch(0% 0 var(--color-base-hue));
 
-	--color-hint: var(--color-base-15);
-	--color-ix: var(--color-base-25);
+	/*
+	Maximum chroma values for the given hue and lightness values.
+	https://oklch.com/
+	*/
+	--chroma-60-0: 0;
+	--chroma-60-5: 0.01;
+	--chroma-60-10: 0.02;
+	--chroma-60-15: 0.04;
+	--chroma-60-20: 0.05;
+	--chroma-60-25: 0.06;
+	--chroma-60-30: 0.08;
+	--chroma-60-35: 0.09;
+	--chroma-60-40: 0.1;
+	--chroma-60-45: 0.12;
+	--chroma-60-50: 0.13;
+	--chroma-60-55: 0.14;
+	--chroma-60-60: 0.16;
+	--chroma-60-65: 0.17;
+	--chroma-60-70: 0.18;
+	--chroma-60-75: 0.2;
+	--chroma-60-80: 0.17;
+	--chroma-60-85: 0.12;
+	--chroma-60-90: 0.08;
+	--chroma-60-95: 0.03;
+	--chroma-60-100: 0;
+
+	/* Default hue and chroma values. */
+	--hue: 60;
+	--chroma-0: var(--chroma-60-0);
+	--chroma-5: var(--chroma-60-5);
+	--chroma-10: var(--chroma-60-10);
+	--chroma-15: var(--chroma-60-15);
+	--chroma-20: var(--chroma-60-20);
+	--chroma-25: var(--chroma-60-25);
+	--chroma-30: var(--chroma-60-30);
+	--chroma-35: var(--chroma-60-35);
+	--chroma-40: var(--chroma-60-40);
+	--chroma-45: var(--chroma-60-45);
+	--chroma-50: var(--chroma-60-50);
+	--chroma-55: var(--chroma-60-55);
+	--chroma-60: var(--chroma-60-60);
+	--chroma-65: var(--chroma-60-65);
+	--chroma-70: var(--chroma-60-70);
+	--chroma-75: var(--chroma-60-75);
+	--chroma-80: var(--chroma-60-80);
+	--chroma-85: var(--chroma-60-85);
+	--chroma-90: var(--chroma-60-90);
+	--chroma-95: var(--chroma-60-95);
+	--chroma-100: var(--chroma-60-100);
+
+	--color-accent-0: oklch(0% var(--chroma-0) var(--hue));
+	--color-accent-5: oklch(5% var(--chroma-5) var(--hue));
+	--color-accent-10: oklch(10% var(--chroma-10) var(--hue));
+	--color-accent-15: oklch(15% var(--chroma-15) var(--hue));
+	--color-accent-20: oklch(20% var(--chroma-20) var(--hue));
+	--color-accent-25: oklch(25% var(--chroma-25) var(--hue));
+	--color-accent-30: oklch(30% var(--chroma-30) var(--hue));
+	--color-accent-35: oklch(35% var(--chroma-35) var(--hue));
+	--color-accent-40: oklch(40% var(--chroma-40) var(--hue));
+	--color-accent-45: oklch(45% var(--chroma-45) var(--hue));
+	--color-accent-50: oklch(50% var(--chroma-50) var(--hue));
+	--color-accent-55: oklch(55% var(--chroma-55) var(--hue));
+	--color-accent-60: oklch(60% var(--chroma-60) var(--hue));
+	--color-accent-65: oklch(65% var(--chroma-65) var(--hue));
+	--color-accent-70: oklch(70% var(--chroma-70) var(--hue));
+	--color-accent-75: oklch(75% var(--chroma-75) var(--hue));
+	--color-accent-80: oklch(80% var(--chroma-80) var(--hue));
+	--color-accent-85: oklch(85% var(--chroma-85) var(--hue));
+	--color-accent-90: oklch(90% var(--chroma-90) var(--hue));
+	--color-accent-95: oklch(95% var(--chroma-95) var(--hue));
+	--color-accent-100: oklch(100% var(--chroma-100) var(--hue));
+
+	--chroma-base: 0.5;
+	--color-base-0: oklch(0% calc(var(--chroma-0) * var(--chroma-base)) var(--hue));
+	--color-base-5: oklch(5% calc(var(--chroma-5) * var(--chroma-base)) var(--hue));
+	--color-base-10: oklch(10% calc(var(--chroma-10) * var(--chroma-base)) var(--hue));
+	--color-base-15: oklch(15% calc(var(--chroma-15) * var(--chroma-base)) var(--hue));
+	--color-base-20: oklch(20% calc(var(--chroma-20) * var(--chroma-base)) var(--hue));
+	--color-base-25: oklch(25% calc(var(--chroma-25) * var(--chroma-base)) var(--hue));
+	--color-base-30: oklch(30% calc(var(--chroma-30) * var(--chroma-base)) var(--hue));
+	--color-base-35: oklch(35% calc(var(--chroma-35) * var(--chroma-base)) var(--hue));
+	--color-base-40: oklch(40% calc(var(--chroma-40) * var(--chroma-base)) var(--hue));
+	--color-base-45: oklch(45% calc(var(--chroma-45) * var(--chroma-base)) var(--hue));
+	--color-base-50: oklch(50% calc(var(--chroma-50) * var(--chroma-base)) var(--hue));
+	--color-base-55: oklch(55% calc(var(--chroma-55) * var(--chroma-base)) var(--hue));
+	--color-base-60: oklch(60% calc(var(--chroma-60) * var(--chroma-base)) var(--hue));
+	--color-base-65: oklch(65% calc(var(--chroma-65) * var(--chroma-base)) var(--hue));
+	--color-base-70: oklch(70% calc(var(--chroma-70) * var(--chroma-base)) var(--hue));
+	--color-base-75: oklch(75% calc(var(--chroma-75) * var(--chroma-base)) var(--hue));
+	--color-base-80: oklch(80% calc(var(--chroma-80) * var(--chroma-base)) var(--hue));
+	--color-base-85: oklch(85% calc(var(--chroma-85) * var(--chroma-base)) var(--hue));
+	--color-base-90: oklch(90% calc(var(--chroma-90) * var(--chroma-base)) var(--hue));
+	--color-base-95: oklch(95% calc(var(--chroma-95) * var(--chroma-base)) var(--hue));
+	--color-base-100: oklch(100% calc(var(--chroma-100) * var(--chroma-base)) var(--hue));
+
+	--color-hint: var(--color-accent-85);
+	--color-ix: var(--color-accent-75);
+	--color-text: var(--color-accent-95);
+	--color-text-inverse: var(--color-accent-5);
+
+	--color-background: var(--color-base-20);
+	--color-border: var(--color-base-40);
+	--color-box: var(--color-base-30);
+	--color-box-accent: var(--color-accent-35);
+
+	--color-bg-0: var(--color-base-10);
+	--color-bg-1: var(--color-base-20);
+	--color-bg-2: var(--color-base-30);
+	--color-bg-2a: var(--color-accent-35);
+
 	--color-green: limegreen;
 	--color-red: orangered;
 
@@ -68,8 +156,8 @@
 }
 
 ::selection {
-	background-color: var(--color-base-5);
-	color: var(--color-base-95);
+	background-color: var(--color-text);
+	color: var(--color-text-inverse);
 }
 
 [hidden] {
@@ -77,8 +165,8 @@
 }
 
 html {
-	background-color: var(--color-base-85);
-	color: var(--color-base-5);
+	background-color: var(--color-bg-1);
+	color: var(--color-text);
 	-webkit-text-size-adjust: 100%;
 }
 
@@ -114,7 +202,7 @@ ul {
 
 details,
 .group {
-	background-color: var(--color-base-80);
+	background-color: var(--color-bg-2);
 	border-radius: var(--size-1);
 	padding: var(--size-4);
 }
@@ -129,7 +217,7 @@ summary {
 }
 
 summary:hover {
-	color: var(--color-base-25);
+	color: var(--color-base-75);
 }
 
 label {
@@ -157,7 +245,7 @@ p {
 
 .button,
 .input[type='file']::file-selector-button {
-	background-color: var(--color-base-70);
+	background-color: var(--color-bg-2);
 	border: none;
 	border-radius: var(--size-1);
 	color: var(--color-ix);
@@ -172,8 +260,7 @@ p {
 }
 
 .button:hover {
-	background-color: var(--color-base-65);
-	color: var(--color-base-25);
+	background-color: var(--color-bg-2a);
 }
 
 .button--plain {
@@ -186,21 +273,22 @@ p {
 
 .button--plain:hover {
 	background-color: transparent;
+	color: var(--color-hint);
 }
 
 .button--primary {
 	background-color: var(--color-ix);
-	color: var(--color-base-95);
+	color: var(--color-accent-5);
 }
 
 .button--primary:hover {
-	background-color: var(--color-base-20);
-	color: var(--color-base-95);
+	background-color: var(--color-accent-80);
+	color: var(--color-accent-5);
 }
 
 .button:disabled {
-	background-color: var(--color-base-80);
-	color: var(--color-base-60);
+	background-color: var(--color-base-20);
+	color: var(--color-base-40);
 	cursor: not-allowed;
 }
 
@@ -209,16 +297,16 @@ p {
 }
 
 .card {
-	border: var(--px-2) solid var(--color-base-70);
+	border: var(--px-2) solid var(--color-border);
 	border-radius: var(--size-1);
 	padding: var(--size-4);
 }
 
 .input {
-	background-color: var(--color-base-70);
+	background-color: var(--color-bg-2);
 	border: none;
 	border-radius: var(--size-1);
-	color: var(--color-base-5);
+	color: var(--color-text);
 	font-family: var(--font);
 	font-size: var(--fs-1);
 	line-height: var(--lh-1);
@@ -227,7 +315,7 @@ p {
 }
 
 .input:not(:read-only):hover {
-	background-color: var(--color-base-65);
+	background-color: var(--color-bg-2a);
 }
 
 .input[type='date']::-webkit-calendar-picker-indicator {
@@ -269,7 +357,7 @@ p {
 }
 
 .row {
-	background-color: var(--color-base-70);
+	background-color: var(--color-bg-2);
 	border-radius: var(--size-1);
 	display: flex;
 }
@@ -293,7 +381,7 @@ p {
 }
 
 .row__left:hover {
-	background-color: var(--color-base-65);
+	background-color: var(--color-accent-35);
 }
 
 .row__left:focus {
@@ -302,14 +390,14 @@ p {
 
 .row__primary {
 	color: var(--color-ix);
-	color: var(--color-base-5);
+	color: var(--color-text);
 	display: block;
 	font-size: var(--fs-2);
 	grid-area: primary;
 }
 
 .row__secondary {
-	color: var(--color-base-15);
+	color: var(--color-hint);
 	grid-area: secondary;
 	line-height: var(--lh-1);
 }
@@ -329,19 +417,19 @@ p {
 /* Utilities */
 
 .u-bg-85 {
-	background-color: var(--color-base-85);
+	background-color: var(--color-base-15);
 }
 
 .u-bg-90 {
-	background-color: var(--color-base-90);
+	background-color: var(--color-base-10);
 }
 
 .u-bg-95 {
-	background-color: var(--color-base-95);
+	background-color: var(--color-base-5);
 }
 
 .u-bg-100 {
-	background-color: var(--color-base-100);
+	background-color: var(--color-base-0);
 }
 
 .u-block {
@@ -349,7 +437,7 @@ p {
 }
 
 .u-border-bottom {
-	border-bottom: var(--px-2) solid var(--color-base-70);
+	border-bottom: var(--px-2) solid var(--color-border);
 }
 
 .u-color-hint {

@@ -29,9 +29,8 @@
 	}
 
 	.checkbox {
-		--color-border: var(--color-base-50);
-		--color-background: var(--color-base-90);
-		--color-checked: var(--color-base-90);
+		--color-background: var(--color-bg-0);
+		--color-checked: var(--color-bg-0);
 		--size: var(--size-6);
 		align-items: center;
 		background-color: var(--color-checked);
@@ -56,11 +55,10 @@
 	}
 
 	input:checked:hover + label .checkbox {
-		--color-checked: var(--color-base-25);
+		--color-checked: var(--color-accent-80);
 	}
 
 	input:focus + label .checkbox {
-		_outline: var(--px-2) solid var(--color-ix);
 		--color-border: var(--color-ix);
 	}
 </style>

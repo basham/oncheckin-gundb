@@ -56,9 +56,8 @@
 	}
 
 	.radio {
-		--color-border: var(--color-base-50);
-		--color-background: var(--color-base-90);
-		--color-checked: var(--color-base-90);
+		--color-background: var(--color-bg-0);
+		--color-checked: var(--color-bg-0);
 		--size: var(--size-6);
 		border-radius: 50%;
 		box-shadow: inset 0 0 0 var(--px-2) var(--color-border),

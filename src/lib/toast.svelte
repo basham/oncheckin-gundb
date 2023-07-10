@@ -18,9 +18,9 @@
 
 <style>
 	.toast {
-		background-color: var(--color-base-20);
-		border-top: var(--px-1) solid var(--color-base-95);
-		color: var(--color-base-95);
+		background-color: var(--color-accent-80);
+		border-top: var(--px-1) solid var(--color-bg-0);
+		color: var(--color-text-inverse);
 		left: 0;
 		padding: var(--size-4);
 		position: fixed;

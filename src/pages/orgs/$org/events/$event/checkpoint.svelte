@@ -86,7 +86,7 @@
 					<span class="row__right">
 						<button
 							aria-describedby={checkIn.participant.id}
-							class="button button--ghostx"
+							class="button"
 							data-id={checkIn.participant.id}
 							on:click={markAsWaiting}
 						>
