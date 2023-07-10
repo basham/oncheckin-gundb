@@ -56,7 +56,7 @@
 	}
 
 	.radio {
-		--color-border: var(--color-base-70);
+		--color-border: var(--color-base-50);
 		--color-background: var(--color-base-90);
 		--color-checked: var(--color-base-90);
 		--size: var(--size-6);

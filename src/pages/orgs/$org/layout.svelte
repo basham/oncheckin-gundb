@@ -11,8 +11,12 @@
 	<header class="u-border-bottom a2">
 		<div class="layout-content lc2">
 			<div class="header">
-				<img alt={APP_NAME} class="logo" src="/icon.svg" />
-				<a class="link u-text-bold u-ts-2x" href={org.url}>{org.name}</a>
+				<a class="icon-link" href="/orgs">
+					<img alt={APP_NAME} class="logo" src="/icon.svg" />
+				</a>
+				<span class="u-flex-grow">
+					<a class="link u-text-bold u-ts-2x" href={org.url}>{org.name}</a>
+				</span>
 				<nav aria-label="Organization" class="list-plain list-plain--inline u-m-top-4x u-p-bottom-4x u-gap-4">
 					<NavLink href={org.url} id="events" {location}>Events</NavLink>
 					<NavLink
@@ -52,6 +56,11 @@
 </Layout>
 
 <style>
+	.icon-link {
+		border-radius: 100%;
+		display: flex;
+	}
+
 	.a1 {
 		background-color: var(--color-base-20);
 		color: var(--color-base-75);
@@ -95,7 +104,6 @@
 
 	.link {
 		color: inherit;
-		flex-grow: 1;
 		text-decoration: none;
 	}
 

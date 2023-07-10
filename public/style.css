@@ -209,7 +209,7 @@ p {
 }
 
 .card {
-	border: var(--px-2) solid var(--color-base-80);
+	border: var(--px-2) solid var(--color-base-70);
 	border-radius: var(--size-1);
 	padding: var(--size-4);
 }
