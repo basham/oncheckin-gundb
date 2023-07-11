@@ -29,8 +29,9 @@
 	}
 
 	.checkbox {
-		--color-background: var(--color-bg-0);
-		--color-checked: var(--color-bg-0);
+		--color-background: var(--color-b-1);
+		--color-border: var(--color-b-4);
+		--color-checked: var(--color-b-1);
 		--size: var(--size-6);
 		align-items: center;
 		background-color: var(--color-checked);
@@ -51,14 +52,14 @@
 	}
 
 	input:checked + label .checkbox {
-		--color-checked: var(--color-ix);
+		--color-checked: var(--color-p-7);
 	}
 
 	input:checked:hover + label .checkbox {
-		--color-checked: var(--color-accent-80);
+		--color-checked: var(--color-p-8);
 	}
 
 	input:focus + label .checkbox {
-		--color-border: var(--color-ix);
+		--color-border: var(--color-p-7);
 	}
 </style>

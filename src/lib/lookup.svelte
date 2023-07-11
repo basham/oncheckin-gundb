@@ -123,8 +123,8 @@
 
 <style>
 	.listbox {
-		background-color: var(--color-base-80);
-		border: var(--px-1) solid var(--color-base-95);
+		background-color: var(--color-b-3);
+		border: var(--px-1) solid var(--color-b-1);
 		border-radius: var(--size-1);
 		line-height: var(--lh-1);
 		list-style-type: none;
@@ -144,9 +144,9 @@
 	}
 
 	.option[aria-selected='true'] {
-		background-color: var(--color-ix);
+		background-color: var(--color-p-7);
 		border-radius: var(--size-1);
-		color: var(--color-base-95);
+		color: var(--color-p-0);
 	}
 
 	.noResults {

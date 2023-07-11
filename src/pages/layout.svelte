@@ -28,7 +28,6 @@
 
 	header {
 		align-items: center;
-		color: var(--color-base-30);
 		display: flex;
 		font-size: var(--fs-4);
 		gap: var(--size-3);

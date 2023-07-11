@@ -53,7 +53,7 @@
 <style>
 	.prompt {
 		align-items: center;
-		background-color: var(--color-base-80);
+		background-color: var(--color-b-3);
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--size-2);

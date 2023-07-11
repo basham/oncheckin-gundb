@@ -10,7 +10,7 @@
 
 <style>
 	a {
-		color: var(--color-hint);
+		color: var(--color-p-8);
 		font-weight: bold;
 		line-height: 1;
 		padding: var(--size-2) 0;
@@ -24,7 +24,7 @@
 
 	a[aria-current] {
 		text-decoration: underline;
-		text-decoration-color: var(--color-ix);
+		text-decoration-color: var(--color-p-7);
 		text-decoration-thickness: var(--px-2);
 		text-underline-offset: var(--size-2);
 	}

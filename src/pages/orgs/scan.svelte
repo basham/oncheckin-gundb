@@ -38,7 +38,7 @@
 
 <style>
 	:global(.scan-region-highlight-svg) {
-		stroke: var(--color-ix) !important;
+		stroke: var(--color-p-7) !important;
 	}
 
 	:global(#qr-scanner[aria-invalid="true"] + .scan-region-highlight .scan-region-highlight-svg) {

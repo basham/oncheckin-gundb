@@ -64,8 +64,8 @@
 
 <style>
 	:global(html) {
-		background-color: var(--color-base-100);
-		color: var(--color-base-0);
+		background-color: var(--color-white);
+		color: var(--color-black);
 		font-size: var(--fs-0);
 		line-height: var(--lh-0);
 	}
@@ -118,11 +118,11 @@
 	}
 
 	tbody tr:nth-child(3n) td {
-		border-bottom-color: var(--color-base-0);
+		border-bottom-color: var(--color-black);
 	}
 
 	.highlight {
-		background-color: var(--color-base-0);
-		color: var(--color-base-100);
+		background-color: var(--color-black);
+		color: var(--color-white);
 	}
 </style>

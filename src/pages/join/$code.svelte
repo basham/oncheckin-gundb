@@ -15,7 +15,7 @@
 </script>
 
 <Layout>
-	<div class="group u-m-top-6">
+	<div class="card u-m-top-6">
 		<h2 class="u-m-top-0">{name}</h2>
 		<p class="u-m-0">
 			<span class="u-color-hint">ID:</span>

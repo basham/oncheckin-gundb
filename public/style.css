@@ -1,6 +1,4 @@
 :root {
-	--color-base-hue: 60;
-
 	/*
 	Maximum chroma values for the given hue and lightness values.
 	https://oklch.com/
@@ -51,27 +49,27 @@
 	--chroma-95: var(--chroma-60-95);
 	--chroma-100: var(--chroma-60-100);
 
-	--color-accent-0: oklch(0% var(--chroma-0) var(--hue));
-	--color-accent-5: oklch(5% var(--chroma-5) var(--hue));
-	--color-accent-10: oklch(10% var(--chroma-10) var(--hue));
-	--color-accent-15: oklch(15% var(--chroma-15) var(--hue));
-	--color-accent-20: oklch(20% var(--chroma-20) var(--hue));
-	--color-accent-25: oklch(25% var(--chroma-25) var(--hue));
-	--color-accent-30: oklch(30% var(--chroma-30) var(--hue));
-	--color-accent-35: oklch(35% var(--chroma-35) var(--hue));
-	--color-accent-40: oklch(40% var(--chroma-40) var(--hue));
-	--color-accent-45: oklch(45% var(--chroma-45) var(--hue));
-	--color-accent-50: oklch(50% var(--chroma-50) var(--hue));
-	--color-accent-55: oklch(55% var(--chroma-55) var(--hue));
-	--color-accent-60: oklch(60% var(--chroma-60) var(--hue));
-	--color-accent-65: oklch(65% var(--chroma-65) var(--hue));
-	--color-accent-70: oklch(70% var(--chroma-70) var(--hue));
-	--color-accent-75: oklch(75% var(--chroma-75) var(--hue));
-	--color-accent-80: oklch(80% var(--chroma-80) var(--hue));
-	--color-accent-85: oklch(85% var(--chroma-85) var(--hue));
-	--color-accent-90: oklch(90% var(--chroma-90) var(--hue));
-	--color-accent-95: oklch(95% var(--chroma-95) var(--hue));
-	--color-accent-100: oklch(100% var(--chroma-100) var(--hue));
+	--color-primary-0: oklch(0% var(--chroma-0) var(--hue));
+	--color-primary-5: oklch(5% var(--chroma-5) var(--hue));
+	--color-primary-10: oklch(10% var(--chroma-10) var(--hue));
+	--color-primary-15: oklch(15% var(--chroma-15) var(--hue));
+	--color-primary-20: oklch(20% var(--chroma-20) var(--hue));
+	--color-primary-25: oklch(25% var(--chroma-25) var(--hue));
+	--color-primary-30: oklch(30% var(--chroma-30) var(--hue));
+	--color-primary-35: oklch(35% var(--chroma-35) var(--hue));
+	--color-primary-40: oklch(40% var(--chroma-40) var(--hue));
+	--color-primary-45: oklch(45% var(--chroma-45) var(--hue));
+	--color-primary-50: oklch(50% var(--chroma-50) var(--hue));
+	--color-primary-55: oklch(55% var(--chroma-55) var(--hue));
+	--color-primary-60: oklch(60% var(--chroma-60) var(--hue));
+	--color-primary-65: oklch(65% var(--chroma-65) var(--hue));
+	--color-primary-70: oklch(70% var(--chroma-70) var(--hue));
+	--color-primary-75: oklch(75% var(--chroma-75) var(--hue));
+	--color-primary-80: oklch(80% var(--chroma-80) var(--hue));
+	--color-primary-85: oklch(85% var(--chroma-85) var(--hue));
+	--color-primary-90: oklch(90% var(--chroma-90) var(--hue));
+	--color-primary-95: oklch(95% var(--chroma-95) var(--hue));
+	--color-primary-100: oklch(100% var(--chroma-100) var(--hue));
 
 	--chroma-base: 0.5;
 	--color-base-0: oklch(0% calc(var(--chroma-0) * var(--chroma-base)) var(--hue));
@@ -96,23 +94,22 @@
 	--color-base-95: oklch(95% calc(var(--chroma-95) * var(--chroma-base)) var(--hue));
 	--color-base-100: oklch(100% calc(var(--chroma-100) * var(--chroma-base)) var(--hue));
 
-	--color-hint: var(--color-accent-85);
-	--color-ix: var(--color-accent-75);
-	--color-text: var(--color-accent-95);
-	--color-text-inverse: var(--color-accent-5);
+	--color-p-0: var(--color-primary-5);
+	--color-p-3: var(--color-primary-35);
+	--color-p-7: var(--color-primary-75);
+	--color-p-8: var(--color-primary-85);
+	--color-p-9: var(--color-primary-95);
 
-	--color-background: var(--color-base-20);
-	--color-border: var(--color-base-40);
-	--color-box: var(--color-base-30);
-	--color-box-accent: var(--color-accent-35);
+	--color-b-1: var(--color-base-10);
+	--color-b-2: var(--color-base-20);
+	--color-b-3: var(--color-base-30);
+	--color-b-4: var(--color-base-40);
+	--color-b-8: var(--color-base-80);
 
-	--color-bg-0: var(--color-base-10);
-	--color-bg-1: var(--color-base-20);
-	--color-bg-2: var(--color-base-30);
-	--color-bg-2a: var(--color-accent-35);
-
+	--color-black: black;
 	--color-green: limegreen;
 	--color-red: orangered;
+	--color-white: white;
 
 	--font: system-ui, sans-serif;
 
@@ -147,17 +144,13 @@
 }
 
 :focus {
-	outline: var(--px-2) solid var(--color-ix);
+	outline: var(--px-2) solid var(--color-p-7);
 	outline-offset: var(--px-2);
 }
 
-::placeholder {
-	color: var(--color-base-50);
-}
-
 ::selection {
-	background-color: var(--color-text);
-	color: var(--color-text-inverse);
+	background-color: var(--color-p-9);
+	color: var(--color-p-0);
 }
 
 [hidden] {
@@ -165,8 +158,8 @@
 }
 
 html {
-	background-color: var(--color-bg-1);
-	color: var(--color-text);
+	background-color: var(--color-b-2);
+	color: var(--color-p-9);
 	-webkit-text-size-adjust: 100%;
 }
 
@@ -200,26 +193,6 @@ ul {
 	padding-left: var(--size-4);
 }
 
-details,
-.group {
-	background-color: var(--color-bg-2);
-	border-radius: var(--size-1);
-	padding: var(--size-4);
-}
-
-details :last-child {
-	margin-bottom: 0;
-}
-
-summary {
-	color: var(--color-ix);
-	cursor: pointer;
-}
-
-summary:hover {
-	color: var(--color-base-75);
-}
-
 label {
 	display: inline-block;
 	font-size: var(--fs-1);
@@ -228,7 +201,11 @@ label {
 }
 
 a {
-	color: var(--color-ix);
+	color: var(--color-p-7);
+}
+
+a:hover {
+	color: var(--color-p-8);
 }
 
 p {
@@ -236,7 +213,7 @@ p {
 }
 
 .badge {
-	color: var(--color-hint);
+	color: var(--color-p-8);
 	font-size: var(--fs-1);
 	font-weight: normal;
 	line-height: var(--fs-1);
@@ -245,10 +222,10 @@ p {
 
 .button,
 .input[type='file']::file-selector-button {
-	background-color: var(--color-bg-2);
+	background-color: var(--color-b-3);
 	border: none;
 	border-radius: var(--size-1);
-	color: var(--color-ix);
+	color: var(--color-p-7);
 	cursor: pointer;
 	display: inline-flex;
 	flex-shrink: 0;
@@ -260,35 +237,36 @@ p {
 }
 
 .button:hover {
-	background-color: var(--color-bg-2a);
+	background-color: var(--color-p-3);
+	color: var(--color-p-8);
 }
 
 .button--plain {
 	background-color: transparent;
 	border-radius: 0;
-	color: var(--color-ix);
+	color: var(--color-p-7);
 	line-height: var(--lh-1);
 	padding: 0;
 }
 
 .button--plain:hover {
 	background-color: transparent;
-	color: var(--color-hint);
+	color: var(--color-p-8);
 }
 
 .button--primary {
-	background-color: var(--color-ix);
-	color: var(--color-accent-5);
+	background-color: var(--color-p-7);
+	color: var(--color-p-0);
 }
 
 .button--primary:hover {
-	background-color: var(--color-accent-80);
-	color: var(--color-accent-5);
+	background-color: var(--color-p-8);
+	color: var(--color-p-0);
 }
 
 .button:disabled {
-	background-color: var(--color-base-20);
-	color: var(--color-base-40);
+	background-color: var(--color-b-8);
+	color: var(--color-b-4);
 	cursor: not-allowed;
 }
 
@@ -297,16 +275,16 @@ p {
 }
 
 .card {
-	border: var(--px-2) solid var(--color-border);
+	border: var(--px-2) solid var(--color-b-4);
 	border-radius: var(--size-1);
 	padding: var(--size-4);
 }
 
 .input {
-	background-color: var(--color-bg-2);
+	background-color: var(--color-b-4);
 	border: none;
 	border-radius: var(--size-1);
-	color: var(--color-text);
+	color: var(--color-p-9);
 	font-family: var(--font);
 	font-size: var(--fs-1);
 	line-height: var(--lh-1);
@@ -315,7 +293,7 @@ p {
 }
 
 .input:not(:read-only):hover {
-	background-color: var(--color-bg-2a);
+	_background-color: var(--color-p-3);
 }
 
 .input[type='date']::-webkit-calendar-picker-indicator {
@@ -357,7 +335,7 @@ p {
 }
 
 .row {
-	background-color: var(--color-bg-2);
+	background-color: var(--color-b-3);
 	border-radius: var(--size-1);
 	display: flex;
 }
@@ -381,7 +359,7 @@ p {
 }
 
 .row__left:hover {
-	background-color: var(--color-accent-35);
+	background-color: var(--color-p-3);
 }
 
 .row__left:focus {
@@ -389,21 +367,21 @@ p {
 }
 
 .row__primary {
-	color: var(--color-ix);
-	color: var(--color-text);
+	color: var(--color-p-7);
+	color: var(--color-p-9);
 	display: block;
 	font-size: var(--fs-2);
 	grid-area: primary;
 }
 
 .row__secondary {
-	color: var(--color-hint);
+	color: var(--color-p-8);
 	grid-area: secondary;
 	line-height: var(--lh-1);
 }
 
 .row__tertiary {
-	color: var(--color-hint);
+	color: var(--color-p-8);
 	grid-area: tertiary;
 	padding-left: var(--size-2);
 }
@@ -416,36 +394,20 @@ p {
 
 /* Utilities */
 
-.u-bg-85 {
-	background-color: var(--color-base-15);
-}
-
-.u-bg-90 {
-	background-color: var(--color-base-10);
-}
-
-.u-bg-95 {
-	background-color: var(--color-base-5);
-}
-
-.u-bg-100 {
-	background-color: var(--color-base-0);
-}
-
 .u-block {
 	display: block;
 }
 
 .u-border-bottom {
-	border-bottom: var(--px-2) solid var(--color-border);
+	border-bottom: var(--px-2) solid var(--color-b-4);
 }
 
 .u-color-hint {
-	color: var(--color-hint);
+	color: var(--color-p-8);
 }
 
 .u-color-ix {
-	color: var(--color-ix);
+	color: var(--color-p-7);
 }
 
 .u-flex {
