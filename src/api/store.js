@@ -44,21 +44,25 @@ export function createRemoteStore(id) {
 	return getOrCreate(cache, cacheKey, async () => {
 		const store = await createLocalStore(id);
 		const { storeId, doc } = store;
-		const remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
+		let remoteProvider;
 		const bc = new BroadcastChannel(`bc-${id}`);
 		const postCount = () => bc.postMessage(['count', remoteProvider.awareness.getStates().size]);
+		const createRemoteProvider = () => {
+			remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
+			remoteProvider.awareness.on('change', postCount);
+		};
+		createRemoteProvider();
 		bc.onmessage = (event) => {
 			const [type] = event.data;
 			if (type === 'getCount') {
 				postCount();
 			}
 		};
-		remoteProvider.awareness.on('change', postCount);
 		self.addEventListener('offline', () => {
-			remoteProvider.disconnect();
+			remoteProvider.destroy();
 		});
 		self.addEventListener('online', () => {
-			remoteProvider.connect();
+			createRemoteProvider();
 		});
 		const clearData = async () => {
 			bc.close();
