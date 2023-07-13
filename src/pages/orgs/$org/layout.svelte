@@ -5,6 +5,17 @@
 	import Layout from '@src/pages/page.svelte';
 
 	const location = route.split('/').slice(2).join('/');
+	let awarenessCount = -1;
+	$: connected = awarenessCount === -1 || awarenessCount > 1;
+
+	const bc = new BroadcastChannel(`bc-${org.id}`);
+	bc.onmessage = (event) => {
+		const [type, data] = event.data;
+		if (type === 'count') {
+			awarenessCount = data;
+		}
+	};
+	bc.postMessage(['getCount']);
 </script>
 
 <Layout>
@@ -16,6 +27,10 @@
 				</a>
 				<span class="u-flex-grow">
 					<a class="org-link u-text-bold" href={org.url}>{org.name}</a>
+					<span aria-hidden={connected} class:u-hidden={connected}>
+						<strong aria-hidden="true" class="u-color-ix">*</strong>
+						<span class="u-sr-only">(disconnected)</span>
+					</span>
 				</span>
 				<nav aria-label="Organization" class="list-plain list-plain--inline u-gap-4">
 					<NavLink href={org.url} id="events" {location}>Events</NavLink>

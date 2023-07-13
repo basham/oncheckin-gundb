@@ -45,7 +45,17 @@ export function createRemoteStore(id) {
 		const store = await createLocalStore(id);
 		const { storeId, doc } = store;
 		const remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
+		const bc = new BroadcastChannel(`bc-${id}`);
+		const postCount = () => bc.postMessage(['count', remoteProvider.awareness.getStates().size]);
+		bc.onmessage = (event) => {
+			const [type] = event.data;
+			if (type === 'getCount') {
+				postCount();
+			}
+		};
+		remoteProvider.awareness.on('change', postCount);
 		const clearData = async () => {
+			bc.close();
 			await store.clearData();
 			remoteProvider.destroy();
 			cache.delete(cacheKey);

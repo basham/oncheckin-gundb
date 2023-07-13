@@ -418,6 +418,18 @@ p {
 	align-items: flex-end;
 }
 
+.u-flex-grow {
+	flex-grow: 1;
+}
+
+.u-flex-space {
+	justify-content: space-between;
+}
+
+.u-flex-wrap {
+	flex-wrap: wrap;
+}
+
 .u-gap-2px {
 	gap: var(--px-2);
 }
@@ -430,16 +442,8 @@ p {
 	gap: var(--size-4);
 }
 
-.u-flex-grow {
-	flex-grow: 1;
-}
-
-.u-flex-space {
-	justify-content: space-between;
-}
-
-.u-flex-wrap {
-	flex-wrap: wrap;
+.u-hidden {
+	visibility: hidden;
 }
 
 .u-lh-1 {
