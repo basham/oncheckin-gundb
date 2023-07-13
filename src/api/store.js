@@ -54,6 +54,12 @@ export function createRemoteStore(id) {
 			}
 		};
 		remoteProvider.awareness.on('change', postCount);
+		self.addEventListener('offline', () => {
+			remoteProvider.disconnect();
+		});
+		self.addEventListener('online', () => {
+			remoteProvider.connect();
+		});
 		const clearData = async () => {
 			bc.close();
 			await store.clearData();
