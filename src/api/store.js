@@ -3,7 +3,7 @@ import * as Y from 'yjs';
 import { IndexeddbPersistence, storeState } from 'y-indexeddb';
 import { WebsocketProvider } from 'y-websocket';
 import { APP_ID, SERVER_URL } from '../constants.js';
-import { getOrCreate } from '../util.js';
+import { debounce, getOrCreate } from '../util.js';
 
 export { Y };
 
@@ -39,6 +39,8 @@ export function createLocalStore(id) {
 	});
 }
 
+const messageReconnectTimeout = 30000;
+
 export function createRemoteStore(id) {
 	const cacheKey = `remote-store:${id}`;
 	return getOrCreate(cache, cacheKey, async () => {
@@ -51,25 +53,51 @@ export function createRemoteStore(id) {
 			remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
 			remoteProvider.awareness.on('change', postCount);
 		};
+		const destroyRemoteProvider = () => {
+			if (!remoteProvider) {
+				return;
+			}
+			remoteProvider.destroy();
+			remoteProvider = null;
+		};
 		createRemoteProvider();
+
+		// Reset the provider if it has been awhile since the last message;
+		const resetInterval = setInterval(() => {
+			if (!remoteProvider) {
+				return;
+			}
+			const diff = Date.now() - remoteProvider.wsLastMessageReceived;
+			if (diff < messageReconnectTimeout) {
+				return;
+			}
+			destroyRemoteProvider();
+			createRemoteProvider();
+		}, 1000);
+
+		// Reset the provider when back online after going offline.
+		self.addEventListener('offline', () => {
+			destroyRemoteProvider();
+		});
+		self.addEventListener('online', () => {
+			createRemoteProvider();
+		});
+
 		bc.onmessage = (event) => {
 			const [type] = event.data;
 			if (type === 'getCount') {
 				postCount();
 			}
 		};
-		self.addEventListener('offline', () => {
-			remoteProvider.destroy();
-		});
-		self.addEventListener('online', () => {
-			createRemoteProvider();
-		});
+
 		const clearData = async () => {
 			bc.close();
+			clearInterval(resetInterval);
 			await store.clearData();
 			remoteProvider.destroy();
 			cache.delete(cacheKey);
 		};
+
 		return { ...store, clearData };
 	});
 }
