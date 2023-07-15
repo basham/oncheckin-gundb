@@ -23,9 +23,9 @@
 	"homepage": "https://github.com/basham/oncheckin-app#readme",
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "2.4.2",
-		"prettier": "3.0.0",
+		"prettier": "2.8.8",
 		"prettier-plugin-svelte": "2.10.1",
-		"vite": "4.4.3",
+		"vite": "4.4.4",
 		"vite-plugin-pwa": "0.16.4",
 		"workbox-build": "7.0.0",
 		"workbox-precaching": "7.0.0",
