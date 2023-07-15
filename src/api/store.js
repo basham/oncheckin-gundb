@@ -48,10 +48,14 @@ export function createRemoteStore(id) {
 		const { storeId, doc } = store;
 		let remoteProvider;
 		const bc = new BroadcastChannel(`bc-${id}`);
-		const postCount = () => bc.postMessage(['count', remoteProvider.awareness.getStates().size]);
+		const sendCount = () => {
+			const value = remoteProvider ? remoteProvider.awareness.getStates().size : 0;
+			console.log('COUNT', value, id);
+			return bc.postMessage(['count', value]);
+		};
 		const createRemoteProvider = () => {
 			remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
-			remoteProvider.awareness.on('change', postCount);
+			remoteProvider.awareness.on('change', sendCount);
 		};
 		const destroyRemoteProvider = () => {
 			if (!remoteProvider) {
@@ -59,6 +63,7 @@ export function createRemoteStore(id) {
 			}
 			remoteProvider.destroy();
 			remoteProvider = null;
+			sendCount();
 		};
 		createRemoteProvider();
 
@@ -71,8 +76,8 @@ export function createRemoteStore(id) {
 			if (diff < messageReconnectTimeout) {
 				return;
 			}
-			destroyRemoteProvider();
-			createRemoteProvider();
+			//destroyRemoteProvider();
+			//createRemoteProvider();
 		}, 1000);
 
 		// Reset the provider when back online after going offline.
@@ -86,7 +91,7 @@ export function createRemoteStore(id) {
 		bc.onmessage = (event) => {
 			const [type] = event.data;
 			if (type === 'getCount') {
-				postCount();
+				sendCount();
 			}
 		};
 
