@@ -57,7 +57,13 @@ export function createRemoteStore(id) {
 			remoteProvider = new WebsocketProvider(SERVER_URL, storeId, doc);
 			remoteProvider.awareness.on('change', sendCount);
 		};
+		let wsLastMessageReceived;
+		let wsMessageDiff = [];
+		let upperOutlier;
 		const destroyRemoteProvider = () => {
+			wsLastMessageReceived = undefined;
+			wsMessageDiff = [];
+			upperOutlier = undefined;
 			if (!remoteProvider) {
 				return;
 			}
@@ -67,17 +73,65 @@ export function createRemoteStore(id) {
 		};
 		createRemoteProvider();
 
+		function sortNumbers (a, b) {
+			return a - b;
+		}
+
+		function median (source) {
+			const dataset = [...source].sort(sortNumbers);
+			const size = dataset.length;
+			const middle = Math.floor(size / 2);
+			if (size % 2 === 0) {
+				return (dataset[middle - 1] + dataset[middle]) / 2;
+			}
+			return dataset[middle];
+		}
+
+		function outliers (source, threshold = 1.5) {
+			const dataset = [...source].sort(sortNumbers);
+			const size = dataset.length;
+			if (size < 4) {
+				return [];
+			}
+			const middle = Math.floor(size / 2);
+			const firstHalf = dataset.slice(0, middle);
+			const secondHalf = dataset.slice(middle * -1);
+			const q1 = median(firstHalf);
+			const q3 = median(secondHalf);
+			// Interquartile Range
+			const iqr = q3 - q1;
+			const outlier = iqr * threshold;
+			const upperOutlier = q3 + outlier;
+			const lowerOutlier = q1 - outlier;
+			return [lowerOutlier, upperOutlier];
+		}
+
 		// Reset the provider if it has been awhile since the last message;
 		const resetInterval = setInterval(() => {
 			if (!remoteProvider) {
 				return;
 			}
+
+			if (wsLastMessageReceived !== remoteProvider.wsLastMessageReceived) {
+				if (wsLastMessageReceived) {
+					const diff = remoteProvider.wsLastMessageReceived - wsLastMessageReceived;
+					wsMessageDiff.push(diff);
+					const [, uo] = outliers(wsMessageDiff);
+					upperOutlier = uo;
+				}
+				wsLastMessageReceived = remoteProvider.wsLastMessageReceived;
+			}
+
 			const diff = Date.now() - remoteProvider.wsLastMessageReceived;
-			if (diff < messageReconnectTimeout) {
+			const shortWait = diff < (upperOutlier || messageReconnectTimeout);
+			const offline = !self.navigator.onLine;
+			if (shortWait || offline) {
 				return;
 			}
-			//destroyRemoteProvider();
-			//createRemoteProvider();
+
+			console.log('OUTLIER', upperOutlier || messageReconnectTimeout, diff);
+			destroyRemoteProvider();
+			createRemoteProvider();
 		}, 1000);
 
 		// Reset the provider when back online after going offline.
