@@ -5,6 +5,7 @@ import { getOrgDB } from './org';
 import { encodeCheckInId } from './util.js';
 
 const cache = new Map();
+const invalidDate = new Date(NaN);
 
 export function computeOrg(orgId) {
 	return getOrCreate(cache, orgId, () => calc(orgId));
@@ -159,7 +160,7 @@ function getEventCount(data, events) {
 		return events.length;
 	}
 	const count = data.get(id).get('count');
-	const date = parseISO(count.date);
+	const date = count.date ? parseISO(count.date) : invalidDate;
 	const countAfter = events
 		.filter(({ dateObj }) => isAfter(dateObj, date))
 		.length;
@@ -309,7 +310,7 @@ function getInitAttendsCount(data, eventIds, eventsById, participant) {
 		return 0;
 	}
 	const count = data.get(id).get('count');
-	const date = parseISO(count.date);
+	const date = count.date ? parseISO(count.date) : invalidDate;
 	const countAfter = [...eventIds]
 		.map((eid) => eventsById.get(eid))
 		.filter(({ dateObj }) => isAfter(dateObj, date))
@@ -329,7 +330,7 @@ function getInitOrganizesCount(data, eventIds, eventsById, participant, indexes)
 			return indexes.byCheckInId.get(checkInId).has(target);
 		});
 	const count = data.get(id).get('count');
-	const date = parseISO(count.date);
+	const date = count.date ? parseISO(count.date) : invalidDate;
 	const countAfter = organizes
 		.map((eid) => eventsById.get(eid))
 		.filter(({ dateObj }) => isAfter(dateObj, date))
