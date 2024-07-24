@@ -21,6 +21,7 @@ export const {
 	hares,
 	org,
 	orgs,
+	params,
 	participant,
 	participants,
 	participantsWithMostAttendances,

@@ -181,7 +181,8 @@ h1:focus {
 	outline: none;
 }
 
-h2 {
+h2,
+.h2 {
 	font-size: var(--fs-3);
 	font-weight: bold;
 	line-height: var(--lh-3);
@@ -366,8 +367,19 @@ p {
 	position: relative;
 }
 
+.row__left[aria-current] {
+	background-color: var(--color-p-7);
+}
+
+.row__left[aria-current] .row__primary {
+	color: var(--color-p-0);
+}
+
+.row__left[aria-current]:hover {
+	background-color: var(--color-p-8);
+}
+
 .row__primary {
-	color: var(--color-p-7);
 	color: var(--color-p-9);
 	display: block;
 	font-size: var(--fs-2);
@@ -412,6 +424,10 @@ p {
 
 .u-flex {
 	display: flex;
+}
+
+.u-flex-center {
+	align-items: center;
 }
 
 .u-flex-end {
