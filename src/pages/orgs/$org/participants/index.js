@@ -1,7 +1,7 @@
 import { computeOrg } from '@src/api/org-signal.js';
 
 const namedValues = 'all|true|false|ready'.split('|');
-const sortValues = 'event|attendance|host|name'.split('|');
+const sortValues = 'event|runs|hosts|name'.split('|');
 
 export async function get({ data }) {
 	const { org } = data;
@@ -25,13 +25,30 @@ export async function get({ data }) {
 			const namedStatus = getNamedStatus({ alias: p.alias, runCount });
 			return {
 				...p,
-				lastEvent,
 				hostCount,
-				runCount,
-				namedStatus
+				lastEvent,
+				namedStatus,
+				runCount
 			};
 		})
-		.filter((p) => params.named === namedValues[0] || p.namedStatus === params.named);
+		.filter((p) => {
+			if (params.named === namedValues[0]) {
+				return true;
+			}
+			if (p.namedStatus.includes(params.named)) {
+				return true;
+			}
+			return false;
+		})
+		.filter((p) => {
+			if (params.sort === 'hosts') {
+				return p.hostCount > 0;
+			}
+			if (params.sort === 'runs') {
+				return p.runCount > 0;
+			}
+			return true;
+		});
 
 	const template = { h1, params, participants };
 	return { template };
@@ -39,10 +56,10 @@ export async function get({ data }) {
 
 function getNamedStatus ({ alias, runCount }) {
 	if (alias) {
-		return 'true';
+		return ['true'];
 	}
 	if (runCount >= 5) {
-		return 'ready';
+		return ['ready', 'false'];
 	}
-	return 'false';
+	return ['false'];
 }

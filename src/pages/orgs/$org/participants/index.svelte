@@ -11,8 +11,8 @@
 		['Not named', 'named', 'false'],
 		['Ready for name', 'named', 'ready'],
 		['By last event', 'sort', 'event'],
-		['By hashes', 'sort', 'attendance'],
-		['By hares', 'sort', 'host'],
+		['By hashes', 'sort', 'runs'],
+		['By hares', 'sort', 'hosts'],
 		['By name', 'sort', 'name']
 	].map(([label, key, value]) => {
 		const { searchParams } = new URL(location);
@@ -26,7 +26,13 @@
 		return { active, label, url };
 	});
 
-	const groups = sortByEvent();
+	const sortOptions = {
+		event: sortByEvent,
+		runs: sortByRunCount,
+		hosts: sortByHostCount,
+		name: sortByName
+	};
+	const groups = sortOptions[params.sort]();
 
 	function sortByEvent () {
 		const events = new Map();
@@ -54,6 +60,72 @@
 					name,
 					description,
 					url,
+					items
+				};
+			});
+	}
+
+	function sortByRunCount () {
+		const groups = new Map();
+		participants.forEach((p) => {
+			const { runCount } = p;
+			if (!groups.has(runCount)) {
+				groups.set(runCount, new Set());
+			}
+			groups.get(runCount).add(p);
+		});
+		return [...groups.keys()]
+			.sort((a, b) => a - b)
+			.reverse()
+			.map((runCount) => {
+				const name = runCount;
+				const items = [...groups.get(runCount).values()];
+				return {
+					name,
+					items
+				};
+			});
+	}
+
+	function sortByHostCount () {
+		const groups = new Map();
+		participants.forEach((p) => {
+			const { hostCount } = p;
+			if (!groups.has(hostCount)) {
+				groups.set(hostCount, new Set());
+			}
+			groups.get(hostCount).add(p);
+		});
+		return [...groups.keys()]
+			.sort((a, b) => a - b)
+			.reverse()
+			.map((hostCount) => {
+				const name = hostCount;
+				const items = [...groups.get(hostCount).values()];
+				return {
+					name,
+					items
+				};
+			});
+	}
+
+	function sortByName () {
+		const groups = new Map();
+		participants.forEach((p) => {
+			const { alias = '', fullName = '' } = p;
+			const firstLetter = (alias || fullName)[0]?.toUpperCase();
+			if (!groups.has(firstLetter)) {
+				groups.set(firstLetter, new Set());
+			}
+			groups.get(firstLetter).add(p);
+		});
+		return [...groups.keys()]
+			.sort()
+			.map((firstLetter) => {
+				const name = firstLetter;
+				const items = [...groups.get(firstLetter).values()];
+				return {
+					name,
 					items
 				};
 			});
@@ -93,10 +165,12 @@
 	{#each groups as group}
 		<h3 class="h2">
 			{group.name}
-			{#if group.url}
-				<a class="badge" href={group.url}>{group.description}</a>
-			{:else}
-				<span class="badge">{group.description}</span>
+			{#if group.description}
+				{#if group.url}
+					<a class="badge" href={group.url}>{group.description}</a>
+				{:else}
+					<span class="badge">{group.description}</span>
+				{/if}
 			{/if}
 		</h3>
 		<Participants participants={group.items} />

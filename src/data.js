@@ -32,3 +32,5 @@ export const {
 	upcomingEvents,
 	years,
 } = data;
+
+window.data = data;
