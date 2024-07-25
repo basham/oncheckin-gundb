@@ -1,6 +1,6 @@
 import { computeOrg } from '@src/api/org-signal.js';
 
-const namedValues = 'true|false|ready'.split('|');
+const namedValues = 'all|true|false|ready'.split('|');
 const sortValues = 'event|attendance|host|name'.split('|');
 
 export async function get({ data }) {
@@ -31,7 +31,7 @@ export async function get({ data }) {
 				namedStatus
 			};
 		})
-		.filter((p) => p.namedStatus === params.named);
+		.filter((p) => params.named === namedValues[0] || p.namedStatus === params.named);
 
 	const template = { h1, params, participants };
 	return { template };
