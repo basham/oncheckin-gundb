@@ -149,7 +149,6 @@ function respondWithTemplate(data) {
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="msapplication-starturl" content="/">
 		<meta name="theme-color" content="#190f05">
-		<link rel="manifest" href="/manifest.json">
 		<link rel="manifest" href="/manifest.webmanifest">
 		<link rel="stylesheet" href="/style.css">
 		<link rel="icon" href="/icon.svg" type="image/svg+xml">
