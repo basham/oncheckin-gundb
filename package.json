@@ -8,8 +8,7 @@
 		"build": "vite build",
 		"format": "prettier --write .",
 		"preview": "vite preview --open",
-		"start": "vite --open",
-		"test": "standard"
+		"start": "vite --open"
 	},
 	"repository": {
 		"type": "git",
