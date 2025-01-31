@@ -1,13 +1,16 @@
 <script>
 	import Icon from './icon.svelte';
 
-	export let id = 'lookup';
-	export let isSelected = () => false;
-	export let label = '';
-	export let onSelected = () => {};
-	export let options = [];
-	export let render = () => {};
-	export let score = () => 1;
+	let {
+		class: _class,
+		id = 'lookup',
+		isSelected = () => false,
+		label = '',
+		onSelected = () => {},
+		options = [],
+		render = () => {},
+		score = () => 1
+	} = $props();
 
 	const inputId = `${id}-input`;
 	const labelId = `${id}-label`;
@@ -15,11 +18,10 @@
 	const optionId = `${id}-option`;
 	const maxResults = 10;
 
-	let query = '';
-	let results = [];
-	let selectedIndex = 0;
-
-	$: resultsCount = results.length;
+	let query = $state('');
+	let results = $state([]);
+	let selectedIndex = $state(0);
+	let resultsCount = $derived(results.length);
 
 	function handleInput(event) {
 		const { value } = event.target;
@@ -72,7 +74,7 @@
 	}
 </script>
 
-<div class={$$props.class}>
+<div class={_class}>
 	<label for={inputId} id={labelId}>
 		{label}
 	</label>
@@ -89,8 +91,8 @@
 			autocomplete="off"
 			class="input"
 			id={inputId}
-			on:input={handleInput}
-			on:keydown={handleKeyDown}
+			oninput={handleInput}
+			onkeydown={handleKeyDown}
 			type="text"
 			value={query}
 		/>
@@ -98,15 +100,15 @@
 	{#if resultsCount && query.length}
 		<ul aria-labelledby={labelId} class="listbox" id={listboxId} role="listbox">
 			{#each results as option, i}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_mouse_events_have_key_events -->
 				<li
 					aria-selected={i === selectedIndex}
 					class="option"
 					data-index={i}
 					id={`${optionId}-${i}`}
-					on:click={handleOptionClick}
-					on:mouseover={handleOptionMouseOver}
+					onclick={handleOptionClick}
+					onmouseover={handleOptionMouseOver}
 					role="option"
 				>
 					<Icon name="check" visible={isSelected(option)} />

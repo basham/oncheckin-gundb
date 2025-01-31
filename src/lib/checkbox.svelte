@@ -1,13 +1,16 @@
 <script>
 	import Icon from './icon.svelte';
 
-	export let checked = false;
-	export let id = '';
-	export let label = '';
-	export let name = '';
+	let {
+		checked = false,
+		class: _class,
+		id = '',
+		label = '',
+		name = ''
+	} = $props();
 </script>
 
-<div class={$$props.class}>
+<div class={_class}>
 	<input bind:checked class="u-sr-only" {id} {name} type="checkbox" />
 	<label class="u-m-0" for={id}>
 		<span class="checkbox">

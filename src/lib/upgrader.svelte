@@ -8,35 +8,35 @@
 	const PROMPT = Symbol();
 	const UPGRADING = Symbol();
 
-	let state = IDLE;
+	let _state = $state(IDLE);
 
 	const updateSW = registerSW({
 		onNeedRefresh() {
-			state = PROMPT;
+			_state = PROMPT;
 		},
 	});
 
 	function upgrade() {
-		state = UPGRADING;
+		_state = UPGRADING;
 		updateSW();
 	}
 
 	function dismiss() {
-		state = IDLE;
+		_state = IDLE;
 	}
 </script>
 
-{#if state === PROMPT}
+{#if _state === PROMPT}
 	<div class="prompt">
 		<div class="message u-ts-2">New version available</div>
 		<div class="buttons">
-			<button class="button button--primary button--small" on:click={upgrade}>
+			<button class="button button--primary button--small" onclick={upgrade}>
 				Upgrade
 			</button>
 			<button
 				aria-label="Dismiss"
 				class="button button--small"
-				on:click={dismiss}
+				onclick={dismiss}
 			>
 				<Icon name="close" />
 			</button>
@@ -44,7 +44,7 @@
 	</div>
 {/if}
 
-{#if state === UPGRADING}
+{#if _state === UPGRADING}
 	<div class="prompt">
 		<div class="message u-ts-2">Upgrading&hellip;</div>
 	</div>

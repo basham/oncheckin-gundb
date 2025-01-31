@@ -1,16 +1,15 @@
 <script>
-	export let href = './';
-	export let isCurrent = false;
+	let { href = './', isCurrent = false, children } = $props();
 </script>
 
 {#if isCurrent}
 	<li aria-current="page">
-		<slot />
+		{@render children?.()}
 	</li>
 {:else}
 	<li>
 		<a {href}>
-			<slot />
+			{@render children?.()}
 		</a>
 	</li>
 {/if}

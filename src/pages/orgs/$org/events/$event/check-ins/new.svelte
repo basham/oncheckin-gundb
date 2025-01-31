@@ -10,8 +10,8 @@
 	import RadioGroup from '@src/lib/radio-group.svelte';
 	import Layout from '../layout.svelte';
 
-	let checkInType = 'existing-participant';
-	let selectedParticipant = null;
+	let checkInType = $state('existing-participant');
+	let selectedParticipant = $state(null);
 
 	const compare = new StringComparison();
 
@@ -76,7 +76,7 @@
 
 <Layout>
 	<h2>{h2}</h2>
-	<form autocomplete="off" method="post" on:submit={submit}>
+	<form autocomplete="off" method="post" onsubmit={submit}>
 		<RadioGroup
 			bind:value={checkInType}
 			legend="Check in"
@@ -114,7 +114,7 @@
 							aria-describedby="selectedParticipantName"
 							class="button button--small"
 							id="unselect-participant"
-							on:click={unselectParticipant}
+							onclick={unselectParticipant}
 							type="button"
 						>
 							<Icon name="close" />

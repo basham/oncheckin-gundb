@@ -1,12 +1,14 @@
 <script>
 	import Fieldset from './fieldset.svelte';
 
-	export let legend = '';
-	export let name = '';
-	export let options = [];
-	export let value = null;
+	let {
+		legend = '',
+		name = '',
+		options = [],
+		value = $bindable(null)
+	} = $props();
 
-	$: _options = options.map((label) => {
+	let _options = $derived(options.map((label) => {
 		const value = label.toLowerCase().replace(/ /g, '-');
 		return {
 			id: `${name}-${value}-radio`,
@@ -14,7 +16,7 @@
 			name,
 			value,
 		};
-	});
+	}));
 </script>
 
 <Fieldset {legend}>
@@ -31,7 +33,7 @@
 					value={option.value}
 				/>
 				<label class="u-m-0" for={option.id}>
-					<span class="radio" />
+					<span class="radio"></span>
 					<span class="text">{option.label}</span>
 				</label>
 			</li>

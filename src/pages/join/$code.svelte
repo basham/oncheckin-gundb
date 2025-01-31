@@ -6,11 +6,11 @@
 
 	const IDLE = Symbol('idle');
 	const PENDING = Symbol('pending');
-	let state = IDLE;
-	$: pending = state === PENDING;
+	let _state = $state(IDLE);
+	let pending = $derived(_state === PENDING);
 
 	function submit () {
-		state = PENDING;
+		_state = PENDING;
 	}
 </script>
 
@@ -25,7 +25,7 @@
 	<form
 		class:u-sr-only={pending}
 		method="post"
-		on:submit={submit}
+		onsubmit={submit}
 	>
 		<input type="hidden" name="id" value={id} />
 		<div class="u-m-top-6">

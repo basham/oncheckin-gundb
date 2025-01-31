@@ -1,6 +1,5 @@
 <script>
-	export let name = '';
-	export let date = '';
+	let { name = '', date = '' } = $props();
 </script>
 
 <div class="u-m-top-4">

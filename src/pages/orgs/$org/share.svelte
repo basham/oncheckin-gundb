@@ -4,7 +4,7 @@
 	import QRCode from '@src/lib/qr-code.svelte';
 	import Toast from '@src/lib/toast.svelte';
 
-	let toast;
+	let toast = $state();
 
 	function copyShareLink(event) {
 		const text = document.getElementById('invite-code-input');
@@ -31,7 +31,7 @@
 			type="text"
 			value={org.inviteCode}
 		/>
-		<button class="button button--primary" on:click={copyShareLink}>
+		<button class="button button--primary" onclick={copyShareLink}>
 			Copy invite code
 		</button>
 	</div>

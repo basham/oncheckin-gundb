@@ -1,5 +1,5 @@
 <script>
-	export let events = [];
+	let { events = [] } = $props();
 </script>
 
 {#if events.length}

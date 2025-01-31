@@ -1,7 +1,7 @@
 <script>
 	import Layout from '@src/pages/layout.svelte';
 
-	let files;
+	let files = $state();
 	let isSubmitting = false;
 
 	function submit(event) {
@@ -25,7 +25,7 @@
 </script>
 
 <Layout>
-	<form class="u-m-top-6" on:submit={submit}>
+	<form class="u-m-top-6" onsubmit={submit}>
 		<div>
 			<label for="file">File</label>
 			<br />

@@ -34,7 +34,7 @@
 					name="notes"
 					rows="5"
 					value={notes}
-				/>
+				></textarea>
 			</div>
 		</Fieldset>
 		<div class="u-m-top-4">

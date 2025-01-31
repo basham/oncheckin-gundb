@@ -1,7 +1,7 @@
 <script>
-	let active = false;
+	let active = $state(false);
 	let duration = 3000;
-	let message = '';
+	let message = $state('');
 
 	export function dispatch(msg) {
 		message = msg;

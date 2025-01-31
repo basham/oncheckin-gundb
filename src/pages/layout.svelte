@@ -2,6 +2,8 @@
 	import { h1 } from '@src/data.js';
 	import { APP_NAME } from '@src/constants.js';
 	import Layout from './page.svelte';
+
+	let { children } = $props();
 </script>
 
 <Layout>
@@ -14,7 +16,7 @@
 			{#if h1}
 				<h1>{h1}</h1>
 			{/if}
-			<slot />
+			{@render children?.()}
 		</main>
 	</div>
 </Layout>

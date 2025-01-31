@@ -2,8 +2,7 @@
 	import QRious from 'qrious';
 	import { onMount } from 'svelte';
 
-	export let canvasId = 'qr-code-canvas';
-	export let code;
+	let { canvasId = 'qr-code-canvas', code } = $props();
 
 	onMount(() => {
 		new QRious({
@@ -15,4 +14,4 @@
 	});
 </script>
 
-<canvas id={canvasId} />
+<canvas id={canvasId}></canvas>

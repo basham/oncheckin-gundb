@@ -1,6 +1,10 @@
+<script>
+	let { children } = $props();
+</script>
+
 <nav aria-label="Breadcrumbs">
 	<ol class="u-p-0">
-		<slot />
+		{@render children?.()}
 	</ol>
 </nav>
 

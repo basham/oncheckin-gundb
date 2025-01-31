@@ -1,5 +1,5 @@
 <script>
-	export let participants = [];
+	let { participants = [] } = $props();
 </script>
 
 <ul class="list-plain u-gap-2px u-m-top-2">

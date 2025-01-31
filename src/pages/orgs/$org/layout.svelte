@@ -4,9 +4,10 @@
 	import NavLink from '@src/lib/nav-link.svelte';
 	import Layout from '@src/pages/page.svelte';
 
+	let { children } = $props();
 	const location = route.split('/').slice(2).join('/');
-	let awarenessCount = -1;
-	$: connected = awarenessCount === -1 || awarenessCount > 1;
+	let awarenessCount = $state(-1);
+	let connected = $derived(awarenessCount === -1 || awarenessCount > 1);
 
 	const bc = new BroadcastChannel(`bc-${org.id}`);
 	bc.onmessage = (event) => {
@@ -49,7 +50,7 @@
 		</div>
 	</header>
 	<main class="layout-content u-p-bottom-6">
-		<slot />
+		{@render children?.()}
 	</main>
 </Layout>
 

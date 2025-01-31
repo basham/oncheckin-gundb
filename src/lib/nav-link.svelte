@@ -1,11 +1,14 @@
 <script>
-	export let href;
-	export let id = null;
-	export let location = null;
+	let {
+		href,
+		id = null,
+		location = null,
+		children
+	} = $props();
 </script>
 
 <a aria-current={location === id ? 'page' : null} {href}>
-	<slot />
+	{@render children?.()}
 </a>
 
 <style>

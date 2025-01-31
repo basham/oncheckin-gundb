@@ -2,7 +2,7 @@
 	import Checkbox from './checkbox.svelte';
 	import Fieldset from './fieldset.svelte';
 
-	export let host = false;
+	let { host = $bindable(false) } = $props();
 </script>
 
 <Fieldset>

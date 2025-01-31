@@ -3,8 +3,8 @@
 	import { onMount } from 'svelte';
 	import Layout from '@src/pages/layout.svelte';
 
-	export let videoId = 'qr-scanner';
-	let valid = true;
+	let { videoId = 'qr-scanner' } = $props();
+	let valid = $state(true);
 	let validTimer;
 
 	onMount(() => {
@@ -49,7 +49,7 @@
 <Layout>
 	<p class="u-m-top-4">Scan the invite code (in the format of a QR code) on the device of someone who can access the organization you want to join.</p>
 	<p class="u-m-top-4">Alternatively, <a href="/orgs/code/">enter the invite code</a> as text.</p>
-	<!-- svelte-ignore a11y-media-has-caption -->
+	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
 		aria-invalid={!valid}
 		class="u-m-top-6 u-mw-full"

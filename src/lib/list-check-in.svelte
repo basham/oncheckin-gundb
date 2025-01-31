@@ -1,10 +1,12 @@
 <script>
 	import { pluralize } from '@src/util.js';
 
-	export let checkIns = [];
-	export let showCheckInCount = false;
-	export let showHostCount = false;
-	export let showLastEventDate = false;
+	let {
+		checkIns = [],
+		showCheckInCount = false,
+		showHostCount = false,
+		showLastEventDate = false
+	} = $props();
 </script>
 
 {#if checkIns.length}

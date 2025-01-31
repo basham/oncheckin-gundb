@@ -4,6 +4,7 @@
 	import NavLink from '@src/lib/nav-link.svelte';
 	import Layout from '@src/pages/orgs/$org/layout.svelte';
 
+	let { children } = $props();
 	const location = route.split('/')[4];
 </script>
 
@@ -36,5 +37,5 @@
 			Edit
 		</NavLink>
 	</nav>
-	<slot />
+	{@render children?.()}
 </Layout>

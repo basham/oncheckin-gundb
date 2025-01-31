@@ -1,4 +1,5 @@
 <script>
+	import { SvelteSet } from 'svelte/reactivity';
 	import { runners } from '@src/data.js';
 	import Icon from '@src/lib/icon.svelte';
 	import Layout from './layout.svelte';
@@ -7,27 +8,24 @@
 		runners.map((checkIn) => [checkIn.participant.id, checkIn])
 	);
 
-	let arrivedIds = new Set();
-	$: waiting = runners.filter(
+	let arrivedIds = $state(new SvelteSet());
+	let waiting = $derived(runners.filter(
 		({ participant }) => !arrivedIds.has(participant.id)
-	);
-	$: arrived = [...arrivedIds].map((id) => runnersMap.get(id)).reverse();
+	));
+	let arrived = $derived([...arrivedIds].map((id) => runnersMap.get(id)).reverse());
 
 	function markAsArrived(event) {
 		const { id } = event.target.dataset;
 		arrivedIds.add(id);
-		arrivedIds = arrivedIds;
 	}
 
 	function markAsWaiting(event) {
 		const { id } = event.target.dataset;
 		arrivedIds.delete(id);
-		arrivedIds = arrivedIds;
 	}
 
 	function reset() {
 		arrivedIds.clear();
-		arrivedIds = arrivedIds;
 	}
 </script>
 
@@ -52,7 +50,7 @@
 							aria-describedby={checkIn.participant.id}
 							class="button button--primary"
 							data-id={checkIn.participant.id}
-							on:click={markAsArrived}
+							onclick={markAsArrived}
 						>
 							Arrived
 						</button>
@@ -67,7 +65,7 @@
 		</h2>
 		{#if arrived.length}
 			<div class="u-m-top-2">
-				<button class="button button--plain" on:click={reset}>Reset</button>
+				<button class="button button--plain" onclick={reset}>Reset</button>
 			</div>
 		{/if}
 	</div>
@@ -88,7 +86,7 @@
 							aria-describedby={checkIn.participant.id}
 							class="button"
 							data-id={checkIn.participant.id}
-							on:click={markAsWaiting}
+							onclick={markAsWaiting}
 						>
 							<span class="u-sr-only">Remove</span>
 							<Icon name="close" />

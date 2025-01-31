@@ -1,6 +1,5 @@
 <script>
-	export let fullName = '';
-	export let alias = '';
+	let { fullName = '', alias = '' } = $props();
 </script>
 
 <div class="u-m-top-4">
