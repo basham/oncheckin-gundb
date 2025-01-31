@@ -1,3 +1,4 @@
+import { mount } from 'svelte';
 import { registerSW } from 'virtual:pwa-register';
 
 // Export this, so then `upgrader.svelte` can import it.
@@ -31,5 +32,5 @@ const module = pages[key(route)] || pages[key(`${route}/index`)];
 if (module) {
 	const Page = (await module()).default;
 	const target = document.body;
-	new Page({ target });
+	mount(Page, { target });
 }

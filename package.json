@@ -22,27 +22,27 @@
 	},
 	"homepage": "https://github.com/basham/oncheckin-app#readme",
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "3.1.1",
-		"prettier": "3.3.3",
-		"prettier-plugin-svelte": "3.2.6",
-		"vite": "5.3.4",
-		"vite-plugin-pwa": "0.20.0",
-		"workbox-build": "7.1.1",
-		"workbox-precaching": "7.1.0",
-		"workbox-routing": "7.1.0",
-		"workbox-window": "7.1.0"
+		"@sveltejs/vite-plugin-svelte": "5.0.3",
+		"prettier": "3.4.2",
+		"prettier-plugin-svelte": "3.3.3",
+		"vite": "6.0.11",
+		"vite-plugin-pwa": "0.21.1",
+		"workbox-build": "7.3.0",
+		"workbox-precaching": "7.3.0",
+		"workbox-routing": "7.3.0",
+		"workbox-window": "7.3.0"
 	},
 	"dependencies": {
 		"@paralleldrive/cuid2": "2.2.2",
-		"date-fns": "3.6.0",
+		"date-fns": "4.1.0",
 		"hermetrics": "1.0.0",
 		"qr-scanner": "1.4.2",
 		"qrious": "4.0.2",
-		"svelte": "4.2.18",
+		"svelte": "5.19.6",
 		"usignal": "0.9.0",
 		"y-indexeddb": "9.0.12",
-		"y-websocket": "2.0.4",
-		"yjs": "13.6.18"
+		"y-websocket": "2.1.0",
+		"yjs": "13.6.23"
 	},
 	"engine": {
 		"node": "16.x"
