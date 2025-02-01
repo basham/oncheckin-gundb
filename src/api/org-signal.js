@@ -18,6 +18,7 @@ async function calc(orgId) {
 		data$.value = db.data;
 	});
 	const org$ = computed(() => getOrg(orgId, data$.value));
+	const orgEvent$ = computed(() => getOrgEvent(data$.value));
 	const orgUrl$ = computed(() => org$.value.url);
 	const events$ = computed(() => getEvents(data$.value, orgUrl$.value));
 	const eventsById$ = computed(() => {
@@ -54,6 +55,7 @@ async function calc(orgId) {
 	const checkInsByParticipantId$ = computed(() => checkIns$.value.checkInsByParticipantId);
 	return signalsToGetters({
 		org$,
+		orgEvent$,
 		eventsById$,
 		events$,
 		pastEvents$,
@@ -152,6 +154,11 @@ function getEvent(id, entity, orgUrl) {
 		url,
 		year
 	};
+}
+
+function getOrgEvent(data) {
+	const id = 'org|event';
+	return data.get(id);
 }
 
 function getEventCount(data, events) {

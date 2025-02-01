@@ -21,6 +21,7 @@ export const {
 	hares,
 	org,
 	orgs,
+	orgEvent,
 	params,
 	participant,
 	participants,

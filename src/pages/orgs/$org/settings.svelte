@@ -1,5 +1,5 @@
 <script>
-	import { h1, org } from '@src/data.js';
+	import { h1, org, orgEvent } from '@src/data.js';
 	import Layout from '@src/pages/orgs/$org/layout.svelte';
 </script>
 
@@ -27,7 +27,8 @@
 	<div class="card u-m-top-2">
 		<p>
 			<span class="u-color-hint">Event count:</span>
-			{org.eventCount}
+			{orgEvent.count.value}
+			(as of {orgEvent.count.date})
 		</p>
 		<ul class="list-plain list-plain--inline u-gap-4 u-m-top-4">
 			<li><a href={`${org.url}event-count/`}>Edit event count</a></li>

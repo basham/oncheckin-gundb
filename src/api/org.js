@@ -46,11 +46,6 @@ export async function deleteCheckIn(orgId, participantId, eventId) {
 	await deleteEntity(orgId, id);
 }
 
-export async function editEventCount(id, count) {
-	const db = await getOrgDB(id);
-	db.settings.set('eventCount', parseInt(count));
-}
-
 export async function getOrgDB(id = createId()) {
 	const store = await createRemoteStore(id);
 	const data = store.doc.getMap('data');
@@ -127,6 +122,15 @@ export async function setEvent(orgId, id, { name, date }) {
 	setComponent(entity, 'event', { name, date });
 	const url = `/orgs/${orgId}/events/${id}/`;
 	return { id, url };
+}
+
+export async function setEventCount(orgId, value) {
+	const id = 'org|event';
+	const entity = await getEntity(orgId, id);
+	if (!entity) {
+		return;
+	}
+	setComponent(entity, 'count', value);
 }
 
 export async function setParticipant(orgId, id, value) {
