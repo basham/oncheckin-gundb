@@ -177,7 +177,7 @@ function getEventCount(data, events) {
 function getParticipants(data, orgUrl) {
 	const participants = [];
 	for (const [id, entity] of data) {
-		const participant = getParticipant(id, entity, orgUrl);
+		const participant = getParticipant(data, id, entity, orgUrl);
 		if (participant) {
 			participants.push(participant);
 		}
@@ -185,7 +185,7 @@ function getParticipants(data, orgUrl) {
 	return participants.sort(sortAsc('displayName'));
 }
 
-function getParticipant(id, entity, orgUrl) {
+function getParticipant(data, id, entity, orgUrl) {
 	if (!entity.has('person')) {
 		return;
 	}
@@ -198,6 +198,8 @@ function getParticipant(id, entity, orgUrl) {
 	const runCount = entity.get('runCount') || 0;
 	const hostCount = entity.get('hostCount') || 0;
 	const url = `${orgUrl}participants/${id}/`;
+	const attendsCount = data.get(`${id}|attends`)?.get('count');
+	const organizesCount = data.get(`${id}|organizes`)?.get('count');
 	return {
 		id,
 		alias,
@@ -207,6 +209,8 @@ function getParticipant(id, entity, orgUrl) {
 		notes,
 		runCount,
 		hostCount,
+		attendsCount,
+		organizesCount,
 		url
 	};
 }

@@ -2,7 +2,7 @@
 	import Icon from './icon.svelte';
 
 	let {
-		checked = false,
+		checked = $bindable(false),
 		class: _class,
 		id = '',
 		label = '',
