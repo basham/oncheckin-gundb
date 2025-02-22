@@ -1,64 +1,49 @@
 import { getOrCreate, setMapFromObject } from '@src/util.js';
-import { createId, createYMap, createRemoteStore } from './store.js';
-import { encodeCheckInId } from './util.js';
+import { components } from './components.js';
+import { loadStore } from './entity.js';
+import { createYMap } from './store.js';
 
 export async function createCheckIn(orgId, participantId, eventId, values) {
-	const id = encodeCheckInId(participantId, eventId);
-	await createEntity(orgId, id);
+	const store = await loadStore(orgId);
+	store.createEntity(participantId, eventId);
 	return await setCheckIn(orgId, participantId, eventId, values);
 }
 
-async function createEntity(orgId, id = createId()) {
-	const { data } = await getOrgDB(orgId);
-	data.set(id, createYMap());
-	return id;
-}
-
 export async function createEvent(orgId, values) {
-	const id = await createEntity(orgId);
-	return await setEvent(orgId, id, values);
+	const store = await loadStore(orgId);
+	const entity = store.createEntity();
+	return await setEvent(orgId, entity.id, values);
 }
 
 export async function createOrg(name) {
-	const id = createId();
-	await createEntity(id, 'org');
-	await renameOrg(id, name);
-	return await getOrg(id);
+	const store = await loadStore();
+	store.createEntity(components.org);
+	await renameOrg(store.id, name);
+	return await getOrg(store.id);
 }
 
 export async function createParticipant(orgId, values) {
-	const id = await createEntity(orgId);
-	return await setParticipant(orgId, id, values);
-}
-
-export async function deleteEntity(orgId, id) {
-	const { data } = await getOrgDB(orgId);
-	data.delete(id);
+	const store = await loadStore(orgId);
+	const entity = store.createEntity();
+	return await setParticipant(orgId, entity.id, values);
 }
 
 export async function deleteOrg(id) {
-	const { clearData } = await getOrgDB(id);
+	const { clearData } = await loadStore(id);
 	await clearData();
 }
 
 export async function deleteCheckIn(orgId, participantId, eventId) {
-	const id = encodeCheckInId(participantId, eventId);
-	await deleteEntity(orgId, id);
-}
-
-export async function getOrgDB(id = createId()) {
-	const store = await createRemoteStore(id);
-	const data = store.doc.getMap('data');
-	return { ...store, data };
-}
-
-async function getEntity(orgId, id) {
-	const { data } = await getOrgDB(orgId);
-	return data.get(id);
+	const store = await loadStore(orgId);
+	store.deleteEntity(participantId, eventId);
 }
 
 export async function getOrg(id) {
-	const entity = await getEntity(id, 'org');
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(components.org);
+	if (!entity) {
+		return;
+	}
 	const name = entity?.get('org').name || '(Organization)';
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
@@ -75,105 +60,93 @@ export async function getOrg(id) {
 }
 
 export async function importOrg(data) {
-	const db = await getOrgDB();
+	const store = await loadStore();
 	const origin = 'importer';
 	const didImport = new Promise((resolve) => {
-		db.doc.on('afterTransaction', (transaction) => {
+		store.doc.on('afterTransaction', (transaction) => {
 			if (transaction.origin === origin) {
-				db.doc.off('afterTransaction', this);
+				store.doc.off('afterTransaction', this);
 				resolve(transaction);
 			}
 		});
 	});
-	db.doc.transact(() => {
+	store.doc.transact(() => {
 		for (const [key, values] of Object.entries(data)) {
-			const entity = getOrCreate(db.data, key, createYMap);
+			const entity = getOrCreate(store.data, key, createYMap);
 			setMapFromObject(entity, values);
 		}
 	}, origin);
 	await didImport;
-	await db.save();
-	return await getOrg(db.id);
+	await store.save();
+	return await getOrg(store.id);
 }
 
-export async function renameOrg(id, name) {
-	const entity = await getEntity(id, 'org');
-	setComponent(entity, 'org', { name });
-}
-
-export async function setCheckIn(orgId, participantId, eventId, { organizes = false }) {
-	const id = encodeCheckInId(participantId, eventId);
-	const entity = await getEntity(orgId, id);
+export async function renameOrg(orgId, name) {
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(components.org);
 	if (!entity) {
 		return;
 	}
-	entity.doc.transact(() => {
-		setRel(entity, participantId, eventId);
-		setTag(entity, 'attends', true);
-		setTag(entity, 'organizes', organizes);
+	entity.set(components.org, { name })
+}
+
+export async function setCheckIn(orgId, participantId, eventId, { organizes = false }) {
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(participantId, eventId);
+	if (!entity) {
+		return;
+	}
+	store.doc.transact(() => {
+		const source = participantId;
+		const target = eventId;
+		entity.set(components.rel, { source, target });
+		entity.set(components.attends);
+		if (organizes) {
+			entity.set(components.organizes);
+		} else {
+			entity.delete(components.organizes);
+		}
 	});
 }
 
 export async function setEvent(orgId, id, { name, date }) {
-	const entity = await getEntity(orgId, id);
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(id);
 	if (!entity) {
 		return;
 	}
-	setComponent(entity, 'event', { name, date });
+	entity.set(components.event, { name, date })
 	const url = `/orgs/${orgId}/events/${id}/`;
 	return { id, url };
 }
 
-export async function setEventCount(orgId, value) {
-	const id = 'org|event';
-	const entity = await getEntity(orgId, id);
+export async function setEventCount(orgId, { date, value }) {
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(components.org, components.event);
 	if (!entity) {
 		return;
 	}
-	setComponent(entity, 'count', value);
+	entity.set(components.count, { date, value });
 }
 
 export async function setParticipant(orgId, id, value) {
-	const entity = await getEntity(orgId, id);
+	const store = await loadStore(orgId);
+	const entity = store.getEntity(id);
 	if (!entity) {
 		return;
 	}
-	const personName = value.personName?.trim();
-	const memberName = value.memberName?.trim();
-	const location = value.location?.trim();
-	const notes = value.notes?.trim();
-	entity.doc.transact(() => {
-		if (personName) {
-			setComponent(entity, 'person', { name: personName, location, notes });
+	store.doc.transact(() => {
+		if (value.personName?.trim()) {
+			const { location, notes, personName: name } = value;
+			entity.set(components.person, { location, name, notes });
 		}
-		if (memberName) {
-			setComponent(entity, 'member', { name: memberName });
+		if (value.memberName?.trim()) {
+			const { memberName: name } = value;
+			entity.set(components.member, { name });
 		} else {
-			deleteComponent(entity, 'member');
+			entity.delete(components.member);
 		}
 	});
 	const url = `/orgs/${orgId}/participants/${id}/`;
 	return { id, url };
-}
-
-function deleteComponent(entity, name) {
-	entity.delete(name);
-}
-
-function setComponent(entity, name, value) {
-	const component = getOrCreate(entity, name, () => ({}));
-	entity.set(name, { ...component, ...value });
-}
-
-function setRel(entity, source, target) {
-	setComponent(entity, 'rel', { source, target });
-}
-
-function setTag(entity, name, value) {
-	if (!entity.has(name) && value) {
-		entity.set(name, 0);
-	}
-	else if (entity.has(name) && !value) {
-		entity.delete(name);
-	}
 }
