@@ -6,18 +6,15 @@ const ids = new Set();
 
 const schemas = {
 	date: z.string().date(),
-	id: z.union([
-		z.enum(ids),
-		z.string().cuid2()
-	]),
+	id: z.string().cuid2().or(z.enum(ids)),
 	tag: z.literal(0).default(0),
 	text: z.string().trim().min(1),
 	textOptional: z.string().trim().optional(),
 };
 
 export const components = createComponents({
-	attends: tagSchema,
-	banned: tagSchema,
+	attends: schemas.tag,
+	banned: schemas.tag,
 	count: z.object({
 		date: schemas.date,
 		value: z.number().int().nonnegative()
@@ -33,9 +30,9 @@ export const components = createComponents({
 		name: schemas.text,
 		shortName: schemas.textOptional,
 		location: schemas.textOptional,
-		url: z.url().optional()
+		url: z.string().url().optional()
 	}),
-	organizes: tagSchema,
+	organizes: schemas.tag,
 	person: z.object({
 		name: schemas.text,
 		notes: schemas.textOptional,
@@ -47,7 +44,7 @@ export const components = createComponents({
 	})
 });
 
-function createComponents (source) {
+function createComponents(source) {
 	const entries = Object.entries(source)
 		.map(([id, schema]) => {
 			ids.add(id);
@@ -57,12 +54,12 @@ function createComponents (source) {
 	return Object.fromEntries(entries);
 }
 
-export function isIdValid (value) {
-	return schemas.key.safeParse(value).success;
+export function isIdValid(value) {
+	return schemas.id.safeParse(value).success;
 }
 
-export function isComponent (item) {
-	return item?.type === COMPONENT || isTag(item);
+export function isComponent(value) {
+	return components[value?.id] === value;
 }
 
 export function isTag (item) {

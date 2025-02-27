@@ -1,7 +1,7 @@
 import { format, isAfter, isBefore, isFuture, isPast, isToday, parseISO, sub } from 'date-fns';
 import { computed, signal } from 'usignal';
 import { getOrCreate, sortAsc, sortDesc } from '@src/util.js';
-import { getOrgDB } from './org';
+import { loadStore } from './entity.js';
 import { encodeCheckInId } from './util.js';
 
 const cache = new Map();
@@ -12,10 +12,10 @@ export function computeOrg(orgId) {
 }
 
 async function calc(orgId) {
-	const db = await getOrgDB(orgId);
-	const data$ = signal(db.data, { equals: false });
-	db.data.observeDeep(() => {
-		data$.value = db.data;
+	const store = await loadStore(orgId);
+	const data$ = signal(store.data, { equals: false });
+	store.data.observeDeep(() => {
+		data$.value = store.data;
 	});
 	const org$ = computed(() => getOrg(orgId, data$.value));
 	const orgEvent$ = computed(() => getOrgEvent(data$.value));

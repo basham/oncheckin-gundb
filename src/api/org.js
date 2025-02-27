@@ -39,12 +39,12 @@ export async function deleteCheckIn(orgId, participantId, eventId) {
 }
 
 export async function getOrg(id) {
-	const store = await loadStore(orgId);
+	const store = await loadStore(id);
 	const entity = store.getEntity(components.org);
 	if (!entity) {
 		return;
 	}
-	const name = entity?.get('org').name || '(Organization)';
+	const name = entity.get(components.org)?.name || '(Organization)';
 	const url = `/orgs/${id}/`;
 	const openUrl = `${url}open/`;
 	const inviteCode = self.btoa(JSON.stringify({ id, name }));
@@ -55,7 +55,7 @@ export async function getOrg(id) {
 		name,
 		openUrl,
 		shareUrl,
-		url,
+		url
 	};
 }
 
@@ -115,7 +115,7 @@ export async function setEvent(orgId, id, { name, date }) {
 	if (!entity) {
 		return;
 	}
-	entity.set(components.event, { name, date })
+	entity.set(components.event, { name, date });
 	const url = `/orgs/${orgId}/events/${id}/`;
 	return { id, url };
 }

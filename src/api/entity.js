@@ -34,7 +34,7 @@ export async function loadStore(id = createId()) {
 
 		function get(component) {
 			validateComponent(component);
-			_entity.get(component.id);
+			return _entity.get(component.id);
 		}
 
 		function set(component, value) {
@@ -46,7 +46,7 @@ export async function loadStore(id = createId()) {
 		return { delete: _delete, get, id, set, value: _entity };
 	}
 
-	return { ...store, createEntity, deleteEntity, getEntity, id };
+	return { ...store, data, id, createEntity, deleteEntity, getEntity };
 }
 
 function getId(idParts = [createId()]) {
